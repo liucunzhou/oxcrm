@@ -1,0 +1,5 @@
+2019-05-19
+-- 设置秘钥
+git remote set-url origin git@github.com:liucunzhou/oxcrm.git
+-- 添加database.php到忽略文件
+git add .gitignore
