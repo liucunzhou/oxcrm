@@ -1,0 +1,143 @@
+<!--Vue 的核心是数据与视图的双向绑定, 当我们修改数组时, Vue 检测到数据变化-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>你好 vue</title>
+    <link rel="stylesheet" href="http://live-cdn.baijiayun.com/js-sdk/0.17.2/whiteboard/whiteboard.css">
+	<style>
+		html,body,
+		.container{
+			position:relative;
+			width:100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+<div class="container"  >
+    <div id="whiteboard"></div>
+</div>
+</body>
+</html>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="http://live-cdn.baijiayun.com/js-sdk/0.17.2/classroom/classroom.js"></script>
+<script>
+    $(function () {
+        BJY.init({
+            env: 'production',
+            sign: '12a4bcaff15bbb65eef8af51030a452a',
+            class: {
+                id: '18110347983145',
+                // 如果需要在后续用到教室相关的信息，可像这样写在下面
+                // 如果不用，可省略
+                name: '课程名称',
+                startTime: '开始时间，精确到毫秒的时间戳',
+                endTime: '结束时间，精确到毫秒的时间戳'
+            },
+            // 当前进入教室的用户的信息
+            // 如果是老师进教室，传老师的信息
+            // 如果是学生进教室，传学生的信息
+            // number 必须确保是唯一的，如果不唯一，后进的用户会踢掉先进的用户
+            user: {
+                number: '20864',
+                avatar: 'http://gps.laoyaojing.net/public/member/avatar.png',
+                name: 'wx20181023102852',
+                type: '0'
+            },
+            // 如果知道当前教室的老师信息，可传入，否则可省略
+            // teacher: {
+            //     number: '老师 number',
+            //     avatar: '头像地址',
+            //     name: '老师昵称',
+            //     type: 1
+            // }
+        });
+
+        var eventEmitter = BJY.eventEmitter;
+        eventEmitter
+            .one(
+                eventEmitter.MASTER_SERVER_CONNECT_SUCCESS,
+                function () {
+                    // 主服务器连接成功
+                    // 进度条 20%
+                    console.log("加载20%");
+                }
+            )
+            .one(
+                eventEmitter.SERVER_INFO_FETCH_SUCCESS,
+                function () {
+                    // 从主服务器获取服务器信息成功
+                    // 进度条 40%
+                    console.log("加载40%");
+                }
+            )
+            .one(
+                eventEmitter.ROOM_SERVER_CONNECT_SUCCESS,
+                function () {
+                    // 信令服务器连接成功
+                    // 进度条 60%
+                    console.log("加载60%");
+                }
+            )
+            .one(
+                eventEmitter.ROOM_SERVER_LOGIN_SUCCESS,
+                function () {
+                    // 信令服务器登录成功
+                    // 到此表示成功进入教室
+                    // 进度条 80%
+                    // 因为已经登录成功，接下来进度条应自动更新到 100%
+
+                }
+            )
+
+            .one(
+                eventEmitter.VIEW_RENDER_TRIGGER,
+                function (event, data) {
+                    console.log('时机成熟');
+                    // 成功进入教室后，会触发此事件告知调用方初始化界面
+                    eventEmitter
+                        .one(
+                            eventEmitter.VIEW_RENDER_TRIGGER,
+                            function (event, data) {
+                                BJY.whiteboard.init({
+                                    element: $('#whiteboard')
+                                });
+                            }
+                        );
+                }
+            )
+
+
+            .one(
+                eventEmitter.ROOM_SERVER_LOGIN_FAIL,
+                function (event, data) {
+                    // 信令服务器登录失败
+                }
+            )
+
+
+            .one(
+                eventEmitter.ROOM_SERVER_LOGIN_OVERFLOW,
+                function(event, data) {
+                    // 信令服务器已满，无法登录
+                }
+            )
+            .one(
+                eventEmitter.ROOM_SERVER_LOGIN_KICKED_OUT,
+                function(event, data) {
+                    // 信令服务器发现当前用户已经被老师踢出，阻止再次进入教室
+                }
+            )
+            .one(
+                eventEmitter.CLASSROOM_CONNECT_FAIL,
+                function () {
+                    // 超时、或其他原因导致的失败
+                }
+            );
+
+
+    })
+</script>
+<script src="http://live-cdn.baijiayun.com/js-sdk/0.17.2/whiteboard/whiteboard.js"></script>

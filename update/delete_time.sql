@@ -1,0 +1,15 @@
+alter table tk_brand add delete_time int not null default 0;
+alter table tk_course add delete_time int not null default 0;
+alter table tk_customer add delete_time int not null default 0;
+alter table tk_customer_visited add delete_time int not null default 0;
+alter table tk_exam_question add delete_time int not null default 0;
+alter table tk_image add delete_time int not null default 0;
+alter table tk_image_group add delete_time int not null default 0;
+alter table tk_intention add delete_time int not null default 0;
+alter table tk_member add delete_time int not null default 0;
+alter table tk_news add delete_time int not null default 0;
+alter table tk_question_category add delete_time int not null default 0;
+alter table tk_region add delete_time int not null default 0;
+alter table tk_source add delete_time int not null default 0;
+alter table tk_store add delete_time int not null default 0;
+alter table tk_user add delete_time int not null default 0;

@@ -1,0 +1,81 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>权限管理</li>
+        <li>角色管理</li>
+    </ul>
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+</div>
+
+<!--页面详情-->
+<div class="page-content">
+    <div class="page-header">
+        给<span class="red">"{$data.title}角色"</span>分配权限
+    </div>
+    <table class="table table-bordered table-responsive table-hover">
+        <{volist name="modules" id="module"}>
+            <tr>
+                <td width="80">{$module.id}</td>
+                <td width="160">{$module.title}</td>
+                <td class="no-padding">
+                    <table class="table table-bordered no-padding no-margin">
+                        <{volist name="items" id="item"}>
+                            <{if $item['parent_id']==$module['id']}>
+                                <tr>
+                                    <td width="180">
+                                        <label>
+                                            <input type="checkbox" name="id[]" value="{$item['id']}" class="auth_id" <{if in_array($item['id'], $authSelected)}>checked<{/if}>>
+                                            {$item['title']}
+                                        </label>
+                                    </td>
+                                    <td>{$item['route']}</td>
+                                </tr>
+                            <{/if}>
+                        <{/volist}>
+                    </table>
+                </td>
+            </tr>
+        <{/volist}>
+    </table>
+</div>
+<div class="fixed-bottom">
+    <div class="toolbar-bottom pull-left">
+        <label class="label-checkbox-bottom">
+            <input type="checkbox" id="check_all" class="check_all">
+            <span>全选</span>
+        </label>
+        <input type="hidden" name="id" id="id" value="{$data['id']}" />
+        <a class="btn btn-xs btn-danger" id="assign">分配</a>
+    </div>
+</div>
+<script>
+$(function(){
+    $("#assign").click(function () {
+        var url = '{:url("Auth/doAssignAuth")}';
+        var id = $("#id").val();
+        var arr = [];
+        $(".auth_id:checked").each(function (i,n) {
+            arr.push($(n).val())
+        });
+        if(arr.length < 1) {
+            layer.msg("请选择要分配的权限");
+            return false;
+        }
+
+        var ids = arr.join(',');
+        var data = {
+            id:id,
+            ids: ids
+        };
+
+        $.post(url, data, function(res){
+            layer.msg(res.msg);
+        });
+    });
+});
+</script>

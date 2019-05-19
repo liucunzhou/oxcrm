@@ -1,0 +1,112 @@
+<!-- 面包屑 -->
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>部门权限</li>
+        <li>用户管理</li>
+        <li>用户授权</li>
+    </ul>
+    <span class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </span>
+</div>
+<div class="page-content">
+    <div class="page-header header_title">
+        <h3 class="blue">用户授权</h3>
+    </div>
+    <div class="page-body">
+        <form class="form ajax_form" method="post" data-action="{:url('User/doEditAuth')}" role="form">
+            <div class="form-container">
+                <div class="form-body">
+                    <div class="form-groups">
+                        <div class="form-group">
+                            <label class="flex-control-label">部门管理</label>
+                            <div class="flex-control-input">
+                                <select name="department_id" id="department_id" class="input-field">
+                                    <option value="0">--父级部门--</option>
+                                    <{foreach item="val" name="departments"}>
+                                    <option value="{$val['id']}" <{if $val['id']==$data['department_id']}>selected<{/if}>><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">用户角色</label>
+                            <div class="flex-control-input">
+                                <{volist name="roles" id="role"}>
+                                    <label class="padding-12"><input type="checkbox" name="role[]" value="{$role.id}" <{if !empty($data['role_ids']) && in_array($role['id'], $data['role_ids'])}>checked<{/if}>/> {$role.title}</label>
+                                <{/volist}>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">接收门店</label>
+                            <div class="flex-control-input">
+                                <table class="table table-bordered table-responsive">
+                                    <{volist name="brands" id="brand"}>
+                                        <tr>
+                                            <td width="160">
+                                                {$brand.title}
+                                            </td>
+                                            <td>
+                                                <{volist name="brand['stores']" id="store"}>
+                                                    <label><input type="checkbox" name="store[]" value="{$store.id}"  <{if !empty($data['store_ids']) && in_array($store['id'], $data['store_ids'])}>checked<{/if}>/> {$store.title}</label>
+                                                <{/volist}>
+                                            </td>
+                                        </tr>
+                                    <{/volist}>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">接收来源</label>
+                            <div class="flex-control-input">
+                                <table class="table table-bordered table-responsive">
+                                    <{volist name="platforms" id="platform"}>
+                                        <tr>
+                                            <td width="160">
+                                                {$platform.title}
+                                            </td>
+                                            <td>
+                                                <{volist name="platform['sources']" id="source"}>
+                                                    <label><input type="checkbox" name="source[]" value="{$source.id}" <{if !empty($data['source_ids']) && in_array($source['id'], $data['source_ids'])}>checked<{/if}>/> {$source.title}</label>
+                                                <{/volist}>
+                                            </td>
+                                        </tr>
+                                    <{/volist}>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="flex-control-input">
+                                <div class="footer-fixed-bottom text-left">
+                                    <input type="hidden" name="referer" value="{$_SERVER['HTTP_REFERER']}"/>
+                                    <input type="hidden" name="user_id" value="{$Request.param.id}" id="user_id"/>
+                                    <input type="submit" value="保存" class="btn btn-save-blue">
+                                    <a class="btn btn-save-gray" href="javascript:history.go(-1)">返回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--表单页面帮助说明-->
+                <div class="form-aside">
+                    <dl class="helper">
+                        <dt>帮助说明</dt>
+                        <dd>
+                            <i class="icon-angle-right bigger-110"></i>
+                            <div class="text">说明</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

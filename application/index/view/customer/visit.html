@@ -1,0 +1,80 @@
+<form class="visit-form" data-action="{:url('Visit/index')}">
+    <div class="side-modal-box" style="display: block;">
+        <div class="page-header header_title">
+            <h4 class="blue">修改跟进任务</h4>
+        </div>
+        <div class="form-block">
+            <div class="form-group">
+                <label>
+                    <span class="tis_import">*</span>
+                    <span>跟进状态</span>
+                </label>
+                <div class="input-box">
+                    <select name="status" id="status" class="input-field">
+                        <option value="1">无效客户</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <span>申请状态</span>
+                </label>
+                <div class="input-box">
+                    <select name="apply_status" id="apply_status" class="input-field">
+                        <option value="0">审核中</option>
+                        <option value="1">审核成功</option>
+                        <option value="2">审核失败</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <span>成单请求</span>
+                </label>
+                <div class="input-box">
+                    <select name="apply_order_status" id="apply_order_status" class="input-field">
+                        <option value="0">未请求</option>
+                        <option value="1">请求中</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    <span>失效申请</span>
+                </label>
+                <div class="input-box">
+                    <select name="cause" id="cause" class="input-field">
+                        <option value="0">未请求</option>
+                        <option value="1">失效跟进</option>
+                        <option value="2">请求中</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <span>跟进时间</span>
+                </label>
+                <div class="input-box">
+                    <input type="text" name="next_visit_time" value="{$data['next_visit_time']}" class="input-field date">
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="page-header header_title">-->
+            <!--<h4 class="blue">-->
+                <!--<span>回访历史</span>-->
+                <!--<small>(已回访0次)</small>-->
+            <!--</h4>-->
+        <!--</div>-->
+        <div class="visits">
+        </div>
+
+        <div class="side-modal-foot">
+            <input type="hidden" name="allocation_id" id="allocation_id" value="3">
+            <input type="hidden" name="customer_id" id="customer_id" value="2">
+            <div class="btn btn-sm btn-info form-side-submit">保存</div>
+            <div class="btn btn-sm form-side-cancel">取消</div>
+        </div>
+    </div>
+</form>

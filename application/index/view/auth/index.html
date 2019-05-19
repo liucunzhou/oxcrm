@@ -1,0 +1,52 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>权限管理</li>
+        <li>模块管理</li>
+    </ul>
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+    <div class="widget-toolbar">
+        <a href="javascript:void(0);" class="action-modal" data-action="{:url('Auth/addAuth')}">
+            <span class="text">添加权限</span>
+        </a>
+    </div>
+</div>
+
+<!--页面详情-->
+<div class="page-content">
+    <table class="table table-bordered table-responsive table-hover">
+        <{volist name="modules" id="module"}>
+            <tr>
+                <td width="80">{$module.id}</td>
+                <td width="160">{$module.title}</td>
+                <td class="no-padding">
+                    <table class="table no-padding no-margin">
+                        <{volist name="items" id="item"}>
+                            <{if $item['parent_id']==$module['id']}>
+                                <tr>
+                                    <td width="180">{$item['title']}</td>
+                                    <td>{$item['route']}</td>
+                                    <td width="120">
+
+                                        <a class="btn btn-xs btn-purple action-modal" href="javascript:void(0);" data-action="{:url('Auth/editAuth',['id'=>$item['id']])}">
+                                            编辑
+                                        </a>
+
+                                        <a class="btn btn-xs btn-pink action-delete" href="javascript:void(0);" data-action="{:url('Auth/delete',['id'=>$item['id']])}">
+                                            删除
+                                        </a>
+                                    </td>
+                                </tr>
+                            <{/if}>
+                        <{/volist}>
+                    </table>
+                </td>
+            </tr>
+        <{/volist}>
+    </table>
+</div>

@@ -1,0 +1,129 @@
+<!-- 面包屑 -->
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>系统设置</li>
+        <li>酒店管理</li>
+    </ul>
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+    <div class="widget-toolbar">
+        <a href="javascript:void(0);" class="action-modal" data-action="{:url('Hotel/addHotel')}">
+            <span class="text">添加酒店</span>
+        </a>
+    </div>
+    <!--<div class="widget-toolbar">-->
+        <!--<a href="javascript:void(0);" class="search-action-modal">-->
+            <!--<span class="text">高级筛选</span>-->
+        <!--</a>-->
+    <!--</div>-->
+    <div class="widget-toolbar no-border">
+        <form>
+            <input type="text" name="keywords" placeholder="请输入酒店名称"/>
+            <a class="icon-search" href="javascript:void(0);"></a>
+        </form>
+    </div>
+</div>
+<!--页面详情-->
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="center" width="80">
+                                <a class="icon-cog" href="javascript:void(0);"></a>
+                            </th>
+                            <th class="left">酒店名称</th>
+                            <th class="center" width="80">状态</th>
+                            <th class="center" width="80">排序</th>
+                            <th class="center" width="160">录入时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <{foreach item="val" name="list"}>
+                        <tr>
+                            <th class="center">
+                                <label>
+                                    <input type="checkbox" name="id[]" value="{$val['id']}">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th class="left">{$val['title']}</th>
+                            <th class="center">{$val['is_valid']?'上线':'下线'}</th>
+                            <th class="center">{$val['sort']}</th>
+                            <th class="center">{$val['create_time']}</th>
+                            <th>
+                                <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+
+                                    <a class="btn btn-xs btn-purple action-modal" href="javascript:void(0);" data-action="{:url('Hotel/editHotel',['id'=>$val['id']])}">
+                                        编辑
+                                    </a>
+
+                                    <a class="btn btn-xs btn-pink action-delete" data-action="{:url('Hotel/delete', ['id'=>$val['id']])}">
+                                        删除
+                                    </a>
+                                </div>
+                                <div class="visible-xs visible-sm hidden-md hidden-lg">
+                                    <div class="inline position-relative">
+                                        <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon-cog icon-only bigger-110"></i>
+                                        </button>
+
+                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+                                            <li>
+                                                <a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
+                                                    回访
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
+                                                    编辑
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
+                                                    分配
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
+                                                    归档
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    <{/foreach}>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fixed-bottom">
+    <div class="toolbar-bottom pull-left">
+        <label class="label-checkbox-bottom">
+            <input type="checkbox" >
+            <span>全选</span>
+        </label>
+        <a class="btn btn-xs btn-warning">
+            分配
+        </a>
+        <a class="btn btn-xs btn-danger action-delete-customer" href="javascript:void(0);" data-action="{:url('rollback', ['id'=>$val['id']])}" data-tip="确认要还原该客资么？">
+            归档
+        </a>
+    </div>
+    <div class="pull-right">
+        <{include file="common/page" /}>
+    </div>
+</div>
+<include file="customer/search" />

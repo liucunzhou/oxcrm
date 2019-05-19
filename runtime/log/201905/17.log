@@ -1,0 +1,883 @@
+---------------------------------------------------------------
+[ 2019-05-17T00:16:04+08:00 ] 154.85.102.68 GET /
+[运行时间：0.019477s] [吞吐率：51.34req/s] [内存消耗：1,685.82kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'user-agent' => 'Mozilla 5',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T00:16:06+08:00 ] 154.85.102.68 GET 121.42.184.177/nmaplowercheck1558023319
+[运行时间：0.013939s] [吞吐率：71.74req/s] [内存消耗：1,263.38kb] [文件加载：57]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T00:16:06+08:00 ] 154.85.102.68 POST 121.42.184.177/sdk
+[运行时间：0.020358s] [吞吐率：49.12req/s] [内存消耗：1,262.49kb] [文件加载：57]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T00:16:06+08:00 ] 154.85.102.68 GET /
+[运行时间：0.025260s] [吞吐率：39.59req/s] [内存消耗：1,685.68kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T00:16:07+08:00 ] 154.85.102.68 GET 121.42.184.177/
+[运行时间：0.019403s] [吞吐率：51.54req/s] [内存消耗：1,685.86kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T00:16:07+08:00 ] 154.85.102.68 GET 121.42.184.177/HNAP1
+[运行时间：0.013983s] [吞吐率：71.52req/s] [内存消耗：1,263.36kb] [文件加载：57]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T00:44:11+08:00 ] 157.55.39.218 GET phome.e5ws.com/
+[运行时间：0.018127s] [吞吐率：55.17req/s] [内存消耗：1,687.38kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'user-agent' => 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)',
+  'host' => 'phome.e5ws.com',
+  'from' => 'bingbot(at)microsoft.com',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => '*/*',
+  'pragma' => 'no-cache',
+  'connection' => 'Keep-Alive',
+  'cache-control' => 'no-cache',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T00:50:14+08:00 ] 85.104.105.234 GET 121.42.184.177:80/
+[运行时间：0.019446s] [吞吐率：51.42req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T01:09:31+08:00 ] 201.13.16.233 GET 121.42.184.177:80/
+[运行时间：0.019204s] [吞吐率：52.07req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T01:23:21+08:00 ] 139.162.119.197 GET 121.42.184.177/
+[运行时间：0.018700s] [吞吐率：53.48req/s] [内存消耗：1,686.25kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'close',
+  'user-agent' => 'HTTP Banner Detection (https://security.ipip.net)',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T01:57:52+08:00 ] 162.243.147.46 GET 121.42.184.177/
+[运行时间：0.020464s] [吞吐率：48.87req/s] [内存消耗：1,686.28kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-encoding' => 'gzip',
+  'accept' => '*/*',
+  'user-agent' => 'Mozilla/5.0 zgrab/0.x',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T02:17:12+08:00 ] 95.154.194.148 GET 121.42.184.177/
+[运行时间：0.018622s] [吞吐率：53.70req/s] [内存消耗：1,686.43kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'host' => '121.42.184.177',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T02:20:11+08:00 ] 105.184.78.135 GET 121.42.184.177:80/
+[运行时间：0.018610s] [吞吐率：53.73req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T02:46:11+08:00 ] 178.255.215.70 GET www.e5ws.com/
+[运行时间：0.017784s] [吞吐率：56.23req/s] [内存消耗：1,687.34kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'user-agent' => 'Mozilla/5.0 (compatible; Exabot/3.0; +http://www.exabot.com/go/robot)',
+  'host' => 'www.e5ws.com',
+  'from' => 'crawler@exabot.com',
+  'date' => 'Thu, 16 May 2019 18:45:42 GMT',
+  'connection' => 'Close',
+  'accept-encoding' => 'gzip, deflate, identity',
+  'accept' => '*/*',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T02:51:43+08:00 ] 134.209.178.241 GET 121.42.184.177/
+[运行时间：0.017990s] [吞吐率：55.59req/s] [内存消耗：1,686.54kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'Keep-Alive',
+  'host' => '121.42.184.177',
+  'accept-encoding' => 'identity',
+  'accept' => '*/*',
+  'user-agent' => 'Wget/1.19.4 (linux-gnu)',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T02:51:44+08:00 ] 134.209.178.241 GET 121.42.184.177/index/passport/login
+[运行时间：0.018654s] [吞吐率：53.61req/s] [内存消耗：1,693.38kb] [文件加载：69]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=9ub1eaer1nh38ngb1vv02isjt6',
+  'connection' => 'Keep-Alive',
+  'host' => '121.42.184.177',
+  'accept-encoding' => 'identity',
+  'accept' => '*/*',
+  'user-agent' => 'Wget/1.19.4 (linux-gnu)',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /data/platform/application/index/view/passport/login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-05-17T03:08:06+08:00 ] 218.30.103.5 GET e5ws.com/
+[运行时间：0.018495s] [吞吐率：54.07req/s] [内存消耗：1,686.73kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'close',
+  'user-agent' => 'Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)',
+  'accept-encoding' => 'gzip,deflate',
+  'accept-language' => 'zh-cn',
+  'accept' => '*/*',
+  'host' => 'e5ws.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T04:19:06+08:00 ] 103.109.2.12 GET 121.42.184.177:80/
+[运行时间：0.018281s] [吞吐率：54.70req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T05:56:02+08:00 ] 47.92.101.189 GET e5ws.com/
+[运行时间：0.019484s] [吞吐率：51.32req/s] [内存消耗：1,686.46kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2',
+  'host' => 'e5ws.com',
+  'user-agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X)',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T05:58:27+08:00 ] 81.26.142.108 GET 121.42.184.177:80/
+[运行时间：0.018659s] [吞吐率：53.59req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T06:12:25+08:00 ] 42.156.136.63 GET ydt.e5ws.com/Product/read/id/30.html
+[运行时间：0.013355s] [吞吐率：74.88req/s] [内存消耗：1,239.66kb] [文件加载：56]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T06:13:35+08:00 ] 101.132.144.145 GET www.e5ws.com/
+[运行时间：0.018131s] [吞吐率：55.15req/s] [内存消耗：1,686.49kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2',
+  'host' => 'www.e5ws.com',
+  'user-agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X)',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T06:13:49+08:00 ] 40.77.167.76 GET www.e5ws.com/sitemap/
+[运行时间：0.013224s] [吞吐率：75.62req/s] [内存消耗：1,239.59kb] [文件加载：56]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T06:47:33+08:00 ] 101.251.242.238 GET 121.42.184.177:80/
+[运行时间：0.018484s] [吞吐率：54.10req/s] [内存消耗：1,687.05kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept' => 'application/json, text/plain, */*',
+  'accept-charset' => 'GBK,utf-8;q=0.7,*;q=0.3',
+  'accept-language' => 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+  'accept-encoding' => 'gzip, deflate, br',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T08:13:53+08:00 ] 58.250.125.130 GET www.e5ws.com/
+[运行时间：0.019957s] [吞吐率：50.11req/s] [内存消耗：1,686.76kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'close',
+  'user-agent' => 'Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)',
+  'accept-encoding' => 'gzip,deflate',
+  'accept-language' => 'zh-cn',
+  'accept' => '*/*',
+  'host' => 'www.e5ws.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T08:48:03+08:00 ] 66.249.79.187 GET www.e5ws.com/search/
+[运行时间：0.013500s] [吞吐率：74.07req/s] [内存消耗：1,243.59kb] [文件加载：56]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T10:41:17+08:00 ] 223.112.190.70 GET 121.42.184.177/w00tw00t.at.blackhats.romanian.anti-sec:)
+[运行时间：0.016826s] [吞吐率：59.43req/s] [内存消耗：1,263.41kb] [文件加载：57]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+---------------------------------------------------------------
+[ 2019-05-17T10:48:37+08:00 ] 140.207.54.80 POST www.e5ws.com/index.php?r=setup%2Fcheck-url&signature=ac3d406140d070b7a3378f7e6977609def5987fc&timestamp=1558061317&nonce=1439083048&openid=o81pDuP6Wkw0UM2xH8kC7miHX8oE
+[运行时间：0.018691s] [吞吐率：53.50req/s] [内存消耗：1,689.43kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => 'text/xml',
+  'content-length' => '524',
+  'pragma' => 'no-cache',
+  'host' => 'www.e5ws.com',
+  'accept' => '*/*',
+  'user-agent' => 'Mozilla/4.0',
+)
+[ info ] [ PARAM ] array (
+  'r' => 'setup/check-url',
+  'signature' => 'ac3d406140d070b7a3378f7e6977609def5987fc',
+  'timestamp' => '1558061317',
+  'nonce' => '1439083048',
+  'openid' => 'o81pDuP6Wkw0UM2xH8kC7miHX8oE',
+  '<xml><ToUserName><!' => 
+  array (
+    'CDATA[gh_521628dc8301' => 'wx577ca3767f909099',
+  ),
+  'redirect_uri' => 'http://wx.kankanews.com/baoliao/',
+  'response_type' => 'code',
+  'scope' => 'snsapi_base',
+  'state' => '82a51f960304bb8b07b04fb569f0e401#wechat_redirect]]></EventKey>
+<MenuId>207546484</MenuId>
+</xml>',
+)
+---------------------------------------------------------------
+[ 2019-05-17T10:53:22+08:00 ] 107.181.189.75 GET e5ws.com/index.php?l=page_view&p=advanced_search
+[运行时间：0.018319s] [吞吐率：54.59req/s] [内存消耗：1,687.29kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'user-agent' => 'Mozilla/5.0 (Windows; U; Windows NT 2.0) Gecko/20091201 Firefox/3.5.6 GTB5',
+  'host' => 'e5ws.com',
+  'connection' => 'Keep-Alive, TE',
+  'keep-alive' => '300',
+  'te' => 'deflate,gzip;q=0.3',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+  'l' => 'page_view',
+  'p' => 'advanced_search',
+)
+---------------------------------------------------------------
+[ 2019-05-17T11:00:21+08:00 ] 189.79.241.7 GET 121.42.184.177:80/
+[运行时间：0.018599s] [吞吐率：53.77req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T11:01:51+08:00 ] 189.111.2.111 GET 121.42.184.177:80/
+[运行时间：0.018303s] [吞吐率：54.64req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T11:30:49+08:00 ] 5.45.207.16 GET e5ws.com/
+[运行时间：0.018462s] [吞吐率：54.16req/s] [内存消耗：1,687.32kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept' => '*/*',
+  'accept-language' => 'ru, uk;q=0.8, be;q=0.8, en;q=0.7, *;q=0.01',
+  'accept-encoding' => 'gzip,deflate',
+  'from' => 'support@search.yandex.ru',
+  'user-agent' => 'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)',
+  'connection' => 'Keep-Alive',
+  'host' => 'e5ws.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T11:32:56+08:00 ] 140.207.54.80 POST www.e5ws.com/index.php?r=setup%2Fcheck-url&signature=f383959146d218e57608f97605b9a30c71c833ff&timestamp=1558063976&nonce=459872292&openid=o81pDuP6Wkw0UM2xH8kC7miHX8oE
+[运行时间：0.018956s] [吞吐率：52.75req/s] [内存消耗：1,689.43kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => 'text/xml',
+  'content-length' => '524',
+  'pragma' => 'no-cache',
+  'host' => 'www.e5ws.com',
+  'accept' => '*/*',
+  'user-agent' => 'Mozilla/4.0',
+)
+[ info ] [ PARAM ] array (
+  'r' => 'setup/check-url',
+  'signature' => 'f383959146d218e57608f97605b9a30c71c833ff',
+  'timestamp' => '1558063976',
+  'nonce' => '459872292',
+  'openid' => 'o81pDuP6Wkw0UM2xH8kC7miHX8oE',
+  '<xml><ToUserName><!' => 
+  array (
+    'CDATA[gh_521628dc8301' => 'wx577ca3767f909099',
+  ),
+  'redirect_uri' => 'http://wx.kankanews.com/baoliao/',
+  'response_type' => 'code',
+  'scope' => 'snsapi_base',
+  'state' => '82a51f960304bb8b07b04fb569f0e401#wechat_redirect]]></EventKey>
+<MenuId>207546484</MenuId>
+</xml>',
+)
+---------------------------------------------------------------
+[ 2019-05-17T12:27:26+08:00 ] 152.231.61.83 GET 121.42.184.177:80/
+[运行时间：0.018339s] [吞吐率：54.53req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T12:28:42+08:00 ] 177.9.185.105 GET 121.42.184.177:80/
+[运行时间：0.019350s] [吞吐率：51.68req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T13:12:22+08:00 ] 181.210.59.29 GET 121.42.184.177:80/
+[运行时间：0.018246s] [吞吐率：54.81req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T13:51:11+08:00 ] 140.207.54.79 POST www.e5ws.com/index.php?r=setup%2Fcheck-url&signature=4d835a47cefd980e67b527a2dd8d6ed3dccda984&timestamp=1558072271&nonce=1720083529&openid=o81pDuP6Wkw0UM2xH8kC7miHX8oE
+[运行时间：0.018523s] [吞吐率：53.99req/s] [内存消耗：1,689.43kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => 'text/xml',
+  'content-length' => '524',
+  'pragma' => 'no-cache',
+  'host' => 'www.e5ws.com',
+  'accept' => '*/*',
+  'user-agent' => 'Mozilla/4.0',
+)
+[ info ] [ PARAM ] array (
+  'r' => 'setup/check-url',
+  'signature' => '4d835a47cefd980e67b527a2dd8d6ed3dccda984',
+  'timestamp' => '1558072271',
+  'nonce' => '1720083529',
+  'openid' => 'o81pDuP6Wkw0UM2xH8kC7miHX8oE',
+  '<xml><ToUserName><!' => 
+  array (
+    'CDATA[gh_521628dc8301' => 'wx577ca3767f909099',
+  ),
+  'redirect_uri' => 'http://wx.kankanews.com/baoliao/',
+  'response_type' => 'code',
+  'scope' => 'snsapi_base',
+  'state' => '82a51f960304bb8b07b04fb569f0e401#wechat_redirect]]></EventKey>
+<MenuId>207546484</MenuId>
+</xml>',
+)
+---------------------------------------------------------------
+[ 2019-05-17T14:55:48+08:00 ] 42.51.203.27 GET 121.42.184.177/
+[运行时间：0.018117s] [吞吐率：55.20req/s] [内存消耗：1,687.38kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-encoding' => 'identity',
+  'dnt' => '1',
+  'upgrade-insecure-requests' => '1',
+  'accept-language' => 'zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0',
+  'accept' => '*/*',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T14:55:48+08:00 ] 42.51.203.27 GET 121.42.184.177/index/passport/login
+[运行时间：0.018256s] [吞吐率：54.78req/s] [内存消耗：1,693.94kb] [文件加载：69]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-encoding' => 'identity',
+  'dnt' => '1',
+  'upgrade-insecure-requests' => '1',
+  'accept-language' => 'zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0',
+  'accept' => '*/*',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /data/platform/application/index/view/passport/login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-05-17T14:55:49+08:00 ] 42.51.174.25 GET www.e5ws.com/
+[运行时间：0.018420s] [吞吐率：54.29req/s] [内存消耗：1,687.37kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-encoding' => 'identity',
+  'dnt' => '1',
+  'upgrade-insecure-requests' => '1',
+  'accept-language' => 'zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0',
+  'accept' => '*/*',
+  'host' => 'www.e5ws.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T15:12:23+08:00 ] 140.207.54.79 POST www.e5ws.com/index.php?r=setup%2Fcheck-url&signature=fcb3b23529e40503ed69e6904fa3258df3cd2e28&timestamp=1558077142&nonce=1679958771&openid=o81pDuAjrWCTzMGJ0eFRmUsUMgbs
+[运行时间：0.019039s] [吞吐率：52.52req/s] [内存消耗：1,689.43kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => 'text/xml',
+  'content-length' => '524',
+  'pragma' => 'no-cache',
+  'host' => 'www.e5ws.com',
+  'accept' => '*/*',
+  'user-agent' => 'Mozilla/4.0',
+)
+[ info ] [ PARAM ] array (
+  'r' => 'setup/check-url',
+  'signature' => 'fcb3b23529e40503ed69e6904fa3258df3cd2e28',
+  'timestamp' => '1558077142',
+  'nonce' => '1679958771',
+  'openid' => 'o81pDuAjrWCTzMGJ0eFRmUsUMgbs',
+  '<xml><ToUserName><!' => 
+  array (
+    'CDATA[gh_521628dc8301' => 'wx577ca3767f909099',
+  ),
+  'redirect_uri' => 'http://wx.kankanews.com/baoliao/',
+  'response_type' => 'code',
+  'scope' => 'snsapi_base',
+  'state' => '82a51f960304bb8b07b04fb569f0e401#wechat_redirect]]></EventKey>
+<MenuId>207546484</MenuId>
+</xml>',
+)
+---------------------------------------------------------------
+[ 2019-05-17T15:55:12+08:00 ] 106.14.104.214 GET /
+[运行时间：0.019633s] [吞吐率：50.93req/s] [内存消耗：1,685.68kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T16:13:35+08:00 ] 89.44.218.94 GET 121.42.184.177:80/
+[运行时间：0.018560s] [吞吐率：53.88req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T17:00:59+08:00 ] 86.104.241.23 GET 121.42.184.177:80/
+[运行时间：0.019258s] [吞吐率：51.93req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T18:40:29+08:00 ] 47.94.39.226 GET /
+[运行时间：0.019186s] [吞吐率：52.12req/s] [内存消耗：1,685.68kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T19:03:16+08:00 ] 106.11.183.235 GET 121.42.184.177/
+[运行时间：0.018679s] [吞吐率：53.54req/s] [内存消耗：1,686.41kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => '*/*',
+  'accept-encoding' => 'gzip, deflate',
+  'user-agent' => 'www.baidu.com',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T19:03:16+08:00 ] 106.11.183.235 GET 121.42.184.177/index/passport/login
+[运行时间：0.019994s] [吞吐率：50.01req/s] [内存消耗：1,829.60kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=qv2prikebv67g9itg6jrchgcm2',
+  'connection' => 'keep-alive',
+  'accept' => '*/*',
+  'accept-encoding' => 'gzip, deflate',
+  'user-agent' => 'www.baidu.com',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /data/platform/application/index/view/passport/login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-05-17T20:13:02+08:00 ] 218.30.103.3 GET www.e5ws.com/
+[运行时间：0.018609s] [吞吐率：53.74req/s] [内存消耗：1,686.76kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'close',
+  'user-agent' => 'Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)',
+  'accept-encoding' => 'gzip,deflate',
+  'accept-language' => 'zh-cn',
+  'accept' => '*/*',
+  'host' => 'www.e5ws.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T20:34:25+08:00 ] 188.178.190.14 GET 121.42.184.177:80/
+[运行时间：0.018483s] [吞吐率：54.10req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T20:43:37+08:00 ] 92.118.161.13 GET /
+[运行时间：0.018311s] [吞吐率：54.61req/s] [内存消耗：1,686.39kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept' => '*/*',
+  'user-agent' => 'NetSystemsResearch studies the availability of various services across the internet. Our website is netsystemsresearch.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T21:23:28+08:00 ] 109.94.122.144 GET 121.42.184.177:80/
+[运行时间：0.018939s] [吞吐率：52.80req/s] [内存消耗：1,686.51kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+  'host' => '121.42.184.177:80',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T21:52:40+08:00 ] 47.97.220.124 GET 121.42.184.177/
+[运行时间：0.018995s] [吞吐率：52.65req/s] [内存消耗：1,686.50kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2',
+  'host' => '121.42.184.177',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D))',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T21:52:40+08:00 ] 47.97.220.124 GET 121.42.184.177/index/passport/login
+[运行时间：0.019095s] [吞吐率：52.37req/s] [内存消耗：1,693.25kb] [文件加载：69]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2',
+  'host' => '121.42.184.177',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D))',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /data/platform/application/index/view/passport/login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-05-17T21:56:30+08:00 ] 47.92.95.89 GET 121.42.184.177/
+[运行时间：0.018020s] [吞吐率：55.49req/s] [内存消耗：1,686.50kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2',
+  'host' => '121.42.184.177',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D))',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T21:56:30+08:00 ] 47.92.95.89 GET 121.42.184.177/index/passport/login
+[运行时间：0.018600s] [吞吐率：53.76req/s] [内存消耗：1,693.25kb] [文件加载：69]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'connection' => 'keep-alive',
+  'accept' => 'text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2',
+  'host' => '121.42.184.177',
+  'user-agent' => 'Mozilla/5.0 (Linux; Android 4.1.1; Nexus 7 Build/JRO03D))',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /data/platform/application/index/view/passport/login.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2019-05-17T23:05:53+08:00 ] 134.209.67.16 GET e5ws.com/
+[运行时间：0.018834s] [吞吐率：53.10req/s] [内存消耗：1,686.09kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-encoding' => 'gzip',
+  'user-agent' => 'Go-http-client/1.1',
+  'host' => 'e5ws.com',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2019-05-17T23:16:20+08:00 ] 180.251.128.63 GET 121.42.184.177/
+[运行时间：0.018180s] [吞吐率：55.01req/s] [内存消耗：1,686.77kb] [文件加载：71]
+[ info ] [ LANG ] /data/platform/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'x-bluecoat-via' => '3bf358960f31c120',
+  'connection' => 'Keep-Alive',
+  'cache-control' => 'max-stale=0',
+  'content-length' => '0',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7',
+  'host' => '121.42.184.177',
+  'content-type' => '',
+)
+[ info ] [ PARAM ] array (
+)

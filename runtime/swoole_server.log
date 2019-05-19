@@ -1,0 +1,76 @@
+[2019-04-30 18:14:07 #15111.2]	NOTICE	Server is shutdown now.
+[2019-04-30 20:59:58 *17091.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-04-30 20:59:58 *17092.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-04-30 20:59:58 *17091.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-04-30 20:59:58 $17088.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2019-04-30 20:59:58 #17087.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-01 03:32:38 #17087.2]	NOTICE	Server is shutdown now.
+[2019-05-01 05:51:13 *11289.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-01 05:51:13 *11288.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-01 05:51:13 *11288.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-01 05:51:13 *11289.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-01 05:51:13 $11285.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2019-05-01 05:51:13 #11284.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-01 17:01:15 *11288.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-01 17:01:18 *17761.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-01 17:01:18 *17764.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-04 09:23:47 *11289.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-04 09:23:47 *12743.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-04 09:24:23 *17765.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-04 09:24:23 *12792.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-04 09:24:29 *12744.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-04 09:24:29 *12799.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-05 10:06:22 #11284.2]	NOTICE	Server is shutdown now.
+[2019-05-05 20:17:08 *20721.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-05 20:17:08 $20717.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2019-05-05 20:17:08 $20717.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2019-05-05 20:17:08 *20720.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-05 20:17:08 #20716.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-05 20:17:08 *20721.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-06 22:30:18 *20720.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:30:18 *30674.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:34:32 *20721.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:34:32 *30889.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:34:47 *30675.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:34:47 *30903.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:42:36 *30890.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:42:36 *31287.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:46:15 *30904.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:46:15 *31465.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 22:46:15 *31466.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 23:02:20 *31288.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-06 23:02:20 *32301.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:21:28 *31467.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:21:28 *6716.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:25:38 *32302.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:25:38 *6920.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:26 *6717.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:26 *6961.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:26 *6962.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:27 *6921.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:27 *6965.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:37 *6963.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:26:37 *6975.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:28:23 *6966.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:28:23 *7062.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:30:55 *6976.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:30:56 *7192.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:30:56 *7193.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:37:07 *7063.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:37:07 *7493.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:38:17 *7194.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:38:18 *7552.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-07 12:38:18 *7553.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 17:30:14 *7494.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 17:30:14 *7257.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 17:31:24 *7554.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 17:31:24 *7315.0]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 17:32:17 #20716.2]	NOTICE	Server is shutdown now.
+[2019-05-10 19:04:34 $21217.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2019-05-10 19:04:34 $21217.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2019-05-10 19:04:34 *21220.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-10 19:04:34 #21216.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-10 19:04:34 *21221.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2019-05-10 19:04:34 *21221.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 19:05:15 *25378.1]	NOTICE	zm_deactivate_swoole (ERROR 9003): worker process is terminated by exit()/die().
+[2019-05-10 19:07:01 #21216.2]	NOTICE	Server is shutdown now.

@@ -1,0 +1,21 @@
+<{if $list->lastPage() gt 1}>
+<ul class="page-nav">
+    <li><a href="javascript:void(0);">共条{:$list->total()}记录, {:$list->currentPage()}/{:$list->lastPage()}页</a></li>
+    <{if $list->currentPage() == 1}>
+    <li><a href="?page={:$list->currentPage() + 1}">下一页</a></li>
+    <li class="delimiter">|</li>
+    <li><a href="?page={:$list->lastPage()}">尾页</a></li>
+    <{elseif $list->currentPage() == $list->lastPage() /}>
+    <li><a href="?page=1">首页</a></li>
+    <li class="delimiter">|</li>
+    <li><a href="?page={:$list->currentPage() - 1}">上一页</a></li>
+    <{else /}>
+    <li><a href="?page=1">首页</a></li>
+    <li class="delimiter">|</li>
+    <li><a href="?page={:$list->currentPage() - 1}">上一页</a></li>
+    <li><a href="?page={:$list->currentPage() + 1}">下一页</a></li>
+    <li class="delimiter">|</li>
+    <li><a href="?page={:$list->lastPage()}">尾页</a></li>
+    <{/if}>
+</ul>
+<{/if}>

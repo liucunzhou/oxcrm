@@ -1,0 +1,60 @@
+<form method="get" action="__SELF__" class="form-inline form-advance-search">
+    <input type="hidden" name="c" value="{$Request.controller}"/>
+    <input type="hidden" name="a" value="{$Request.action}"/>
+    <input type="hidden" name="sf" value="yes"/>
+    <div class="advance-search-arrow"></div>
+    <div class="search-item-group">
+        <div class="search-item">
+            <span class="search-item-title">客户资料</span>
+            <input type="text" class="search-item-input"/>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">平台来源</span>
+            <select class="search-item-input">
+                <option>--请选择--</option>
+            </select>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">有效状态</span>
+            <select class="search-item-input">
+                <option>--请选择--</option>
+            </select>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">推广部门</span>
+            <select class="search-item-input">
+                <option>--请选择--</option>
+            </select>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">推广客服</span>
+            <select class="search-item-input">
+                <option>--请选择--</option>
+            </select>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">销售部门</span>
+            <select class="search-item-input">
+                <option>--请选择--</option>
+            </select>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">销售客服</span>
+            <select class="search-item-input">
+                <option>--请选择--</option>
+            </select>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">开始时间</span>
+            <input type="text" class="search-item-input"/>
+        </div>
+        <div class="search-item">
+            <span class="search-item-title">结束时间</span>
+            <input type="text" class="search-item-input"/>
+        </div>
+    </div>
+    <div class="advance-search-btns">
+        <input type="submit" class="btn btn-xs btn-danger" value="查询" />
+        <input type="reset" class="btn btn-xs btn-danger" value="重置"/>
+    </div>
+</form>

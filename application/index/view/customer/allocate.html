@@ -1,0 +1,29 @@
+<div class="modal-box">
+    <!-- 表单 -->
+    <form class="modal-form" method="post" data-action="{:url('Customer/doAllocate')}" role="form">
+        <div class="side-modal-box">
+            <div class="page-header header_title">
+                <h4 class="blue">选择客服</h4>
+            </div>
+            <p>共n条数据,已经分配0条,还剩n条未分配</p>
+            <div class="form-block">
+                <table class="table table-responsive">
+                <{foreach name="users" item="val"}>
+                    <tr>
+                        <td width="120">{$val['realname']}</td>
+                        <td>
+                            <input type="text" name="user_{$val['id']}" class="input-normal">
+                        </td>
+                    </tr>
+                <{/foreach}>
+                </table>
+            </div>
+
+            <div class="side-modal-foot">
+                <input type="hidden" name="id" id="id" value="{$Request.param.id}" />
+                <div class="btn btn-sm btn-info form-side-submit">确认分配</div>
+                <div class="btn btn-sm form-side-cancel">取消</div>
+            </div>
+        </div>
+    </form>
+</div>

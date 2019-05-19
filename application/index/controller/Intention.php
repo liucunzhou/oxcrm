@@ -1,0 +1,73 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: liucunzhou
+ * Date: 2019/4/22
+ * Time: 8:49 PM
+ */
+
+namespace app\index\controller;
+
+
+use think\facade\Request;
+
+class Intention extends Base
+{
+    public function index()
+    {
+        $map = [];
+        $list = model('intention')->where($map)->order('is_valid desc,sort desc,id asc')->paginate(2);
+        $this->assign('list', $list);
+
+        return $this->fetch();
+    }
+
+    public function addIntention()
+    {
+        $this->view->engine->layout(false);
+        return $this->fetch('edit_intention');
+    }
+
+    public function editIntention()
+    {
+        $get = Request::param();
+        $data = \app\index\model\Intention::get($get['id']);
+        $this->assign('data', $data);
+
+        $this->view->engine->layout(false);
+        return $this->fetch();
+    }
+
+    public function doEditIntention()
+    {
+        $post = Request::post();
+        if($post['id']) {
+            $Model = \app\index\model\Intention::get($post['id']);
+        } else {
+            $Model = new \app\index\model\Intention();
+        }
+
+        // $Model::create($post);
+        $result = $Model->save($post);
+
+        if($result) {
+            return json(['code'=>'200', 'msg'=> '添加成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=> '添加失败']);
+        }
+    }
+
+    public function delete()
+    {
+        $get = Request::param();
+        $result = \app\index\model\Intention::get($get['id'])->delete();
+
+        if($result) {
+            // 更新缓存
+            \app\index\model\Intention::updateCache();
+            return json(['code'=>'200', 'msg'=>'删除成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=>'删除失败']);
+        }
+    }
+}

@@ -1,0 +1,80 @@
+<div class="modal-box">
+    <form class="visit-form" data-action="{:url('Visit/doLog')}">
+        <div class="side-modal-box">
+            <div class="page-header header_title">
+                <h4 class="blue">添加回访</h4>
+            </div>
+            <div class="form-block">
+                <div class="form-group">
+                    <label>
+                        <span class="tis_import">*</span>
+                        <span>回访状态</span>
+                    </label>
+                    <div class="input-box">
+                        <select name="status" id="status" class="input-field">
+                            <foreach item="val" name="statusTypes">
+                                <option value="{$key}">{$val}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <span>无效原因</span>
+                    </label>
+                    <div class="input-box">
+                        <select name="cause" id="cause" class="input-field">
+                            <option value="0">请选择</option>
+                            <option value="1">已定</option>
+                            <option value="2">同行/微商</option>
+                            <option value="3">应聘</option>
+                            <option value="4">18岁不到</option>
+                            <option value="5">重复</option>
+                            <option value="6">空号</option>
+                            <option value="7">城市错误(1次)</option>
+                            <option value="8">拉黑</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <span>备注</span>
+                    </label>
+                    <div class="input-box">
+                        <textarea class="input-field" name="remark"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-header header_title">
+                <h4 class="blue">
+                    <span>回访历史</span>
+                    <small>(已回访0次)</small>
+                </h4>
+            </div>
+            <div class="visits">
+                <foreach item="val" name="visits">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="row">
+                                <div class="col-md-7">{$val['create_time']}</div>
+                                <div class="col-md-3 text-danger">{$statusTypes[$val['status']]}</div>
+                                <div class="col-md-2 text-right text-info">
+                                    <a class="icon-remove-circle action-delete-visit" href="javascript:void(0)" data-action="{:url('Visit/delLog', ['id'=>$val['id']])}" data-tip="确认删除该回访信息么？"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">{$val['remark']}</div>
+                    </div>
+                </foreach>
+            </div>
+
+            <div class="side-modal-foot">
+                <input type="hidden" name="allocation_id" id="allocation_id" value="{$_GET['id']}" />
+                <input type="hidden" name="customer_id" id="customer_id" value="{$data['customer_id']}" />
+                <div class="btn btn-sm btn-info form-side-submit">保存</div>
+                <div class="btn btn-sm form-side-cancel">取消</div>
+            </div>
+        </div>
+    </form>
+</div>

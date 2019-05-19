@@ -1,0 +1,118 @@
+<!-- 面包屑 -->
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>部门权限</li>
+        <li>用户管理</li>
+        <li>{$_GET['id']?'编辑':'添加'}用户信息</li>
+    </ul>
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+</div>
+<div class="page-content">
+    <div class="page-header header_title">
+        <h3 class="blue">{$Request.param.id?'编辑':'添加'}用户信息</h3>
+    </div>
+    <div class="page-body">
+        <form class="form ajax_form" method="post" data-action="{:url('User/doEditUser')}" role="form">
+            <div class="form-container">
+                <div class="form-body">
+                    <div class="form-groups">
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">用户昵称</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="nickname" id="nickname" value="{$data['nickname']}" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">真实姓名</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="realname" id="realname" value="{$data['realname']}" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <!--<div class="form-group">-->
+                            <!--<label class="flex-control-label">登录密码</label>-->
+                            <!--<div class="flex-control-input">-->
+                                <!--<input type="text" name="password" id="password" class="form-control">-->
+                                <!--<div class="form-tips"><span class="tis_import">*</span></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">钉钉编号</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="dingding" id="dingding" value="{$data['dingding']}" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">联系电话</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="mobile" id="mobile" value="{$data['mobile']}" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">有/无效</label>
+                            <div class="flex-control-input">
+                                <select name="is_valid" id="is_valid" class="form-control" valid-selected="1">
+                                    <option <{if condition="$data['is_valid'] eq '1'"}>selected<{/if}> value="1">有效</option>
+                                    <option <{if condition="$data['is_valid'] eq '0'"}>selected<{/if}> value="0">无效</option>
+                                </select>
+                                <div class="form-tips"><span class="tis_import"></span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">排序</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="sort" id="sort" value="{$data['sort']}" class="form-control" valid-input="{type:['integer','请输入整数']}"/>
+                                <div class="form-tips">
+                                    <span class="tis_import"></span>
+                                    值为整数,数值越大首页排的越靠前
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="flex-control-input">
+                                <div class="footer-fixed-bottom text-left">
+                                    <input type="hidden" name="referer" value="{$_SERVER['HTTP_REFERER']}"/>
+                                    <input type="hidden" name="id" value="{$Request.param.id}" id="id"/>
+                                    <input type="submit" value="保存" class="btn btn-save-blue">
+                                    <a class="btn btn-save-gray" href="javascript:history.go(-1)">返回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--表单页面帮助说明-->
+                <div class="form-aside">
+                    <dl class="helper">
+                        <dt>帮助说明</dt>
+                        <dd>
+                            <i class="icon-angle-right bigger-110"></i>
+                            <div class="text">说明</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
