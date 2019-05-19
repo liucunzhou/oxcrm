@@ -15,7 +15,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 return [
-	'test_config'			 => 'test',
+	'test_config'			 => 'test 2',
     // 应用名称
     'app_name'               => 'E5W系统',
     // 应用地址
