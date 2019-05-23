@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/readme.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/auth/group.html" afterPath="$PROJECT_DIR$/application/index/view/auth/group.html" />
+    </list>
+    <ignored path="OXCRM.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DatabaseView">
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="OXCRM" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/controller/User.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/view/auth/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="group.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/index/view/auth/group.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/application/index/view/brand/index.html" />
+        <option value="$PROJECT_DIR$/application/index/model/Store.php" />
+        <option value="$PROJECT_DIR$/application/index/view/intention/edit_intention.html" />
+        <option value="$PROJECT_DIR$/application/index/view/customer/search.html" />
+        <option value="$PROJECT_DIR$/public/static/js/ace.customer.js" />
+        <option value="$PROJECT_DIR$/application/index/controller/Intention.php" />
+        <option value="$PROJECT_DIR$/application/index/view/intention/index.html" />
+        <option value="$PROJECT_DIR$/application/index/view/store/edit_store.html" />
+        <option value="$PROJECT_DIR$/application/index/model/Department.php" />
+        <option value="$PROJECT_DIR$/application/index/controller/Department.php" />
+        <option value="$PROJECT_DIR$/application/index/view/department/index.html" />
+        <option value="$PROJECT_DIR$/public/test.php" />
+        <option value="$PROJECT_DIR$/application/index/view/store/index.html" />
+        <option value="$PROJECT_DIR$/config/cache.php" />
+        <option value="$PROJECT_DIR$/thinkphp/helper.php" />
+        <option value="$PROJECT_DIR$/config/redis.php" />
+        <option value="$PROJECT_DIR$/extend/module/Redis.php" />
+        <option value="$PROJECT_DIR$/application/index/model/Brand.php" />
+        <option value="$PROJECT_DIR$/application/index/controller/Brand.php" />
+        <option value="$PROJECT_DIR$/application/index/controller/Store.php" />
+        <option value="$PROJECT_DIR$/application/index/view/source/index.html" />
+        <option value="$PROJECT_DIR$/application/index/view/source/edit_source.html" />
+        <option value="$PROJECT_DIR$/application/index/model/Source.php" />
+        <option value="$PROJECT_DIR$/application/index/controller/Source.php" />
+        <option value="$PROJECT_DIR$/config/swoole_server.php" />
+        <option value="$PROJECT_DIR$/application/index/view/index/index.html" />
+        <option value="$PROJECT_DIR$/application/index/view/customer/visit.html" />
+        <option value="$PROJECT_DIR$/application/index/view/auth/assign_auth.html" />
+        <option value="$PROJECT_DIR$/public/static/js/ace.extend.js" />
+        <option value="$PROJECT_DIR$/application/index/view/order/index.html" />
+        <option value="$PROJECT_DIR$/application/index/model/Promotion.php" />
+        <option value="$PROJECT_DIR$/application/index/controller/Promotion.php" />
+        <option value="$PROJECT_DIR$/application/index/view/promotion/index.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/Index.php" />
+        <option value="$PROJECT_DIR$/application/index/controller/Hotel.php" />
+        <option value="$PROJECT_DIR$/application/index/view/hotel/index.html" />
+        <option value="$PROJECT_DIR$/application/index/view/hotel/edit_brand.html" />
+        <option value="$PROJECT_DIR$/update/source.sql" />
+        <option value="$PROJECT_DIR$/update/customer.sql" />
+        <option value="$PROJECT_DIR$/application/index/model/Hotel.php" />
+        <option value="$PROJECT_DIR$/application/index/model/Intention.php" />
+        <option value="$PROJECT_DIR$/public/static/css/ace.extend.css" />
+        <option value="$PROJECT_DIR$/application/index/model/User.php" />
+        <option value="$PROJECT_DIR$/application/index/view/customer/edit_customer.html" />
+        <option value="$PROJECT_DIR$/application/index/model/Member.php" />
+        <option value="$PROJECT_DIR$/application/index/view/customer/index.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
+        <option value="$PROJECT_DIR$/application/index/view/customer/import.html" />
+        <option value="$PROJECT_DIR$/application/index/view/customer/allocate.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/User.php" />
+        <option value="$PROJECT_DIR$/application/index/view/auth/group.html" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="PhpServers">
+    <servers />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="703" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="index" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="index" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="auth" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oxcrm" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="index" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="JavaScriptPreferStrict" value="false" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
+    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/application/index/view/passport" />
+      <recent name="$PROJECT_DIR$/public/vue/hello-world/src/util" />
+      <recent name="$PROJECT_DIR$/application/index/model" />
+      <recent name="$PROJECT_DIR$/application/index" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/application/index/view/customer" />
+      <recent name="$PROJECT_DIR$/application/index/view" />
+      <recent name="$PROJECT_DIR$/application/index/controller" />
+      <recent name="$PROJECT_DIR$/application/index/model" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.index.html">
+    <configuration default="false" name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://weixin.e5ws.com/CRM/Web/View/Customer/index.html">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
+      <BehatRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="" />
+      <created>1510043259667</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1510043259667</updated>
+      <workItem from="1510043261361" duration="4799000" />
+      <workItem from="1510050000737" duration="6349000" />
+      <workItem from="1510897646720" duration="6681000" />
+      <workItem from="1511403414074" duration="8052000" />
+      <workItem from="1512654019502" duration="1940000" />
+      <workItem from="1516507947126" duration="9000" />
+      <workItem from="1521730323217" duration="68000" />
+      <workItem from="1521731273442" duration="666000" />
+      <workItem from="1521955955725" duration="9628000" />
+      <workItem from="1522331648575" duration="7112000" />
+      <workItem from="1522416816801" duration="3937000" />
+      <workItem from="1522577370662" duration="8502000" />
+      <workItem from="1522640558525" duration="3896000" />
+      <workItem from="1530944081147" duration="1369000" />
+      <workItem from="1532231754553" duration="28000" />
+      <workItem from="1532231804269" duration="39000" />
+      <workItem from="1534570184003" duration="10165000" />
+      <workItem from="1534584360120" duration="2338000" />
+      <workItem from="1535169088511" duration="89000" />
+      <workItem from="1535194725967" duration="526000" />
+      <workItem from="1535552774760" duration="69770000" />
+      <workItem from="1540555953272" duration="14749000" />
+      <workItem from="1541304047229" duration="31000" />
+      <workItem from="1542721671662" duration="3049000" />
+      <workItem from="1542768060982" duration="2865000" />
+      <workItem from="1544309677959" duration="646000" />
+      <workItem from="1544729837802" duration="23000" />
+      <workItem from="1551255911911" duration="500000" />
+      <workItem from="1555752472097" duration="3401000" />
+      <workItem from="1555935027060" duration="11415000" />
+      <workItem from="1556109278307" duration="14847000" />
+      <workItem from="1556651559528" duration="26804000" />
+      <workItem from="1557657156819" duration="7655000" />
+      <workItem from="1558616824793" duration="1109000" />
+    </task>
+    <task id="LOCAL-00001" summary="修改页面显示数量">
+      <created>1558617395825</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1558617395825</updated>
+    </task>
+    <task id="LOCAL-00002" summary="修改排序规则">
+      <created>1558617747315</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1558617747315</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="233057000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1280" height="703" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38772213" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25444266" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.503231" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956383" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.49676898" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1767594" sideWeight="0.49676898" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.031096563" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5482815" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="修改页面显示数量" />
+    <MESSAGE value="修改排序规则" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改排序规则" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>remoteDeploymentFS://&lt;6c4d354c-5dcf-44ac-961e-223f421f2d27&gt;/Setup/Web/Controller/BaseController.class.php</url>
+          <line>3</line>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/application/command.php</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/application/index/controller/Course.php</url>
+          <line>3</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="5" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/config/swoole.php" />
+    <entry file="file://$PROJECT_DIR$/config/swoole_server.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Exam.php" />
+    <entry file="file://$PROJECT_DIR$/config/database.php" />
+    <entry file="file://$PROJECT_DIR$/config/app.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/index/index.html" />
+    <entry file="file://$PROJECT_DIR$/public/static/css/ace.min.css" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/visit.html" />
+    <entry file="file://$PROJECT_DIR$/public/static/css/font-awesome.min.css" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/add_customer.html" />
+    <entry file="file://$PROJECT_DIR$/public/static/mobile/css/index.css" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/user/edit_user.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/auth/edit_group.html" />
+    <entry file="file://$PROJECT_DIR$/public/static/js/ace.extend.js" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/auth/assign_auth.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/index.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Order.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/Promotion.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Promotion.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/promotion/index.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/brand/edit_brand.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/hotel/edit_brand.html" />
+    <entry file="file://$PROJECT_DIR$/update/base.sql" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Hotel.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/Source.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Brand.php" />
+    <entry file="file://$PROJECT_DIR$/update/source.sql" />
+    <entry file="file://$PROJECT_DIR$/update/customer.sql" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/Brand.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/Hotel.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/hotel/index.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/Intention.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/User.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/model/Member.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html" />
+    <entry file="file://$PROJECT_DIR$/public/static/css/ace.extend.css" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Index.php" />
+    <entry file="file://$PROJECT_DIR$/thinkphp/LICENSE.txt" />
+    <entry file="file://$PROJECT_DIR$/thinkphp/README.md" />
+    <entry file="file://$PROJECT_DIR$/thinkphp/library/think/Request.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/brand/index.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/edit_customer.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/allocate.html" />
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html" />
+    <entry file="file://$PROJECT_DIR$/thinkphp/library/think/facade/Request.php" />
+    <entry file="file://$PROJECT_DIR$/public/readme.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/cutomer_template.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/auth/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/auth/group.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
