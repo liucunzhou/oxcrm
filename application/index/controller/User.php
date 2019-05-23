@@ -11,7 +11,7 @@ class User extends Base
     public function index()
     {
         $User = new \app\index\model\User();
-        $list = $User->order('create_time desc')->paginate(2);
+        $list = $User->order('create_time desc')->paginate(15);
         $this->assign('list', $list);
 
         return $this->fetch();
