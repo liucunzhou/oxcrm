@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/customer/allocate.html" afterPath="$PROJECT_DIR$/application/index/view/customer/allocate.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Customer.php" afterPath="$PROJECT_DIR$/application/index/controller/Customer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/customer/import.html" afterPath="$PROJECT_DIR$/application/index/view/customer/import.html" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -63,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Customer.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Customer.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="54" column="46" selection-start-line="54" selection-start-column="35" selection-end-line="54" selection-end-column="46" />
+            <state relative-caret-position="286">
+              <caret line="175" column="43" selection-start-line="175" selection-start-column="43" selection-end-line="175" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -83,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="import.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="import.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="97" column="10" selection-start-line="97" selection-start-column="10" selection-end-line="97" selection-end-column="10" />
+            <state relative-caret-position="331">
+              <caret line="93" column="12" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -158,9 +158,9 @@
         <option value="$PROJECT_DIR$/application/index/view/customer/index.html" />
         <option value="$PROJECT_DIR$/application/index/controller/User.php" />
         <option value="$PROJECT_DIR$/application/index/view/auth/group.html" />
-        <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
         <option value="$PROJECT_DIR$/application/index/view/customer/allocate.html" />
         <option value="$PROJECT_DIR$/application/index/view/customer/import.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
       </list>
     </option>
   </component>
@@ -494,7 +494,7 @@
       <workItem from="1556109278307" duration="14847000" />
       <workItem from="1556651559528" duration="26804000" />
       <workItem from="1557657156819" duration="7655000" />
-      <workItem from="1558616824793" duration="3640000" />
+      <workItem from="1558616824793" duration="3840000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -514,7 +514,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="235588000" />
+    <option name="totallyTimeSpent" value="235788000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="703" extended-state="6" />
@@ -669,14 +669,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="54" column="46" selection-start-line="54" selection-start-column="35" selection-end-line="54" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/customer/allocate.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
@@ -687,8 +679,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="97" column="10" selection-start-line="97" selection-start-column="10" selection-end-line="97" selection-end-column="10" />
+        <state relative-caret-position="331">
+          <caret line="93" column="12" selection-start-line="93" selection-start-column="12" selection-end-line="93" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="175" column="43" selection-start-line="175" selection-start-column="43" selection-end-line="175" selection-end-column="43" />
           <folding />
         </state>
       </provider>

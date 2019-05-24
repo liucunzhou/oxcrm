@@ -173,6 +173,7 @@ class Customer extends Base
         $users = User::getUsers();
         $this->assign('users', $users);
 
+        $this->view->engine->layout(false);
         return $this->fetch();
     }
 
