@@ -53,8 +53,9 @@ class Customer extends Base
             $info = $file->move("../uploads");
             if($info) {
                 $fileName = $info->getPathname();
-                $data = $this->readCsvlines($fileName);
+                $this->assign('fileName', $fileName);
 
+                $data = $this->readCsvlines($fileName);
                 $this->assign('data', $data);
             } else {
                 $this->assign('err', $file->getError());
@@ -169,7 +170,6 @@ class Customer extends Base
 
     public function allocate()
     {
-        // $this->distribution();
         $users = User::getUsers();
         $this->assign('users', $users);
 

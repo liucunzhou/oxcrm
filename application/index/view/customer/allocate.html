@@ -12,7 +12,7 @@
                     <tr>
                         <td width="120">{$val['realname']}</td>
                         <td>
-                            <input type="text" name="user_{$val['id']}" class="input-normal">
+                            <input type="text" name="user_{$val['id']}" class="input-normal user_amount">
                         </td>
                     </tr>
                 <{/foreach}>
@@ -27,3 +27,10 @@
         </div>
     </form>
 </div>
+<script>
+$(function () {
+    $("user_amount").blur(function () {
+        layer.msg("hahaha");
+    });
+})
+</script>
