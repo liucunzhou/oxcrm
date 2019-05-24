@@ -191,8 +191,30 @@ class Customer extends Base
 
     public function doAllocate()
     {
+        $post = Request::post();
 
-        print_r($_POST);
+        ### 获取文件信息
+        $user = Session::get("user");
+        $hashKey = "batch_upload:".$user['id'];
+        $fileData = redis()->hMGet($hashKey, ['file','amount']);
+
+        ### 获取分配信息
+        $manager = [];
+        foreach($post as $key=>$value){
+            if(strpos($key, 'user_') === 0){
+                $id = substr($key, 5, -1);
+                $manager[$id] = $value;
+            }
+        }
+
+        ### 检验分配数量
+        $sum = array_sum($manager);
+        if($sum < $fileData['amount']) {
+            return json(['code'=>'500', 'msg'=>'分配数量小于上传数量']);
+        }
+        if($sum > $fileData['amount']) {
+            return json(['code'=>'500', 'msg'=>'分配数量大于上传数量']);
+        }
     }
 
     public function delete()
