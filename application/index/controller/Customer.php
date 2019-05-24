@@ -189,6 +189,12 @@ class Customer extends Base
         return $this->fetch();
     }
 
+    public function doAllocate()
+    {
+
+        print_r($_POST);
+    }
+
     public function delete()
     {
         $get = Request::param();
