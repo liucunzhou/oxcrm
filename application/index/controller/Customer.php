@@ -5,6 +5,7 @@ use app\index\model\Hotel;
 use app\index\model\Intention;
 use app\index\model\User;
 use think\facade\Request;
+use think\facade\Session;
 
 class Customer extends Base
 {
@@ -53,10 +54,16 @@ class Customer extends Base
             $info = $file->move("../uploads");
             if($info) {
                 $fileName = $info->getPathname();
-                $this->assign('fileName', $fileName);
-
                 $data = $this->readCsvlines($fileName);
                 $this->assign('data', $data);
+
+                $user = Session::get("user");
+                $hashKey = "batch_upload:".$user['id'];
+                $cacheData = [
+                    'file' => $fileName,
+                    'amount' => count($data)
+                ];
+                redis()->hMset($hashKey, $cacheData);
             } else {
                 $this->assign('err', $file->getError());
             }
@@ -172,6 +179,11 @@ class Customer extends Base
     {
         $users = User::getUsers();
         $this->assign('users', $users);
+
+        $user = Session::get("user");
+        $hashKey = "batch_upload:".$user['id'];
+        $fileData = redis()->hMGet($hashKey, ['file','amount']);
+        $this->assign('fileData', $fileData);
 
         $this->view->engine->layout(false);
         return $this->fetch();
