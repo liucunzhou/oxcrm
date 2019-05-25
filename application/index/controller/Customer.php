@@ -215,6 +215,12 @@ class Customer extends Base
         if($sum > $fileData['amount']) {
             return json(['code'=>'500', 'msg'=>'分配数量大于上传数量']);
         }
+
+        ### 开始分配
+        foreach ($manager as $k=>$val) {
+
+
+        }
     }
 
     public function delete()
@@ -248,6 +254,8 @@ class Customer extends Base
             $data[] = fgetcsv($fp);
         }
         fclose($fp);
+
+
         return $data;
     }
 }
