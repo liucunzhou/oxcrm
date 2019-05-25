@@ -91,9 +91,8 @@
             $(".form_import").submit()
         });
 
-        $(".user_amount").blur(function () {
+        $(document).on('.user_amount', 'blur', function () {
             layer.msg("hahaha");
         });
-
     });
 </script>
