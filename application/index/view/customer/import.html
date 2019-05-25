@@ -91,8 +91,28 @@
             $(".form_import").submit()
         });
 
+
+
         $(document).on('blur', '.user_amount', function () {
-            layer.msg("hahaha");
+            // layer.msg("hahaha");
+            var _this = $(this),
+                totals = parseInt($(".amount").text()),
+                assigned = parseInt($(".assigned_amount").text()),
+                unassigned = parseInt($(".unassigned_amount").text());
+
+            var sum = 0;
+            $(".user_amount").each(function(i, n){
+                var current = parseInt($(n).val());
+                sum = sum + current;
+            });
+
+            if(sum > totals) {
+                layer.msg("分配已超出,请调整");
+            } else {
+                $(".assigned_amount").html(sum);
+                var left = totals - sum;
+                $(".unassigned_amount").html(left);
+            }
         });
     });
 </script>
