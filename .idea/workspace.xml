@@ -509,7 +509,7 @@
       <workItem from="1556109278307" duration="14847000" />
       <workItem from="1556651559528" duration="26804000" />
       <workItem from="1557657156819" duration="7655000" />
-      <workItem from="1558616824793" duration="10123000" />
+      <workItem from="1558616824793" duration="10202000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -529,7 +529,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="242071000" />
+    <option name="totallyTimeSpent" value="242150000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="703" extended-state="6" />

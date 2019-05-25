@@ -96,7 +96,7 @@
         $(document).on('blur', '.user_amount', function () {
             // layer.msg("hahaha");
             var _this = $(this),
-                totals = parseInt($(".amount").text());
+                totals = parseInt($(".amount").html());
 
             var sum = 0;
             $(".user_amount").each(function(i, n){
