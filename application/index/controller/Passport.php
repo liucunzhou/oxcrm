@@ -28,12 +28,12 @@ class Passport extends Controller
         }
 
         $Passport = new \app\index\model\Passport();
-        $isPassword = $Passport->checkUserPassword($post);
-        if(!$isPassword) {
+        $user = $Passport->checkUserPassword($post);
+        if(!$user) {
             $this->result([], 500, '密码不正确');
         }
 
-        Session::set('user', $post);
+        Session::set('user', $user);
         $data = [
             'redirect' => url('Index/Index/index')
         ];

@@ -1,8 +1,10 @@
 <?php
 namespace app\index\controller;
 
+use app\index\model\Csv;
 use app\index\model\Hotel;
 use app\index\model\Intention;
+use app\index\model\Member;
 use app\index\model\User;
 use think\facade\Request;
 use think\facade\Session;
@@ -33,7 +35,7 @@ class Customer extends Base
         $publishStatus = ['未发布', '已发布'];
         $this->assign('publishStatus', $publishStatus);
 
-        $list = model('Member')->paginate(10);
+        $list = model('Member')->paginate(15);
         $this->assign('list', $list);
         return $this->fetch();
     }
@@ -54,16 +56,19 @@ class Customer extends Base
             $info = $file->move("../uploads");
             if($info) {
                 $fileName = $info->getPathname();
-                $data = $this->readCsvlines($fileName);
-                $this->assign('data', $data);
+                $data = Csv::readCsv($fileName);
+                $this->assign('data', $data[0]);
+                // echo "<pre>";
 
                 $user = Session::get("user");
                 $hashKey = "batch_upload:".$user['id'];
                 $cacheData = [
                     'file' => $fileName,
-                    'amount' => count($data)
+                    'amount' => count($data[0]),
+                    'repeat' => count($data[1])
                 ];
                 redis()->hMset($hashKey, $cacheData);
+                $this->assign('file',$cacheData);
             } else {
                 $this->assign('err', $file->getError());
             }
@@ -192,7 +197,6 @@ class Customer extends Base
     public function doAllocate()
     {
         $post = Request::post();
-
         ### 获取文件信息
         $user = Session::get("user");
         $hashKey = "batch_upload:".$user['id'];
@@ -210,16 +214,41 @@ class Customer extends Base
         ### 检验分配数量
         $sum = array_sum($manager);
         if($sum < $fileData['amount']) {
-            return json(['code'=>'500', 'msg'=>'分配数量小于上传数量']);
+            // return json(['code'=>'500', 'msg'=>'分配数量小于上传数量']);
         }
         if($sum > $fileData['amount']) {
-            return json(['code'=>'500', 'msg'=>'分配数量大于上传数量']);
+            // return json(['code'=>'500', 'msg'=>'分配数量大于上传数量']);
         }
 
         ### 开始分配
-        foreach ($manager as $k=>$val) {
+        $result = Csv::readCsv($fileData['file']);
 
-
+        foreach ($result[0] as $key=>$row) {
+            print_r($row);
+            if($row[0] == '客户名称') continue;
+            $MemberModel = new Member();
+            // $result = Member::addFromCsvRow($row, 1);
+            if(empty($row[0])) {
+                echo "<br>";
+                var_dump($row);
+            }
+            // print_r($result);
+            $data['member_no'] = date('YmdHis').rand(100,999);
+            $data['realname'] = $row[0];
+            $data['mobile'] = $row[1];
+            $data['mobile1'] = $row[2];
+            $data['admin_id'] = 0;
+            $data['banquet_size'] = $row[3];
+            $data['budget'] = $row[4];
+            $data['is_valid'] = $row[5];
+            $data['remark'] = $row[6];
+            $data['wedding_date'] = $row[7];
+            $data['zone'] = $row[8];
+            $data['hotel_id'] = $row[9];
+            $result = $MemberModel->insert($data);
+            if($result) {
+                echo $MemberModel->getLastInsID();
+            }
         }
     }
 
@@ -241,21 +270,5 @@ class Customer extends Base
     {
 
         return $this->fetch();
-    }
-
-    protected function readCsvlines($csv_file = '')
-    {
-        if (!$fp = fopen($csv_file, 'r')) {
-            return false;
-        }
-
-        $data = [];
-        while (!feof($fp)) {
-            $data[] = fgetcsv($fp);
-        }
-        fclose($fp);
-
-
-        return $data;
     }
 }

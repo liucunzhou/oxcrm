@@ -37,15 +37,19 @@ create table tk_promotion(
 create table tk_member_allocate(
   id int not null AUTO_INCREMENT PRIMARY KEY ,
   operate_id int not null default 0,
+  manager_id int not null default 0,
   user_id int not null default 0,
   member_id int not null default 0,
   brand_id int not null default 0,
   store_id int not null default 0,
+  sale_id int not null default 0,
   color char(32) not null default '',
   create_time int not null default 0,
   update_time int not null default 0,
   delete_time int not null default 0
 );
+alter table tk_member_allocate add manager_id int not null default 0 after operate_id;
+alter table tk_member_allocate add sale_id int not null default 0 after store_id;
 
 create table tk_member_remark(
   id int not null AUTO_INCREMENT PRIMARY KEY ,

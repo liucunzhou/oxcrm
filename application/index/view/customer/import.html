@@ -71,11 +71,16 @@
 
 <div class="fixed-bottom">
     <div class="toolbar-bottom pull-left">
-        <a class="btn btn-xs btn-warning action-modal" href="javascript:void(0);" data-action="{:url('Customer/allocate',['id'=>$val['id']])}">
-            导入并分配
-        </a>
-        <a class="btn btn-xs btn-info">
-            导出重复
+        <{if $file['amount'] > 0}>
+            <a class="btn btn-xs btn-info action-modal" href="javascript:void(0);" data-action="{:url('Customer/allocate',['id'=>$val['id']])}">
+                导入并分配
+            </a>
+            <a class="btn btn-xs btn-info">
+                导出重复
+            </a>
+        <{/if}>
+        <a class="btn btn-xs btn-warning">
+            共{$file['amount'] + $file['repeat']}条客资,有效{$file.amount|default=0}条,重复{$file.repeat|default=0}条
         </a>
     </div>
 </div>
@@ -91,22 +96,39 @@
             $(".form_import").submit()
         });
 
+        $(document).on('focus', '.user_amount', function () {
+            var _this = $(this),
+                    totals = parseInt($(".amount").html());
 
+            var sum = 0;
+            $(".user_amount").each(function(i, n){
+                var val = $(n).val();
+                if(val != '') {
+                    var current = parseInt(val);
+                    sum = sum + current;
+                }
+            });
+
+            console.log('this is sum:',sum);
+            if(sum > totals) {
+                layer.msg("分配已超出,请调整");
+            }
+        });
 
         $(document).on('blur', '.user_amount', function () {
-            // layer.msg("hahaha");
             var _this = $(this),
                 totals = parseInt($(".amount").html());
 
             var sum = 0;
             $(".user_amount").each(function(i, n){
                 var val = $(n).val();
-                if(!isNaN(val)) {
+                if(val != '') {
                     var current = parseInt(val);
                     sum = sum + current;
                 }
             });
 
+            console.log('this is sum:',sum);
             if(sum > totals) {
                 layer.msg("分配已超出,请调整");
             } else {

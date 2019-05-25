@@ -15,7 +15,7 @@ class Passport
         $user = model('User')->where($where)->find()->toArray();
 
         if($user['password'] == md5($args['password'])) {
-            $result = true;
+            $result = $user;
         } else {
             $result = false;
         }
