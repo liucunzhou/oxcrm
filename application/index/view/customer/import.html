@@ -96,14 +96,15 @@
         $(document).on('blur', '.user_amount', function () {
             // layer.msg("hahaha");
             var _this = $(this),
-                totals = parseInt($(".amount").text()),
-                assigned = parseInt($(".assigned_amount").text()),
-                unassigned = parseInt($(".unassigned_amount").text());
+                totals = parseInt($(".amount").text());
 
             var sum = 0;
             $(".user_amount").each(function(i, n){
-                var current = parseInt($(n).val());
-                sum = sum + current;
+                var val = $(n).val();
+                if(!isNaN(val)) {
+                    var current = parseInt(val);
+                    sum = sum + current;
+                }
             });
 
             if(sum > totals) {
