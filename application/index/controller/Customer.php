@@ -6,6 +6,7 @@ use app\index\model\Hotel;
 use app\index\model\Intention;
 use app\index\model\Member;
 use app\index\model\MemberAllocate;
+use app\index\model\Store;
 use app\index\model\User;
 use think\facade\Request;
 use think\facade\Session;
@@ -286,6 +287,16 @@ class Customer extends Base
     {
 
 
+    }
+
+    ### 分发到门店
+    public function toStore()
+    {
+        $stores = Store::getStoresGroupByBrand();
+        $this->assign('stores', $stores);
+
+        $this->view->engine->layout(false);
+        return $this->fetch();
     }
 
     ### 删除客资

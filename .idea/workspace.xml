@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/index/view/customer/toStore.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Customer.php" afterPath="$PROJECT_DIR$/application/index/controller/Customer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/customer/distribute.html" afterPath="$PROJECT_DIR$/application/index/view/customer/distribute.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/customer/index.html" afterPath="$PROJECT_DIR$/application/index/view/customer/index.html" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -35,8 +38,18 @@
       <file leaf-file-name="Customer.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="274" column="30" selection-start-line="274" selection-start-column="20" selection-end-line="274" selection-end-column="30" />
+            <state relative-caret-position="361">
+              <caret line="295" column="29" selection-start-line="295" selection-start-column="29" selection-end-line="295" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="toStore.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/index/view/customer/toStore.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -45,8 +58,8 @@
       <file leaf-file-name="distribute.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/distribute.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+            <state relative-caret-position="180">
+              <caret line="12" column="59" selection-start-line="12" selection-start-column="59" selection-end-line="12" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -55,18 +68,18 @@
       <file leaf-file-name="import.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="45">
               <caret line="74" column="143" selection-start-line="74" selection-start-column="56" selection-end-line="74" selection-end-column="143" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="129" column="121" selection-start-line="129" selection-start-column="121" selection-end-line="129" selection-end-column="121" />
+            <state relative-caret-position="226">
+              <caret line="133" column="118" selection-start-line="133" selection-start-column="118" selection-end-line="133" selection-end-column="118" />
               <folding />
             </state>
           </provider>
@@ -137,9 +150,9 @@
         <option value="$PROJECT_DIR$/application/index/view/customer/import.html" />
         <option value="$PROJECT_DIR$/update/customer.sql" />
         <option value="$PROJECT_DIR$/application/index/model/MemberAllocate.php" />
-        <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
         <option value="$PROJECT_DIR$/application/index/view/customer/distribute.html" />
         <option value="$PROJECT_DIR$/application/index/view/customer/index.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
       </list>
     </option>
   </component>
@@ -486,7 +499,7 @@
       <workItem from="1556651559528" duration="26804000" />
       <workItem from="1557657156819" duration="7655000" />
       <workItem from="1558616824793" duration="10202000" />
-      <workItem from="1558838014747" duration="5024000" />
+      <workItem from="1558838014747" duration="5616000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -506,7 +519,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="247174000" />
+    <option name="totallyTimeSpent" value="247766000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="703" extended-state="6" />
@@ -571,7 +584,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/application/index/view/auth/edit_group.html" />
     <entry file="file://$PROJECT_DIR$/public/static/js/ace.extend.js" />
     <entry file="file://$PROJECT_DIR$/application/index/view/auth/assign_auth.html" />
     <entry file="file://$PROJECT_DIR$/application/index/view/order/index.html" />
@@ -741,34 +753,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="274" column="30" selection-start-line="274" selection-start-column="20" selection-end-line="274" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/customer/distribute.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+        <state relative-caret-position="226">
+          <caret line="133" column="118" selection-start-line="133" selection-start-column="118" selection-end-line="133" selection-end-column="118" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
+        <state relative-caret-position="45">
           <caret line="74" column="143" selection-start-line="74" selection-start-column="56" selection-end-line="74" selection-end-column="143" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html">
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/distribute.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="129" column="121" selection-start-line="129" selection-start-column="121" selection-end-line="129" selection-end-column="121" />
+        <state relative-caret-position="180">
+          <caret line="12" column="59" selection-start-line="12" selection-start-column="59" selection-end-line="12" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="295" column="29" selection-start-line="295" selection-start-column="29" selection-end-line="295" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/toStore.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
           <folding />
         </state>
       </provider>
