@@ -209,7 +209,7 @@ class Customer extends Base
         ### 获取分配信息
         $manager = [];
         foreach($post as $key=>$value){
-            if(strpos($key, 'user_') === 0){
+            if(strpos($key, 'user_') === 0 && $value > 0){
                 $id = substr($key, 5, -1);
                 $manager[$id] = $value;
             }

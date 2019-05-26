@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Customer.php" afterPath="$PROJECT_DIR$/application/index/controller/Customer.php" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -34,8 +35,8 @@
       <file leaf-file-name="Customer.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-254">
-              <caret line="250" column="0" selection-start-line="250" selection-start-column="0" selection-end-line="250" selection-end-column="0" />
+            <state relative-caret-position="331">
+              <caret line="211" column="56" selection-start-line="211" selection-start-column="56" selection-end-line="211" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -575,7 +576,7 @@
       <workItem from="1556651559528" duration="26804000" />
       <workItem from="1557657156819" duration="7655000" />
       <workItem from="1558616824793" duration="10202000" />
-      <workItem from="1558838014747" duration="3646000" />
+      <workItem from="1558838014747" duration="3888000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -595,7 +596,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245796000" />
+    <option name="totallyTimeSpent" value="246038000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="703" extended-state="6" />
@@ -840,8 +841,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-254">
-          <caret line="250" column="0" selection-start-line="250" selection-start-column="0" selection-end-line="250" selection-end-column="0" />
+        <state relative-caret-position="331">
+          <caret line="211" column="56" selection-start-line="211" selection-start-column="56" selection-end-line="211" selection-end-column="56" />
           <folding />
         </state>
       </provider>
