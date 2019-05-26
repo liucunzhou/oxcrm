@@ -293,6 +293,7 @@ class Customer extends Base
     public function toStore()
     {
         $stores = Store::getStoresGroupByBrand();
+        print_r($stores);
         $this->assign('stores', $stores);
 
         $this->view->engine->layout(false);
