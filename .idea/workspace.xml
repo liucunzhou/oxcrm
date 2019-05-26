@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/customer/index.html" afterPath="$PROJECT_DIR$/application/index/view/customer/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Index.php" afterPath="$PROJECT_DIR$/application/index/controller/Index.php" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -72,11 +72,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="256">
               <caret line="137" column="40" selection-start-line="137" selection-start-column="40" selection-end-line="137" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Index.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/index/controller/Index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="90" column="24" selection-start-line="87" selection-start-column="22" selection-end-line="90" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -129,7 +139,6 @@
         <option value="$PROJECT_DIR$/application/index/model/Promotion.php" />
         <option value="$PROJECT_DIR$/application/index/controller/Promotion.php" />
         <option value="$PROJECT_DIR$/application/index/view/promotion/index.html" />
-        <option value="$PROJECT_DIR$/application/index/controller/Index.php" />
         <option value="$PROJECT_DIR$/application/index/controller/Hotel.php" />
         <option value="$PROJECT_DIR$/application/index/view/hotel/index.html" />
         <option value="$PROJECT_DIR$/application/index/view/hotel/edit_brand.html" />
@@ -150,6 +159,7 @@
         <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
         <option value="$PROJECT_DIR$/application/index/view/customer/to_store.html" />
         <option value="$PROJECT_DIR$/application/index/view/customer/index.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/Index.php" />
       </list>
     </option>
   </component>
@@ -304,10 +314,6 @@
               <option name="myItemId" value="index" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -327,29 +333,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="customer" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oxcrm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oxcrm" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="index" />
+              <option name="myItemId" value="controller" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -496,7 +480,7 @@
       <workItem from="1556651559528" duration="26804000" />
       <workItem from="1557657156819" duration="7655000" />
       <workItem from="1558616824793" duration="10202000" />
-      <workItem from="1558838014747" duration="7259000" />
+      <workItem from="1558838014747" duration="7371000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -516,7 +500,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="249409000" />
+    <option name="totallyTimeSpent" value="249521000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="703" extended-state="6" />
@@ -601,7 +585,6 @@
     <entry file="file://$PROJECT_DIR$/application/index/model/User.php" />
     <entry file="file://$PROJECT_DIR$/application/index/model/Member.php" />
     <entry file="file://$PROJECT_DIR$/public/static/css/ace.extend.css" />
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Index.php" />
     <entry file="file://$PROJECT_DIR$/thinkphp/LICENSE.txt" />
     <entry file="file://$PROJECT_DIR$/thinkphp/README.md" />
     <entry file="file://$PROJECT_DIR$/thinkphp/library/think/Request.php" />
@@ -786,6 +769,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
           <caret line="137" column="40" selection-start-line="137" selection-start-column="40" selection-end-line="137" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="90" column="24" selection-start-line="87" selection-start-column="22" selection-end-line="90" selection-end-column="24" />
           <folding />
         </state>
       </provider>

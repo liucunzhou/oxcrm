@@ -85,10 +85,10 @@ class Index extends Base
                         'text' => '批量导入',
                         'url' => 'Customer/import'
                     ],
-                    [
-                        'text' => '推广咨费',
-                        'url' => 'Promotion/index',
-                    ],
+//                    [
+//                        'text' => '推广咨费',
+//                        'url' => 'Promotion/index',
+//                    ],
                 ],
             ],
 
