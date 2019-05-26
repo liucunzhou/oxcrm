@@ -5,6 +5,7 @@ use app\index\model\Csv;
 use app\index\model\Hotel;
 use app\index\model\Intention;
 use app\index\model\Member;
+use app\index\model\MemberAllocate;
 use app\index\model\User;
 use think\facade\Request;
 use think\facade\Session;
@@ -202,6 +203,7 @@ class Customer extends Base
         ### 获取文件信息
         $user = Session::get("user");
         $hashKey = "batch_upload:".$user['id'];
+        $operateId = $user['id'];
         $fileData = redis()->hMGet($hashKey, ['file','amount']);
 
         ### 获取分配信息
@@ -228,11 +230,12 @@ class Customer extends Base
         foreach ($result[0] as $key=>$row) {
             if($row[0] == '客户名称') continue;
             $MemberModel = new Member();
+            $data = [];
             $data['member_no'] = date('YmdHis').rand(100,999);
             $data['realname'] = $row[0];
             $data['mobile'] = $row[1];
             $data['mobile1'] = $row[2];
-            $data['admin_id'] = 0;
+            $data['admin_id'] = $operateId;
             $data['banquet_size'] = $row[3];
             $data['budget'] = $row[4];
             $data['is_valid'] = $row[5];
@@ -251,13 +254,19 @@ class Customer extends Base
             $start = array_sum($startArr);
             $end = $start + $v;
             for($start;$start<$end;$start++) {
-                // $
+                $AllocateModel = new MemberAllocate();
+                $data = [];
+                $data['operate_id'] = $operateId;
+                $data['manager_id'] = $k;
+                $data['member_id'] = $member[$start];
+                $AllocateModel->insert($data);
             }
             $startArr[] = $v;
         }
 
         return json([
-            'code' => '200'
+            'code'  => '200',
+            'msg'   => '录入数据成功'
         ]);
     }
 
