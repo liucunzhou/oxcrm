@@ -118,16 +118,16 @@ class Index extends Base
                 'icon' => 'icon-laptop',
                 'items' => [
                     [
-                        'text' => '成单申请',
-                        'url' => 'Customer/orderApply',
-                    ],
-                    [
-                        'text' => '订单查询',
+                        'text' => '一站式',
                         'url' => 'Order/index',
                     ],
                     [
-                        'text' => '定金催单',
-                        'url' => 'Order/index',
+                        'text' => '婚庆订单',
+                        'url' => 'Order/wedding',
+                    ],
+                    [
+                        'text' => '婚宴订单',
+                        'url' => 'Order/banquet',
                     ]
                 ],
             ],
