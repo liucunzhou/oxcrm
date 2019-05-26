@@ -42,7 +42,9 @@ class Customer extends Base
 
     public function mine()
     {
-        return $this->fetch();
+        $user = Session::get("user");
+        print_r($user);
+        // return $this->fetch();
     }
 
     public function favorite(){
@@ -222,8 +224,7 @@ class Customer extends Base
 
         ### 开始分配
         $result = Csv::readCsv($fileData['file']);
-        print_r($result);
-
+        $member = [];
         foreach ($result[0] as $key=>$row) {
             if($row[0] == '客户名称') continue;
             $MemberModel = new Member();
@@ -241,11 +242,23 @@ class Customer extends Base
             $data['hotel_id'] = $row[9];
             $result = $MemberModel->insert($data);
             if($result) {
-                echo $MemberModel->getLastInsID();
+                $member[] = $MemberModel->getLastInsID();
             }
         }
 
-        exit;
+        $startArr = [];
+        foreach ($manager as $k=>$v){
+            $start = array_sum($startArr);
+            $end = $start + $v;
+            for($start;$start<$end;$start++) {
+                // $
+            }
+            $startArr[] = $v;
+        }
+
+        return json([
+            'code' => '200'
+        ]);
     }
 
     public function delete()
