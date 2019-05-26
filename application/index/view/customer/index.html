@@ -127,7 +127,7 @@
             <input type="checkbox" class="check_all">
             <span>全选</span>
         </label>
-        <a class="btn btn-xs btn-warning">
+        <a class="btn btn-xs btn-warning action-modal" href="javascript:void(0);" data-action="{:url('Customer/distribute')}">
             分发到二级客服
         </a>
         <a class="btn btn-xs btn-danger action-delete-customer" href="javascript:void(0);" data-action="{:url('rollback', ['id'=>$val['id']])}" data-tip="确认要还原该客资么？">

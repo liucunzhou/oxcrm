@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/index/view/customer/distribute.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Customer.php" afterPath="$PROJECT_DIR$/application/index/controller/Customer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/customer/index.html" afterPath="$PROJECT_DIR$/application/index/view/customer/index.html" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -54,11 +52,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="import.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="74" column="143" selection-start-line="74" selection-start-column="56" selection-end-line="74" selection-end-column="143" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="130" column="14" selection-start-line="130" selection-start-column="14" selection-end-line="130" selection-end-column="14" />
+            <state relative-caret-position="316">
+              <caret line="129" column="121" selection-start-line="129" selection-start-column="121" selection-end-line="129" selection-end-column="121" />
               <folding />
             </state>
           </provider>
@@ -478,7 +486,7 @@
       <workItem from="1556651559528" duration="26804000" />
       <workItem from="1557657156819" duration="7655000" />
       <workItem from="1558616824793" duration="10202000" />
-      <workItem from="1558838014747" duration="4841000" />
+      <workItem from="1558838014747" duration="5024000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -498,7 +506,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246991000" />
+    <option name="totallyTimeSpent" value="247174000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="703" extended-state="6" />
@@ -707,14 +715,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-44">
-          <caret line="102" column="23" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/update/customer.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -757,10 +757,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/import.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="74" column="143" selection-start-line="74" selection-start-column="56" selection-end-line="74" selection-end-column="143" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/customer/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="130" column="14" selection-start-line="130" selection-start-column="14" selection-end-line="130" selection-end-column="14" />
+        <state relative-caret-position="316">
+          <caret line="129" column="121" selection-start-line="129" selection-start-column="121" selection-end-line="129" selection-end-column="121" />
           <folding />
         </state>
       </provider>
