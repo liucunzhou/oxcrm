@@ -292,7 +292,9 @@ class Customer extends Base
     ### 分发到门店
     public function toStore()
     {
-        $stores = Store::getStoresGroupByBrand();
+        // $stores = Store::getStoresGroupByBrand();
+        echo "<pre>";
+        $stores = Store::getStoreList();
         print_r($stores);
         $this->assign('stores', $stores);
 
