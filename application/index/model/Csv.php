@@ -14,6 +14,7 @@ class Csv
         $data = [];
         while (!feof($fp)) {
             $row = fgetcsv($fp);
+            if (empty($row[1])) continue;
             // $isExist = Member::checkMobile($row[1]);
             if(false) {
                 $repetitive[] = $row;

@@ -222,17 +222,11 @@ class Customer extends Base
 
         ### 开始分配
         $result = Csv::readCsv($fileData['file']);
+        print_r($result);
 
         foreach ($result[0] as $key=>$row) {
-            print_r($row);
             if($row[0] == '客户名称') continue;
             $MemberModel = new Member();
-            // $result = Member::addFromCsvRow($row, 1);
-            if(empty($row[0])) {
-                echo "<br>";
-                var_dump($row);
-            }
-            // print_r($result);
             $data['member_no'] = date('YmdHis').rand(100,999);
             $data['realname'] = $row[0];
             $data['mobile'] = $row[1];
@@ -250,6 +244,8 @@ class Customer extends Base
                 echo $MemberModel->getLastInsID();
             }
         }
+
+        exit;
     }
 
     public function delete()
