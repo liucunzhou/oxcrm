@@ -1,0 +1,29 @@
+<div class="modal-box">
+    <!-- 表单 -->
+    <form class="modal-form" method="post" data-action="{:url('Customer/doDistribute')}" role="form">
+        <div class="side-modal-box">
+            <div class="page-header header_title">
+                <h4 class="blue">选择二级客服</h4>
+            </div>
+            <div class="form-block">
+                <table class="table table-responsive">
+                <{foreach name="users" item="val"}>
+                    <tr>
+                        <td width="80">
+                            <input type="radio" value="{$val['id']}" class="input-normal user_amount">
+                        </td>
+                        <td>{$val['realname']}</td>
+                    </tr>
+                <{/foreach}>
+                </table>
+            </div>
+
+            <div class="side-modal-foot">
+                <input type="hidden" name="id" id="id" value="{$Request.param.id}" />
+                <div class="btn btn-sm btn-info form-side-submit">确认分配</div>
+                <div class="btn btn-sm form-side-cancel">取消</div>
+            </div>
+        </div>
+    </form>
+</div>
+

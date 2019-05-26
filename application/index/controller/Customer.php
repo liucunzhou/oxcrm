@@ -182,7 +182,7 @@ class Customer extends Base
         }
     }
 
-
+    ### 分配到主管
     public function allocate()
     {
         $users = User::getUsers();
@@ -197,6 +197,7 @@ class Customer extends Base
         return $this->fetch();
     }
 
+    #### 分配到主管
     public function doAllocate()
     {
         $post = Request::post();
@@ -270,6 +271,24 @@ class Customer extends Base
         ]);
     }
 
+    ### 分发到客服
+    public function distribute()
+    {
+        $users = User::getUsers();
+        $this->assign('users', $users);
+
+        $this->view->engine->layout(false);
+        return $this->fetch();
+    }
+
+    ### 执行分发
+    public function doDistribute()
+    {
+
+
+    }
+
+    ### 删除客资
     public function delete()
     {
         $get = Request::param();
