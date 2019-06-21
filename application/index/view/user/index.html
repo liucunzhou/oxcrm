@@ -37,8 +37,9 @@
                     <td class="center">
                         <a class="icon-cog" href="javascript:void(0);"></a>
                     </td>
-                    <td class="w-percent-10 center">用户编号</td>
+                    <!--<td class="w-percent-10 center">用户编号</td>-->
                     <td class="w-percent-10">用户角色</td>
+                    <td class="w-percent-10">部门</td>
                     <td class="w-percent-10">用户名</td>
                     <td class="w-percent-10">真实名称</td>
                     <td class="w-percent-10">联系电话</td>
@@ -55,8 +56,12 @@
                                 <span class="lbl"></span>
                             </label>
                         </td>
-                        <td class="w-percent-5 center">201711203619</td>
-                        <td class="w-percent-10">{$roles[$val['role_id']]|default='未分配'}</td>
+                        <td class="w-percent-10">
+                            {:$AuthGroup::getNames($roles, $val['user_auth']['role_ids'])}
+                        </td>
+                        <td class="w-percent-10">
+                            {$departments[$val['user_auth']['department_id']]['title']}
+                        </td>
                         <td class="w-percent-10">{$val['nickname']}</td>
                         <td class="w-percent-10">{$val['realname']}</td>
                         <td class="w-percent-10">{$val['mobile']}</td>

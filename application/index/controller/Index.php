@@ -1,6 +1,9 @@
 <?php
 namespace app\index\controller;
 
+use app\index\model\UserAuth;
+use think\facade\Session;
+
 class Index extends Base
 {
     public function index()
@@ -105,11 +108,7 @@ class Index extends Base
                     ],
                     [
                         'text' => '我的申请',
-                        'url' => 'Customer/reply'
-                    ],
-                    [
-                        'text' => '我的收藏',
-                        'url' => 'Customer/favourite'
+                        'url' => 'Customer/apply'
                     ]
                 ],
             ],
@@ -140,24 +139,56 @@ class Index extends Base
                         'url' => 'Count/index',
                     ],
                     [
-                        'text' => '推广转化',
-                        'url' => 'Count/promoter',
-                    ],
-                    [
-                        'text' => '部门实收',
-                        'url' => 'Count/sales',
-                    ],
-                    [
                         'text' => '每小时数据',
                         'url' => 'Count/hour',
                     ],
                     [
                         'text' => '数据对比',
-                        'url' => 'Count/hour',
+                        'url' => 'Count/compare',
                     ],
                 ],
             ]
         ];
+        $user = Session::get("user");
+        $auth = UserAuth::getUserLogicAuth($user['id']);
+        if(empty($auth['role_ids']) && $user['nickname'] != 'admin') return $this->fetch();
+
+
+        $roles = explode(',', $auth['role_ids']);
+        ### 根据角色自动判断条件
+        if (in_array(3,$roles)) {
+            ## 客服主管
+            unset($menus['系统管理']);
+            unset($menus['权限管理']);
+        } else if(in_array(1, $roles)) {
+            ## 客服
+            unset($menus['系统管理']);
+            unset($menus['权限管理']);
+            unset($menus['客资管理']);
+            unset($menus['组织架构']['items'][0]);
+            unset($menus['组织架构']['items'][1]);
+            unset($menus['数据统计']);
+        } else if(in_array(5, $roles)) {
+            ## 门店店长
+            // $map[] = ['store_id', ''];
+            unset($menus['系统管理']);
+            unset($menus['权限管理']);
+            unset($menus['客资管理']);
+            unset($menus['组织架构']['items'][0]);
+            unset($menus['组织架构']['items'][1]);
+        } else if(in_array(4, $roles)) {
+            unset($menus['系统管理']);
+            unset($menus['权限管理']);
+            unset($menus['客资管理']);
+            unset($menus['组织架构']['items'][0]);
+            unset($menus['组织架构']['items'][1]);
+            unset($menus['数据统计']);
+        } else if($user['nickname'] != 'admin') {
+            $menus = [];
+        } else {
+            unset($menus['跟进管理']);
+            unset($menus['跟进管理']);
+        }
         $this->assign('menus', $menus);
 
         $this->view->engine->layout(false);

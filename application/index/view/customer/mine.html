@@ -3,7 +3,7 @@
     <ul class="breadcrumb">
         <li>首页</li>
         <li>客资管理</li>
-        <li>客户资料</li>
+        <li>我的客户</li>
     </ul>
     <div class="widget-toolbar">
         <a href="javascript:history.go(-1);">
@@ -41,62 +41,67 @@
             <div class="cell-checkbox">
                 <input type="checkbox" class="check_all" value="{$val['id']}"/>
             </div>
+            <div class="cell-remark-amount text-center">备注</div>
             <div class="cell-customerno">客户编号</div>
             <div class="cell-realname">客户名</div>
             <div class="cell-phone">联系方式</div>
-            <div class="cell-phone1">其他联系</div>
+            <!--<div class="cell-phone">联系方式2</div>-->
             <div class="cell-publisher">发布业务员</div>
             <div class="cell-sale">跟单员</div>
+            <!--<div class="cell-sale">申请状态</div>-->
             <div class="cell-news-type">信息类型</div>
             <div class="cell-ordered-staff">成单人</div>
             <div class="cell-change">转婚庆</div>
             <div class="cell-banquet-size">宴会规模</div>
             <div class="cell-budget">预算</div>
             <div class="cell-valid">发布状态</div>
-            <div class="cell-remark-amount">备注</div>
-            <div class="cell-remark">客户备注</div>
+            <!--<div class="cell-remark">客户备注</div>-->
             <div class="cell-wedding-intention">跟进状态</div>
             <div class="cell-wedding-date">婚期</div>
             <div class="cell-zone">区域</div>
             <div class="cell-hotel">咨询酒店</div>
             <div class="cell-source">客户来源</div>
-            <div class="cell-createtime">录入时间</div>
+            <!--<div class="cell-createtime">录入时间</div>-->
         </div>
         <{foreach name="list" item="val"}>
             <div class="customer-item">
                 <div class="cell-checkbox">
                     <input type="checkbox" name="id[]" value="{$val['id']}" class="id"/>
                 </div>
-                <div class="cell-customerno">
-                    <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/editCustomer',['id'=>$val['id']])}">
-                        {$val['member_no']}
+                <div class="cell-remark-amount text-center">
+                    <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/visit',['id'=>$val['id']])}">
+                        {:rand(1,10)}
                     </a>
                 </div>
-                <div class="cell-realname">{$val['realname']|default='-'}</div>
-                <div class="cell-phone">{:substr_replace($val['mobile'],'****', 3, 4)}</div>
-                <div class="cell-phone1">
-                    <{if empty($val['mobile1'])}>
-                        -
-                    <{else}>
-                        {:substr_replace($val['mobile1'],'****', 3, 4)}
-                    <{/if}>
+                <div class="cell-customerno">
+                    <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/editCustomer',['id'=>$val['id']])}">
+                        {$val['member']['member_no']}
+                    </a>
                 </div>
-                <div class="cell-publisher">{$users[$val['from_id']]['realname']}</div>
+                <div class="cell-realname">{$val['member']['realname']|default='-'}</div>
+                <div class="cell-phone">{:substr_replace($val['member']['mobile'],'****', 3, 4)}</div>
+                <!--<div class="cell-phone1">-->
+                    <!--<{if empty($val['member']['mobile1'])}>-->
+                        <!-- - -->
+                    <!--<{else}>-->
+                        <!--{:substr_replace($val['member']['mobile1'],'****', 3, 4)}-->
+                    <!--<{/if}>-->
+                <!--</div>-->
+                <div class="cell-publisher">{$users[$val['member']['from_id']]['realname']}</div>
                 <div class="cell-sale">跟单员</div>
-                <div class="cell-news-type">{$newsTypes[$val['news_type']]}</div>
+                <div class="cell-news-type">{$newsTypes[$val['member']['news_type']]}</div>
                 <div class="cell-ordered-staff">成单人</div>
                 <div class="cell-change">转婚庆</div>
-                <div class="cell-banquet-size">{$val['banquet_size']}</div>
-                <div class="cell-budget">{$val['budget']}</div>
-                <div class="cell-valid">{$publishStatus[$val['is_valid']]}</div>
-                <div class="cell-remark-amount">备注</div>
-                <div class="cell-remark">{$val['remark']}</div>
-                <div class="cell-wedding-intention">{$intentions[$val['intention_status']]['title']|default='未跟进'}</div>
-                <div class="cell-wedding-date">{$val['wedding_date']}</div>
-                <div class="cell-zone">{$val['zone']}</div>
-                <div class="cell-hotel">{$hotels[$val['hotel_id']]['title']}</div>
-                <div class="cell-source">{$sources[$val['source_id']]['title']}</div>
-                <div class="cell-createtime">{$val['create_time']}</div>
+                <div class="cell-banquet-size">{$val['member']['banquet_size']}</div>
+                <div class="cell-budget">{$val['member']['budget']}</div>
+                <div class="cell-valid">{$publishStatus[$val['member']['is_valid']]}</div>
+                <!--<div class="cell-remark">{$val['member']['remark']}</div>-->
+                <div class="cell-wedding-intention">{$intentions[$val['member']['intention_status']]['title']|default='未跟进'}</div>
+                <div class="cell-wedding-date">{$val['member']['wedding_date']}</div>
+                <div class="cell-zone">{$val['member']['zone']}</div>
+                <div class="cell-hotel">{$hotels[$val['member']['hotel_id']]['title']}</div>
+                <div class="cell-source">{$sources[$val['member']['source_id']]['title']}</div>
+                <!--<div class="cell-createtime">{$val['member']['create_time']}</div>-->
             </div>
         <{/foreach}>
 
@@ -143,9 +148,9 @@
             申请成单
         </a>
 
-        <a class="btn btn-xs btn-danger {$managerBtn} action-delete-customer" href="javascript:void(0);" data-action="{:url('rollback', ['id'=>$val['id']])}" data-tip="确认要还原该客资么？">
-            归档
-        </a>
+        <!--<a class="btn btn-xs btn-danger action-delete-customer" href="javascript:void(0);" data-action="{:url('rollback', ['id'=>$val['id']])}" data-tip="确认要还原该客资么？">-->
+            <!--归档-->
+        <!--</a>-->
     </div>
     <div class="pull-right">
         <{include file="common/page" /}>

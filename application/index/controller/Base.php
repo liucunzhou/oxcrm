@@ -11,7 +11,7 @@ class Base extends Controller
         // 验证登录
         $user = session("user");
         if(!$user) $this->redirect('/index/passport/login');
-
+        $this->assign('user', $user);
 
     }
 }

@@ -1,10 +1,11 @@
 <?php
 namespace app\index\model;
 
+
 use think\Model;
 use think\model\concern\SoftDelete;
 
-class MemberAllocate extends Model
+class OrderEntire extends Model
 {
     protected $pk = 'id';
     protected $autoWriteTimestamp = true;
@@ -15,9 +16,4 @@ class MemberAllocate extends Model
     protected $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
 
-    public function member()
-    {
-
-        return $this->belongsTo('member', 'member_id');
-    }
 }

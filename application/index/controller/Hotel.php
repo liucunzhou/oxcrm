@@ -26,13 +26,13 @@ class Hotel extends Base
     public function addHotel()
     {
         $this->view->engine->layout(false);
-        return $this->fetch('edit_brand');
+        return $this->fetch('edit_hotel');
     }
 
     public function editHotel()
     {
         $get = Request::param();
-        $brand = \app\index\model\Brand::get($get['id']);
+        $brand = \app\index\model\Hotel::get($get['id']);
         $this->assign('data', $brand);
 
         $this->view->engine->layout(false);

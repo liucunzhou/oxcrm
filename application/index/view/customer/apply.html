@@ -3,7 +3,7 @@
     <ul class="breadcrumb">
         <li>首页</li>
         <li>客资管理</li>
-        <li>客户资料</li>
+        <li>我的客户</li>
     </ul>
     <div class="widget-toolbar">
         <a href="javascript:history.go(-1);">
@@ -65,38 +65,38 @@
         <{foreach name="list" item="val"}>
             <div class="customer-item">
                 <div class="cell-checkbox">
-                    <input type="checkbox" name="id[]" value="{$val['id']}" class="id"/>
+                    <input type="checkbox" name="id[]" value="{$val['member']['id']}"/>
                 </div>
                 <div class="cell-customerno">
                     <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/editCustomer',['id'=>$val['id']])}">
-                        {$val['member_no']}
+                        {$val['member']['member_no']}
                     </a>
                 </div>
-                <div class="cell-realname">{$val['realname']|default='-'}</div>
-                <div class="cell-phone">{:substr_replace($val['mobile'],'****', 3, 4)}</div>
+                <div class="cell-realname">{$val['member']['realname']|default='-'}</div>
+                <div class="cell-phone">{:substr_replace($val['member']['mobile'],'****', 3, 4)}</div>
                 <div class="cell-phone1">
-                    <{if empty($val['mobile1'])}>
+                    <{if empty($val['member']['mobile1'])}>
                         -
                     <{else}>
-                        {:substr_replace($val['mobile1'],'****', 3, 4)}
+                        {:substr_replace($val['member']['mobile1'],'****', 3, 4)}
                     <{/if}>
                 </div>
-                <div class="cell-publisher">{$users[$val['from_id']]['realname']}</div>
+                <div class="cell-publisher">{$users[$val['member']['from_id']]['realname']}</div>
                 <div class="cell-sale">跟单员</div>
-                <div class="cell-news-type">{$newsTypes[$val['news_type']]}</div>
+                <div class="cell-news-type">{$newsTypes[$val['member']['news_type']]}</div>
                 <div class="cell-ordered-staff">成单人</div>
                 <div class="cell-change">转婚庆</div>
-                <div class="cell-banquet-size">{$val['banquet_size']}</div>
-                <div class="cell-budget">{$val['budget']}</div>
-                <div class="cell-valid">{$publishStatus[$val['is_valid']]}</div>
+                <div class="cell-banquet-size">{$val['member']['banquet_size']}</div>
+                <div class="cell-budget">{$val['member']['budget']}</div>
+                <div class="cell-valid">{$publishStatus[$val['member']['is_valid']]}</div>
                 <div class="cell-remark-amount">备注</div>
-                <div class="cell-remark">{$val['remark']}</div>
-                <div class="cell-wedding-intention">{$intentions[$val['intention_status']]['title']|default='未跟进'}</div>
-                <div class="cell-wedding-date">{$val['wedding_date']}</div>
-                <div class="cell-zone">{$val['zone']}</div>
-                <div class="cell-hotel">{$hotels[$val['hotel_id']]['title']}</div>
-                <div class="cell-source">{$sources[$val['source_id']]['title']}</div>
-                <div class="cell-createtime">{$val['create_time']}</div>
+                <div class="cell-remark">{$val['member']['remark']}</div>
+                <div class="cell-wedding-intention">{$intentions[$val['member']['intention_status']]['title']|default='未跟进'}</div>
+                <div class="cell-wedding-date">{$val['member']['wedding_date']}</div>
+                <div class="cell-zone">{$val['member']['zone']}</div>
+                <div class="cell-hotel">{$hotels[$val['member']['hotel_id']]['title']}</div>
+                <div class="cell-source">{$sources[$val['member']['source_id']]['title']}</div>
+                <div class="cell-createtime">{$val['member']['create_time']}</div>
             </div>
         <{/foreach}>
 
@@ -127,25 +127,11 @@
             <input type="checkbox" class="check_all">
             <span>全选</span>
         </label>
-        <a class="btn btn-xs btn-info action-modal {$managerBtn}" href="javascript:void(0);" data-action="{:url('Customer/distribute')}">
-            分发到二级客服
-        </a>
 
-        <a class="btn btn-xs btn-success action-modal {$staffBtn}" href="javascript:void(0);" data-action="{:url('Customer/toStore')}">
-            分发到门店
-        </a>
-
-        <a class="btn btn-xs btn-danger action-apply {$saleBtn}" href="javascript:void(0);" data-action="{:url('Customer/doApply')}">
+        <a class="btn btn-xs btn-warning action-modal" href="javascript:void(0);" data-action="{:url('Customer/toStore')}">
             申请回访
         </a>
 
-        <a class="btn btn-xs btn-danger action-modal {$saleBtn}" href="javascript:void(0);" data-action="{:url('Customer/toOrder')}">
-            申请成单
-        </a>
-
-        <a class="btn btn-xs btn-danger {$managerBtn} action-delete-customer" href="javascript:void(0);" data-action="{:url('rollback', ['id'=>$val['id']])}" data-tip="确认要还原该客资么？">
-            归档
-        </a>
     </div>
     <div class="pull-right">
         <{include file="common/page" /}>

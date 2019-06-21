@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\http\Swoole;
 use app\index\model\AuthGroup;
+use app\index\model\Department;
 use app\index\model\UserAuth;
 use think\facade\Request;
 
@@ -10,9 +11,21 @@ class User extends Base
 {
     public function index()
     {
+        // echo "<pre>";
         $User = new \app\index\model\User();
-        $list = $User->order('sort desc')->paginate(15);
+        $list = $User->with('userAuth')->order('sort desc')->paginate(15);
         $this->assign('list', $list);
+        // print_r($list);
+
+        ### 获取角色列表
+        $AuthGroup = new AuthGroup();
+        $roles = $AuthGroup::getRoles();
+        $this->assign('roles', $roles);
+        $this->assign('AuthGroup', $AuthGroup);
+
+        ### 获取部门列表
+        $departments = Department::getDepartments();
+        $this->assign('departments', $departments);
 
         return $this->fetch();
     }

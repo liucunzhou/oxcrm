@@ -3,7 +3,7 @@
     <ul class="breadcrumb">
         <li>首页</li>
         <li>订单管理</li>
-        <li>订单列表</li>
+        <li>一站式订单</li>
     </ul>
     <div class="widget-toolbar">
         <a href="javascript:history.go(-1);">
@@ -12,7 +12,7 @@
         </a>
     </div>
     <div class="widget-toolbar">
-        <a href="javascript:void(0);" class="action-modal" data-action="{:url('Order/addOrder')}">
+        <a href="{:url('Order/addOrder')}">
             <span class="text">添加订单</span>
         </a>
     </div>
@@ -31,5 +31,86 @@
 
 <!--页面详情-->
 <div class="page-content">
-
+    <div class="customer-list">
+        <div class="customer-item customer-list-header">
+            <div class="cell-checkbox">
+                <input type="checkbox" class="check_all"/>
+            </div>
+            <div class="cell-customerno">渠道来源</div>
+            <div class="cell-realname">签单销售</div>
+            <div class="cell-phone">区域经理</div>
+            <div class="cell-phone1">签约日期</div>
+            <div class="cell-publisher">签约日期</div>
+            <div class="cell-news-type">新郎姓名</div>
+            <div class="cell-ordered-staff">新郎电话</div>
+            <div class="cell-change">新娘姓名</div>
+            <div class="cell-banquet-size">新娘电话</div>
+            <div class="cell-budget">一站式</div>
+            <div class="cell-valid">一站式价格</div>
+            <div class="cell-remark-amount">桌数</div>
+            <div class="cell-remark">餐标</div>
+            <div class="cell-wedding-intention">酒水</div>
+            <div class="cell-wedding-date">服务费</div>
+            <div class="cell-zone">应收客人费用</div>
+            <div class="cell-hotel">收婚庆进场费</div>
+            <div class="cell-source">收入总额</div>
+            <div class="cell-createtime">付酒店进场费</div>
+            <div class="cell-createtime">应付酒店费用</div>
+            <div class="cell-createtime">平台渠道费用</div>
+            <div class="cell-createtime">个人渠道费用</div>
+            <div class="cell-createtime">其他</div>
+            <div class="cell-createtime">红丝婚庆结算费</div>
+            <div class="cell-createtime">婚宴提成</div>
+            <div class="cell-createtime">婚庆提成</div>
+            <div class="cell-createtime">营收</div>
+            <div class="cell-createtime">毛利</div>
+            <div class="cell-createtime">支出总额</div>
+            <div class="cell-createtime">最终提成</div>
+            <div class="cell-createtime">区域经理提成</div>
+            <div class="cell-createtime">区域经理引流提成</div>
+            <div class="cell-createtime">申请时间</div>
+            <div class="cell-createtime">创建时间</div>
+        </div>
+        <{foreach name="list" item="val"}>
+        <div class="customer-item">
+            <div class="cell-checkbox">
+                <input type="checkbox" name="id[]" value="{$val['id']}" class="id"/>
+            </div>
+            <div class="cell-customerno">{$val['source_id']}</div>
+            <div class="cell-realname">{$val['sales_id']}</div>
+            <div class="cell-phone">{$val['manager_id']}</div>
+            <div class="cell-phone1">{$val['sign_date']}</div>
+            <div class="cell-publisher">{$val['wedding_date']}</div>
+            <div class="cell-news-type">{$val['bridegroom']}</div>
+            <div class="cell-ordered-staff">{$val['bridegroom_mobile']}</div>
+            <div class="cell-change">{$val['bride']}</div>
+            <div class="cell-banquet-size">{$val['bride_mobile']}</div>
+            <div class="cell-budget">{$val['is_entire']}</div>
+            <div class="cell-valid">{$val['entire_price']}</div>
+            <div class="cell-remark-amount">{$val['table_amount']}</div>
+            <div class="cell-remark">{$val['table_price']}</div>
+            <div class="cell-wedding-intention">{$val['wine_fee']}</div>
+            <div class="cell-wedding-date">{$val['service_fee']}</div>
+            <div class="cell-zone">{$val['income_customer_fee']}</div>
+            <div class="cell-hotel">{$val['income_wedding_celebration_admission_fee']}</div>
+            <div class="cell-source">{$val['income_fee']}</div>
+            <div class="cell-createtime">{$val['pay_hotel_admission_fee']}</div>
+            <div class="cell-createtime">{$val['pay_hotel_fee']}</div>
+            <div class="cell-createtime">{$val['platform_source_fee']}</div>
+            <div class="cell-createtime">{$val['person_source_fee']}</div>
+            <div class="cell-createtime">{$val['other_source_fee']}</div>
+            <div class="cell-createtime">{$val['hongsi_settlement_fee']}</div>
+            <div class="cell-createtime">{$val['wedding_banquet_commission']}</div>
+            <div class="cell-createtime">{$val['wedding_celebration_commission']}</div>
+            <div class="cell-createtime">{$val['revenue']}</div>
+            <div class="cell-createtime">{$val['gross_profit']}</div>
+            <div class="cell-createtime">{$val['total_pay']}</div>
+            <div class="cell-createtime">{$val['end_commission']}</div>
+            <div class="cell-createtime">{$val['manager_commission']}</div>
+            <div class="cell-createtime">{$val['manager_recommend_commission']}</div>
+            <div class="cell-createtime">申请时间</div>
+            <div class="cell-createtime">{$val['create_time']}</div>
+        </div>
+        <{/foreach}>
+    </div>
 </div>

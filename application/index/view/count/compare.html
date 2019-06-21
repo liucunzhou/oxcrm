@@ -1,0 +1,63 @@
+<!-- 面包屑 -->
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>数据统计</li>
+        <li>数据总览</li>
+    </ul>
+
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+    <!--<div class="widget-toolbar">-->
+    <!--<a href="javascript:void(0);" class="search-action-modal">-->
+    <!--<span class="text">高级筛选</span>-->
+    <!--</a>-->
+    <!--</div>-->
+    <div class="widget-toolbar no-border">
+        <form>
+            <input type="text" name="keywords" placeholder="请输入品牌名称"/>
+            <a class="icon-search" href="javascript:void(0);"></a>
+        </form>
+    </div>
+</div>
+<!--页面详情-->
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="left">渠道</th>
+                        <th class="center">总数据</th>
+                        <th class="center">有效客户</th>
+                        <th class="center">婚宴成单</th>
+                        <th class="center">婚庆成单</th>
+                        <th class="center">意向客户</th>
+                        <th class="center">待转换客户</th>
+                        <th class="center">无效客户</th>
+                        <th class="center">重单</th>
+                    </tr>
+                    </thead>
+
+                    <tr>
+                        <th class="left">大众点评</th>
+                        <th class="center">100</th>
+                        <th class="center">80</th>
+                        <th class="center">60</th>
+                        <th class="center">20</th>
+                        <th class="center">20</th>
+                        <th class="center">0</th>
+                        <th class="center">0</th>
+                        <th class="center">0</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="customer/search" />

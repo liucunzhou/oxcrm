@@ -87,10 +87,16 @@ create table tk_member_favourite(
 
 create table tk_member_apply(
   id int not null AUTO_INCREMENT PRIMARY KEY ,
-  user_id int not null default 0,
+  operate_id int not null default 0,
+  manager_id int not null default 0,
+  customer_staff_id int not null default 0,
   member_id int not null default 0,
+  brand_id int not null default 0,
+  store_id int not null default 0,
+  sale_id int not null default 0,
+  apply_status int not null default 0,
+  color char(32) not null default '',
   create_time int not null default 0,
-  agree_time int not null default 0,
   update_time int not null default 0,
   delete_time int not null default 0
 );

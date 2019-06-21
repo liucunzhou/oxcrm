@@ -16,6 +16,11 @@ class User extends Model
     protected $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
 
+    public function userAuth()
+    {
+        return $this->hasOne('UserAuth');
+    }
+
     /**
      * 获取后台用户详情
      * @param $id

@@ -18,9 +18,26 @@ class AuthGroup extends Model
 
     public static function getRoles()
     {
-        $list = self::select()->toArray();
+        $list = self::column('id,title,auth_set');
 
         return $list;
+    }
+
+    public static function getNames($roles, $croles)
+    {
+        $str = '';
+        if(!empty($croles)){
+            $croles = explode(",", $croles);
+            foreach($croles as $roleId){
+                $roleArr[] = $roles[$roleId]['title'];
+            }
+
+            $str = implode(',', $roleArr);
+        } else {
+            $str = "-";
+        }
+
+        return $str;
     }
 
     public static function getAuthGroup($id, $update=false)

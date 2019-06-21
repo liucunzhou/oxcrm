@@ -1,6 +1,6 @@
 <div class="modal-box">
     <!-- 表单 -->
-    <form class="modal-form" method="post" data-action="{:url('Customer/doDistribute')}" role="form">
+    <form class="modal-form" method="post" data-action="{:url('Customer/doToStore')}" role="form">
         <div class="side-modal-box">
             <div class="page-header header_title">
                 <h4 class="blue">选择门店</h4>
@@ -10,7 +10,7 @@
                 <{foreach name="stores" item="val"}>
                     <tr>
                         <td class="text-center" width="80">
-                            <input type="radio" name="staff" value="{$val['id']}" class="input-normal user_amount">
+                            <input type="radio" name="store_id" value="{$val['id']}" class="input-normal user_amount">
                         </td>
                         <td>{$val['title']}</td>
                     </tr>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="side-modal-foot">
-                <input type="hidden" name="id" id="id" value="{$Request.param.id}" />
+                <input type="hidden" name="ids" id="ids" value="{$Request.header.ids}" />
                 <div class="btn btn-sm btn-info form-side-submit">确认分配</div>
                 <div class="btn btn-sm form-side-cancel">取消</div>
             </div>
