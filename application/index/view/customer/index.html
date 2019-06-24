@@ -41,7 +41,8 @@
             <div class="cell-checkbox">
                 <input type="checkbox" class="check_all" value="{$val['id']}"/>
             </div>
-            <div class="cell-customerno">客户编号</div>
+            <div class="cell-customerno">回访</div>
+            <!--<div class="cell-customerno">客户编号</div>-->
             <div class="cell-realname">客户名</div>
             <div class="cell-phone">联系方式</div>
             <div class="cell-phone1">其他联系</div>
@@ -69,9 +70,16 @@
                 </div>
                 <div class="cell-customerno">
                     <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/editCustomer',['id'=>$val['id']])}">
-                        {$val['member_no']}
+                        [编辑]
+                    </a>
+                    <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/visit',['id'=>$val['id']])}">
+                        [回访]
+                    </a>
+                    <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/logs', ['id'=>$val['id']])}">
+                        [记录]
                     </a>
                 </div>
+                <!--<div class="cell-customerno">{$val['member_no']}</div>-->
                 <div class="cell-realname">{$val['realname']|default='-'}</div>
                 <div class="cell-phone">{:substr_replace($val['mobile'],'****', 3, 4)}</div>
                 <div class="cell-phone1">

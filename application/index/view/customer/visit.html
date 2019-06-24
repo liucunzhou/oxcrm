@@ -54,26 +54,48 @@
 
                 <div class="form-group">
                     <label>
-                        <span>跟进时间</span>
+                        <span>下次跟进</span>
                     </label>
                     <div class="input-box">
                         <input type="text" name="next_visit_time" value="{$data['next_visit_time']}" class="input-field date">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label>
+                        <span>备注</span>
+                    </label>
+                    <div class="input-box">
+                        <textarea name="content" class="input-field" style="height: 100px;"></textarea>
+                    </div>
+                </div>
             </div>
 
-            <!--<div class="page-header header_title">-->
-                <!--<h4 class="blue">-->
-                    <!--<span>回访历史</span>-->
-                    <!--<small>(已回访0次)</small>-->
-                <!--</h4>-->
-            <!--</div>-->
-            <div class="visits">
+            <div class="vist-list">
+                <h4 class="blue">
+                    <span>回访历史</span>
+                    <small>(已回访{:count($visits)}次)</small>
+                </h4>
+
+                <table class="table table-bordered">
+                    <tr class="table-header">
+                        <th class="field-13em">回访时间</th>
+                        <th class="field-8em">回访状态</th>
+                        <th>备注</th>
+                    </tr>
+                    <{foreach item="val" name="visits"}>
+                        <tr>
+                            <td>{$val['create_time']}</td>
+                            <td>{$val['status']}</td>
+                            <td>{$val['content']}</td>
+                        </tr>
+                    <{/foreach}>
+                </table>
             </div>
 
             <div class="side-modal-foot">
-                <input type="hidden" name="allocation_id" id="allocation_id" value="3">
-                <input type="hidden" name="customer_id" id="customer_id" value="2">
+                <input type="hidden" name="allocation_id" id="allocation_id" value="{$Request.param.allocation_id}">
+                <input type="hidden" name="member_id" id="member" value="{$Request.param.id}">
                 <div class="btn btn-sm btn-info form-side-submit">保存</div>
                 <div class="btn btn-sm form-side-cancel">取消</div>
             </div>

@@ -7,6 +7,7 @@ use app\index\model\Intention;
 use app\index\model\Member;
 use app\index\model\MemberAllocate;
 use app\index\model\MemberApply;
+use app\index\model\MemberVisit;
 use app\index\model\Store;
 use app\index\model\User;
 use app\index\model\UserAuth;
@@ -462,7 +463,49 @@ class Customer extends Base
 
     public function visit()
     {
+        $get = Request::param();
+        $map[] = ['member_id', '=', $get['id']];
+        $visits = model('MemberVisit')->where($map)->select()->toArray();
+        $this->assign('visits', $visits);
 
+        $this->view->engine->layout(false);
+        return $this->fetch();
+    }
+
+    public function doVisit()
+    {
+        $post = Request::post();
+        if($post['id']) {
+            $action = '编辑回访成功';
+            $Model = \app\index\model\MemberVisit::get($post['id']);
+        } else {
+            $action = '添加回访成功';
+            $Model = new \app\index\model\MemberVisit();
+        }
+
+        $user = Session::get("user");
+        $Model->user_id = $user['id'];
+        $Model->next_visit_time = strtotime($post['next_visit_time']);
+
+        // $Model::create($post);
+        $result = $Model->save($post);
+        if($result) {
+            // empty($post['id']) && $post['id'] = $Model->id;
+            return json(['code'=>'200', 'msg'=> $action.'成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=> $action.'失败']);
+        }
+    }
+
+    ### 回访记录
+    public function logs()
+    {
+        $get = Request::param();
+        $map[] = ['member_id', '=', $get['id']];
+        $visits = model('MemberVisit')->where($map)->select()->toArray();
+        $this->assign('visits', $visits);
+
+        $this->view->engine->layout(false);
         return $this->fetch();
     }
 }
