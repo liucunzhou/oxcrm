@@ -1,214 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8" />
-    <title>{$Think.config.app_name}</title>
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- basic styles -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/static/css/ace.min.css" />
-    <link rel="stylesheet" href="/static/css/ace-rtl.min.css" />
-    <link rel="stylesheet" href="/static/css/ace-skins.min.css" />
-    <link rel="stylesheet" href="/static/css/ace.extend.css" />
-    <link rel="stylesheet" href="/static/css/ace-ie.min.css" />
+    <meta charset="utf-8">
+    <title>CRM</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <script>
+        /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
+    </script>
 </head>
+<body class="layui-layout-body">
 
-<body>
-<div class="navbar navbar-default" id="navbar">
-    <div class="navbar-container" id="navbar-container">
-        <div class="navbar-header pull-left">
-            <a href="{:url('Index/index')}" class="navbar-brand">
-                <small>E5W系统</small>
-            </a>
-        </div>
-
-        <div class="navbar-header pull-right" role="navigation">
-            <ul class="nav ace-nav">
-                <li class="purple dropdown-modal">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <!--icon-animated-bell-->
-                        <i class="icon icon-bell"></i> 消息
-                        <span class="badge badge-important">8</span>
+<div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <!-- 头部区域 -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                    <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                        <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
                     </a>
-                    <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-                        <li class="dropdown-header">
-                            <i class="ace-icon fa fa-exclamation-triangle"></i>
-                            8 Notifications
-                        </li>
-                        <li class="dropdown-content ace-scroll" style="position: relative;"><div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div><div class="scroll-content" style="max-height: 200px;">
-                            <ul class="dropdown-menu dropdown-navbar navbar-pink">
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">
-                                            <i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
-                                            New Comments
-                                            </span>
-                                            <span class="pull-right badge badge-info">+12</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="btn btn-xs btn-primary fa fa-user"></i>
-                                        Bob just signed up as an editor ...
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">
-                                            <i class="btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>
-                                            New Orders
-                                            </span>
-                                            <span class="pull-right badge badge-success">+8</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">
-                                            <i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>
-                                            Followers
-                                            </span>
-                                            <span class="pull-right badge badge-info">+11</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div></li>
-                        <li class="dropdown-footer">
-                            <a href="#">
-                                See all notifications
-                                <i class="ace-icon fa fa-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-                <li class="light-blue">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="/static/avatars/user.jpg" alt="Jason's Photo" />
-                        <span class="user-info">
-                            <small>欢迎光临,</small>
-                            {$user['realname']|default="超级管理员"}
-                        </span>
-                        <i class="icon-caret-down"></i>
+                <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>-->
+                    <!--<a href="http://www.baidu.com/admin/" target="_blank" title="前台">-->
+                        <!--<i class="layui-icon layui-icon-website"></i>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;" layadmin-event="refresh" title="刷新">
+                        <i class="layui-icon layui-icon-refresh-3"></i>
                     </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search.html?keywords=">
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+                <li class="layui-nav-item" lay-unselect>
+                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
+                        <i class="layui-icon layui-icon-notice"></i>
 
-                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <!-- 如果有新消息，则显示小圆点 -->
+                        <span class="layui-badge-dot"></span>
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="theme">
+                        <i class="layui-icon layui-icon-theme"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="note">
+                        <i class="layui-icon layui-icon-note"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite>{$user['realname']|default="超级管理员"}</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="{:url('User/info')}">基本资料</a></dd>
+                        <dd><a lay-href="{:url('User/repassword')}">修改密码</a></dd>
+                        <hr>
+                        <dd layadmin-event="logout" style="text-align: center;"><a lay-href="{:url('Passport/logout')}">退出</a></dd>
+                    </dl>
+                </li>
 
-                        <li>
-                            <a href="{:url('User/info')}">
-                                <i class="icon-user"></i>
-                                个人资料
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{:url('User/repassword')}">
-                                <i class="icon-lock"></i>
-                                重置密码
-                            </a>
-                        </li>
-
-                        <li class="divider"></li>
-
-                        <li>
-                            <a href="{:url('Passport/logout')}">
-                                <i class="icon-off"></i>
-                                退出
-                            </a>
-                        </li>
-                    </ul>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                </li>
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+                    <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
             </ul>
         </div>
-    </div>
-</div>
 
-<div class="main-container" id="main-container">
-    <div class="main-container-inner">
-        <a class="menu-toggler" id="menu-toggler" href="#">
-            <span class="menu-text"></span>
-        </a>
-
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-
-                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                    <span class="btn btn-success"></span>
-
-                    <span class="btn btn-info"></span>
-
-                    <span class="btn btn-warning"></span>
-
-                    <a href="{:url('Index/index')}" class="btn btn-danger" title="系统设置"></a>
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo" lay-href="home/console.html">
+                    <span>CRM系统</span>
                 </div>
-            </div>
-            <!-- #sidebar-shortcuts -->
 
-            <ul class="nav nav-list">
-                <{volist id="menu" name="menus"}>
-                    <li>
-                        <a href="#" class="dropdown-toggle">
-                            <i class="{$menu['icon']}"></i>
-                            <span class="menu-text"> {$key}</span>
-                            <b class="arrow icon-angle-down"></b>
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                    <{volist id="menu" name="menus"}>
+                    <li data-name="{$key}" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;" lay-tips="{$key}" lay-direction="2">
+                            <i class="layui-icon layui-icon-component"></i>
+                            <cite>{$key}</cite>
                         </a>
-                        <ul class="submenu">
+                        <dl class="layui-nav-child">
                             <{foreach item="val" name="menu['items']"}>
-                                <li <{if condition="CONTROLLER_NAME.'/'.ACTION_NAME eq $val['url']"}>class="active"<{/if}>>
-                                <a href="javascript:void(0);" data-action="{:url($val['url'])}">
-                                    <i class="icon-double-angle-right"></i>
-                                    {$val['text']}
-                                </a>
-                                </li>
+                            <dd data-name="console" <{if condition="CONTROLLER_NAME.'/'.ACTION_NAME eq $val['url']"}>class="layui-this"<{/if}>>
+                                <a lay-href="{:url($val['url'])}">{$val['text']}</a>
+                            </dd>
                             <{/foreach}>
-                        </ul>
+                        </dl>
                     </li>
-                <{/volist}>
-            </ul>
-
-            <div class="sidebar-collapse" id="sidebar-collapse">
-                <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+                    <{/volist}>
+                </ul>
             </div>
         </div>
 
-        <!-- 内容 -->
-        <div class="main-content">
-            <iframe id="frame" src="{:url('Customer/index')}" width="100%" border="0" onload="changeFrameHeight()"></iframe>
+        <!-- 页面标签 -->
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+                <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                    <li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+                </ul>
+            </div>
         </div>
+
+
+        <!-- 主体内容 -->
+        <div class="layui-body" id="LAY_app_body">
+            <div class="layadmin-tabsbody-item layui-show">
+                <iframe src="home/console.html" frameborder="0" class="layadmin-iframe"></iframe>
+            </div>
+        </div>
+
+        <!-- 辅助元素，一般用于移动设备下遮罩 -->
+        <div class="layadmin-body-shade" layadmin-event="shade"></div>
     </div>
 </div>
-<script src="/static/js/jquery-1.11.3.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/ace-extra.min.js"></script>
-<script src="/static/js/ace.min.js"></script>
-<script src="/static/js/ace-elements.min.js"></script>
+
+<script src="/assets/layui/layui.js"></script>
 <script>
-    function changeFrameHeight(){
-        var ifm = document.getElementById("frame");
-        ifm.height = document.documentElement.clientHeight - 50;
-    }
-
-    window.onresize=function(){
-        changeFrameHeight();
-    }
-
-    $(function(){
-        $(".nav-list ul.submenu li a").click(function(){
-            var url = $(this).attr("data-action");
-            console.log(url);
-            $("#frame").attr("src", url);
-            $(".nav-list li").removeClass("active");
-            $(this).parent().addClass("active")
-            changeFrameHeight();
-        });
-    })
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('index');
 </script>
 </body>
 </html>

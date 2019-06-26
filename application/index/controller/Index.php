@@ -65,14 +65,6 @@ class Index extends Base
                     [
                         'text' => '员工列表',
                         'url' => 'User/index'
-                    ],
-                    [
-                        'text' => '个人中心',
-                        'url' => 'User/info',
-                    ],
-                    [
-                        'text' => '更新密码',
-                        'url' => 'User/repassword',
                     ]
                 ]
             ],

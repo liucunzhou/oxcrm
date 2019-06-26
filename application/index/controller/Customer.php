@@ -18,62 +18,62 @@ class Customer extends Base
 {
     public function index()
     {
-        ### 获取用户列表
-        $users = User::getUsers();
-        $this->assign('users', $users);
+        if(Request::isAjax()) {
+            $get = Request::param();
+            ### 获取用户列表
+            $users = User::getUsers();
+            $sources = \app\index\model\Source::getSources();
+            $intentions = Intention::getIntentions();
+            $hotels = Hotel::getHotels();
+            $newsTypes = ['婚宴信息', '婚庆信息', '婚宴转婚庆'];
+            $publishStatus = ['未发布', '已发布'];
 
-        $sources = \app\index\model\Source::getSources();
-        $this->assign('sources', $sources);
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('Member')->paginate($get['limit'], false, $config);
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $list->getCollection()
+            ];
+            return json($result);
 
-        $intentions = Intention::getIntentions();
-        $this->assign('intentions', $intentions);
+            $user = Session::get("user");
+            $auth = UserAuth::getUserLogicAuth($user['id']);
+            if (empty($auth['role_ids'])) return $this->fetch();
 
-        ### 酒店列表
-        $hotels = Hotel::getHotels();
-        $this->assign("hotels", $hotels);
-
-        ### 信息类型
-        $newsTypes = ['婚宴信息', '婚庆信息', '婚宴转婚庆'];
-        $this->assign('newsTypes', $newsTypes);
-
-        ### 发布状态
-        $publishStatus = ['未发布', '已发布'];
-        $this->assign('publishStatus', $publishStatus);
-
-        $list = model('Member')->paginate(15);
-        $this->assign('list', $list);
-
-        $user = Session::get("user");
-        $auth = UserAuth::getUserLogicAuth($user['id']);
-        if(empty($auth['role_ids'])) return $this->fetch();
-
-        $roles = explode(',', $auth['role_ids']);
-        ### 根据角色自动判断条件
-        if (in_array(3,$roles)) {
-            ## 客服主管
-            $map[] = ['manager_id', '=', $user['id']];
-            $this->assign('managerBtn', '');
-            $this->assign('staffBtn', 'hide');
-            $this->assign('saleBtn', 'hide');
-        } else if(in_array(1, $roles)) {
-            ## 客服
-            $map[] = ['customer_staff_id', '=', $user['id']];
-            $this->assign('managerBtn', 'hide');
-            $this->assign('staffBtn', '');
-            $this->assign('saleBtn', 'hide');
-        } else if(in_array(5, $roles)) {
-            ## 门店店长
-            // $map[] = ['store_id', ''];
-            $this->assign('managerBtn', 'hide');
-            $this->assign('staffBtn', 'hide');
-            $this->assign('saleBtn', '');
-        } else if(in_array(4, $roles)) {
-            $map[] = ['sale_id', '=', $user['id']];
-            $this->assign('managerBtn', 'hide');
-            $this->assign('staffBtn', 'hide');
-            $this->assign('saleBtn', '');
+            $roles = explode(',', $auth['role_ids']);
+            ### 根据角色自动判断条件
+            if (in_array(3, $roles)) {
+                ## 客服主管
+                $map[] = ['manager_id', '=', $user['id']];
+                $this->assign('managerBtn', '');
+                $this->assign('staffBtn', 'hide');
+                $this->assign('saleBtn', 'hide');
+            } else if (in_array(1, $roles)) {
+                ## 客服
+                $map[] = ['customer_staff_id', '=', $user['id']];
+                $this->assign('managerBtn', 'hide');
+                $this->assign('staffBtn', '');
+                $this->assign('saleBtn', 'hide');
+            } else if (in_array(5, $roles)) {
+                ## 门店店长
+                // $map[] = ['store_id', ''];
+                $this->assign('managerBtn', 'hide');
+                $this->assign('staffBtn', 'hide');
+                $this->assign('saleBtn', '');
+            } else if (in_array(4, $roles)) {
+                $map[] = ['sale_id', '=', $user['id']];
+                $this->assign('managerBtn', 'hide');
+                $this->assign('staffBtn', 'hide');
+                $this->assign('saleBtn', '');
+            }
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
         }
-        return $this->fetch();
     }
 
     public function mine()
