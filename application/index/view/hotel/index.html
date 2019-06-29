@@ -26,16 +26,16 @@
             <div class="layui-card">
                 <!--<div class="layui-card-header">酒店管理</div>-->
                 <div class="layui-card-body">
-                    <table class="layui-hide" id="test-table-toolbar" lay-filter="test-table-toolbar"></table>
+                    <table class="layui-hide" id="hotel-table" lay-filter="hotel-table"></table>
 
-                    <script type="text/html" id="test-table-toolbar-toolbarDemo">
+                    <script type="text/html" id="hotel-table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">添加酒店</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="addHotel">添加酒店</button>
                         </div>
                     </script>
 
-                    <script type="text/html" id="test-table-toolbar-barDemo">
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    <script type="text/html" id="hotel-table-tool">
+                        <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                     </script>
                 </div>
@@ -55,43 +55,57 @@
                 ,table = layui.table;
 
         table.render({
-            elem: '#test-table-toolbar'
+            elem: '#hotel-table'
             ,url: '{:url("Hotel/index")}'
-            ,toolbar: '#test-table-toolbar-toolbarDemo'
+            ,toolbar: '#hotel-table-toolbar'
             ,title: '酒店数据表'
             ,cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+                {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field:'title', title:'酒店名称', edit: 'text'}
-                ,{field:'sort', title:'排序', width:120, edit: 'text', sort: true}
-                ,{field:'create_time', title:'创建时间', width:120}
-                ,{field:'update_time', title:'修改时间', width:120}
-                ,{fixed: 'right', title:'操作', toolbar: '#test-table-toolbar-barDemo', width:150}
+                ,{field:'sort', title:'排序', width:80, edit: 'text', sort: true}
+                ,{field:'create_time', title:'创建时间', width:180}
+                ,{fixed: 'right', title:'操作', toolbar: '#hotel-table-tool', width:80}
             ]]
             ,page: true
         });
 
         //头工具栏事件
-        table.on('toolbar(test-table-toolbar)', function(obj){
+        var addHotelUrl = '{:url("Hotel/addHotel")}';
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        table.on('toolbar(hotel-table)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
-                case 'getCheckData':
-                    var data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
+                case 'addHotel':
+                    layer.open({
+                        type: 2,
+                        title: '添加酒店',
+                        content: addHotelUrl,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
                     break;
 
             };
         });
 
+        table.on('edit(hotel-table)', function(obj){
+            var url = '{:url("Hotel/doEditHotel")}';
+            layui.$.post(url, obj.data, function(res){
+                layer.msg(res.msg);
+            })
+        });
+
         //监听行工具事件
-        table.on('tool(test-table-toolbar)', function(obj){
+        table.on('tool(hotel-table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+                layer.confirm('确定删除本行么?', function(index){
                     obj.del();
                     layer.close(index);
                 });
             } else if(obj.event === 'edit'){
+
                 layer.prompt({
                     formType: 2
                     ,value: data.email

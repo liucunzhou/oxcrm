@@ -17,13 +17,18 @@ class Hotel extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $map = [];
-            $list = model('hotel')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit']);
+            $config = [
+                'page' => $get['page']
+            ];
+            $fields = 'id,title,sort,create_time';
+            $list = model('hotel')->field($fields)->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
 
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
-                'count' => $list->count(),
-                'data'  => $list->getCollection()
+                'count' => $list->total(),
+                'data'  => $data
             ];
             return json($result);
         } else {
@@ -52,10 +57,12 @@ class Hotel extends Base
     {
         $post = Request::post();
         if($post['id']) {
-            $action = '添加酒店';
+            $action = '编辑酒店';
+            if(isset($post['create_time'])) unset($post['create_time']);
+            if(isset($post['modify_time'])) unset($post['modify_time']);
             $Model = \app\index\model\Hotel::get($post['id']);
         } else {
-            $action = '编辑酒店';
+            $action = '添加酒店';
             $Model = new \app\index\model\Hotel();
         }
 

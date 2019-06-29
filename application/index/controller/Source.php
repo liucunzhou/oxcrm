@@ -15,15 +15,26 @@ class Source extends Base
 {
     public function index()
     {
-        ### 获取平台列表
-        $platforms = \app\index\model\Source::getPlatforms();
-        $this->assign('platforms', $platforms);
-
-        $map[] = ['parent_id', '>', 0];
-        $list = model('source')->where($map)->order('parent_id asc,sort desc,id asc')->paginate(10);
-        $this->assign('list', $list);
-
-        return $this->fetch();
+        if(Request::isAjax()) {
+            $get = Request::param();
+            ### 获取平台列表
+            $platforms = \app\index\model\Source::getPlatforms();
+            $map[] = ['parent_id', '>', 0];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('source')->where($map)->order('parent_id asc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $list->getCollection()
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
     public function addSource()

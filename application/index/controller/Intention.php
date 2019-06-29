@@ -15,11 +15,24 @@ class Intention extends Base
 {
     public function index()
     {
-        $map = [];
-        $list = model('intention')->where($map)->order('is_valid desc,sort desc,id asc')->paginate(2);
-        $this->assign('list', $list);
-
-        return $this->fetch();
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('intention')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $list->getCollection()
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
     public function addIntention()

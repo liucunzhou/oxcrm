@@ -14,13 +14,24 @@ class Brand extends Base
 {
     public function index()
     {
-        // $map[] = ['delete_time', '=', '0'];
-        $map = [];
-        $list = model('brand')->where($map)->order('is_valid desc,sort desc,id asc')->paginate(10);
-        // echo model('brand')->getLastSql();
-        $this->assign('list', $list);
-
-        return $this->fetch();
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('brand')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $list->getCollection()
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
     public function addBrand()

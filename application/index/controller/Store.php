@@ -16,14 +16,30 @@ class Store extends Base
 {
     public function index()
     {
-        $map = [];
-        $list = model('store')->where($map)->order('brand_id,is_valid desc,sort desc')->paginate(10);
-        $this->assign('list', $list);
+        if(Request::isAjax()) {
+            $brands = Brand::getBrands();
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('store')->where($map)->order('brand_id,is_valid desc,sort desc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value) {
+                $value['brand'] = $brands[$value['brand_id']]['title'];
+            }
 
-        $brands = Brand::getBrands();
-        $this->assign('brands', $brands);
-
-        return $this->fetch();
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
     public function addStore()
