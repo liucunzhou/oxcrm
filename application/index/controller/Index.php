@@ -35,6 +35,29 @@ class Index extends Base
                 ],
             ],
 
+            '系统工具' => [
+                'icon'  => 'icon-lock',
+                'items' => [
+                    [
+                        'text'  => '生成模型',
+                        'url'   => 'System/createModel'
+                    ],
+                    [
+                        'text'  => '生成模块',
+                        'url'   => 'System/createController'
+                    ],
+                    [
+                        'text'  => '生成列表',
+                        'url'   => 'System/createView'
+                    ],
+                    [
+                        'text'  => '生成表单',
+                        'url'   => 'System/createForm'
+                    ],
+
+                ]
+            ],
+
             '权限管理' => [
                 'icon' => 'icon-lock',
                 'items' => [

@@ -1,0 +1,135 @@
+
+<table class="layui-table">
+    <colgroup>
+        <col width="100">
+        <col width="100">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>字段</th>
+        <th>字段类型</th>
+        <th>是否显示</th>
+        <th>显示名称</th>
+        <th>宽度</th>
+        <th>固定</th>
+        <th>是否编辑</th>
+        <th>是否排序</th>
+        <th>数据来源</th>
+        <th>查看源码</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>复选框</td>
+            <td>——</td>
+            <td>
+                <select name="field[{$key}][display]">
+                    <option value="0">不显示</option>
+                    <option value="1">显示</option>
+                </select>
+            </td>
+            </td>
+            <td>——</td>
+            <td><input type="text" name="field[{$key}][width]" placeholder="数字,默认单位为'px'" autocomplete="off" class="layui-input"></td>
+            <td>
+                <select name="field[{$key}][fixed]">
+                    <option value="none">none</option>
+                    <option value="left">left</option>
+                    <option value="right">right</option>
+                </select>
+            </td>
+            <td>
+                ——
+            </td>
+            <td>
+                ——
+            </td>
+            <td>
+                ——
+            </td>
+            <td>
+                ——
+            </td>
+        </tr>
+        <{foreach item="item" name="data"}>
+            <tr>
+                <td>{$key}</td>
+                <td>{$item}</td>
+                <td>
+                    <select name="field[{$key}][display]">
+                        <option value="0">不显示</option>
+                        <option value="1">显示</option>
+                    </select>
+                </td>
+                </td>
+                <td><input type="text" name="field[{$key}][title]" placeholder="表格头部" autocomplete="off" class="layui-input"></td>
+                <td><input type="text" name="field[{$key}][width]" placeholder="数字,默认单位为'px'" autocomplete="off" class="layui-input"></td>
+                <td>
+                    <select name="field[{$key}][fixed]">
+                        <option value="none">none</option>
+                        <option value="left">left</option>
+                        <option value="right">right</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="field[{$key}][edit]">
+                        <option value="0">不可编辑</option>
+                        <option value="1">可编辑</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="field[{$key}][sort]">
+                        <option value="0">不可排序</option>
+                        <option value="1">可排序</option>
+                    </select>
+                </td>
+                <td>
+                    <div class="layui-inline">
+                        <select name="field[{$key}][source]" class="source">
+                            <option value="0">默认</option>
+                            <{foreach item="file" name="modelFiles"}>
+                            <option value="{$file}">{$key}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <a class="layui-btn layui-btn-normal layui-show-code">查看源码</a>
+                </td>
+            </tr>
+        <{/foreach}>
+        <tr>
+            <td>操作栏</td>
+            <td>——</td>
+            <td>
+                <select name="field[{$key}][display]">
+                    <option value="0">不显示</option>
+                    <option value="1">显示</option>
+                </select>
+            </td>
+            </td>
+            <td><input type="text" name="field[{$key}][title]" placeholder="表格头部" autocomplete="off" class="layui-input"></td>
+            <td><input type="text" name="field[{$key}][width]" placeholder="数字,默认单位为'px'" autocomplete="off" class="layui-input"></td>
+            <td>
+                <select name="field[{$key}][fixed]">
+                    <option value="none">none</option>
+                    <option value="left">left</option>
+                    <option value="right">right</option>
+                </select>
+            </td>
+            <td>
+                ——
+            </td>
+            <td>
+                ——
+            </td>
+            <td>
+                ——
+            </td>
+            <td>
+                ——
+            </td>
+        </tr>
+    </tbody>
+</table>

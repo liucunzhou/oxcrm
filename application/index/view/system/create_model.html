@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>系统工具-创建模型</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>创建模型</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('Hotel/doCreateView')}" lay-filter="component-form-group">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">文件名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="file_title" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据依赖</label>
+                    <div class="layui-input-block">
+                        <select name="table-name" lay-filter="table-name">
+                            <option value=""></option>
+                            <{foreach item="table" name="tables"}>
+                                <option value="{$table[$field]}">{$table[$field]}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="create_time" placeholder="创建时间字段" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">更新时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="update_time" placeholder="更新时间字段" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">删除时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="delete_time" placeholder="删除时间字段" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">现有模型</label>
+                    <div class="layui-input-block">
+                        <select name="table-name" lay-filter="table-name">
+                            <option value=""></option>
+                            <{foreach item="dir" name="modelDirs"}>
+                                <option value="{$dir}">{$key}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="component-form">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table', 'form'], function(){
+        var admin = layui.admin
+            ,form = layui.form
+            ,$ = layui.$
+            ,element = layui.element;
+
+
+    });
+</script>
+</body>
+</html>
