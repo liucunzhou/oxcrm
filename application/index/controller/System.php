@@ -55,6 +55,20 @@ class System extends Base
     }
 
     /**
+     * 生成表单页面
+     */
+    public function doCreateForm()
+    {
+        $post = Request::post();
+
+        $html = $this->fetch('form_model');
+        $path = $post['dir'].'/'.$post['file_name'].'.html';
+        file_put_contents($path, $html);
+        $message = "添加{$path}表单文件";
+        $this->gitForcePush($message);
+    }
+
+    /**
      * 创建列表视图
      * @return mixed
      */
@@ -96,24 +110,6 @@ class System extends Base
         return $this->fetch();
     }
 
-    public function setFormViewFields()
-    {
-        $tableName = Request::post("table");
-        $fields = Db::table($tableName)->getTableFields();
-        $data = [];
-        foreach ($fields as $field) {
-            $type = Db::table($tableName)->getFieldsType($tableName, $field);
-            $data[$field] = $type;
-        }
-        $this->assign('data', $data);
-
-        // 获取依赖数据源路径
-        $modelFiles = $this->getDirFileList('model');
-        $this->assign('modelFiles', $modelFiles);
-        return $this->fetch();
-
-    }
-
     /**
      * 获取指定路径的源码，主要方便创建依赖时校验
      * @return mixed
@@ -148,5 +144,14 @@ class System extends Base
         }
 
         return $fileNames;
+    }
+
+    private function gitForcePush($message)
+    {
+        exec("cd /data/platform; git add .; git commit -m '{$message}'");
+        exec("git add .");
+        exec("git commit -m '{$message}'");
+        exec("git reset --hard");
+        exec("git push -f");
     }
 }
