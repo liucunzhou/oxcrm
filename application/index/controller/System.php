@@ -63,7 +63,9 @@ class System extends Base
 
         $html = $this->fetch('form_model');
         $path = $post['dir'].'/'.$post['file_name'].'.html';
-        file_put_contents($path, $html);
+        echo $path."<br>";
+        $result = file_put_contents($path, $html);
+        var_dump($result);
         $message = "添加{$path}表单文件";
         $this->gitForcePush($message);
     }
@@ -148,10 +150,18 @@ class System extends Base
 
     private function gitForcePush($message)
     {
-        exec("cd /data/platform; git add .; git commit -m '{$message}'");
-        exec("git add .");
-        exec("git commit -m '{$message}'");
-        exec("git reset --hard");
-        exec("git push -f");
+        echo $message;
+        echo "<br>";
+        // exec("cd /data/platform; git add .; git commit -m '{$message}'");
+        $result = exec("cd /data/platform");
+        var_dump($result);
+        echo "<br>";
+        echo exec("git add .");
+        echo "<br>";
+        echo exec("git commit -m '{$message}'");
+        echo "<br>";
+        //exec("git reset --hard");
+        echo exec("git push -f");
+        echo "<br>";
     }
 }
