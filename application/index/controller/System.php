@@ -39,6 +39,18 @@ class System extends Base
      */
     public function createForm()
     {
+        $dbName = Db::getConfig('database');
+        $field = $field = 'Tables_in_'.$dbName;
+        $this->assign('field', $field);
+
+        // 获取数据依赖路径
+        $sql = "show tables";
+        $tables = Db::query($sql);
+        $this->assign('tables', $tables);
+
+        // 获取保存目录路径
+        $viewDirs = $this->getDirFileList('view');
+        $this->assign('viewDirs', $viewDirs);
         return $this->fetch();
     }
 
@@ -82,6 +94,24 @@ class System extends Base
         $modelFiles = $this->getDirFileList('model');
         $this->assign('modelFiles', $modelFiles);
         return $this->fetch();
+    }
+
+    public function setFormViewFields()
+    {
+        $tableName = Request::post("table");
+        $fields = Db::table($tableName)->getTableFields();
+        $data = [];
+        foreach ($fields as $field) {
+            $type = Db::table($tableName)->getFieldsType($tableName, $field);
+            $data[$field] = $type;
+        }
+        $this->assign('data', $data);
+
+        // 获取依赖数据源路径
+        $modelFiles = $this->getDirFileList('model');
+        $this->assign('modelFiles', $modelFiles);
+        return $this->fetch();
+
     }
 
     /**

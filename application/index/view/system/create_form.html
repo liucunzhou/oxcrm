@@ -14,16 +14,16 @@
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
-        <a><cite>创建视图</cite></a>
+        <a><cite>创建表单</cite></a>
     </div>
 </div>
 
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Hotel/doCreateView')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('Hotel/doCreateForm')}" lay-filter="component-form-group">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">视图名称</label>
+                    <label class="layui-form-label">页面标题</label>
                     <div class="layui-input-block">
                         <input type="text" name="page_title" lay-verify="required" placeholder="请输入页面标题" autocomplete="off" class="layui-input">
                     </div>
@@ -52,74 +52,6 @@
                     <label class="layui-form-label">字段设置</label>
                     <div class="layui-input-block" id="set-fields-block">
                         <input type="text" value="请先选择'数据依赖'" disabled autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">工具栏</label>
-                    <div class="layui-input-block">
-                        <table class="layui-table">
-                            <colgroup>
-                                <col width="100">
-                                <col>
-                                <col width="100">
-                                <col>
-                            </colgroup>
-                            <tr>
-                                <td>显示名称</td>
-                                <td>
-                                    <input type="text" name="toolbar[text][]" lay-verify="required" autocomplete="off" class="layui-input">
-                                </td>
-                                <td>事件名称</td>
-                                <td>
-                                    <input type="text" name="toolbar[name][]" lay-verify="required" autocomplete="off" class="layui-input">
-                                </td>
-                                <td>逻辑路径</td>
-                                <td>
-                                    <input type="text" name="toolbar[action][]" lay-verify="required" autocomplete="off" class="layui-input">
-                                </td>
-                                <td>
-                                    <div class="layui-btn-group">
-                                        <a class="layui-btn add-toolbar">复制</a>
-                                        <a class="layui-btn del-toolbar">删除</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">行操作</label>
-                    <div class="layui-input-block">
-                        <table class="layui-table">
-                            <colgroup>
-                                <col width="100">
-                                <col>
-                                <col width="100">
-                                <col>
-                            </colgroup>
-                            <tr>
-                                <td>显示名称</td>
-                                <td>
-                                    <input type="text" name="tool[text][]" lay-verify="required" autocomplete="off" class="layui-input">
-                                </td>
-                                <td>事件名称</td>
-                                <td>
-                                    <input type="text" name="tool[name][]" lay-verify="required" autocomplete="off" class="layui-input">
-                                </td>
-                                <td>逻辑路径</td>
-                                <td>
-                                    <input type="text" name="tool[action][]" lay-verify="required" autocomplete="off" class="layui-input">
-                                </td>
-                                <td>
-                                    <div class="layui-btn-group">
-                                        <a class="layui-btn add-tool">复制</a>
-                                        <a class="layui-btn del-tool">删除</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
 
@@ -160,63 +92,11 @@
             ,element = layui.element;
 
         form.on("select(table-name)", function (data) {
-            var url = '{:url("System/setTableViewFields")}';
+            var url = '{:url("System/setFormViewFields")}';
             $.post(url, {table:data.value}, function (result) {
                 $("#set-fields-block").html(result);
                 form.render();
             })
-        });
-
-        // 增加工具栏
-        $(document).on("click", ".add-toolbar", function(){
-            var table = $(this).parents("table");
-            var tr = $(this).parents("tr");
-            var ntr = tr.clone();
-            table.append(ntr);
-        });
-
-        // 删除工具栏
-        $(document).on("click", ".del-toolbar", function(){
-            var message = '确认删除此行么?';
-            var table = $(this).parents("table");
-            var tr = $(this).parents("tr");
-            var trs = table.find("tr");
-            if(trs.length == 1) {
-                message = "这已经是最后一行！<br>删除后，此页面将不出现工具栏";
-            }
-
-            layer.confirm(message, {
-                btn: ['确定','取消'] //按钮
-            }, function(){
-                tr.remove();
-                layer.msg('删除成功', {icon: 1});
-            });
-        });
-
-        // 增加操作栏操作
-        $(document).on("click", ".add-tool", function(){
-            var table = $(this).parents("table");
-            var tr = $(this).parents("tr");
-            var ntr = tr.clone();
-            table.append(ntr);
-        });
-
-        // 删除操作栏操作
-        $(document).on("click", ".del-tool", function(){
-            var message = '确认删除此行么?';
-            var table = $(this).parents("table");
-            var tr = $(this).parents("tr");
-            var trs = table.find("tr");
-            if(trs.length == 1) {
-                message = "这已经是最后一行！<br>删除后，页面将不显示操作按钮";
-            }
-
-            layer.confirm(message, {
-                btn: ['确定','取消'] //按钮
-            }, function(){
-                tr.remove();
-                layer.msg('删除成功', {icon: 1});
-            });
         });
 
         // 查看代码
