@@ -21,7 +21,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Hotel/doCreateForm')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('System/doCreateForm')}" lay-filter="component-form-group">
                 <div class="layui-form-item">
                     <label class="layui-form-label">页面标题</label>
                     <div class="layui-input-block">
@@ -32,7 +32,14 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">文件名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="file_title" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="file_name" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">操作地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="action_name" lay-verify="required" placeholder="contoller/action" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -58,7 +65,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">保存目录</label>
                     <div class="layui-input-block">
-                        <select name="table-name" lay-filter="table-name">
+                        <select name="dir" lay-filter="dir" lay-verify="required">
                             <option value=""></option>
                             <{foreach item="dir" name="viewDirs"}>
                                 <option value="{$dir}">{$key}</option>
@@ -70,7 +77,7 @@
                 <div class="layui-form-item layui-layout-admin">
                     <div class="layui-input-block">
                         <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="component-form">立即提交</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -99,6 +106,58 @@
             })
         });
 
+        // 增加工具栏
+        $(document).on("click", ".add-toolbar", function(){
+            var table = $(this).parents("table");
+            var tr = $(this).parents("tr");
+            var ntr = tr.clone();
+            table.append(ntr);
+        });
+
+        // 删除工具栏
+        $(document).on("click", ".del-toolbar", function(){
+            var message = '确认删除此行么?';
+            var table = $(this).parents("table");
+            var tr = $(this).parents("tr");
+            var trs = table.find("tr");
+            if(trs.length == 1) {
+                message = "这已经是最后一行！<br>删除后，此页面将不出现工具栏";
+            }
+
+            layer.confirm(message, {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                tr.remove();
+                layer.msg('删除成功', {icon: 1});
+            });
+        });
+
+        // 增加操作栏操作
+        $(document).on("click", ".add-tool", function(){
+            var table = $(this).parents("table");
+            var tr = $(this).parents("tr");
+            var ntr = tr.clone();
+            table.append(ntr);
+        });
+
+        // 删除操作栏操作
+        $(document).on("click", ".del-tool", function(){
+            var message = '确认删除此行么?';
+            var table = $(this).parents("table");
+            var tr = $(this).parents("tr");
+            var trs = table.find("tr");
+            if(trs.length == 1) {
+                message = "这已经是最后一行！<br>删除后，页面将不显示操作按钮";
+            }
+
+            layer.confirm(message, {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                tr.remove();
+                layer.msg('删除成功', {icon: 1});
+            });
+        });
+
         // 查看代码
         $(document).on("click", ".layui-show-code", function(){
             var url = "{:url('System/getSourceCode')}";
@@ -112,7 +171,21 @@
                     area: [width+'px',height+'px'],
                 });
             })
-        })
+        });
+
+        // 提交表单
+        form.on('submit(create-form)', function(data){
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function(result){
+                console.log(result);
+                alert(result.msg);
+                if(result.code == '200') {
+                    window.location.reload();
+                }
+            });
+            return false;
+        });
 
     });
 </script>

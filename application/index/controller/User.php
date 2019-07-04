@@ -11,23 +11,38 @@ class User extends Base
 {
     public function index()
     {
-        // echo "<pre>";
-        $User = new \app\index\model\User();
-        $list = $User->with('userAuth')->order('sort desc')->paginate(15);
-        $this->assign('list', $list);
-        // print_r($list);
+        if(Request::isAjax()) {
+            /**
+            $User = new \app\index\model\User();
+            $list = $User->with('userAuth')->order('sort desc')->paginate(15);
+            $this->assign('list', $list);
 
-        ### 获取角色列表
-        $AuthGroup = new AuthGroup();
-        $roles = $AuthGroup::getRoles();
-        $this->assign('roles', $roles);
-        $this->assign('AuthGroup', $AuthGroup);
 
-        ### 获取部门列表
-        $departments = Department::getDepartments();
-        $this->assign('departments', $departments);
+            ### 获取角色列表
+            $AuthGroup = new AuthGroup();
+            $roles = $AuthGroup::getRoles();
+            $this->assign('roles', $roles);
 
-        return $this->fetch();
+            ### 获取部门列表
+            $departments = Department::getDepartments();
+            **/
+
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('user')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $list->getCollection()
+            ];
+            return json($result);
+        } else {
+            return $this->fetch();
+        }
     }
 
     public function editUser()

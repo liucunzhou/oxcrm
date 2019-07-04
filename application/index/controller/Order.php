@@ -8,10 +8,24 @@ class Order extends Base
 {
     public function index()
     {
-        $Order = new \app\index\model\OrderEntire();
-        $list = $Order->order('create_time desc')->paginate(15);
-        $this->assign('list', $list);
-        return $this->fetch();
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('OrderEntire')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $list->getCollection()
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
     public function wedding()

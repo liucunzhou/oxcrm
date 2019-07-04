@@ -1,116 +1,116 @@
-<!-- 面包屑 -->
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>首页</li>
-        <li>订单管理</li>
-        <li>一站式订单</li>
-    </ul>
-    <div class="widget-toolbar">
-        <a href="javascript:history.go(-1);">
-            <span class="glyphicon glyphicon-share-alt"></span>
-            <span class="text">返回</span>
-        </a>
-    </div>
-    <div class="widget-toolbar">
-        <a href="{:url('Order/addOrder')}">
-            <span class="text">添加订单</span>
-        </a>
-    </div>
-    <div class="widget-toolbar">
-        <a href="javascript:void(0);" class="search-action-modal">
-            <span class="text">高级筛选</span>
-        </a>
-    </div>
-    <div class="widget-toolbar no-border">
-        <form>
-            <input type="text" name="keywords" placeholder="请输入订单号"/>
-            <a class="icon-search" href="javascript:void(0);"></a>
-        </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>订单管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>订单管理</cite></a>
     </div>
 </div>
 
-<!--页面详情-->
-<div class="page-content">
-    <div class="customer-list">
-        <div class="customer-item customer-list-header">
-            <div class="cell-checkbox">
-                <input type="checkbox" class="check_all"/>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                                        <script type="text/html" id="table-toolbar">
+                                                <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                        </div>
+                                            </script>
+                                        <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                                                    <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
+                                                </div>
+                    </script>
+                                    </div>
             </div>
-            <div class="cell-customerno">渠道来源</div>
-            <div class="cell-realname">签单销售</div>
-            <div class="cell-phone">区域经理</div>
-            <div class="cell-phone1">签约日期</div>
-            <div class="cell-publisher">签约日期</div>
-            <div class="cell-news-type">新郎姓名</div>
-            <div class="cell-ordered-staff">新郎电话</div>
-            <div class="cell-change">新娘姓名</div>
-            <div class="cell-banquet-size">新娘电话</div>
-            <div class="cell-budget">一站式</div>
-            <div class="cell-valid">一站式价格</div>
-            <div class="cell-remark-amount">桌数</div>
-            <div class="cell-remark">餐标</div>
-            <div class="cell-wedding-intention">酒水</div>
-            <div class="cell-wedding-date">服务费</div>
-            <div class="cell-zone">应收客人费用</div>
-            <div class="cell-hotel">收婚庆进场费</div>
-            <div class="cell-source">收入总额</div>
-            <div class="cell-createtime">付酒店进场费</div>
-            <div class="cell-createtime">应付酒店费用</div>
-            <div class="cell-createtime">平台渠道费用</div>
-            <div class="cell-createtime">个人渠道费用</div>
-            <div class="cell-createtime">其他</div>
-            <div class="cell-createtime">红丝婚庆结算费</div>
-            <div class="cell-createtime">婚宴提成</div>
-            <div class="cell-createtime">婚庆提成</div>
-            <div class="cell-createtime">营收</div>
-            <div class="cell-createtime">毛利</div>
-            <div class="cell-createtime">支出总额</div>
-            <div class="cell-createtime">最终提成</div>
-            <div class="cell-createtime">区域经理提成</div>
-            <div class="cell-createtime">区域经理引流提成</div>
-            <div class="cell-createtime">申请时间</div>
-            <div class="cell-createtime">创建时间</div>
         </div>
-        <{foreach name="list" item="val"}>
-        <div class="customer-item">
-            <div class="cell-checkbox">
-                <input type="checkbox" name="id[]" value="{$val['id']}" class="id"/>
-            </div>
-            <div class="cell-customerno">{$val['source_id']}</div>
-            <div class="cell-realname">{$val['sales_id']}</div>
-            <div class="cell-phone">{$val['manager_id']}</div>
-            <div class="cell-phone1">{$val['sign_date']}</div>
-            <div class="cell-publisher">{$val['wedding_date']}</div>
-            <div class="cell-news-type">{$val['bridegroom']}</div>
-            <div class="cell-ordered-staff">{$val['bridegroom_mobile']}</div>
-            <div class="cell-change">{$val['bride']}</div>
-            <div class="cell-banquet-size">{$val['bride_mobile']}</div>
-            <div class="cell-budget">{$val['is_entire']}</div>
-            <div class="cell-valid">{$val['entire_price']}</div>
-            <div class="cell-remark-amount">{$val['table_amount']}</div>
-            <div class="cell-remark">{$val['table_price']}</div>
-            <div class="cell-wedding-intention">{$val['wine_fee']}</div>
-            <div class="cell-wedding-date">{$val['service_fee']}</div>
-            <div class="cell-zone">{$val['income_customer_fee']}</div>
-            <div class="cell-hotel">{$val['income_wedding_celebration_admission_fee']}</div>
-            <div class="cell-source">{$val['income_fee']}</div>
-            <div class="cell-createtime">{$val['pay_hotel_admission_fee']}</div>
-            <div class="cell-createtime">{$val['pay_hotel_fee']}</div>
-            <div class="cell-createtime">{$val['platform_source_fee']}</div>
-            <div class="cell-createtime">{$val['person_source_fee']}</div>
-            <div class="cell-createtime">{$val['other_source_fee']}</div>
-            <div class="cell-createtime">{$val['hongsi_settlement_fee']}</div>
-            <div class="cell-createtime">{$val['wedding_banquet_commission']}</div>
-            <div class="cell-createtime">{$val['wedding_celebration_commission']}</div>
-            <div class="cell-createtime">{$val['revenue']}</div>
-            <div class="cell-createtime">{$val['gross_profit']}</div>
-            <div class="cell-createtime">{$val['total_pay']}</div>
-            <div class="cell-createtime">{$val['end_commission']}</div>
-            <div class="cell-createtime">{$val['manager_commission']}</div>
-            <div class="cell-createtime">{$val['manager_recommend_commission']}</div>
-            <div class="cell-createtime">申请时间</div>
-            <div class="cell-createtime">{$val['create_time']}</div>
-        </div>
-        <{/foreach}>
     </div>
 </div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function(){
+        var admin = layui.admin
+            ,table = layui.table;
+
+        table.render({
+            elem: '#table'
+            ,url: '/index/order/index.html'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '订单管理'
+            ,cols: [[{"field":"id","title":"\u7f16\u53f7","width":"120"},{"field":"admin_id","title":"\u64cd\u4f5c\u5458","width":"120"},{"field":"customer_id","title":"\u5ba2\u6237\u59d3\u540d","width":"120"},{"field":"source_id","title":"\u6e20\u9053\u6765\u6e90","width":"120"},{"field":"sales_id","title":"\u8ddf\u5355\u9500\u552e","width":"120"},{"field":"manager_id","title":"\u533a\u57df\u7ecf\u7406","width":"120"},{"field":"sign_date","title":"\u7b7e\u7ea6\u65e5\u671f","width":"120"},{"field":"wedding_date","title":"\u5a5a\u793c\u65e5\u671f","width":"120"},{"field":"bridegroom","title":"\u65b0\u90ce\u59d3\u540d","width":"120"},{"field":"bridegroom_mobile","title":"\u65b0\u90ce\u624b\u673a","width":"120"},{"field":"bride","title":"\u65b0\u5a18\u59d3\u540d","width":"120"},{"field":"bride_mobile","title":"\u65b0\u5a18\u624b\u673a","width":"120"},{"field":"is_entire","title":"\u4e00\u7ad9\u5f0f","width":"120"},{"field":"entire_price","title":"\u4e00\u7ad9\u5f0f\u4ef7\u683c","width":"120"},{"field":"table_amount","title":"\u684c\u6570","width":"120"},{"field":"table_price","title":"\u9910\u6807","width":"120"},{"field":"wine_fee","title":"\u9152\u6c34","width":"120"},{"field":"service_fee","title":"\u670d\u52a1\u8d39","width":"120"},{"field":"income_customer_fee","title":"\u5e94\u6536\u5ba2\u4eba\u8d39\u7528","width":"120"},{"field":"income_wedding_celebration_admission_fee","title":"\u6536\u5a5a\u5e86\u8fdb\u573a\u8d39","width":"120"},{"field":"income_fee","title":"\u6536\u5165\u603b\u989d","width":"120"},{"field":"pay_hotel_admission_fee","title":"\u4ed8\u9152\u5e97\u8fdb\u573a\u8d39","width":"120"},{"field":"pay_hotel_fee","title":"\u5e94\u4ed8\u9152\u5e97\u8d39\u7528","width":"120"},{"field":"platform_source_fee","title":"\u5e73\u53f0\u6e20\u9053\u8d39\u7528","width":"120"},{"field":"person_source_fee","title":"\u4e2a\u4eba\u6e20\u9053\u8d39\u7528","width":"120"},{"field":"other_source_fee","title":"\u5176\u4ed6","width":"120"},{"field":"hongsi_settlement_fee","title":"\u7ea2\u4e1d\u5a5a\u5e86\u7ed3\u7b97\u8d39","width":"120"},{"field":"wedding_banquet_commission","title":"\u5a5a\u5bb4\u63d0\u6210","width":"120"},{"field":"wedding_celebration_commission","title":"\u5a5a\u5e86\u63d0\u6210","width":"120"},{"field":"total_pay","title":"\u652f\u51fa\u603b\u989d","width":"120"},{"field":"revenue","title":"\u8425\u6536","width":"120"},{"field":"gross_profit","title":"\u6bdb\u5229","width":"120"},{"field":"end_commission","title":"\u6700\u7ec8\u63d0\u6210","width":"120"},{"field":"manager_commission","title":"\u533a\u57df\u7ecf\u7406\u63d0\u6210","width":"120"},{"field":"manager_recommend_commission","title":"\u533a\u57df\u7ecf\u7406\u5f15\u6d41\u63d0\u6210","width":"120"},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":"120"},{"field":"update_time","title":"update_time","width":"120"},{"field":"delete_time","title":"delete_time","width":"120"},{"field":"remark","title":"remark","width":"120"},{"field":"tool","title":"\u64cd\u4f5c","width":"120","fixed":"right","type":"tool","toolbar":"#table-tool"}]]
+            ,page: true
+        });
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var url = '';
+            switch(obj.event){
+                                case 'add':
+                    var data = checkStatus.data;
+                    url = '/index/order/addorder.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                            };
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function(obj){
+            switch(obj.event){
+                                case 'edit':
+                    url = '/index/order/editorder.html';
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                                case 'del':
+                    url = '/index/order/delorder.html';
+                    layer.open({
+                        type: 2,
+                        title: '删除',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                            };
+        });
+
+    });
+</script>
+</body>
+</html>

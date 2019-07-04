@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>员工列表</title>
+    <title>{$Request.param.page_title}</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -14,7 +14,7 @@
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
-        <a><cite>员工列表</cite></a>
+        <a><cite>{$Request.param.page_title}</cite></a>
     </div>
 </div>
 
@@ -24,18 +24,26 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <table class="layui-hide" id="table" lay-filter="table"></table>
-                                        <script type="text/html" id="table-toolbar">
-                                                <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-                        </div>
-                                            </script>
-                                        <script type="text/html" id="table-tool">
+                    <{if !empty($toolbars)}>
+                    <script type="text/html" id="table-toolbar">
+                        <{foreach item="toolbar" name="toolbars['text']"}>
                         <div class="layui-btn-container">
-                                                    <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
-                                                    <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
-                                                </div>
+                            <button class="layui-btn layui-btn-sm" lay-event="{$toolbars['name'][$key]}">{$toolbars['text'][$key]}</button>
+                        </div>
+                        <{/foreach}>
                     </script>
-                                    </div>
+                    <{/if}>
+
+                    <{if !empty($tools)}>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                        <{foreach item="tool" name="tools['text']"}>
+                            <button class="layui-btn layui-btn-sm" lay-event="{$tools['name'][$key]}">{$tools['text'][$key]}</button>
+                        <{/foreach}>
+                        </div>
+                    </script>
+                    <{/if}>
+                </div>
             </div>
         </div>
     </div>
@@ -53,10 +61,12 @@
 
         table.render({
             elem: '#table'
-            ,url: '/index/user/index.html'
+            ,url: '{:url($Request.param.ajax_url)}'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
             ,toolbar: '#table-toolbar'
-            ,title: '员工列表'
-            ,cols: [[{"field":"id","title":"\u7f16\u53f7"},{"field":"role_id","title":"\u89d2\u8272"},{"field":"department_id","title":"\u90e8\u95e8"},{"field":"admin_id","title":"\u64cd\u4f5c\u5458"},{"field":"nickname","title":"\u6635\u79f0"},{"field":"realname","title":"\u771f\u5b9e\u59d3\u540d"},{"field":"mobile","title":"\u624b\u673a\u53f7"},{"field":"sort","title":"\u6392\u5e8f"},{"field":"is_valid","title":"\u72b6\u6001"},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4"},{"field":"tool","title":"\u64cd\u4f5c","type":"tool","toolbar":"#table-tool"}]]
+            ,title: '{$Request.param.page_title}'
+            ,cols: [{:htmlspecialchars_decode($cols,ENT_QUOTES)}]
             ,page: true
         });
 
@@ -68,44 +78,38 @@
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
             switch(obj.event){
-                                case 'add':
+                <{foreach item="toolbar" name="toolbars[text]"}>
+                case '{$toolbars["name"][$key]}':
                     var data = checkStatus.data;
-                    url = '/index/user/adduser.html';
+                    url = '{:url($toolbars["action"][$key])}';
                     layer.open({
                         type: 2,
-                        title: '添加',
+                        title: '{$toolbars["text"][$key]}',
                         content: url,
                         area: [width+'px',height+'px'],
                         offset:'rb'
                     });
                     break;
-                            };
+                <{/foreach}>
+            };
         });
 
         //监听行工具事件
         table.on('tool(table)', function(obj){
             switch(obj.event){
-                                case 'edit':
-                    url = '/index/user/edituser.html';
+                <{foreach item="tool" name="tools[text]"}>
+                case '{$tools["name"][$key]}':
+                    url = '{:url($tools["action"][$key])}';
                     layer.open({
                         type: 2,
-                        title: '编辑',
+                        title: '{$tools["text"][$key]}',
                         content: url,
                         area: [width+'px',height+'px'],
                         offset:'rb'
                     });
                     break;
-                                case 'auth':
-                    url = '/index/user/editauth.html';
-                    layer.open({
-                        type: 2,
-                        title: '授权',
-                        content: url,
-                        area: [width+'px',height+'px'],
-                        offset:'rb'
-                    });
-                    break;
-                            };
+                <{/foreach}>
+            };
         });
 
     });

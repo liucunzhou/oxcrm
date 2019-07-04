@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>更新品牌信息</title>
+    <title>test</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -14,40 +14,46 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="/index/brand/doeditbrand.html" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="/index/system/test.html" lay-filter="component-form-group">
                                             <div class="layui-form-item">
-                                <label class="layui-form-label">品牌名称</label>
+                                <label class="layui-form-label">ID</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="title" value="{$data[title]}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                                    <input type="text" name="id" value="{$data[id]}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                                                     <div class="layui-form-item">
-                                <label class="layui-form-label">排序</label>
+                                <label class="layui-form-label"></label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="sort" value="{$data[sort]}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                                                    <div class="layui-form-item">
-                                <label class="layui-form-label">上/下线</label>
-                                <div class="layui-input-block">
-                                                                            <select name="is_valid" lay-verify="">
+                                                                            
+                                            <{php}>
+                                            $options = app\index\model\Department::getList();
+                                            <{/php}>
+                                        
+                                        <select name="parent_id" lay-verify="">
                                             <option value=""></option>
-                                                                                        <option value="0" <{if $data[is_valid]==0}>selected<{/if}>>上线</option>
-                                                                                        <option value="1" <{if $data[is_valid]==1}>selected<{/if}>>下线</option>
+                                            <{foreach item="val" name="options" key="k"}>
+                                                <option value="{$k}" <{if $data[parent_id]=={$k}}>selected<{/if}>>{$val['title']}</option>
+                                            <{/foreach}>
+                                        </select>
+                                                                    </div>
+                            </div>
+                                                    <div class="layui-form-item">
+                                <label class="layui-form-label">标题</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" value="{$data[title]}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                                                    <div class="layui-form-item">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-input-block">
+                                                                            <select name="route" lay-verify="">
+                                            <option value=""></option>
+                                                                                        <option value="0" <{if $data[route]==0}>selected<{/if}>>下线</option>
+                                                                                        <option value="1" <{if $data[route]==1}>selected<{/if}>>上线</option>
                                                                                     </select>
                                                                     </div>
                             </div>
-                        
-                <div class="layui-form-item layui-layout-admin">
-                    <div class="layui-input-block">
-                        <input type="hidden" name="id" value="{$data['id']}" />
-                        <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                                    </form>
         </div>
     </div>
 </div>

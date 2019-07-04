@@ -61,13 +61,20 @@ class System extends Base
     {
         $post = Request::post();
 
+        print_r($post);
+        $fields = $post['field'];
+        $this->assign('fields', $fields);
+
         $html = $this->fetch('form_model');
         $path = $post['dir'].'/'.$post['file_name'].'.html';
-        echo $path."<br>";
         $result = file_put_contents($path, $html);
-        var_dump($result);
-        $message = "添加{$path}表单文件";
-        $this->gitForcePush($message);
+
+        if($result > 0) {
+            return json(['code' => '200', 'msg' => '生成表单成功']);
+        } else {
+            return json(['code' => '500', 'msg' => '生成表单失败']);
+        }
+
     }
 
     /**
@@ -91,11 +98,90 @@ class System extends Base
         return $this->fetch();
     }
 
+    public function doCreateView()
+    {
+        $post = Request::post();
+        print_r($post);
+
+        // 设置显示字段
+        $cols = [];
+        $fields = $post['field'];
+        foreach ($fields as $key=>$field) {
+            $row = [];
+            // 检测是否显示 checkbox
+            if($key=='checkbox' && $field['display'] == 1) {
+                $row['type'] = $key;
+                $row['width'] = !empty($field['width']) ? $field['width'] : '120';
+                $field['fixed']!='none' && $row['fixed'] = $field['fixed'];
+            } else if($key == 'tool' && $field['display'] == 1) {
+                $row['type'] = 'tool';
+                $row['title'] = '操作';
+                $row['toolbar'] = '#table-tool';
+                $row['width'] = !empty($field['width']) ? $field['width'] : '120';
+            } else if($field['display'] == 1) {
+                $row['field'] = $key;
+                $row['title'] = $field['title']?$field['title']:$key;
+                if($field['width'] != 'full') {
+                    $row['width'] = !empty($field['width']) ? $field['width'] : '120';
+                }
+
+                $field['fixed']!='none' && $row['fixed'] = $field['fixed'];
+                $field['edit'] && $field['edit'] = true;
+                $field['sort'] && $field['sort'] = true;
+            } else {
+                continue;
+            }
+            !empty($row) && $cols[] = $row;
+        }
+        $colsJson = json_encode($cols, JSON_NUMERIC_CHECK);
+        $this->assign('cols', $colsJson);
+
+        // 设置toolbar
+        $toolbars = $post['toolbar'];
+        print_r($toolbars);
+        $this->assign('toolbars', $toolbars);
+
+        $tools = $post['tool'];
+        $this->assign('tools', $tools);
+
+        // 保存生成的页面
+        $html = $this->fetch('table_model');
+        $path = $post['table-name'].'/'.$post['file_name'].'.html';
+        $result = file_put_contents($path, $html);
+
+        if($result > 0) {
+            return json(['code' => '200', 'msg' => '生成表单成功']);
+        } else {
+            return json(['code' => '500', 'msg' => '生成表单失败']);
+        }
+    }
+
     /**
      * 设置列表显示的字段名称
      * @return mixed
      */
     public function setTableViewFields()
+    {
+        $tableName = Request::post("table");
+        $fields = Db::table($tableName)->getTableFields();
+        $data = [];
+        foreach ($fields as $field) {
+            $type = Db::table($tableName)->getFieldsType($tableName, $field);
+            $data[$field] = $type;
+        }
+        $this->assign('data', $data);
+
+        // 获取依赖数据源路径
+        $modelFiles = $this->getDirFileList('model');
+        $this->assign('modelFiles', $modelFiles);
+        return $this->fetch();
+    }
+
+    /**
+     * 设置列表显示的字段名称
+     * @return mixed
+     */
+    public function setFormViewFields()
     {
         $tableName = Request::post("table");
         $fields = Db::table($tableName)->getTableFields();

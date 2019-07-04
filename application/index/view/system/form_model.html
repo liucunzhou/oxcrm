@@ -14,14 +14,68 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url($Request.param.action)}" lay-filter="component-form-group">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">酒店名称</label>
+            <form class="layui-form" method="post" action="{:url($Request.param.action_name)}" lay-filter="component-form-group">
+                <{foreach item="field" name="fields"}>
+                    <{switch field.display }>
+                        <{case text}>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$field.title}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="{$key}" value="<{literal}>{$data[<{/literal}>{$key}<{literal}>]}<{/literal}>" lay-verify="{$field.validate}" placeholder="{$field.placeholder}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        <{/case}>
+                        <{case textarea}>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$field.title}</label>
+                                <div class="layui-input-block">
+                                    <textarea name="{$key}" lay-verify="{$field.placeholder}" placeholder="{$field.placeholder}" class="layui-textarea"><{literal}>{$data[<{/literal}>{$key}<{literal}>]}<{/literal}></textarea>
+                                </div>
+                            </div>
+                        <{/case}>
+                        <{case select}>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$field.title}</label>
+                                <div class="layui-input-block">
+                                    <{if empty($field['enum'])}>
+                                        <{php}>$pathinfo = pathinfo($field['source']);<{/php}>
+                                        <{literal}>
+                                            <{php}>
+                                            $options = app\index\model\<{/literal}>{$pathinfo['filename']}<{literal}>::getList();
+                                            <{/php}>
+                                        <{/literal}>
+                                        <select name="{$key}" lay-verify="{$field.placeholder}">
+                                            <option value=""></option>
+                                            <{literal}><{foreach item="val" name="options" key="k"}><{/literal}>
+                                                <option value="<{literal}>{$k}<{/literal}>" <{literal}><{if $data[<{/literal}>{$key}<{literal}>]==<{/literal}><{literal}>{$k}<{/literal}><{literal}>}>selected<{/if}>>{$val['title']}</option><{/literal}>
+                                            <{literal}><{/foreach}><{/literal}>
+                                        </select>
+                                    <{else /}>
+                                        <{php}>
+                                            $options = explode(',', $field['enum']);
+                                        <{/php}>
+                                        <select name="{$key}" lay-verify="{$field.placeholder}">
+                                            <option value=""></option>
+                                            <{foreach item="val" name="options" key="k"}>
+                                            <option value="{$k}" <{literal}><{if $data[<{/literal}>{$key}<{literal}>]==<{/literal}>{$k}<{literal}>}>selected<{/if}><{/literal}>>{$val}</option>
+                                            <{/foreach}>
+                                        </select>
+                                    <{/if}>
+                                </div>
+                            </div>
+                        <{/case}>
+                    <{/switch}>
+                <{/foreach}>
+
+                <div class="layui-form-item layui-layout-admin">
                     <div class="layui-input-block">
-                        <input type="text" name="title" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                        <input type="hidden" name="id" value="<{literal}>{$data['id']}<{/literal}>" />
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>

@@ -1,52 +1,65 @@
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>首页</li>
-        <li>权限管理</li>
-        <li>模块管理</li>
-    </ul>
-    <div class="widget-toolbar">
-        <a href="javascript:history.go(-1);">
-            <span class="glyphicon glyphicon-share-alt"></span>
-            <span class="text">返回</span>
-        </a>
-    </div>
-    <div class="widget-toolbar">
-        <a href="javascript:void(0);" class="action-modal" data-action="{:url('Auth/addAuth')}">
-            <span class="text">添加权限</span>
-        </a>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>模块管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>模块管理</cite></a>
     </div>
 </div>
 
-<!--页面详情-->
-<div class="page-content">
-    <table class="table table-bordered table-responsive table-hover">
-        <{volist name="modules" id="module"}>
-            <tr>
-                <td width="80">{$module.id}</td>
-                <td width="160">{$module.title}</td>
-                <td class="no-padding">
-                    <table class="table no-padding no-margin">
-                        <{volist name="items" id="item"}>
-                            <{if $item['parent_id']==$module['id']}>
-                                <tr>
-                                    <td width="180">{$item['title']}</td>
-                                    <td>{$item['route']}</td>
-                                    <td width="120">
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <table class="layui-table">
+                    <tr>
+                        <th>编号</th>
+                        <th>模块</th>
+                        <th>节点</th>
+                    </tr>
 
-                                        <a class="btn btn-xs btn-purple action-modal" href="javascript:void(0);" data-action="{:url('Auth/editAuth',['id'=>$item['id']])}">
-                                            编辑
-                                        </a>
+                    <{volist name="modules" id="module"}>
+                        <tr>
+                            <td width="80">{$module.id}</td>
+                            <td width="160">{$module.title}</td>
+                            <td class="no-padding">
+                                <table width="100%">
+                                    <{volist name="items" id="item"}>
+                                        <{if $item['parent_id']==$module['id']}>
+                                            <tr>
+                                                <td width="180">{$item['title']}</td>
+                                                <td>{$item['route']}</td>
+                                                <td width="120">
 
-                                        <a class="btn btn-xs btn-pink action-delete" href="javascript:void(0);" data-action="{:url('Auth/delete',['id'=>$item['id']])}">
-                                            删除
-                                        </a>
-                                    </td>
-                                </tr>
-                            <{/if}>
-                        <{/volist}>
-                    </table>
-                </td>
-            </tr>
-        <{/volist}>
-    </table>
+                                                    <a class="btn btn-xs btn-purple action-modal" href="javascript:void(0);" data-action="{:url('Auth/editAuth',['id'=>$item['id']])}">
+                                                        编辑
+                                                    </a>
+
+                                                    <a class="btn btn-xs btn-pink action-delete" href="javascript:void(0);" data-action="{:url('Auth/delete',['id'=>$item['id']])}">
+                                                        删除
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <{/if}>
+                                    <{/volist}>
+                                </table>
+                            </td>
+                        </tr>
+                    <{/volist}>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

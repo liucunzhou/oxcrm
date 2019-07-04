@@ -21,9 +21,9 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Hotel/doCreateView')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('System/doCreateView')}" lay-filter="component-form-group">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">视图名称</label>
+                    <label class="layui-form-label">页面标题</label>
                     <div class="layui-input-block">
                         <input type="text" name="page_title" lay-verify="required" placeholder="请输入页面标题" autocomplete="off" class="layui-input">
                     </div>
@@ -32,7 +32,14 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">文件名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="file_title" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="file_name" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据源</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ajax_url" lay-verify="required" placeholder="请输入数据源地址" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -138,7 +145,7 @@
                 <div class="layui-form-item layui-layout-admin">
                     <div class="layui-input-block">
                         <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="component-form">立即提交</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="create-view">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -232,8 +239,21 @@
                     area: [width+'px',height+'px'],
                 });
             })
-        })
+        });
 
+        // 提交表单
+        form.on('submit(create-view)', function(data){
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function(result){
+                console.log(result);
+                alert(result.msg);
+                if(result.code == '200') {
+                    window.location.reload();
+                }
+            });
+            return false;
+        });
     });
 </script>
 </body>
