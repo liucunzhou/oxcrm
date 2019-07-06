@@ -1,124 +1,116 @@
-<!-- 面包屑 -->
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>首页</li>
-        <li>权限管理</li>
-        <li>角色管理</li>
-    </ul>
-    <div class="widget-toolbar">
-        <a href="javascript:history.go(-1);">
-            <span class="glyphicon glyphicon-share-alt"></span>
-            <span class="text">返回</span>
-        </a>
-    </div>
-    <div class="widget-toolbar">
-        <a href="javascript:void(0);" class="action-modal" data-action="{:url('Auth/addGroup')}">
-            <span class="text">添加角色</span>
-        </a>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>角色管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>角色管理</cite></a>
     </div>
 </div>
-<!--页面详情-->
-<div class="page-content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th class="center">
-                                <a class="icon-cog" href="javascript:void(0);"></a>
-                            </th>
-                            <th class="center" width="50">编号</th>
-                            <th class="left" width="45%">角色名称</th>
-                            <th class="center" width="80">状态</th>
-                            <th class="center" width="80">排序</th>
-                            <th class="center" width="160">录入时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <{foreach item="val" name="list"}>
-                        <tr>
-                            <th class="center">
-                                <label>
-                                    <input type="checkbox" name="id[]" value="{$val['id']}">
-                                    <span class="lbl"></span>
-                                </label>
-                            </th>
-                            <th class="center">{$val['id']}</th>
-                            <th class="left">{$val['title']}</th>
-                            <th class="center">{$val['is_valid']?'上线':'下线'}</th>
-                            <th class="center">{$val['sort']}</th>
-                            <th class="center">{$val['create_time']}</th>
-                            <th>
-                                <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
 
-                                    <a class="btn btn-xs btn-purple action-modal" href="javascript:void(0);" data-action="{:url('Auth/editGroup',['id'=>$val['id']])}">
-                                        编辑
-                                    </a>
-
-                                    <a class="btn btn-xs btn-purple" href="{:url('Auth/assignAuth',['id'=>$val['id']])}">
-                                        分配权限
-                                    </a>
-
-                                    <a class="btn btn-xs btn-pink action-delete" data-action="{:url('Auth/deleteGroup', ['id'=>$val['id']])}">
-                                        删除
-                                    </a>
-                                </div>
-                                <div class="visible-xs visible-sm hidden-md hidden-lg">
-                                    <div class="inline position-relative">
-                                        <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
-                                            <i class="icon-cog icon-only bigger-110"></i>
-                                        </button>
-
-                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
-                                            <li>
-                                                <a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
-                                                    回访
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
-                                                    编辑
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
-                                                    分配
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
-                                                    归档
-                                                </a>
-                                            </li>
-                                        </ul>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                                        <script type="text/html" id="table-toolbar">
+                                                <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="add">添加角色</button>
+                        </div>
+                                            </script>
+                                        <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                                                    <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
+                                                </div>
+                    </script>
                                     </div>
-                                </div>
-                            </th>
-                        </tr>
-                    <{/foreach}>
-                </table>
             </div>
         </div>
     </div>
 </div>
-<div class="fixed-bottom">
-    <div class="toolbar-bottom pull-left">
-        <!--<label class="label-checkbox-bottom">-->
-            <!--<input type="checkbox" >-->
-            <!--<span>全选</span>-->
-        <!--</label>-->
-        <!--<a class="btn btn-xs btn-warning">-->
-            <!--分配-->
-        <!--</a>-->
-        <a class="btn btn-xs btn-danger action-delete-customer" href="javascript:void(0);" data-action="{:url('rollback', ['id'=>$val['id']])}" data-tip="确认要还原该客资么？">
-            归档
-        </a>
-    </div>
-    <div class="pull-right">
-        <{include file="common/page" /}>
-    </div>
-</div>
-<include file="customer/search" />
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function(){
+        var admin = layui.admin
+            ,table = layui.table;
+
+        table.render({
+            elem: '#table'
+            ,url: '/index/auth/group.html'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '角色管理'
+            ,cols: [[{"type":"checkbox","width":120},{"field":"id","title":"\u7f16\u53f7","width":80},{"field":"title","title":"\u89d2\u8272"},{"field":"is_valid","title":"\u72b6\u6001","width":120},{"field":"sort","title":"\u6392\u5e8f","width":120},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":180},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":240}]]
+            ,page: true
+        });
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var url = '';
+            switch(obj.event){
+                                case 'add':
+                    var data = checkStatus.data;
+                    url = '/index/auth/addgroup.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加角色',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                            };
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function(obj){
+            switch(obj.event){
+                                case 'edit':
+                    url = '/index/auth/editgroup.html';
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                                case 'del':
+                    url = '/index/auth/delgroup.html';
+                    layer.open({
+                        type: 2,
+                        title: '删除',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                            };
+        });
+
+    });
+</script>
+</body>
+</html>

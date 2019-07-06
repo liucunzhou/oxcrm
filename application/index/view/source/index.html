@@ -31,8 +31,8 @@
                                             </script>
                                         <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                                                    <button class="layui-btn layui-btn-sm" lay-event="edit">编辑来源</button>
-                                                    <button class="layui-btn layui-btn-sm" lay-event="del">删除来源</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
                                                 </div>
                     </script>
                                     </div>
@@ -58,7 +58,7 @@
             ,defaultToolbar: ['filter']
             ,toolbar: '#table-toolbar'
             ,title: '来源管理'
-            ,cols: [[{"field":"id","title":"ID","width":100},{"field":"parent_id","title":"\u5e73\u53f0","width":120},{"field":"title","title":"\u6765\u6e90"},{"field":"alias","title":"\u522b\u540d","width":120},{"field":"sort","title":"\u6392\u5e8f","width":120},{"field":"is_valid","title":"\u72b6\u6001","width":120},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":180},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":200}]]
+            ,cols: [[{"field":"id","title":"\u7f16\u53f7","width":80},{"field":"parent_id","title":"\u5e73\u53f0","width":120},{"field":"title","title":"\u6765\u6e90"},{"field":"sort","title":"\u6392\u5e8f","width":120},{"field":"is_valid","title":"\u72b6\u6001","width":120},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":180},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":200}]]
             ,page: true
         });
 
@@ -91,7 +91,7 @@
                     url = '/index/source/editsource.html';
                     layer.open({
                         type: 2,
-                        title: '编辑来源',
+                        title: '编辑',
                         content: url,
                         area: [width+'px',height+'px'],
                         offset:'rb'
@@ -101,7 +101,7 @@
                     url = '/index/source/delsource.html';
                     layer.open({
                         type: 2,
-                        title: '删除来源',
+                        title: '删除',
                         content: url,
                         area: [width+'px',height+'px'],
                         offset:'rb'
