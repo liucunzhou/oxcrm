@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>员工列表</title>
+    <title>品牌管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -14,7 +14,7 @@
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
-        <a><cite>员工列表</cite></a>
+        <a><cite>品牌管理</cite></a>
     </div>
 </div>
 
@@ -32,7 +32,7 @@
                                         <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
                                                     <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
-                                                    <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
                                                 </div>
                     </script>
                                     </div>
@@ -53,10 +53,12 @@
 
         table.render({
             elem: '#table'
-            ,url: '/index/user/index.html'
+            ,url: '/index/brand/index.html'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
             ,toolbar: '#table-toolbar'
-            ,title: '员工列表'
-            ,cols: [[{"field":"id","title":"\u7f16\u53f7"},{"field":"role_id","title":"\u89d2\u8272"},{"field":"department_id","title":"\u90e8\u95e8"},{"field":"admin_id","title":"\u64cd\u4f5c\u5458"},{"field":"nickname","title":"\u6635\u79f0"},{"field":"realname","title":"\u771f\u5b9e\u59d3\u540d"},{"field":"mobile","title":"\u624b\u673a\u53f7"},{"field":"sort","title":"\u6392\u5e8f"},{"field":"is_valid","title":"\u72b6\u6001"},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4"},{"field":"tool","title":"\u64cd\u4f5c","type":"tool","toolbar":"#table-tool"}]]
+            ,title: '品牌管理'
+            ,cols: [[{"field":"id","title":"\u7f16\u53f7","width":80},{"field":"title","title":"\u54c1\u724c\u540d\u79f0"},{"field":"sort","title":"\u6392\u5e8f","width":120},{"field":"is_valid","title":"\u72b6\u6001","width":120},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":180},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":200}]]
             ,page: true
         });
 
@@ -70,7 +72,7 @@
             switch(obj.event){
                                 case 'add':
                     var data = checkStatus.data;
-                    url = '/index/user/adduser.html';
+                    url = '/index/brand/addbrand.html';
                     layer.open({
                         type: 2,
                         title: '添加',
@@ -86,7 +88,7 @@
         table.on('tool(table)', function(obj){
             switch(obj.event){
                                 case 'edit':
-                    url = '/index/user/edituser.html';
+                    url = '/index/brand/editbrand.html';
                     layer.open({
                         type: 2,
                         title: '编辑',
@@ -95,11 +97,11 @@
                         offset:'rb'
                     });
                     break;
-                                case 'auth':
-                    url = '/index/user/editauth.html';
+                                case 'del':
+                    url = '/index/brand/editbrand.html';
                     layer.open({
                         type: 2,
-                        title: '授权',
+                        title: '删除',
                         content: url,
                         area: [width+'px',height+'px'],
                         offset:'rb'

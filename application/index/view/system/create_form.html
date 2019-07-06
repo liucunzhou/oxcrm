@@ -181,7 +181,7 @@
                 console.log(result);
                 alert(result.msg);
                 if(result.code == '200') {
-                    window.location.reload();
+                    parent.window.location.reload();
                 }
             });
             return false;

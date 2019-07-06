@@ -5,22 +5,36 @@ use think\facade\Request;
 
 class Department extends Base
 {
+    /**
+     * 编辑、授权、删除
+     * @return mixed|\think\response\Json
+     */
     public function index()
     {
-        // $map[] = ['delete_time', '=', '0'];
-        // $map[] = ['parent_id', '=', 0];
-        $parents = model("department")->order('path asc')->select()->toArray();
-        // print_r($parents);
-        $this->assign('list', $parents);
-//        foreach ($parents as $key=>&$department) {
-//            $where = [];
-//            $where[] = ['parent_id', '=', $department['id']];
-//            $department['nodes'] = model('department')->where($where)->order('path,sort desc')->select()->toArray();
-//        }
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('department')->where($map)->order('path asc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as $value) {
+                if($value['depth'] > 1) {
+                    $value['title'] = str_repeat('─',$value['depth'] - 1).$value['title'];
+                }
+            }
 
-       //  print_r($parents);
-
-        return $this->fetch();
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+        } else {
+            return $this->fetch();
+        }
     }
 
     public function addDepartment()

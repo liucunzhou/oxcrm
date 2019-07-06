@@ -26,7 +26,8 @@ class Store extends Base
             $list = model('store')->where($map)->order('brand_id,is_valid desc,sort desc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
-                $value['brand'] = $brands[$value['brand_id']]['title'];
+                $value['brand_id'] = $brands[$value['brand_id']]['title'];
+                $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
             }
 
             $result = [

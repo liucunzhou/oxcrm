@@ -68,15 +68,9 @@ class Index extends Base
                     [
                         'text' => '角色管理',
                         'url' => 'Auth/group'
-                    ],
-//                    [
-//                        'text' => '操作日志',
-//                        'url' => 'Operation/index'
-//                    ]
+                    ]
                 ],
             ],
-
-
 
             '组织架构'  => [
                 'icon'  => 'icon-folder-open',
@@ -102,11 +96,7 @@ class Index extends Base
                     [
                         'text' => '批量导入',
                         'url' => 'Customer/import'
-                    ],
-//                    [
-//                        'text' => '推广咨费',
-//                        'url' => 'Promotion/index',
-//                    ],
+                    ]
                 ],
             ],
 
@@ -201,8 +191,7 @@ class Index extends Base
         } else if($user['nickname'] != 'admin') {
             $menus = [];
         } else {
-            unset($menus['跟进管理']);
-            unset($menus['跟进管理']);
+            // unset($menus['跟进管理']);
         }
         $this->assign('menus', $menus);
 

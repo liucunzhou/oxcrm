@@ -80,7 +80,7 @@ class Customer extends Base
     {
         $user = Session::get("user");
         $auth = UserAuth::getUserLogicAuth($user['id']);
-        if(empty($auth['role_ids'])) return $this->fetch();
+        // if(empty($auth['role_ids'])) return $this->fetch();
 
         $roles = explode(',', $auth['role_ids']);
         ### 根据角色自动判断条件
@@ -111,10 +111,13 @@ class Customer extends Base
         }
 
         // $map[] = ['operate_id', '=', $user['id']];
-        $list = model('MemberAllocate')->where($map)->with('member')->paginate(15);
+        // $list = model('MemberAllocate')->where($map)->with('member')->paginate(15);
+        // $data = $list->getCollection();
+        print_r($data);
 
-        $this->assign('list', $list);
-        return $this->fetch();
+        // $this->assign('list', $list);
+        // return $this->fetch();
+        return false;
     }
 
     public function apply()

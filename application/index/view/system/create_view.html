@@ -30,16 +30,28 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">文件名称</label>
+                    <label class="layui-form-label">模块列表</label>
                     <div class="layui-input-block">
-                        <input type="text" name="file_name" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
+                        <div class="layui-inline">
+                            <select name="controller-name" lay-filter="controller-name">
+                                <option value=""></option>
+                                <{foreach item="file" name="controllers"}>
+                                <option value="{$file}">{$key}</option>
+                                <{/foreach}>
+                            </select>
+                        </div>
+                        <div class="layui-inline">
+                            <select name="ajax_url" lay-filter="ajax_url" id="ajax_url">
+                                <option value=""></option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">数据源</label>
+                    <label class="layui-form-label">文件名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="ajax_url" lay-verify="required" placeholder="请输入数据源地址" autocomplete="off" class="layui-input">
+                        <input type="text" name="file_name" id="file_name" lay-verify="required" placeholder="请输入文件名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -160,11 +172,12 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table', 'form'], function(){
+    }).use(['index', 'table', 'form', 'laytpl'], function(){
         var admin = layui.admin
             ,form = layui.form
             ,$ = layui.$
-            ,element = layui.element;
+            ,element = layui.element
+            ,laytpl = layui.laytpl;
 
         form.on("select(table-name)", function (data) {
             var url = '{:url("System/setTableViewFields")}';
@@ -172,6 +185,22 @@
                 $("#set-fields-block").html(result);
                 form.render();
             })
+        });
+
+        form.on("select(controller-name)", function (data) {
+            var url = '{:url("System/getControllerActions")}';
+            $.post(url, {fileName:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#ajax_url").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(ajax_url)", function (data) {
+            $("#file_name").val($(this).text());
         });
 
         // 增加工具栏
@@ -255,6 +284,12 @@
             return false;
         });
     });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+        <option value="{{ item }}">{{ index }}</option>
+    {{#  }); }}
 </script>
 </body>
 </html>

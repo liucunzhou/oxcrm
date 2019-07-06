@@ -12,20 +12,8 @@ class User extends Base
     public function index()
     {
         if(Request::isAjax()) {
-            /**
-            $User = new \app\index\model\User();
-            $list = $User->with('userAuth')->order('sort desc')->paginate(15);
-            $this->assign('list', $list);
-
-
-            ### 获取角色列表
-            $AuthGroup = new AuthGroup();
-            $roles = $AuthGroup::getRoles();
-            $this->assign('roles', $roles);
-
-            ### 获取部门列表
+            // 获取部门列表
             $departments = Department::getDepartments();
-            **/
 
             $get = Request::param();
             $map = [];
@@ -33,6 +21,12 @@ class User extends Base
                 'page' => $get['page']
             ];
             $list = model('user')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value) {
+                $value['department_id'] = $departments[$value['department_id']]['title'];
+                $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
+            }
+
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',

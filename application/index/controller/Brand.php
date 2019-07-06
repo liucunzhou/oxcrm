@@ -21,11 +21,15 @@ class Brand extends Base
                 'page' => $get['page']
             ];
             $list = model('brand')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value){
+                $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
+            }
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $list->getCollection()
+                'data'  => $data
             ];
             return json($result);
         } else {

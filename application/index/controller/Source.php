@@ -24,11 +24,17 @@ class Source extends Base
                 'page' => $get['page']
             ];
             $list = model('source')->where($map)->order('parent_id asc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value) {
+                $value['parent_id'] = $platforms[$value['parent_id']]['title'];
+                $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
+            }
+
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $list->getCollection()
+                'data'  => $data
             ];
             return json($result);
         } else {

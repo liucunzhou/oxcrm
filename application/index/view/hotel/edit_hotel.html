@@ -88,9 +88,11 @@
 
             /* 监听提交 */
             form.on('submit(component-form)', function(data){
-                parent.layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                })
+                var actionUrl = data.form.action;
+                var params = data.field;
+                $.post(actionUrl, params, function (res) {
+                   parent.window.location.reload();
+                });
                 return false;
             });
         });

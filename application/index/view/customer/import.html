@@ -1,141 +1,126 @@
-<!-- 面包屑 -->
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>首页</li>
-        <li>客资管理</li>
-        <li>批量导入</li>
-    </ul>
-    <div class="widget-toolbar">
-        <a href="javascript:history.go(-1);">
-            <span class="glyphicon glyphicon-share-alt"></span>
-            <span class="text">返回</span>
-        </a>
-    </div>
-    <div class="widget-toolbar">
-        <a href="/cutomer_template.csv" target="_blank">
-            <span class="glyphicon glyphicon-download"></span>
-            <span class="text">下载模版</span>
-        </a>
-    </div>
-    <div class="widget-toolbar">
-        <a href="javascript:void(0);" class="btn-import">
-            <span class="glyphicon glyphicon-upload"></span>
-            <span class="text">上传客资</span>
-        </a>
-        <form class="form_import hide" action="{:url('Customer/import')}" enctype="multipart/form-data" method="post">
-            <input type="file" name="csv" id="csv">
-        </form>
-    </div>
-    <div class="widget-toolbar no-border">
-        <form>
-            <input type="text" name="keywords" placeholder="请输入客户资料"/>
-            <a class="icon-search" href="javascript:void(0);"></a>
-        </form>
-    </div>
-</div>
-<!--页面详情-->
-<div class="page-content">
-    <table class="table table-striped table-bordered table-hover">
-        <thead>
-            <tr>
-                <th class="left">客户名称</th>
-                <th class="left">联系方式</th>
-                <th class="left">其他联系</th>
-                <th class="left">宴会规模</th>
-                <th class="left">预算</th>
-                <th class="left">发布状态</th>
-                <th class="left">备注</th>
-                <th class="left">婚期</th>
-                <th class="left">区域</th>
-                <th class="left">咨询酒店</th>
-            </tr>
-        </thead>
-        <{foreach item="val" name="data"}>
-            <{if $key>0}>
-                <tr>
-                    <th class="left">{$val[0]}</th>
-                    <th class="left">{$val[1]}</th>
-                    <th class="left">{$val[2]}</th>
-                    <th class="left">{$val[3]}</th>
-                    <th class="left">{$val[4]}</th>
-                    <th class="left">{$val[5]}</th>
-                    <th class="left">{$val[6]}</th>
-                    <th class="left">{$val[7]}</th>
-                    <th class="left">{$val[8]}</th>
-                    <th class="left">{$val[9]}</th>
-                </tr>
-            <{/if}>
-        <{/foreach}>
-    </table>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>批量导入</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
 
-<div class="fixed-bottom">
-    <div class="toolbar-bottom pull-left">
-        <{if $file['amount'] > 0}>
-            <a class="btn btn-xs btn-info action-modal" href="javascript:void(0);" data-action="{:url('Customer/allocate',['id'=>$val['id']])}">
-                导入并分配
-            </a>
-            <a class="btn btn-xs btn-info">
-                导出重复
-            </a>
-        <{/if}>
-        <a class="btn btn-xs btn-warning">
-            共{$file['amount'] + $file['repeat']}条客资,有效{$file.amount|default=0}条,重复{$file.repeat|default=0}条
-        </a>
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>批量导入</cite></a>
     </div>
 </div>
 
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                                        <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
+                                                    <button class="layui-btn layui-btn-sm" lay-event="upload">上传客资</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="allocate">导入并分配</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="export">导出重复</button>
+                                                    <button class="layui-btn layui-btn-sm" lay-event="tpl">下载模版</button>
+                                                </div>
+                    </script>
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/layui/layui.js"></script>
 <script>
-    $(function () {
-        $(".btn-import").click(function () {
-            $("#csv").click();
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function(){
+        var admin = layui.admin
+            ,table = layui.table;
+
+        table.render({
+            elem: '#table'
+            ,url: '/index/customer/import.html'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '批量导入'
+            ,cols: [[{"type":"checkbox","width":80},{"field":"realname","title":"\u5ba2\u6237\u59d3\u540d","width":120},{"field":"mobile","title":"\u8054\u7cfb\u7535\u8bdd","width":120},{"field":"mobile1","title":"\u5176\u5b83\u8054\u7cfb","width":120},{"field":"banquet_size","title":"\u5bb4\u4f1a\u89c4\u6a21","width":120},{"field":"budget","title":"\u9884\u7b97","width":120},{"field":"is_valid","title":"\u53d1\u5e03\u72b6\u6001","width":120},{"field":"wedding_date","title":"\u5a5a\u671f","width":120},{"field":"zone","title":"\u533a\u57df","width":120},{"field":"remark","title":"\u5907\u6ce8","width":120}]]
+            ,page: true
         });
 
-        $("#csv").change(function () {
-            // alert("开始了上传");
-            $(".form_import").submit()
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var url = '';
+            switch(obj.event){
+                                case 'upload':
+                    var data = checkStatus.data;
+                    url = '/index/customer/import.html';
+                    layer.open({
+                        type: 2,
+                        title: '上传客资',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                                case 'allocate':
+                    var data = checkStatus.data;
+                    url = '/index/customer/allocate.html';
+                    layer.open({
+                        type: 2,
+                        title: '导入并分配',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                                case 'export':
+                    var data = checkStatus.data;
+                    url = '/index/customer/export.html';
+                    layer.open({
+                        type: 2,
+                        title: '导出重复',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                                case 'tpl':
+                    var data = checkStatus.data;
+                    url = '/index/customer/gettpl.html';
+                    layer.open({
+                        type: 2,
+                        title: '下载模版',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
+                            };
         });
 
-        $(document).on('focus', '.user_amount', function () {
-            var _this = $(this),
-                    totals = parseInt($(".amount").html());
-
-            var sum = 0;
-            $(".user_amount").each(function(i, n){
-                var val = $(n).val();
-                if(val != '') {
-                    var current = parseInt(val);
-                    sum = sum + current;
-                }
-            });
-
-            console.log('this is sum:',sum);
-            if(sum > totals) {
-                layer.msg("分配已超出,请调整");
-            }
+        //监听行工具事件
+        table.on('tool(table)', function(obj){
+            switch(obj.event){
+                            };
         });
 
-        $(document).on('blur', '.user_amount', function () {
-            var _this = $(this),
-                totals = parseInt($(".amount").html());
-
-            var sum = 0;
-            $(".user_amount").each(function(i, n){
-                var val = $(n).val();
-                if(val != '') {
-                    var current = parseInt(val);
-                    sum = sum + current;
-                }
-            });
-
-            console.log('this is sum:',sum);
-            if(sum > totals) {
-                layer.msg("分配已超出,请调整");
-            } else {
-                $(".assigned_amount").html(sum);
-                var left = totals - sum;
-                $(".unassigned_amount").html(left);
-            }
-        });
     });
 </script>
+</body>
+</html>

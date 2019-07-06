@@ -93,6 +93,10 @@ class System extends Base
         $this->assign('tables', $tables);
 
         // 获取保存目录路径
+        $controllers = $this->getDirFileList('controller');
+        $this->assign('controllers', $controllers);
+
+        // 获取保存目录路径
         $viewDirs = $this->getDirFileList('view');
         $this->assign('viewDirs', $viewDirs);
         return $this->fetch();
@@ -154,6 +158,29 @@ class System extends Base
         } else {
             return json(['code' => '500', 'msg' => '生成表单失败']);
         }
+    }
+
+    /***
+     * 获取模块下的所有列表
+     */
+    public function getControllerActions()
+    {
+        $fileName = Request::post("fileName");
+        $pathinfo = pathinfo($fileName);
+        $contorllerName = $pathinfo['filename'];
+        $appPath = $this->app->getAppPath();
+        $fileName = str_replace($appPath, '', $fileName);
+        $fileName = str_replace('/', '\\', $fileName);
+        $className = substr($fileName,0, -4);
+        $className = "\app\\".$className;
+        $class = new $className;
+        $functions = get_class_methods($class);
+        $data = [];
+        foreach ($functions as $val){
+            $data[$val] = $contorllerName.'/'.$val;
+        }
+
+        return json($data);
     }
 
     /**

@@ -26,11 +26,11 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <{if !empty($toolbars)}>
                     <script type="text/html" id="table-toolbar">
-                        <{foreach item="toolbar" name="toolbars['text']"}>
                         <div class="layui-btn-container">
+                        <{foreach item="toolbar" name="toolbars['text']"}>
                             <button class="layui-btn layui-btn-sm" lay-event="{$toolbars['name'][$key]}">{$toolbars['text'][$key]}</button>
-                        </div>
                         <{/foreach}>
+                        </div>
                     </script>
                     <{/if}>
 
