@@ -16,160 +16,151 @@ use think\facade\Session;
 
 class Customer extends Base
 {
+
     public function index()
     {
         if(Request::isAjax()) {
-            $get = Request::param();
-            ### 获取用户列表
-            $users = User::getUsers();
             $sources = \app\index\model\Source::getSources();
             $intentions = Intention::getIntentions();
             $hotels = Hotel::getHotels();
             $newsTypes = ['婚宴信息', '婚庆信息', '婚宴转婚庆'];
-            $publishStatus = ['未发布', '已发布'];
 
+            $get = Request::param();
+            $user = Session::get("user");
             $config = [
                 'page' => $get['page']
             ];
-            $list = model('Member')->paginate($get['limit'], false, $config);
+            $map[] = ['operate_id', '=', $user['id']];
+            $list = model('MemberAllocate')->where($map)->with('member')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection()->toArray();
+            foreach ($data as &$value) {
+                $member = $value['member'];
+                unset($member['id']);
+                unset($value['member']);
+                $value = array_merge($value, $member);
+                $value['mobile'] = substr_replace($value['mobile'],'****', 3, 4);
+                $value['news_type'] = $newsTypes[$value['news_type']];
+                $value['hotel_id'] = $hotels[$value['hotel_id']];
+            }
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $list->getCollection()
+                'data'  => $data
             ];
             return json($result);
 
-            $user = Session::get("user");
-            $auth = UserAuth::getUserLogicAuth($user['id']);
-            if (empty($auth['role_ids'])) return $this->fetch();
-
-            $roles = explode(',', $auth['role_ids']);
-            ### 根据角色自动判断条件
-            if (in_array(3, $roles)) {
-                ## 客服主管
-                $map[] = ['manager_id', '=', $user['id']];
-                $this->assign('managerBtn', '');
-                $this->assign('staffBtn', 'hide');
-                $this->assign('saleBtn', 'hide');
-            } else if (in_array(1, $roles)) {
-                ## 客服
-                $map[] = ['customer_staff_id', '=', $user['id']];
-                $this->assign('managerBtn', 'hide');
-                $this->assign('staffBtn', '');
-                $this->assign('saleBtn', 'hide');
-            } else if (in_array(5, $roles)) {
-                ## 门店店长
-                // $map[] = ['store_id', ''];
-                $this->assign('managerBtn', 'hide');
-                $this->assign('staffBtn', 'hide');
-                $this->assign('saleBtn', '');
-            } else if (in_array(4, $roles)) {
-                $map[] = ['sale_id', '=', $user['id']];
-                $this->assign('managerBtn', 'hide');
-                $this->assign('staffBtn', 'hide');
-                $this->assign('saleBtn', '');
-            }
         } else {
-            $this->view->engine->layout(false);
             return $this->fetch();
         }
     }
 
     public function mine()
     {
-        $user = Session::get("user");
-        $auth = UserAuth::getUserLogicAuth($user['id']);
-        // if(empty($auth['role_ids'])) return $this->fetch();
+        if(Request::isAjax()) {
+            $sources = \app\index\model\Source::getSources();
+            $intentions = Intention::getIntentions();
+            $hotels = Hotel::getHotels();
+            $newsTypes = ['婚宴信息', '婚庆信息', '婚宴转婚庆'];
 
-        $roles = explode(',', $auth['role_ids']);
-        ### 根据角色自动判断条件
-        if (in_array(3,$roles)) {
-            ## 客服主管
-            $map[] = ['manager_id', '=', $user['id']];
-            $this->assign('managerBtn', '');
-            $this->assign('staffBtn', 'hide');
-            $this->assign('saleBtn', 'hide');
-        } else if(in_array(1, $roles)) {
-            ## 客服
-            $map[] = ['customer_staff_id', '=', $user['id']];
-            $this->assign('managerBtn', 'hide');
-            $this->assign('staffBtn', '');
-            $this->assign('saleBtn', 'hide');
-        } else if(in_array(5, $roles)) {
-            ## 门店店长
-            // $map[] = ['store_id', ''];
-            $this->assign('managerBtn', 'hide');
-            $this->assign('staffBtn', 'hide');
-            $this->assign('saleBtn', '');
-        } else if(in_array(4, $roles)) {
-            ## 门店销售
-            // $map[] = ['sale_id', '=', $user['id']];
-            $this->assign('managerBtn', 'hide');
-            $this->assign('staffBtn', 'hide');
-            $this->assign('saleBtn', '');
+            $get = Request::param();
+            $user = Session::get("user");
+            $config = [
+                'page' => $get['page']
+            ];
+            $map[] = ['operate_id', '=', $user['id']];
+            $list = model('MemberAllocate')->where($map)->with('member')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection()->toArray();
+            foreach ($data as &$value) {
+                $member = $value['member'];
+                unset($member['id']);
+                unset($value['member']);
+                $value = array_merge($value, $member);
+                $value['mobile'] = substr_replace($value['mobile'],'****', 3, 4);
+                $value['news_type'] = $newsTypes[$value['news_type']];
+                $value['hotel_id'] = $hotels[$value['hotel_id']];
+            }
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch();
         }
-
-        // $map[] = ['operate_id', '=', $user['id']];
-        // $list = model('MemberAllocate')->where($map)->with('member')->paginate(15);
-        // $data = $list->getCollection();
-        print_r($data);
-
-        // $this->assign('list', $list);
-        // return $this->fetch();
-        return false;
     }
 
     public function apply()
     {
-        $user = Session::get("user");
-        $auth = UserAuth::getUserLogicAuth($user['id']);
-        if(empty($auth['role_ids'])) return $this->fetch();
+        if(Request::isAjax()) {
+            $sources = \app\index\model\Source::getSources();
+            $intentions = Intention::getIntentions();
+            $hotels = Hotel::getHotels();
+            $newsTypes = ['婚宴信息', '婚庆信息', '婚宴转婚庆'];
 
-        $roles = explode(',', $auth['role_ids']);
-        ### 根据角色自动判断条件
-        if (in_array(3,$roles)) {
-            ## 客服主管
-            $map[] = ['manager_id', '=', $user['id']];
-        } else if(in_array(1, $roles)) {
-            ## 客服
-            $map[] = ['customer_staff_id', '=', $user['id']];
-        } else if(in_array(5, $roles)) {
-            ## 门店店长
-            // $map[] = ['store_id', ''];
-        } else if(in_array(4, $roles)) {
-            $map[] = ['sale_id', '=', $user['id']];
+            $get = Request::param();
+            $user = Session::get("user");
+            $config = [
+                'page' => $get['page']
+            ];
+            $map[] = ['operate_id', '=', $user['id']];
+            $list = model('MemberApply')->where($map)->with('member')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection()->toArray();
+            foreach ($data as &$value) {
+                $member = $value['member'];
+                unset($member['id']);
+                unset($value['member']);
+                $value = array_merge($value, $member);
+                $value['mobile'] = substr_replace($value['mobile'],'****', 3, 4);
+                $value['news_type'] = $newsTypes[$value['news_type']];
+                $value['hotel_id'] = $hotels[$value['hotel_id']];
+            }
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch();
         }
-        $list = model('MemberApply')->where($map)->with('member')->paginate(15);
+    }
 
-        $this->assign('list', $list);
+    public function seas()
+    {
         return $this->fetch();
     }
 
     public function import()
     {
+        $user = Session::get("user");
+        $hashKey = "batch_upload:" . $user['id'];
         if (!empty($_FILES)) {
-            $file = request()->file("csv");
+            $file = request()->file("file");
             $info = $file->move("../uploads");
             if ($info) {
                 $fileName = $info->getPathname();
                 $data = Csv::readCsv($fileName);
                 $this->assign('data', $data[0]);
-                // echo "<pre>";
-
-                $user = Session::get("user");
-                $hashKey = "batch_upload:" . $user['id'];
                 $cacheData = [
                     'file' => $fileName,
                     'amount' => count($data[0]),
                     'repeat' => count($data[1])
                 ];
                 redis()->hMset($hashKey, $cacheData);
-                $this->assign('file', $cacheData);
+                // $this->assign('file', $cacheData);
+                return json(['code'=>'200','msg'=>'上传成功,请继续分配', 'data'=>$cacheData]);
             } else {
-                $this->assign('err', $file->getError());
+                return json(['code'=>'500','msg'=>'上传失败']);
             }
         }
+        $upload = redis()->hMget($hashKey, ['file', 'amount', 'repeat']);
+        $this->assign('upload',$upload);
 
         return $this->fetch();
     }
@@ -320,6 +311,7 @@ class Customer extends Base
         }
 
         ### 开始分配
+        $time = time();
         $result = Csv::readCsv($fileData['file']);
         $member = [];
         foreach ($result[0] as $key => $row) {
@@ -338,6 +330,7 @@ class Customer extends Base
             $data['wedding_date'] = $row[7];
             $data['zone'] = $row[8];
             $data['hotel_id'] = $row[9];
+            $data['create_time'] = $time;
             $result = $MemberModel->insert($data);
             if ($result) {
                 $member[] = $MemberModel->getLastInsID();
@@ -349,16 +342,20 @@ class Customer extends Base
             $start = array_sum($startArr);
             $end = $start + $v;
             for ($start; $start < $end; $start++) {
+                if (!isset($member[$start])) continue;
                 $AllocateModel = new MemberAllocate();
                 $data = [];
                 $data['operate_id'] = $operateId;
                 $data['manager_id'] = $k;
                 $data['member_id'] = $member[$start];
+                $data['create_time'] = $time;
                 $AllocateModel->insert($data);
             }
             $startArr[] = $v;
+
         }
 
+        redis()->delete($hashKey);
         return json([
             'code' => '200',
             'msg' => '录入数据成功'
@@ -371,8 +368,7 @@ class Customer extends Base
         $users = User::getUsers();
         $this->assign('users', $users);
 
-        // $ids = Request::header("ids");
-        $this->view->engine->layout(false);
+        $ids = Request::param("ids");
         return $this->fetch();
     }
 
@@ -443,8 +439,15 @@ class Customer extends Base
 
     public function doApply()
     {
-        $ids = Request::header("ids");
+        $ids = Request::post("ids");
         $ids = explode(',', $ids);
+        if (empty($ids)) {
+            return json([
+                'code'  => '500',
+                'msg'   => '申请的客资不能为空'
+            ]);
+        }
+
         foreach ($ids as $id) {
             $allocate = MemberAllocate::get($id)->toArray();
             $allocate['member_allocate_id'] = $allocate['id'];
@@ -466,18 +469,31 @@ class Customer extends Base
 
     public function visit()
     {
+        // 获取系统用户列表
+        $users = User::getUsers();
+
+        // 获取意向状态
+        $intentions = Intention::getIntentions();
+        $this->assign('intentions', $intentions);
+
         $get = Request::param();
         $map[] = ['member_id', '=', $get['id']];
         $visits = model('MemberVisit')->where($map)->select()->toArray();
+        foreach ($visits as &$value) {
+            $time = strtotime($value['create_time']);
+            $value['create_time'] = date('y/m/d H:i', $time);
+            $value['status'] = $intentions[$value['status']]['title'];
+            $value['user_id'] = $users[$value['user_id']]['realname'];
+        }
         $this->assign('visits', $visits);
 
-        $this->view->engine->layout(false);
         return $this->fetch();
     }
 
     public function doVisit()
     {
         $post = Request::post();
+        $post['next_visit_time'] = strtotime($post['next_visit_time']);
         if($post['id']) {
             $action = '编辑回访成功';
             $Model = \app\index\model\MemberVisit::get($post['id']);
@@ -488,7 +504,6 @@ class Customer extends Base
 
         $user = Session::get("user");
         $Model->user_id = $user['id'];
-        $Model->next_visit_time = strtotime($post['next_visit_time']);
 
         // $Model::create($post);
         $result = $Model->save($post);

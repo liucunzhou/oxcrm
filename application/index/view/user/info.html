@@ -29,45 +29,53 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" value="xianxin" readonly class="layui-input">
+                                <input type="text" name="username" value="{$user['realname']}" readonly class="layui-input">
                             </div>
                             <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">昵称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="nickname" value="贤心" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                                <input type="text" name="nickname" value="{$user['nickname']}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">性别</label>
                             <div class="layui-input-block">
-                                <input type="radio" name="sex" value="男" title="男">
-                                <input type="radio" name="sex" value="女" title="女" checked>
+                                <input type="radio" name="sex" value="男" title="男" {$user['sex']?'checked':''}>
+                                <input type="radio" name="sex" value="女" title="女" {$user['sex']?'':'checked'}>
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">头像</label>
-                            <div class="layui-input-inline">
-                                <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
-                            </div>
-                            <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
-                                    <i class="layui-icon">&#xe67c;</i>上传图片
-                                </button>
-                                <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button >
-                            </div>
-                        </div>
+                        <!--<div class="layui-form-item">-->
+                            <!--<label class="layui-form-label">头像</label>-->
+                            <!--<div class="layui-input-inline">-->
+                                <!--<input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">-->
+                            <!--</div>-->
+                            <!--<div class="layui-input-inline layui-btn-container" style="width: auto;">-->
+                                <!--<button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">-->
+                                    <!--<i class="layui-icon">&#xe67c;</i>上传图片-->
+                                <!--</button>-->
+                                <!--<button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button >-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class="layui-form-item">
                             <label class="layui-form-label">手机</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="cellphone" value="" lay-verify="phone" autocomplete="off" class="layui-input">
+                                <input type="text" name="cellphone" value="{$user['mobile']}" lay-verify="phone" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="email" value="" lay-verify="email" autocomplete="off" class="layui-input">
+                                <input type="text" name="email" value="{$user['email']}" lay-verify="email" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱</label>
+                            <div class="layui-input-inline">
+                                <{Layui:close format="y-m-d"}>
+                                <{Layui:button text="添加" event="add"}>
                             </div>
                         </div>
                     </div>
@@ -84,7 +92,9 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'set']);
+    }).use(['index', 'layim'], function () {
+
+    });
 </script>
 </body>
 </html>

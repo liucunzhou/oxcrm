@@ -32,4 +32,5 @@ return [
     'taglib_end'   => '}>',
     'layout_on'    =>  false,
     'layout_name'  =>  'layout/index',
+    'taglib_pre_load' => 'app\common\taglib\Layui',
 ];

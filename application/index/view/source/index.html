@@ -25,10 +25,10 @@
                 <div class="layui-card-body">
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                                         <script type="text/html" id="table-toolbar">
-                                                <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="add">添加来源</button>
-                        </div>
-                                            </script>
+                        <div class="layui-btn-container">
+                                                    <button class="layui-btn layui-btn-sm" lay-event="add">添加来源</button>
+                                                </div>
+                    </script>
                                         <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
                                                     <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
@@ -58,7 +58,7 @@
             ,defaultToolbar: ['filter']
             ,toolbar: '#table-toolbar'
             ,title: '来源管理'
-            ,cols: [[{"field":"id","title":"\u7f16\u53f7","width":80},{"field":"parent_id","title":"\u5e73\u53f0","width":120},{"field":"title","title":"\u6765\u6e90"},{"field":"sort","title":"\u6392\u5e8f","width":120},{"field":"is_valid","title":"\u72b6\u6001","width":120},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":180},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":200}]]
+            ,cols: [[{"field":"id","title":"ID","width":80},{"field":"parent_id","title":"\u5e73\u53f0"},{"field":"title","title":"\u6765\u6e90"},{"field":"alias","title":"\u522b\u540d","width":120},{"field":"sort","title":"\u6392\u5e8f","width":80},{"field":"is_valid","title":"\u72b6\u6001","width":80},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":180},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":200}]]
             ,page: true
         });
 
@@ -72,7 +72,7 @@
             switch(obj.event){
                                 case 'add':
                     var data = checkStatus.data;
-                    url = '/index/source/addsource.html';
+                    url = '/index/source/addscource.html';
                     layer.open({
                         type: 2,
                         title: '添加来源',

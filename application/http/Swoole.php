@@ -38,6 +38,7 @@ class Swoole extends Server
 
     public function onMessage($server, $frame)
     {
+
         // $data = json_decode($frame->data, true);
         // print_r($data);
         echo "receive from {$frame->fd}:{$frame->data},opcode:{$frame->opcode},fin:{$frame->finish}\n";

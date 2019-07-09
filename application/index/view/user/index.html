@@ -24,18 +24,18 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <table class="layui-hide" id="table" lay-filter="table"></table>
-                                        <script type="text/html" id="table-toolbar">
-                                                <div class="layui-btn-container">
+                    <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm" lay-event="add">添加员工</button>
                         </div>
-                                            </script>
-                                        <script type="text/html" id="table-tool">
-                        <div class="layui-btn-container">
-                                                    <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
-                                                    <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
-                                                </div>
                     </script>
-                                    </div>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
+                        </div>
+                    </script>
+                </div>
             </div>
         </div>
     </div>
@@ -47,67 +47,92 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function(){
+    }).use(['index', 'table'], function () {
         var admin = layui.admin
             ,table = layui.table;
 
         table.render({
             elem: '#table'
-            ,url: '/index/user/index.html'
-            ,height: 'full-100'
-            ,defaultToolbar: ['filter']
-            ,toolbar: '#table-toolbar'
-            ,title: '员工管理'
-            ,cols: [[{"field":"id","title":"\u7f16\u53f7","width":50},{"field":"department_id","title":"\u90e8\u95e8"},{"field":"nickname","title":"\u6635\u79f0"},{"field":"realname","title":"\u59d3\u540d","width":120},{"field":"mobile","title":"\u624b\u673a\u53f7","width":120},{"field":"sort","title":"\u6392\u5e8f","width":80},{"field":"is_valid","title":"\u72b6\u6001","width":80},{"field":"create_time","title":"\u521b\u5efa\u65f6\u95f4","width":120},{"type":"tool","title":"\u64cd\u4f5c","toolbar":"#table-tool","width":130}]]
-            ,page: true
+            ,
+            url: '/index/user/index.html'
+            ,
+            height: 'full-100'
+            ,
+            defaultToolbar: ['filter']
+            ,
+            toolbar: '#table-toolbar'
+            ,
+            title: '员工管理'
+            ,
+            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 50}, {
+                "field": "department_id",
+                "title": "\u90e8\u95e8"
+            }, {"field": "nickname", "title": "\u6635\u79f0"}, {
+                "field": "realname",
+                "title": "\u59d3\u540d",
+                "width": 120
+            }, {"field": "mobile", "title": "\u624b\u673a\u53f7", "width": 120}, {
+                "field": "sort",
+                "title": "\u6392\u5e8f",
+                "width": 80
+            }, {"field": "is_valid", "title": "\u72b6\u6001", "width": 80}, {
+                "field": "create_time",
+                "title": "\u521b\u5efa\u65f6\u95f4",
+                "width": 120
+            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "width": 130}]]
+            ,
+            page: true
         });
 
         var height = window.innerHeight;
         var width = window.innerWidth * 0.6;
         var url = '';
         //头工具栏事件
-        table.on('toolbar(table)', function(obj){
+        table.on('toolbar(table)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
-            switch(obj.event){
-                                case 'add':
+            switch (obj.event) {
+                case 'add':
                     var data = checkStatus.data;
                     url = '/index/user/adduser.html';
                     layer.open({
                         type: 2,
                         title: '添加员工',
                         content: url,
-                        area: [width+'px',height+'px'],
-                        offset:'rb'
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
                     });
                     break;
-                            };
+            }
+            ;
         });
 
         //监听行工具事件
-        table.on('tool(table)', function(obj){
-            switch(obj.event){
-                                case 'edit':
-                    url = '/index/user/edituser.html';
+        table.on('tool(table)', function (obj) {
+            var id = obj.data.id;
+            switch (obj.event) {
+                case 'edit':
+                    url = '/index/user/edituser.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '编辑',
                         content: url,
-                        area: [width+'px',height+'px'],
-                        offset:'rb'
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
                     });
                     break;
-                                case 'auth':
-                    url = '/index/user/editauth.html';
+                case 'auth':
+                    url = '/index/user/editauth.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '授权',
                         content: url,
-                        area: [width+'px',height+'px'],
-                        offset:'rb'
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
                     });
                     break;
-                            };
+            }
+            ;
         });
 
     });

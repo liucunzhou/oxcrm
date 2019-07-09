@@ -26,18 +26,8 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="add">添加客资</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="to">分发到洗单组客服</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="to">分发到推荐组主管</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="to_staff">分发到推荐组客服</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="to_store">分发到门市</button>
-                        </div>
-                    </script>
-                    <script type="text/html" id="table-tool">
-                        <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="visit">回访</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="count">回访记录</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="confirmVisitApply">确认申请</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="cancelVisitApply">取消申请</button>
                         </div>
                     </script>
                 </div>
@@ -60,7 +50,7 @@
         table.render({
             elem: '#table'
             ,
-            url: '/index/customer/index.html'
+            url: '/index/customer/mine.html'
             ,
             height: 'full-100'
             ,
@@ -110,7 +100,7 @@
         var getSelectedIds = function (jsonArr) {
             var ids = [];
             jsonArr.forEach(function (value, key) {
-               ids.push(value.id)
+                ids.push(value.id)
             });
 
             return ids.join(',');
@@ -126,7 +116,7 @@
             var url = '';
             var ids = '';
             switch (obj.event) {
-                case 'to_staff':
+                case 'confirmVisitApply':
                     if (checkedboxes.length < 1) {
                         layer.msg("请先选择要分配的客资");
                         return false;
@@ -142,7 +132,7 @@
                         offset: 'rb'
                     });
                     break;
-                case 'to_store':
+                case 'confirmVisitApply':
                     if(checkedboxes.length < 1) {
                         layer.msg("请县选择要分配的客资");
                         return false;

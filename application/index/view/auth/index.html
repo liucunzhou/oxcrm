@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,43 +22,110 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <table class="layui-table">
-                    <tr>
-                        <th>编号</th>
-                        <th>模块</th>
-                        <th>节点</th>
-                    </tr>
-
-                    <{volist name="modules" id="module"}>
-                        <tr>
-                            <td width="80">{$module.id}</td>
-                            <td width="160">{$module.title}</td>
-                            <td class="no-padding">
-                                <table width="100%">
-                                    <{volist name="items" id="item"}>
-                                        <{if $item['parent_id']==$module['id']}>
-                                            <tr>
-                                                <td width="180">{$item['title']}</td>
-                                                <td>{$item['route']}</td>
-                                                <td width="120">
-
-                                                    <a class="btn btn-xs btn-purple action-modal" href="javascript:void(0);" data-action="{:url('Auth/editAuth',['id'=>$item['id']])}">
-                                                        编辑
-                                                    </a>
-
-                                                    <a class="btn btn-xs btn-pink action-delete" href="javascript:void(0);" data-action="{:url('Auth/delete',['id'=>$item['id']])}">
-                                                        删除
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        <{/if}>
-                                    <{/volist}>
-                                </table>
-                            </td>
-                        </tr>
-                    <{/volist}>
-                </table>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="add">添加模块/事件</button>
+                        </div>
+                    </script>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                        </div>
+                    </script>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function () {
+        var admin = layui.admin
+                , table = layui.table;
+
+        table.render({
+            elem: '#table'
+            ,
+            url: '/index/auth/index.html'
+            ,
+            height: 'full-100'
+            ,
+            defaultToolbar: ['filter']
+            ,
+            toolbar: '#table-toolbar'
+            ,
+            title: '模块管理'
+            ,
+            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 80}, {
+                "field": "parent_id",
+                "title": "\u6a21\u5757\u540d",
+                "width": 100
+            }, {"field": "title", "title": "\u4e8b\u4ef6"}, {
+                "field": "route",
+                "title": "\u8def\u7531"
+            }, {"field": "is_valid", "title": "\u72b6\u6001", "width": 80}, {
+                "field": "sort",
+                "title": "\u6392\u5e8f",
+                "width": 80
+            }, {"field": "create_time", "title": "\u521b\u5efa\u65f6\u95f4", "width": 160}, {
+                "type": "tool",
+                "title": "\u64cd\u4f5c",
+                "toolbar": "#table-tool",
+                "width": 120
+            }]]
+            ,
+            page: true
+        });
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var url = '';
+            switch (obj.event) {
+                case 'add':
+                    var data = checkStatus.data;
+                    url = '/index/auth/addauth.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加模块/事件',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function (obj) {
+            var id = obj.data.id;
+            switch (obj.event) {
+                case 'edit':
+                    url = '/index/auth/editauth.html?id='+id;
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+            }
+            ;
+        });
+
+    });
+</script>
+</body>
+</html>

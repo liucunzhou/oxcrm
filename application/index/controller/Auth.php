@@ -8,13 +8,29 @@ class Auth extends Base
 {
     public function index()
     {
-        $modules = \app\index\model\Auth::getModules();
-        $this->assign('modules', $modules);
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $modules = \app\index\model\Auth::getModules();
 
-        $items = \app\index\model\Auth::getList();
-        $this->assign('items', $items);
-
-        return $this->fetch();
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('auth')->order("parent_id")->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value) {
+                $value['parent_id'] = $modules[$value['parent_id']]['title'] ? $modules[$value['parent_id']]['title'] : '系统模块';
+                $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
+            }
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+        } else {
+            return $this->fetch();
+        }
     }
 
     public function addAuth()
@@ -87,11 +103,15 @@ class Auth extends Base
                 'page' => $get['page']
             ];
             $list = model('AuthGroup')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value){
+                $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
+            }
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $list->getCollection()
+                'data'  => $data
             ];
             return json($result);
         } else {

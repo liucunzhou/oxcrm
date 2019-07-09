@@ -71,7 +71,7 @@
                     <div class="layui-input-block">
                         <input type="hidden" name="id" value="<{literal}>{$data['id']}<{/literal}>" />
                         <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即提交</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -114,10 +114,16 @@
         });
 
         /* 监听提交 */
-        form.on('submit(component-form)', function(data){
-            parent.layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        form.on('submit(form-submit)', function(data){
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function(result){
+                console.log(result);
+                alert(result.msg);
+                if(result.code == '200') {
+                    parent.window.location.reload();
+                }
+            });
             return false;
         });
     });

@@ -6,6 +6,7 @@ use app\index\model\AuthGroup;
 use app\index\model\Department;
 use app\index\model\UserAuth;
 use think\facade\Request;
+use think\Session;
 
 class User extends Base
 {
@@ -37,6 +38,11 @@ class User extends Base
         } else {
             return $this->fetch();
         }
+    }
+
+    public function addUser()
+    {
+        return $this->fetch('edit_user');
     }
 
     public function editUser()
@@ -116,9 +122,12 @@ class User extends Base
         !empty($post['role']) && $Model->role_ids = implode(',', $post['role']);
         !empty($post['store']) && $Model->store_ids = implode(',', $post['store']);
         !empty($post['source']) && $Model->source_ids = implode(',', $post['source']);
+        $Model->show_visit_log = $post['show_visit_log'];
         $result = $Model->save();
 
         if($result) {
+            $map[] = ['id', '=', $post['user_id']];
+            \app\index\model\User::update(['department_id'=>$post['department_id']], $map);
             ### 更新用户信息缓存
             $Model::updateCache($post['user_id']);
             return json(['code'=>'200', 'msg'=> '用户权限成功', 'redirect'=>$post['referer']]);
@@ -143,7 +152,8 @@ class User extends Base
 
     public function info()
     {
-
+        $user = \think\facade\Session::get("user");
+        $this->assign("user", $user);
         return $this->fetch();
     }
 

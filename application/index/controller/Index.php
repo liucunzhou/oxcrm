@@ -86,7 +86,7 @@ class Index extends Base
                 ]
             ],
 
-            '客资管理'  => [
+            '客资分配'  => [
                 'icon' => 'icon-user',
                 'items' => [
                     [
@@ -100,20 +100,30 @@ class Index extends Base
                 ],
             ],
 
-            '跟进管理'  => [
+            '客资管理'  => [
                 'icon' => 'icon-time',
                 'items' => [
                     [
                         'text' => '客资公海',
-                        'url' => 'Customer/index'
+                        'url' => 'Customer/seas'
                     ],
                     [
                         'text' => '我的客资',
                         'url' => 'Customer/mine'
+                    ]
+                ],
+            ],
+
+            '申请管理'  => [
+                'icon' => 'icon-time',
+                'items' => [
+                    [
+                        'text' => '客资申请',
+                        'url' => 'Manager/applyVisit'
                     ],
                     [
-                        'text' => '我的申请',
-                        'url' => 'Customer/apply'
+                        'text' => '成单申请',
+                        'url' => 'Manager/applyToOrder'
                     ]
                 ],
             ],

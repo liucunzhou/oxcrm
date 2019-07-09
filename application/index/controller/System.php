@@ -122,6 +122,7 @@ class System extends Base
                 $row['title'] = '操作';
                 $row['toolbar'] = '#table-tool';
                 $row['width'] = !empty($field['width']) ? $field['width'] : '120';
+                $field['fixed']!='none' && $row['fixed'] = $field['fixed'];
             } else if($field['display'] == 1) {
                 $row['field'] = $key;
                 $row['title'] = $field['title']?$field['title']:$key;
