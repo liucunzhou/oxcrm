@@ -17,7 +17,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">酒店名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="title" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                            <input type="text" name="title" value="{$data['title']}" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
@@ -87,11 +87,17 @@
 
             /* 监听提交 */
             form.on('submit(component-form)', function(data){
-                var actionUrl = data.form.action;
+                var url = data.form.action;
                 var params = data.field;
-                $.post(actionUrl, params, function (res) {
-                   parent.window.location.reload();
+                $.post(url, params, function (res) {
+                    if (res.code == '200') {
+                        parent.layui.table.reload("hotel-table");
+                        parent.layer.closeAll();
+                    } else {
+                        layer.msg(res.msg);
+                    }
                 });
+
                 return false;
             });
         });

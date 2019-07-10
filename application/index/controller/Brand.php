@@ -77,10 +77,10 @@ class Brand extends Base
         }
     }
 
-    public function delete()
+    public function deleteBrand()
     {
-        $get = Request::param();
-        $result = \app\index\model\Brand::get($get['id'])->delete();
+        $post = Request::post();
+        $result = \app\index\model\Brand::get($post['id'])->delete();
 
         if($result) {
             // 更新缓存

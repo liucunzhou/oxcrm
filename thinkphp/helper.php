@@ -700,3 +700,9 @@ if (!function_exists('redis')) {
         return \module\Redis::redis();
     }
 }
+
+if (!class_exists("Layui")) {
+    function button($tag){
+        return \module\Layui::button($tag);
+    }
+}

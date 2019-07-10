@@ -78,7 +78,7 @@ class Hotel extends Base
         }
     }
 
-    public function delete()
+    public function deleteHotel()
     {
         $get = Request::param();
         $result = \app\index\model\Hotel::get($get['id'])->delete();

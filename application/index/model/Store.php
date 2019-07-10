@@ -62,9 +62,8 @@ class Store extends Model
         return $brands;
     }
 
-    public static function updateCache($id)
+    public static function updateCache()
     {
-        self::getStore($id, true);
         self::getStoreList(true);
     }
 }

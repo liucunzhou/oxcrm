@@ -31,10 +31,10 @@
                     <div class="layui-input-block">
                         <select name="is_valid" lay-verify="">
                             <option value=""></option>
-                            <option value="0"
-                            <{if $data[is_valid]==0}>selected<{/if}>>上线</option>
                             <option value="1"
-                            <{if $data[is_valid]==1}>selected<{/if}>>下线</option>
+                            <{if $data[is_valid]==1}>selected<{/if}>>上线</option>
+                            <option value="0"
+                            <{if $data[is_valid]==0}>selected<{/if}>>下线</option>
                         </select>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     <div class="layui-input-block">
                         <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即提交</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -63,14 +63,9 @@
                 , admin = layui.admin
                 , element = layui.element
                 , layer = layui.layer
-                , laydate = layui.laydate
                 , form = layui.form;
 
         form.render(null, 'component-form-group');
-
-        laydate.render({
-            elem: '#LAY-component-form-group-date'
-        });
 
         /* 自定义验证规则 */
         form.verify({
@@ -86,10 +81,18 @@
         });
 
         /* 监听提交 */
-        form.on('submit(component-form)', function (data) {
-            parent.layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        form.on('submit(form-submit)', function (data) {
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function (res) {
+                if (res.code == '200') {
+                    parent.layui.table.reload("table");
+                    parent.layer.closeAll();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
             return false;
         });
     });

@@ -52,12 +52,24 @@ class Auth extends Model
         $data = redis()->get($cacheKey);
         $data = json_decode($data, true);
         if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,parent_id,title,route', 'id');
+            $data = self::order('parent_id,sort desc')->column('id,parent_id,title,route,is_menu', 'id');
             $json = json_encode($data);
             $result = redis()->set($cacheKey, $json);
         }
 
         return $data;
+    }
+
+    public static function getMenuList()
+    {
+        $nlist = [];
+        $list = self::getList();
+        foreach ($list as $value) {
+            if($value['is_menu'] != 1) continue;
+            $nlist[] = $value;
+        }
+
+        return $nlist;
     }
 
     public static function updateCache($id)

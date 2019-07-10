@@ -89,14 +89,14 @@ class Store extends Base
         }
     }
 
-    public function delete()
+    public function deleteStore()
     {
-        $get = Request::param();
-        $result = \app\index\model\Store::get($get['id'])->delete();
+        $post = Request::post();
+        $result = \app\index\model\Store::get($post['id'])->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\Store::updateCache($get['id']);
+            \app\index\model\Store::updateCache();
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

@@ -26,13 +26,13 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="add">添加角色</button>
+                            <{Layui:button event="addAuth" text="添加角色" type=""}>
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="auth">分配权限</button>
+                            <{Layui:button event="editAuth" text="编辑" type="edit"}>
+                            <{Layui:button event="assignAuth" text="分配权限" type="edit"}>
                         </div>
                     </script>
                 </div>
@@ -89,7 +89,7 @@
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
             switch (obj.event) {
-                case 'add':
+                case 'addAuth':
                     var data = checkStatus.data;
                     url = '/index/auth/addgroup.html';
                     layer.open({
@@ -108,7 +108,7 @@
         table.on('tool(table)', function (obj) {
             var id = obj.data.id;
             switch (obj.event) {
-                case 'edit':
+                case 'editAuth':
                     url = '/index/auth/editgroup.html?id=' + id;
                     layer.open({
                         type: 2,
@@ -118,11 +118,11 @@
                         offset: 'rb'
                     });
                     break;
-                case 'auth':
+                case 'assignAuth':
                     url = '/index/auth/assignauth.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '删除',
+                        title: '分配权限',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'

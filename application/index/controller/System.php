@@ -29,7 +29,6 @@ class System extends Base
      */
     public function createController()
     {
-
         return $this->fetch();
     }
 

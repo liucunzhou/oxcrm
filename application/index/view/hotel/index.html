@@ -30,13 +30,13 @@
 
                     <script type="text/html" id="hotel-table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="addHotel">添加酒店</button>
+                            {:button(["event"=>"addHotel", "text"=>"添加酒店", "atype"=>""])}
                         </div>
                     </script>
 
                     <script type="text/html" id="hotel-table-tool">
-                        <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                        {:button(["event"=>"editHotel", "text"=>"编辑", "atype"=>"edit"])}
+                        {:button(["event"=>"deleteHotel", "text"=>"删除", "atype"=>"delete"])}
                     </script>
                 </div>
             </div>
@@ -52,35 +52,38 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function(){
         var admin = layui.admin
-                ,table = layui.table;
+            ,table = layui.table
+            ,$ = layui.jquery;
 
         table.render({
             elem: '#hotel-table'
             ,url: '{:url("Hotel/index")}'
             ,toolbar: '#hotel-table-toolbar'
+            ,height:'full-100'
             ,title: '酒店数据表'
             ,cols: [[
                 {field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
                 ,{field:'title', title:'酒店名称', edit: 'text'}
                 ,{field:'sort', title:'排序', width:80, edit: 'text', sort: true}
                 ,{field:'create_time', title:'创建时间', width:180}
-                ,{fixed: 'right', title:'操作', toolbar: '#hotel-table-tool', width:80}
+                ,{fixed: 'right', title:'操作', toolbar: '#hotel-table-tool', width:180}
             ]]
             ,page: true
         });
 
         //头工具栏事件
-        var addHotelUrl = '{:url("Hotel/addHotel")}';
+        var url = '';
         var height = window.innerHeight;
         var width = window.innerWidth * 0.6;
         table.on('toolbar(hotel-table)', function(obj){
+            url = '{:url("Hotel/addHotel")}';
             var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
                 case 'addHotel':
                     layer.open({
                         type: 2,
                         title: '添加酒店',
-                        content: addHotelUrl,
+                        content: url,
                         area: [width+'px',height+'px'],
                         offset:'rb'
                     });
@@ -89,33 +92,33 @@
             };
         });
 
-        table.on('edit(hotel-table)', function(obj){
-            var url = '{:url("Hotel/doEditHotel")}';
-            layui.$.post(url, obj.data, function(res){
-                layer.msg(res.msg);
-            })
-        });
-
         //监听行工具事件
         table.on('tool(hotel-table)', function(obj){
-            var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('确定删除本行么?', function(index){
-                    obj.del();
-                    layer.close(index);
-                });
-            } else if(obj.event === 'edit'){
-
-                layer.prompt({
-                    formType: 2
-                    ,value: data.email
-                }, function(value, index){
-                    obj.update({
-                        email: value
+            console.log(obj.data);
+            var id = obj.data.id;
+            switch (obj.event) {
+                case 'deleteHotel':
+                    url = '{:url("Hotel/deleteHotel")}';
+                    $.post(url,{id:id}, function (res) {
+                        if(res.code == '200') {
+                            table.reload("hotel-table");
+                        } else {
+                            layer.msg(res.msg);
+                        }
                     });
-                    layer.close(index);
-                });
+                    break;
+                case 'editHotel':
+                    url = '{:url("Hotel/editHotel")}?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '编辑酒店',
+                        content: url,
+                        area: [width+'px',height+'px'],
+                        offset:'rb'
+                    });
+                    break;
             }
+
         });
 
     });
