@@ -31,10 +31,8 @@
                     <div class="layui-input-block">
                         <select name="is_valid" lay-verify="">
                             <option value=""></option>
-                            <option value="1"
-                            <{if $data[is_valid]==1}>selected<{/if}>>上线</option>
-                            <option value="0"
-                            <{if $data[is_valid]==0}>selected<{/if}>>下线</option>
+                            <option value="1" <{if $data[is_valid]==1}>selected<{/if}>>上线</option>
+                            <option value="0" <{if $data[is_valid]==0}>selected<{/if}>>下线</option>
                         </select>
                     </div>
                 </div>
@@ -58,27 +56,10 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
-        var $ = layui.$
-                , admin = layui.admin
-                , element = layui.element
-                , layer = layui.layer
-                , form = layui.form;
-
+    }).use(['index', 'form'], function () {
+        var $ = layui.jquery
+            ,form = layui.form;
         form.render(null, 'component-form-group');
-
-        /* 自定义验证规则 */
-        form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '标题至少得5个字符啊';
-                }
-            }
-            , pass: [/(.+){6,12}$/, '密码必须6到12位']
-            , content: function (value) {
-                layedit.sync(editIndex);
-            }
-        });
 
         /* 监听提交 */
         form.on('submit(form-submit)', function (data) {

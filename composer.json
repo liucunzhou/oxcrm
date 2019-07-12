@@ -21,7 +21,8 @@
         "topthink/think-worker": "^2.0",
         "qiniu/php-sdk": "^7.2",
         "aliyuncs/oss-sdk-php": "^2.3",
-        "topthink/think-swoole": "^2.0"
+        "topthink/think-swoole": "^2.0",
+        "ethanhann/redisearch-php": "^1.5"
     },
     "autoload": {
         "psr-4": {

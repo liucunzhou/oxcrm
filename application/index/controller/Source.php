@@ -47,9 +47,7 @@ class Source extends Base
     {
         $platforms = \app\index\model\Source::getPlatforms();
         $this->assign('platforms', $platforms);
-        // print_r($platforms);
 
-        $this->view->engine->layout(false);
         return $this->fetch('edit_source');
     }
 
@@ -57,13 +55,11 @@ class Source extends Base
     {
         $platforms = \app\index\model\Source::getPlatforms();
         $this->assign('platforms', $platforms);
-        // print_r($platforms);
 
         $get = Request::param();
         $data = \app\index\model\Source::get($get['id']);
         $this->assign('data', $data);
 
-        $this->view->engine->layout(false);
         return $this->fetch();
     }
 
