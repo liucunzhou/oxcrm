@@ -11,6 +11,11 @@ use app\index\model\MemberVisit;
 use app\index\model\Store;
 use app\index\model\User;
 use app\index\model\UserAuth;
+use Ehann\RediSearch\Fields\NumericField;
+use Ehann\RediSearch\Fields\TextField;
+use Ehann\RediSearch\Index;
+use Ehann\RedisRaw\PhpRedisAdapter;
+use Ehann\RedisRaw\PredisAdapter;
 use think\facade\Request;
 use think\facade\Session;
 
@@ -525,5 +530,39 @@ class Customer extends Base
 
         $this->view->engine->layout(false);
         return $this->fetch();
+    }
+
+    public function createIndex()
+    {
+        $Adapter = new PhpRedisAdapter();
+        $Adapter->connect('127.0.0.1', 6379);
+        $customerIndex = new Index($Adapter);
+        $customerIndex->setIndexName("customer");
+        $customerIndex->addTextField("realname");
+        $customerIndex->addNumericField("phone");
+        $customerIndex->addNumericField("cid");
+        $customerIndex->create();
+
+        $customerIndex->add([
+            new TextField("realname","liucunzhou"),
+            new NumericField("phone", "18321277411"),
+            new NumericField("cid", 6739)
+        ]);
+    }
+
+    public function search()
+    {
+        $Adapter = new PhpRedisAdapter();
+        $Adapter->connect('127.0.0.1', 6379);
+
+        $customerIndex = new Index($Adapter);
+        $result = $customerIndex->search('18321277411');
+
+        $count = $result->getCount();
+        $documents = $result->getDocuments();  // Number of documents.
+
+        print_r($count);
+        print_r($documents);
+
     }
 }
