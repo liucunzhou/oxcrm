@@ -15,24 +15,30 @@
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="/index/brand/doeditbrand.html" lay-filter="component-form-group">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">品牌名称</label>
+                    <label class="layui-form-label">客户手机</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" value="{$data[title]}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="phone" lay-verify="0" placeholder="手机号" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">排序</label>
+                    <label class="layui-form-label">平台来源</label>
                     <div class="layui-input-block">
-                        <input type="text" name="sort" value="{$data[sort]}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">上/下线</label>
-                    <div class="layui-input-block">
-                        <select name="is_valid" lay-verify="">
+                        <select name="source" lay-verify="">
                             <option value=""></option>
-                            <option value="1" <{if $data[is_valid]==1}>selected<{/if}>>上线</option>
-                            <option value="0" <{if $data[is_valid]==0}>selected<{/if}>>下线</option>
+                            <{foreach name="sources" item="val"}>
+                                <option value="{$val['id']}">{$val['title']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">意向状态</label>
+                    <div class="layui-input-block">
+                        <select name="status" lay-verify="">
+                            <option value=""></option>
+                            <{foreach name="intentions" item="val"}>
+                                <option value="{$val['id']}">{$val['title']}</option>
+                            <{/foreach}>
                         </select>
                     </div>
                 </div>
@@ -41,8 +47,7 @@
                     <div class="layui-input-block">
                         <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即搜索</button>
                         </div>
                     </div>
                 </div>
@@ -73,6 +78,7 @@
                     layer.msg(res.msg);
                 }
             });
+            return false;
             return false;
         });
     });

@@ -23,17 +23,27 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">所有客资</li>
+                            <li>跟进中</li>
+                            <li>有效客资</li>
+                            <li>无效客资</li>
+                        </ul>
+                    </div>
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="create_order">生成订单</button>
+                            {:button(["event"=>"searchCustomer", "text"=>"高级搜索"])}
+                            {:button(["event"=>"addCustomer", "text"=>"添加客资"])}
+                            {:button(["event"=>"createOrder", "text"=>"生成订单"])}
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="visit">回访</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="count">回访记录</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                            {:button(["event"=>"visitCustomer", "text"=>"回访"])}
+                            {:button(["event"=>"visitLogs", "text"=>"回访记录"])}
+                            {:button(["event"=>"editCustomer", "text"=>"编辑"])}
                         </div>
                     </script>
                 </div>
@@ -66,7 +76,7 @@
             ,
             title: '我的客资'
             ,
-            cols: [[{"type": "checkbox", "width": 80, "fixed": "left"}, {
+            cols: [[{"type": "radio", "width": 80, "fixed": "left"}, {
                 "field": "member_no",
                 "title": "\u5ba2\u8d44\u7f16\u53f7",
                 "width": 120
@@ -74,7 +84,7 @@
                 "field": "mobile",
                 "title": "\u8054\u7cfb\u65b9\u5f0f",
                 "width": 120
-            }, {"field": "mobile1", "title": "\u5176\u5b83", "width": 120}, {
+            }, {
                 "field": "source_id",
                 "title": "\u5ba2\u8d44\u6765\u6e90",
                 "width": 120
@@ -122,77 +132,50 @@
             var url = '';
             var ids = '';
             switch (obj.event) {
-                case 'to_staff':
+                case "searchCustomer":
+                    url = '/index/search/customer.html';
+                    layer.open({
+                        type: 2,
+                        title: '高级搜索',
+                        area: [width + 'px', '330px'],
+                        content: url
+                    });
+                    break;
+                case 'addCustomer':
+                    url = '/index/customer/addcustomer.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加客服',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'createOrder':
                     if (checkedboxes.length < 1) {
                         layer.msg("请先选择要分配的客资");
                         return false;
                     }
 
                     ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/distribute.html?ids='+ids;
+                    url = '/index/customer/createorder.html?id=' + ids;
                     layer.open({
                         type: 2,
-                        title: '分发到二级客服',
+                        title: '生成订单',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'
                     });
                     break;
-                case 'to_store':
-                    if(checkedboxes.length < 1) {
-                        layer.msg("请县选择要分配的客资");
-                        return false;
-                    }
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/tostore.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '分发到门店',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'apply_visit':
-                    if(checkedboxes.length < 1) {
-                        layer.msg("请选择要申请的客资");
-                        return false;
-                    }
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/doapply.html';
-                    $.post(url, {ids:ids}, function (res) {
-                        if(res.code == '200') {
-                            alert(res.msg);
-                            parent.window.location.reload();
-                        } else {
-                            layer.msg(res.msg);
-                        }
-                    });
-                    break;
-                case 'apply_order':
-                    if(checkedboxes.length < 1) {
-                        layer.msg("请选择要申请成单的客资");
-                        return false;
-                    };
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/applyorder.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '申请成单',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-            }
-            ;
+
+            };
         });
 
         //监听行工具事件
         table.on('tool(table)', function (obj) {
             var id = obj.data.member_id;
             switch (obj.event) {
-                case 'edit':
+                case 'editCustomer':
                     url = '/index/customer/editcustomer.html?id=' + id;
                     layer.open({
                         type: 2,
@@ -202,7 +185,7 @@
                         offset: 'rb'
                     });
                     break;
-                case 'visit':
+                case 'visitCustomer':
                     url = '/index/customer/visit.html?id=' + id;
                     layer.open({
                         type: 2,
@@ -212,7 +195,7 @@
                         offset: 'rb'
                     });
                     break;
-                case 'count':
+                case 'visitLogs':
                     url = '/index/customer/logs.html?id=' + id;
                     layer.open({
                         type: 2,

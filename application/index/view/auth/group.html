@@ -26,13 +26,13 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <{Layui:button event="addAuth" text="添加角色" type=""}>
+                            {:button(["event"=>"addAuth", "text"=>"添加角色"])}
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            <{Layui:button event="editAuth" text="编辑" type="edit"}>
-                            <{Layui:button event="assignAuth" text="分配权限" type="edit"}>
+                            {:button(["event"=>"editAuth", "text"=>"编辑", "type"=>"edit"])}
+                            {:button(["event"=>"assignAuth", "text"=>"分配权限", "type"=>"edit"])}
                         </div>
                     </script>
                 </div>
@@ -64,19 +64,19 @@
             ,
             title: '角色管理'
             ,
-            cols: [[{"type": "checkbox", "width": 120}, {
+            cols: [[{"type": "checkbox", "width": 80}, {
                 "field": "id",
                 "title": "\u7f16\u53f7",
                 "width": 80
             }, {"field": "title", "title": "\u89d2\u8272"}, {
                 "field": "is_valid",
                 "title": "\u72b6\u6001",
-                "width": 120
-            }, {"field": "sort", "title": "\u6392\u5e8f", "width": 120}, {
+                "width": 80
+            }, {"field": "sort", "title": "\u6392\u5e8f", "width": 80}, {
                 "field": "create_time",
                 "title": "\u521b\u5efa\u65f6\u95f4",
                 "width": 180
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "width": 240}]]
+            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "width": 160}]]
             ,
             page: true
         });
@@ -122,7 +122,7 @@
                     url = '/index/auth/assignauth.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '分配权限',
+                        title: '分配权限给 ' + obj.data.title,
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'
@@ -131,7 +131,6 @@
             }
             ;
         });
-
     });
 </script>
 </body>

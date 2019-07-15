@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>更新客户信息</title>
+    <title>创建订单</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -10,10 +10,24 @@
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
 </head>
 <body>
+<!--创建、编辑订单-->
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Customer/doEditCustomer')}" lay-filter="component-form-group">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">发布员信息</label>
+                    <div class="layui-input-block">
+                        <select name="from_id" id="from_id" class="input-field">
+                            <option value="0">--选择发布者--</option>
+                            <{foreach name="users" item="val"}>
+                            <option value="{$val['id']}"
+                            <{if $data['from_id'] == $val['id']}>selected<{/if}>>{$val['realname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">客资来源</label>
                     <div class="layui-input-block">
@@ -66,7 +80,7 @@
 
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">桌数</label>
+                    <label class="layui-form-label">宴会规模</label>
                     <div class="layui-input-block">
                         <input type="text" name="banquet_size" value="{$data['banquet_size']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
@@ -80,6 +94,20 @@
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">跟进状态</label>
+                    <div class="layui-input-block">
+                        <select name="intention_status" id="intention_status" class="input-field">
+                            <option value="0">未跟进</option>
+                            <{foreach name="intentions" item="val"}>
+                            <option value="{$val['id']}"
+                            <{if $data['intention_status']==$val['id']}>selected<{/if}>>{$val['title']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">区域</label>
                     <div class="layui-input-block">
                         <input type="text" name="zone" value="{$data['zone']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
@@ -90,7 +118,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">婚期</label>
                     <div class="layui-input-block">
-                        <input type="text" name="wedding_date" value="{$data['wedding_date']}" id="wedding_date" lay-verify="0" class="layui-input">
+                        <input type="text" name="wedding_date" value="{$data['wedding_date']}" id="wedding_date" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 

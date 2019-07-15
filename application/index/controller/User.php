@@ -66,7 +66,13 @@ class User extends Base
             $Model = new \app\index\model\User();
         }
 
-        // $Model::create($post);
+        if($post['password']) {
+            $post['password'] = md5($post['password']);
+        } else {
+            unset($post['password']);
+        }
+
+
         $result = $Model->save($post);
 
         if($result) {
@@ -123,6 +129,7 @@ class User extends Base
         !empty($post['store']) && $Model->store_ids = implode(',', $post['store']);
         !empty($post['source']) && $Model->source_ids = implode(',', $post['source']);
         $Model->show_visit_log = $post['show_visit_log'];
+        $Model->is_show_entire_mobile = $post['is_show_entire_mobile'];
         $result = $Model->save();
 
         if($result) {

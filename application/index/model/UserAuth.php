@@ -22,6 +22,12 @@ class UserAuth extends Model
     protected $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
 
+    /**
+     * 获取业务逻辑权限
+     * @param $id
+     * @param bool $update
+     * @return array|mixed|null|\PDOStatement|string|Model
+     */
     public static function getUserLogicAuth($id, $update=false)
     {
 
@@ -41,8 +47,18 @@ class UserAuth extends Model
         return $data;
     }
 
+    public static function getUserAuthSet($id, $update=false)
+    {
+        $userAuth = self::getUserLogicAuth($id);
+        $group = $userAuth['role_ids'];
+        $authSet = AuthGroup::getAuthGroup($group);
+
+        return $authSet;
+    }
+
     public static function updateCache($id)
     {
         self::getUserLogicAuth($id, true);
+        self::getUserAuthSet($id, true);
     }
 }

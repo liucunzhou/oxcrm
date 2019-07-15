@@ -37,6 +37,14 @@
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">完整号码</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_show_entire_mobile" value="1" title="完整显示" <{if $data['is_show_entire_mobile']}>checked<{/if}>/>
+                        <input type="radio" name="is_show_entire_mobile" value="0" title="显示部分" <{if !$data['is_show_entire_mobile']}>checked<{/if}>/>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">用户角色</label>
                     <div class="layui-input-block">
                         <{volist name="roles" id="role"}>

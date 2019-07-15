@@ -27,13 +27,13 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="add">添加部门</button>
+                            {:button(["event"=>"addDepartment", "text"=>"添加部门"])}
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
+                            {:button(["event"=>"editDepartment", "text"=>"编辑", "type"=>"edit"])}
+                            {:button(["event"=>"deleteDepartment", "text"=>"删除", "type"=>"delete"])}
                         </div>
                     </script>
                 </div>
@@ -83,7 +83,7 @@
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
             switch (obj.event) {
-                case 'add':
+                case 'addDepartment':
                     var data = checkStatus.data;
                     url = '/index/department/adddepartment.html';
                     layer.open({
@@ -100,9 +100,10 @@
 
         //监听行工具事件
         table.on('tool(table)', function (obj) {
+            var id = obj.data.id;
             switch (obj.event) {
-                case 'edit':
-                    url = '/index/department/editdepartment.html';
+                case 'editDepartment':
+                    url = '/index/department/editdepartment.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '编辑',
@@ -112,7 +113,8 @@
                     });
                     break;
                 case 'del':
-                    url = '/index/department/deldepartment.html';
+
+                    // url = '/index/department/deldepartment.html';
                     layer.open({
                         type: 2,
                         title: '删除',

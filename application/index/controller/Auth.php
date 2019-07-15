@@ -11,8 +11,7 @@ class Auth extends Base
     {
         if(Request::isAjax()) {
             $get = Request::param();
-            $ModuleModel = new Module();
-            $modules = $ModuleModel->column('id,name,sort');
+            $modules = Module::getModules();
             $config = [
                 'page' => $get['page']
             ];
@@ -37,8 +36,7 @@ class Auth extends Base
 
     public function addAuth()
     {
-        $ModuleModel = new Module();
-        $modules = $ModuleModel->column('id,name,sort');
+        $modules = Module::getModules();
         $this->assign('modules', $modules);
 
         $this->view->engine->layout(false);
@@ -47,8 +45,7 @@ class Auth extends Base
 
     public function editAuth()
     {
-        $ModuleModel = new Module();
-        $modules = $ModuleModel->column('id,name,sort');
+        $modules = Module::getModules();
         $this->assign('modules', $modules);
 
         $post = Request::param();
@@ -100,7 +97,7 @@ class Auth extends Base
 
     public function group()
     {
-        if(Request::isAjax()) {
+        if (Request::isAjax()) {
             $get = Request::param();
             $map = [];
             $config = [
@@ -108,21 +105,20 @@ class Auth extends Base
             ];
             $list = model('AuthGroup')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
-            foreach ($data as &$value){
+            foreach ($data as &$value) {
                 $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
             }
             $result = [
-                'code'  => 0,
-                'msg'   => '获取数据成功',
+                'code' => 0,
+                'msg' => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $data
+                'data' => $data
             ];
             return json($result);
         } else {
             $this->view->engine->layout(false);
             return $this->fetch();
         }
-        return $this->fetch();
     }
 
     public function addGroup()
@@ -175,7 +171,7 @@ class Auth extends Base
         $authSelected = explode(',', $data['auth_set']);
         $this->assign('authSelected', $authSelected);
 
-        $modules = \app\index\model\Auth::getModules();
+        $modules = Module::getModules();
         $this->assign('modules', $modules);
 
         $items = \app\index\model\Auth::getList();
@@ -200,7 +196,8 @@ class Auth extends Base
             ]);
         }
 
-        $result = AuthGroup::get($post['id'])->save(['auth_set'=>$post['ids']]);
+        $ids = implode(',', $post['ids']);
+        $result = AuthGroup::get($post['id'])->save(['auth_set'=>$ids]);
 
         if($result) {
             AuthGroup::updateCache($post['id']);

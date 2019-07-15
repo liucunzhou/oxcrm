@@ -20,7 +20,11 @@
                         <select name="parent_id" id="parent_id">
                             <option value="0">--父级部门--</option>
                             <{foreach item="val" name="departments"}>
-                            <option value="{$val['id']}"><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
+                                <{if $val['id'] == $data['parent_id']}>
+                                    <option value="{$val['id']}" selected><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
+                                <{else /}>
+                                    <option value="{$val['id']}"><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
+                                <{/if}>
                             <{/foreach}>
                         </select>
                     </div>
@@ -54,7 +58,7 @@
                     <div class="layui-input-block">
                         <div class="layui-footer" style="left: 0;">
                             <input type="hidden" name="id" id="id" value="{$data['id']}" />
-                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即提交</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                         </div>
                     </div>
                 </div>
@@ -75,11 +79,17 @@
 
         form.render(null, 'component-form');
         /* 监听提交 */
-        form.on('submit(component-form)', function (data) {
-            if(data.code == '200') {
-                alert(data.msg);
-                parent.window.location.reload();
-            }
+        form.on('submit(form-submit)', function (data) {
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function (res) {
+                if (res.code == '200') {
+                    parent.layui.table.reload("table");
+                    parent.layer.closeAll();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
             return false;
         });
     });

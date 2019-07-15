@@ -705,4 +705,8 @@ if (!class_exists("Layui")) {
     function button($tag){
         return \module\Layui::button($tag);
     }
+
+    function search($tag){
+        return \module\Layui::search($tag);
+    }
 }

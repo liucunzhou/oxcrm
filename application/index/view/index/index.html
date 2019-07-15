@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search.html?keywords=">
+                    <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="{:url('Customer/search')}?keywords=">
                 </li>
             </ul>
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
@@ -154,96 +154,6 @@
         index: 'lib/index' //主入口模块
     }).use(['index','layim'], function () {
 
-        layer.msg("您有新的消息,请注意查收");
-        var layim = layui.layim;
-        // 基础配置
-        layim.config({
-
-            init: {
-                url: "{:url('im/init')}" //接口地址（返回的数据格式见下文）
-                ,type: 'get' //默认get，一般可不填
-                ,data: {} //额外参数
-            }
-
-            ,title: '系统消息'
-
-            ,isAudio: true
-
-            ,isVideo: true
-
-            ,notice: true
-
-            //获取群员接口（返回的数据格式见下文）
-            ,members: {
-                url: '' //接口地址（返回的数据格式见下文）
-                ,type: 'get' //默认get，一般可不填
-                ,data: {} //额外参数
-            }
-
-            //上传图片接口（返回的数据格式见下文），若不开启图片上传，剔除该项即可
-            ,uploadImage: {
-                url: '' //接口地址
-                ,type: 'post' //默认post
-            }
-
-            //上传文件接口（返回的数据格式见下文），若不开启文件上传，剔除该项即可
-            ,uploadFile: {
-                url: '' //接口地址
-                ,type: 'post' //默认post
-            }
-            //扩展工具栏，下文会做进一步介绍（如果无需扩展，剔除该项即可）
-            ,tool: [{
-                alias: 'code' //工具别名
-                ,title: '代码' //工具名称
-                ,icon: '&#xe64e;' //工具图标，参考图标文档
-            }]
-
-            ,msgbox: layui.cache.dir + 'css/modules/layim/html/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
-            ,find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
-            ,chatLog: layui.cache.dir + 'css/modules/layim/html/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可
-        });
-
-        var socket = new WebSocket('ws://121.42.184.177:9501');
-        socket.onopen = function(){
-            socket.send(JSON.stringify({
-                'type'  : 'onpen',
-                'msg'   : '登录成功'
-            }));
-        };
-
-        layim.on('online', function(status){
-            console.log(status); //获得online或者hide
-
-            //此时，你就可以通过Ajax将这个状态值记录到数据库中了。
-            //服务端接口需自写。
-        });
-
-        layim.on('sign', function(value){
-            console.log(value); //获得新的签名
-
-            //此时，你就可以通过Ajax将新的签名同步到数据库中了。
-        });
-
-        layim.on('sendMessage', function(res) {
-            socket.send(JSON.stringify({
-                type: 'chatMessage' //随便定义，用于在服务端区分消息类型
-                ,data: res
-            }));
-        });
-
-        socket.onmessage = function(res){
-            res = JSON.parse(res);
-            if(res.emit === 'chatMessage'){
-                layim.getMessage(res.data); //res.data即你发送消息传递的数据（阅读：监听发送的消息）
-            }
-        };
-
-        layim.getMessage({
-            system: true //系统消息
-            ,id: 1111111 //聊天窗口ID
-            ,type: "friend" //聊天窗口类型
-            ,content: '对方已掉线'
-        });
     });
 </script>
 </body>

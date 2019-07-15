@@ -14,30 +14,23 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Customer/doAssignToWashManager')}" lay-filter="component-form-group">
-                <p>
-                    非重复客资共<span class="amount">{$fileData['amount']}</span>条数据,
-                    已经分配<span class="assigned_amount">0</span>条,
-                    还剩<span class="unassigned_amount">{$fileData['amount']}</span>条未分配
-                </p>
                 <table class="layui-table">
-                    <colgroup>
-                        <col width="120">
-                        <col>
-                    </colgroup>
                     <{foreach name="users" item="val"}>
                     <tr>
-                        <td width="120">{$val['realname']}</td>
-                        <td>
-                            <input type="text" name="user_{$val['id']}" class="layui-input">
+                        <td class="text-center" width="80">
+                            <input type="radio" name="manager" value="{$val['id']}" class="layui-input">
                         </td>
+                        <td>{$val['realname']}</td>
                     </tr>
                     <{/foreach}>
                 </table>
 
                 <div class="layui-form-item layui-layout-admin">
                     <div class="layui-input-block">
+                        <input type="hidden" name="ids" id="ids" value="{$Request.param.ids}" />
                         <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即分配</button>
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
                 </div>
