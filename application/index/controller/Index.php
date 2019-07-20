@@ -39,6 +39,7 @@ class Index extends Base
             }
         }
         $this->assign('menus', $menus);
+
         return $this->fetch();
     }
 

@@ -32,10 +32,16 @@ class Passport extends Controller
         if(!$user) {
             $this->result([], 500, '密码不正确');
         }
-
         Session::set('user', $user);
+
+        if (Request::isMobile()) {
+            $path = url('Index/User/info');
+        } else {
+            $path = url('Index/Index/index');
+        }
+        // $path = url('Index/Index/index');
         $data = [
-            'redirect' => url('Index/Index/index')
+            'redirect' => $path
         ];
         $this->result($data, 200, '登录成功');
     }

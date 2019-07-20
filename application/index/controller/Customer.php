@@ -511,7 +511,7 @@ class Customer extends Base
 
         return json([
             'code' => '200',
-            'msg' => '分发到二级客服成功'
+            'msg' => '分配到洗单组客服成功'
         ]);
     }
 

@@ -1,17 +1,16 @@
 <?php
-$client = new \Swoole\Client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
-$client->on("connect", function(swoole_client $cli) {
-    $cli->send("GET / HTTP/1.1\r\n\r\n");
+$server = new Swoole\WebSocket\Server("121.42.184.177", 9501);
+
+$server->on('open', function (Swoole\WebSocket\Server $server, $request) {
+    echo "server: handshake success with fd{$request->fd}\n";
+    $server->push($request->fd, "我是liucunzhou~");
 });
-$client->on("receive", function(swoole_client $cli, $data){
-    echo "Receive: $data";
-    $cli->send(str_repeat('A', 100)."\n");
-    sleep(1);
+
+$server->on('message', function (Swoole\WebSocket\Server $server, $frame) {
+    echo "receive from {$frame->fd}:{$frame->data},opcode:{$frame->opcode},fin:{$frame->finish}\n";
+    $server->push($frame->fd, "this is server");
 });
-$client->on("error", function(swoole_client $cli){
-    echo "error\n";
+
+$server->on('close', function ($ser, $fd) {
+    echo "client {$fd} closed\n";
 });
-$client->on("close", function(swoole_client $cli){
-    echo "Connection close\n";
-});
-$client->connect('121.42.184.177', 9501);
