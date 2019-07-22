@@ -49,6 +49,6 @@ class Passport extends Controller
     public function logout()
     {
         Session::delete("user");
-        $this->redirect('Index/Passport/login');
+        $this->redirect(url('Index/Passport/login'));
     }
 }

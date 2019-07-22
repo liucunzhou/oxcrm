@@ -14,18 +14,30 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Customer/doEditCustomer')}" lay-filter="component-form-group">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">客资来源</label>
-                    <div class="layui-input-block">
-                        <select name="source_id" id="source_id">
-                            <option value="0">--选择来源--</option>
-                            <{foreach name="sources" item="val"}>
-                            <option value="{$val['id']}"
-                            <{if $data['source_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>
-                            <{/foreach}>
-                        </select>
+                <{if $aciton=='add'}>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客资来源</label>
+                        <div class="layui-input-block">
+                            <select name="source_id" id="source_id">
+                                <option value="0">--选择来源--</option>
+                                <{foreach name="sources" item="val"}>
+                                    <{if $data['source_id']==$val['id']}>
+                                        <option value="{$val['id']}" selected>{$val['title']}</option>
+                                    <{else /}>
+                                        <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/if}>
+                                <{/foreach}>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                <{else }>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客资来源</label>
+                        <div class="layui-input-block">
+                            <input type="text" disabled value="{$sources[$data['source_id']]['title']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                <{/if}>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">客户姓名</label>
@@ -34,12 +46,21 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">联系电话</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="mobile" value="{$data['mobile']}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                <{if $aciton=='add'}>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="mobile" value="{$data['mobile']}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
-                </div>
+                <{else /}>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" disabled value="{$data['mobile']}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                <{/if}>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">信息类型</label>
@@ -47,7 +68,7 @@
                         <select name="news_type" id="news_type" class="input-field">
                             <option value="0" <{if $data['news_type']==0}>selected<{/if}>>婚宴信息</option>
                             <option value="1" <{if $data['news_type']==1}>selected<{/if}>>婚庆信息</option>
-                            <option value="2" <{if $data['news_type']==2}>selected<{/if}>>婚宴转婚庆</option>
+                            <option value="2" <{if $data['news_type']==2}>selected<{/if}>>一站式</option>
                         </select>
                     </div>
                 </div>

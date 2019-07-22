@@ -45,6 +45,14 @@
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">修改意向</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_update_intention" value="1" title="可修改" <{if $data['is_show_entire_mobile']}>checked<{/if}>/>
+                        <input type="radio" name="is_update_intention" value="0" title="不可修改" <{if !$data['is_show_entire_mobile']}>checked<{/if}>/>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">用户角色</label>
                     <div class="layui-input-block">
                         <{volist name="roles" id="role"}>

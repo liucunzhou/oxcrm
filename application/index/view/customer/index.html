@@ -32,12 +32,21 @@
                 <div class="layui-card-body">
                     <div class="layui-tab">
                         <ul class="layui-tab-title">
-                            <li class="layui-this">所有客资</li>
-                            <li>已分配</li>
-                            <li>未分配</li>
-                            <li>有效客资</li>
-                            <li>无效客资</li>
-                            <li>跟进中</li>
+
+                            <!--<li class="layui-this">-->
+                                <!--<a href="{:url('customer/index')}">所有客资</a>-->
+                            <!--</li>-->
+                            <{foreach name="tabs" item="val"}>
+                                <{if $val['checked'] == '1'}>
+                                    <li class="layui-this">
+                                        <a href="{$val.url}">{$val.text}</a>
+                                    </li>
+                                <{else /}>
+                                    <li>
+                                        <a href="{$val.url}">{$val.text}</a>
+                                    </li>
+                                <{/if}>
+                            <{/foreach}>
                         </ul>
                     </div>
                     <table class="layui-hide" id="table" lay-filter="table"></table>
@@ -78,7 +87,7 @@
         table.render({
             elem: '#table'
             ,
-            url: '/index/customer/index.html'
+            url: '{$Think.server.REQUEST_URI}'
             ,
             height: 'full-100'
             ,

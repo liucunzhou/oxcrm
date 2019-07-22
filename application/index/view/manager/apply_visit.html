@@ -26,8 +26,8 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="confirmVisitApply">确认申请</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="cancelVisitApply">取消申请</button>
+                            {:button(["event"=>"confirmVisitApply", "text"=>"确认回访申请"])}
+                            {:button(["event"=>"cancelVisitApply", "text"=>"驳回回访申请"])}
                         </div>
                     </script>
                 </div>
@@ -43,14 +43,13 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
-        var admin = layui.admin
-                , $ = layui.jquery
-                , table = layui.table;
+        var $ = layui.jquery
+            ,table = layui.table;
 
         table.render({
             elem: '#table'
             ,
-            url: '/index/customer/mine.html'
+            url: '{$Think.server.REQUEST_URI}'
             ,
             height: 'full-100'
             ,
@@ -116,68 +115,38 @@
             var url = '';
             var ids = '';
             switch (obj.event) {
-                case 'confirmVisitApply':
-                    if (checkedboxes.length < 1) {
-                        layer.msg("请先选择要分配的客资");
-                        return false;
-                    }
 
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/distribute.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '分发到二级客服',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
                 case 'confirmVisitApply':
                     if(checkedboxes.length < 1) {
-                        layer.msg("请县选择要分配的客资");
+                        layer.msg("请选择要要确认的申请");
                         return false;
                     }
                     ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/tostore.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '分发到门店',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'apply_visit':
-                    if(checkedboxes.length < 1) {
-                        layer.msg("请选择要申请的客资");
-                        return false;
-                    }
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/doapply.html';
+                    url = '/index/manager/confirmvisitapply.html';
                     $.post(url, {ids:ids}, function (res) {
                         if(res.code == '200') {
                             alert(res.msg);
-                            parent.window.location.reload();
+                            table.reload();
                         } else {
                             layer.msg(res.msg);
                         }
                     });
                     break;
-                case 'apply_order':
+                case 'cancelVisitApply':
                     if(checkedboxes.length < 1) {
-                        layer.msg("请选择要申请成单的客资");
+                        layer.msg("请选择要要驳回的申请");
                         return false;
-                    };
+                    }
                     ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/applyorder.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '申请成单',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
+                    url = '/index/manager/cancelvisitapply.html';
+                    $.post(url, {ids:ids}, function (res) {
+                        if(res.code == '200') {
+                            alert(res.msg);
+                            table.reload();
+                        } else {
+                            layer.msg(res.msg);
+                        }
                     });
-                    break;
             }
             ;
         });

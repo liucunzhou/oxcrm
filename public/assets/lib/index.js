@@ -34,7 +34,10 @@ layui.extend({
         tabsPage.index = index;
       }
     });
-    
+
+    var attr = $(".layui-input-search").attr("lay-action");
+    $(".layui-input-search").attr("lay-action", url + '?keywords=');
+
     text = text || '新标签页';
     
     if(setter.pageTabs){

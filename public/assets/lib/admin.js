@@ -752,7 +752,7 @@ layui.define('view', function(exports){
   $body.on('click', TABS_HEADER, function(){
     var othis = $(this)
     ,index = othis.index();
-    
+
     admin.tabsPage.type = 'tab';
     admin.tabsPage.index = index;
 
@@ -776,7 +776,7 @@ layui.define('view', function(exports){
     ,href = othis.attr('lay-href')
     ,text = othis.attr('lay-text')
     ,router = layui.router();
-    
+
     admin.tabsPage.elem = othis;
     //admin.prevRouter[router.path[0]] = router.href; //记录上一次各菜单的路由信息
 

@@ -17,7 +17,6 @@ class MemberAllocate extends Model
 
     public function member()
     {
-
         return $this->belongsTo('member', 'member_id');
     }
 }

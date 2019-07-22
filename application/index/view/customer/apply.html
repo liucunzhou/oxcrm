@@ -1,106 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的申请</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
 
-<!--页面详情-->
-<div class="page-content">
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>我的申请</cite></a>
+    </div>
+</div>
 
-    <div class="customer-list">
-        <div class="customer-item customer-list-header">
-            <div class="cell-checkbox">
-                <input type="checkbox" class="check_all" value="{$val['id']}"/>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <{foreach name="tabs" item="val"}>
+                            <{if $val['checked'] == '1'}>
+                            <li class="layui-this">
+                                <a href="{$val.url}">{$val.text}</a>
+                            </li>
+                            <{else /}>
+                            <li>
+                                <a href="{$val.url}">{$val.text}</a>
+                            </li>
+                            <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
+                            {:button(["event"=>"searchCustomer", "text"=>"高级搜索"])}
+                        </div>
+                    </script>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                            {:button(["event"=>"visitCustomer", "text"=>"回访"])}
+                            {:button(["event"=>"visitLogs", "text"=>"回访记录"])}
+                            {:button(["event"=>"editCustomer", "text"=>"编辑"])}
+                        </div>
+                    </script>
+                </div>
             </div>
-            <div class="cell-customerno">客户编号</div>
-            <div class="cell-realname">客户名</div>
-            <div class="cell-phone">联系方式</div>
-            <div class="cell-phone1">其他联系</div>
-            <div class="cell-publisher">发布业务员</div>
-            <div class="cell-sale">跟单员</div>
-            <div class="cell-news-type">信息类型</div>
-            <div class="cell-ordered-staff">成单人</div>
-            <div class="cell-change">转婚庆</div>
-            <div class="cell-banquet-size">宴会规模</div>
-            <div class="cell-budget">预算</div>
-            <div class="cell-valid">发布状态</div>
-            <div class="cell-remark-amount">备注</div>
-            <div class="cell-remark">客户备注</div>
-            <div class="cell-wedding-intention">跟进状态</div>
-            <div class="cell-wedding-date">婚期</div>
-            <div class="cell-zone">区域</div>
-            <div class="cell-hotel">咨询酒店</div>
-            <div class="cell-source">客户来源</div>
-            <div class="cell-createtime">录入时间</div>
         </div>
-        <{foreach name="list" item="val"}>
-            <div class="customer-item">
-                <div class="cell-checkbox">
-                    <input type="checkbox" name="id[]" value="{$val['member']['id']}"/>
-                </div>
-                <div class="cell-customerno">
-                    <a class="action-modal" href="javascript:void(0);" data-action="{:url('Customer/editCustomer',['id'=>$val['id']])}">
-                        {$val['member']['member_no']}
-                    </a>
-                </div>
-                <div class="cell-realname">{$val['member']['realname']|default='-'}</div>
-                <div class="cell-phone">{:substr_replace($val['member']['mobile'],'****', 3, 4)}</div>
-                <div class="cell-phone1">
-                    <{if empty($val['member']['mobile1'])}>
-                        -
-                    <{else}>
-                        {:substr_replace($val['member']['mobile1'],'****', 3, 4)}
-                    <{/if}>
-                </div>
-                <div class="cell-publisher">{$users[$val['member']['from_id']]['realname']}</div>
-                <div class="cell-sale">跟单员</div>
-                <div class="cell-news-type">{$newsTypes[$val['member']['news_type']]}</div>
-                <div class="cell-ordered-staff">成单人</div>
-                <div class="cell-change">转婚庆</div>
-                <div class="cell-banquet-size">{$val['member']['banquet_size']}</div>
-                <div class="cell-budget">{$val['member']['budget']}</div>
-                <div class="cell-valid">{$publishStatus[$val['member']['is_valid']]}</div>
-                <div class="cell-remark-amount">备注</div>
-                <div class="cell-remark">{$val['member']['remark']}</div>
-                <div class="cell-wedding-intention">{$intentions[$val['member']['intention_status']]['title']|default='未跟进'}</div>
-                <div class="cell-wedding-date">{$val['member']['wedding_date']}</div>
-                <div class="cell-zone">{$val['member']['zone']}</div>
-                <div class="cell-hotel">{$hotels[$val['member']['hotel_id']]['title']}</div>
-                <div class="cell-source">{$sources[$val['member']['source_id']]['title']}</div>
-                <div class="cell-createtime">{$val['member']['create_time']}</div>
-            </div>
-        <{/foreach}>
-
-</div>
-
-    <!--<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">-->
-
-        <!--<a class="btn btn-xs btn-purple">-->
-            <!--派单-->
-        <!--</a>-->
-
-        <!--<a class="btn btn-xs btn-pink">-->
-            <!--申请-->
-        <!--</a>-->
-
-        <!--<a class="btn btn-xs btn-pink">-->
-            <!--回访记录-->
-        <!--</a>-->
-
-        <!--<a class="btn btn-xs btn-pink action-delete" data-action="{:url('Customer/delete',['id'=>$val['id']])}">-->
-            <!--删除-->
-        <!--</a>-->
-    <!--</div>-->
-</div>
-<div class="fixed-bottom">
-    <div class="toolbar-bottom pull-left">
-        <label class="label-checkbox-bottom">
-            <input type="checkbox" class="check_all">
-            <span>全选</span>
-        </label>
-
-        <a class="btn btn-xs btn-warning action-modal" href="javascript:void(0);" data-action="{:url('Customer/toStore')}">
-            申请回访
-        </a>
-
-    </div>
-    <div class="pull-right">
-        <{include file="common/page" /}>
     </div>
 </div>
-<{include file="customer/search" /}>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function () {
+        var admin = layui.admin
+                , $ = layui.jquery
+                , table = layui.table;
+
+        table.render({
+            elem: '#table'
+            ,
+            url: '{$Think.server.REQUEST_URI}'
+            ,
+            height: 'full-100'
+            ,
+            defaultToolbar: ['filter']
+            ,
+            toolbar: '#table-toolbar'
+            ,
+            title: '我的客资'
+            ,
+            cols: [[{"type": "radio", "width": 80, "fixed": "left"}, {
+                "field": "member_no",
+                "title": "\u5ba2\u8d44\u7f16\u53f7",
+                "width": 120
+            }, {"field": "realname", "title": "\u5ba2\u6237\u59d3\u540d", "width": 120}, {
+                "field": "mobile",
+                "title": "\u8054\u7cfb\u65b9\u5f0f",
+                "width": 120
+            }, {
+                "field": "source_id",
+                "title": "\u5ba2\u8d44\u6765\u6e90",
+                "width": 120
+            }, {"field": "news_type", "title": "\u4fe1\u606f\u7c7b\u578b", "width": 120}, {
+                "field": "hotel_id",
+                "title": "\u5165\u4f4f\u9152\u5e97",
+                "width": 120
+            }, {"field": "banquet_size", "title": "\u5bb4\u4f1a\u89c4\u6a21", "width": 120}, {
+                "field": "budget",
+                "title": "\u9884\u7b97",
+                "width": 120
+            }, {
+                "field": "intention_status",
+                "title": "\u610f\u5411\u72b6\u6001",
+                "width": 120
+            }, {"field": "wedding_date", "title": "\u5a5a\u793c\u65e5\u671f", "width": 120}, {
+                "field": "zone",
+                "title": "\u533a\u57df",
+                "width": 120
+            }, {"field": "remark", "title": "\u5907\u6ce8", "width": 200}, {
+                "field": "create_time",
+                "title": "\u521b\u5efa\u65e5\u671f",
+                "width": 180
+            }]]
+            ,
+            page: true
+        });
+
+        var getSelectedIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+                ids.push(value.id)
+            });
+
+            return ids.join(',');
+        }
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+            var url = '';
+            var ids = '';
+            switch (obj.event) {
+                case "searchCustomer":
+                    url = '/index/search/customer.html';
+                    layer.open({
+                        type: 2,
+                        title: '高级搜索',
+                        area: [width + 'px', '330px'],
+                        content: url
+                    });
+                    break;
+                case 'addCustomer':
+                    url = '/index/customer/addcustomer.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加客服',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'createOrder':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/customer/createorder.html?id=' + ids;
+                    layer.open({
+                        type: 2,
+                        title: '生成订单',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function (obj) {
+            var id = obj.data.member_id;
+            switch (obj.event) {
+                case 'editCustomer':
+                    url = '/index/customer/editcustomer.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'visitCustomer':
+                    url = '/index/customer/visitcustomer.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '回访',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'visitLogs':
+                    url = '/index/customer/visitlogs.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '回访记录',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+            };
+        });
+
+    });
+</script>
+</body>
+</html>

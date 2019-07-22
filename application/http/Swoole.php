@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xiaozhu
- * Date: 2019/5/8
- * Time: 14:26
- */
-
 namespace app\http;
 
 use think\swoole\Server;

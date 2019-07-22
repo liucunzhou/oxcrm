@@ -25,10 +25,17 @@
                 <div class="layui-card-body">
                     <div class="layui-tab">
                         <ul class="layui-tab-title">
-                            <li class="layui-this">所有客资</li>
-                            <li>跟进中</li>
-                            <li>有效客资</li>
-                            <li>无效客资</li>
+                            <{foreach name="tabs" item="val"}>
+                                <{if $val['checked'] == '1'}>
+                                    <li class="layui-this">
+                                        <a href="{$val.url}">{$val.text}</a>
+                                    </li>
+                                <{else /}>
+                                    <li>
+                                        <a href="{$val.url}">{$val.text}</a>
+                                    </li>
+                                <{/if}>
+                            <{/foreach}>
                         </ul>
                     </div>
                     <table class="layui-hide" id="table" lay-filter="table"></table>
@@ -59,14 +66,13 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
-        var admin = layui.admin
-                , $ = layui.jquery
-                , table = layui.table;
+        var $ = layui.jquery
+            ,table = layui.table;
 
         table.render({
             elem: '#table'
             ,
-            url: '/index/customer/mine.html'
+            url: '{$Think.server.REQUEST_URI}'
             ,
             height: 'full-100'
             ,
@@ -108,7 +114,7 @@
                 "field": "create_time",
                 "title": "\u521b\u5efa\u65e5\u671f",
                 "width": 180
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "fixed":"right", "width": 200}]]
+            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "fixed":"right", "width": 220}]]
             ,
             page: true
         });
@@ -186,7 +192,7 @@
                     });
                     break;
                 case 'visitCustomer':
-                    url = '/index/customer/visit.html?id=' + id;
+                    url = '/index/customer/visitcustomer.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '回访',
@@ -196,7 +202,7 @@
                     });
                     break;
                 case 'visitLogs':
-                    url = '/index/customer/logs.html?id=' + id;
+                    url = '/index/customer/visitlogs.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '回访记录',

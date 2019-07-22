@@ -24,19 +24,16 @@
             <div class="layui-card">
                 <!--<div class="layui-card-header">酒店管理</div>-->
                 <div class="layui-card-body">
-                    <table class="layui-hide" id="test-table-toolbar" lay-filter="test-table-toolbar"></table>
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
 
-                    <script type="text/html" id="test-table-toolbar-toolbarDemo">
+                    <script type="text/html" id="toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm action-apply" href="javascript:void(0);" data-action="{:url('Customer/doApply')}">
-                                申请回访
-                            </button>
+                            {:button(["event"=>"doApply", "text"=>"申请回访"])}
                         </div>
                     </script>
 
-                    <script type="text/html" id="test-table-toolbar-barDemo">
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    <script type="text/html" id="tool">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">回访记录</a>
                     </script>
                 </div>
             </div>
@@ -51,12 +48,12 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function(){
-        var admin = layui.admin
-                ,table = layui.table;
+        var $ = layui.jquery
+            ,table = layui.table;
         table.render({
-            elem: '#test-table-toolbar'
-            ,url: '{:url("Customer/index")}'
-            ,toolbar: '#test-table-toolbar-toolbarDemo'
+            elem: 'table'
+            ,url: '{$Think.server.REQUEST_URI}'
+            ,toolbar: '#toolbar'
             ,height: 'full-100'
             ,title: '酒店数据表'
             ,defaultToolbar: ['filter']
@@ -77,28 +74,53 @@
                 ,{field:'hotel', title:'酒店', width:120}
                 ,{field:'source', title:'客户来源', width:120}
                 ,{field:'create_time', title:'创建时间', width:180}
-                ,{fixed: 'right', title:'操作', toolbar: '#test-table-toolbar-barDemo', width:150}
+                ,{fixed: 'right', title:'操作', toolbar: '#tool', width:150}
             ]]
             ,page: true
         });
 
+        var getSelectedIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+                ids.push(value.id)
+            });
+
+            return ids.join(',');
+        }
+
         //头工具栏事件
-        table.on('toolbar(test-table-toolbar)', function(obj){
+        table.on('toolbar(table)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+            var ids = '';
+            var url = '';
             switch(obj.event){
-                case 'getCheckData':
-                    var data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
+                case 'doApply':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/customer/doapply.html';
+                    $.post(url,{ids:ids}, function(res){
+                        if(res.code == '200') {
+                            layer.msg(res.msg);
+                            table.reload("table")
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
                     break;
 
             };
         });
 
         //监听行工具事件
-        table.on('tool(test-table-toolbar)', function(obj){
+        table.on('tool(table)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+                layer.confirm('确定删除本行么', function(index){
                     obj.del();
                     layer.close(index);
                 });
@@ -114,6 +136,8 @@
                 });
             }
         });
+
+
 
     });
 </script>

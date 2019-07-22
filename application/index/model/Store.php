@@ -62,6 +62,27 @@ class Store extends Model
         return $brands;
     }
 
+    public static function getStoresWithUser()
+    {
+        $stores = Store::getStoreList();
+        $users = User::getUsers();
+        foreach ($stores as &$store) {
+            foreach ($users as $user) {
+                $auth = UserAuth::getUserLogicAuth($user['id']);
+                if(!empty($auth['store_ids'])) {
+                    $ids = explode(',', $auth['store_ids']);
+                    if (in_array($store['id'], $ids)) {
+                        $store['users'][] = $user;
+                    }
+                } else {
+                    continue;
+                }
+            }
+        }
+
+        return $stores;
+    }
+
     public static function updateCache()
     {
         self::getStoreList(true);
