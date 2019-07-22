@@ -84,6 +84,8 @@ class Department extends Base
             }
             $Model->save(['path' => $path, 'depth' => $depth]);
 
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             // \app\index\model\Source::updateCache();
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
@@ -91,14 +93,17 @@ class Department extends Base
         }
     }
 
-    public function delete()
+    public function deleteDepartment()
     {
         $get = Request::param();
-        $result = \app\index\model\Brand::get($get['id'])->delete();
+        $Model = \app\index\model\Brand::get($get['id']);
+        $result = $Model->delete();
 
         if($result) {
             // 更新缓存
             // \app\index\model\Brand::updateCache();
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

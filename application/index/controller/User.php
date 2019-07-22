@@ -72,13 +72,15 @@ class User extends Base
             unset($post['password']);
         }
 
-
         $result = $Model->save($post);
 
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;
             ### 更新用户信息缓存
             $Model::updateCache($post['id']);
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功', 'redirect'=>$post['referer']]);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -137,20 +139,27 @@ class User extends Base
             \app\index\model\User::update(['department_id'=>$post['department_id']], $map);
             ### 更新用户信息缓存
             $Model::updateCache($post['user_id']);
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '用户权限成功', 'redirect'=>$post['referer']]);
         } else {
             return json(['code'=>'500', 'msg'=> '用户权限失败']);
         }
     }
 
-    public function delete()
+    public function deleteUser()
     {
         $get = Request::param();
-        $result = \app\index\model\User::get($get['id'])->delete();
+        $Model = \app\index\model\User::get($get['id']);
+        $result = $Model->delete();
 
         if($result) {
             // 更新缓存
             \app\index\model\User::updateCache();
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

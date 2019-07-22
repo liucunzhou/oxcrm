@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\index\model\AuthGroup;
 use app\index\model\Module;
+use app\index\model\OperateLog;
 use think\facade\Request;
 
 class Auth extends Base
@@ -74,6 +75,9 @@ class Auth extends Base
             empty($post['id']) && $post['id'] = $Model->id;
             ### 更新缓存
             \app\index\model\Auth::updateCache($post['id']);
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -156,6 +160,9 @@ class Auth extends Base
             empty($post['id']) && $post['id'] = $Model->getLastInsID();
             ### 更新缓存
             \app\index\model\AuthGroup::updateCache($post['id']);
+
+            ### 添加日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -197,10 +204,14 @@ class Auth extends Base
         }
 
         $ids = implode(',', $post['ids']);
-        $result = AuthGroup::get($post['id'])->save(['auth_set'=>$ids]);
+        $Model = AuthGroup::get($post['id']);
+        $result = $Model->save(['auth_set'=>$ids]);
 
         if($result) {
             AuthGroup::updateCache($post['id']);
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json([
                 'code'  => '200',
                 'msg'   => '权限分配成功'
@@ -216,11 +227,15 @@ class Auth extends Base
     public function deleteGroup()
     {
         $get = Request::param();
-        $result = \app\index\model\AuthGroup::get($get['id'])->delete();
+        $Model = \app\index\model\AuthGroup::get($get['id']);
+        $result = $Model->delete();
 
         if($result) {
             // 更新缓存
             \app\index\model\AuthGroup::updateCache($get['id']);
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

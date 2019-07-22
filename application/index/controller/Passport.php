@@ -2,6 +2,8 @@
 namespace app\index\controller;
 
 
+use app\index\model\Operate;
+use app\index\model\OperateLog;
 use think\Controller;
 use think\facade\Request;
 use think\facade\Session;
@@ -39,7 +41,13 @@ class Passport extends Controller
         } else {
             $path = url('Index/Index/index');
         }
-        // $path = url('Index/Index/index');
+
+        // 加入登录记录
+        $ip = Request::ip();
+        $action = Request::path();
+        // OperateLog::append($user, $action, '-', $ip);
+        OperateLog::dologinLog($user, $ip);
+
         $data = [
             'redirect' => $path
         ];

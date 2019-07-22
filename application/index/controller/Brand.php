@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: liucunzhou
- * Date: 2019/4/22
- * Time: 8:45 PM
- */
-
 namespace app\index\controller;
 
 use think\facade\Request;
@@ -58,19 +51,21 @@ class Brand extends Base
     {
         $post = Request::post();
         if($post['id']) {
-            $action = '添加品牌';
+            $action = '更新品牌';
             $Model = \app\index\model\Brand::get($post['id']);
         } else {
-            $action = '编辑品牌';
+            $action = '添加品牌';
             $Model = new \app\index\model\Brand();
         }
 
         // $Model::create($post);
         $result = $Model->save($post);
-
         if($result) {
             ### 更新缓存
             \app\index\model\Brand::updateCache();
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -80,11 +75,15 @@ class Brand extends Base
     public function deleteBrand()
     {
         $post = Request::post();
-        $result = \app\index\model\Brand::get($post['id'])->delete();
+        $Model = \app\index\model\Brand::get($post['id']);
+        $result = $Model->delete();
 
         if($result) {
             // 更新缓存
             \app\index\model\Brand::updateCache();
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

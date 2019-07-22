@@ -83,6 +83,9 @@ class Store extends Base
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;
             \app\index\model\Store::updateCache($post['id']);
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '添加成功']);
         } else {
             return json(['code'=>'500', 'msg'=> '添加失败']);
@@ -92,11 +95,15 @@ class Store extends Base
     public function deleteStore()
     {
         $post = Request::post();
-        $result = \app\index\model\Store::get($post['id'])->delete();
+        $Model = \app\index\model\Store::get($post['id']);
+        $result = $Model->delete();
 
         if($result) {
             // 更新缓存
             \app\index\model\Store::updateCache();
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

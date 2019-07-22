@@ -68,20 +68,27 @@ class Intention extends Base
         $result = $Model->save($post);
 
         if($result) {
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '添加成功']);
         } else {
             return json(['code'=>'500', 'msg'=> '添加失败']);
         }
     }
 
-    public function delete()
+    public function deleteIntention()
     {
         $get = Request::param();
-        $result = \app\index\model\Intention::get($get['id'])->delete();
+        $Model = \app\index\model\Intention::get($get['id']);
+        $result = $Model->delete();
 
         if($result) {
             // 更新缓存
             \app\index\model\Intention::updateCache();
+
+            ### 添加操作日志
+            \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);
