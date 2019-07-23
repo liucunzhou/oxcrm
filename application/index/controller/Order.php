@@ -28,6 +28,10 @@ class Order extends Base
         }
     }
 
+    /**
+     * 婚庆订单
+     * @return mixed
+     */
     public function wedding()
     {
         $Order = new \app\index\model\OrderEntire();
@@ -36,6 +40,10 @@ class Order extends Base
         return $this->fetch('index');
     }
 
+    /**
+     * 婚宴订单
+     * @return mixed
+     */
     public function banquet()
     {
         $Order = new \app\index\model\OrderEntire();
@@ -73,6 +81,7 @@ class Order extends Base
      */
     public function createOrder()
     {
+
         return $this->fetch();
     }
 }
