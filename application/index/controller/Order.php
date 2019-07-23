@@ -38,23 +38,13 @@ class Order extends Base
 
     public function banquet()
     {
-
         $Order = new \app\index\model\OrderEntire();
         $list = $Order->order('create_time desc')->paginate(15);
         $this->assign('list', $list);
         return $this->fetch('index');
     }
 
-    public function addOrder()
-    {
-        return $this->fetch('edit_order');
-    }
-
-    public function editOrder()
-    {
-        return $this->fetch();
-    }
-
+    #### 一站式完成订单
     public function doEditOrderEntire()
     {
         $post = Request::post();
@@ -75,5 +65,14 @@ class Order extends Base
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
         }
+    }
+
+    /**
+     * 创建订单
+     * @return mixed
+     */
+    public function createOrder()
+    {
+        return $this->fetch();
     }
 }

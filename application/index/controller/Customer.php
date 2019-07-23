@@ -7,6 +7,7 @@ use app\index\model\Intention;
 use app\index\model\Member;
 use app\index\model\MemberAllocate;
 use app\index\model\MemberApply;
+use app\index\model\OperateLog;
 use app\index\model\Source;
 use app\index\model\Store;
 use app\index\model\User;
@@ -242,15 +243,18 @@ class Customer extends Base
                 $map[] = ['order_status', '=', $get['order_status']];
             }
 
-            $get['keywords'] = trim($get['keywords']);
+            isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
             if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
                 $map = [];
                 $map[] = ['mobile', '=', $get['keywords']];
                 $list = MemberAllocate::hasWhere('member', $map)->with('member')->paginate($get['limit'], false, $config);
-            } else if (isset($get['keywords']) && strlen($get['keywords'] < 11)) {
-
+            } else if (isset($get['keywords']) && strlen($get['keywords']) < 11) {
+                $map = [];
+                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+                $list = MemberAllocate::hasWhere('member', $map)->with('member')->paginate($get['limit'], false, $config);
             } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-
+                $map = [];
+                $map[] = ['mobile', '=', $get['keywords']];
             } else {
                 $list = model('MemberAllocate')->where($map)->with('member')->paginate($get['limit'], false, $config);
             }
@@ -689,6 +693,9 @@ class Customer extends Base
 
             ### 加入到手机号缓存
             $Model::pushMoblie($post['mobile']);
+
+            ### 添加操作记录
+            OperateLog::appendTo($Model);
             return json(['code' => '200', 'msg' => $action . '成功']);
         } else {
             $Model->rollback();
@@ -1094,14 +1101,5 @@ class Customer extends Base
         }
         $this->assign('visits', $visits);
         return $this->fetch();
-    }
-
-    /**
-     * 创建订单
-     * @return mixed
-     */
-    public function createOrder()
-    {
-        return $this->fetch('edit_order');
     }
 }

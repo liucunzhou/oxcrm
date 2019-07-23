@@ -28,12 +28,12 @@
 
                     <script type="text/html" id="toolbar">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"doApply", "text"=>"申请回访"])}
+                            <a class="layui-btn layui-btn-xs" lay-event="doApply">申请回访</a>
                         </div>
                     </script>
 
                     <script type="text/html" id="tool">
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">回访记录</a>
+                        <a class="layui-btn layui-btn-xs" lay-event="visitLogs">回访记录</a>
                     </script>
                 </div>
             </div>
@@ -88,6 +88,9 @@
             return ids.join(',');
         }
 
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
         //头工具栏事件
         table.on('toolbar(table)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
@@ -118,23 +121,19 @@
 
         //监听行工具事件
         table.on('tool(table)', function(obj){
-            var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('确定删除本行么', function(index){
-                    obj.del();
-                    layer.close(index);
-                });
-            } else if(obj.event === 'edit'){
-                layer.prompt({
-                    formType: 2
-                    ,value: data.email
-                }, function(value, index){
-                    obj.update({
-                        email: value
+            var id = obj.data.member_id;
+            switch (obj.event) {
+                case 'visitLogs':
+                    url = '/index/customer/visitlogs.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '回访记录',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
                     });
-                    layer.close(index);
-                });
-            }
+                    break;
+            };
         });
 
 
