@@ -55,10 +55,7 @@ class Order extends Base
         return $this->fetch('index');
     }
 
-    /**
-     * 创建订单
-     * @return mixed
-     */
+
     public function createOrder()
     {
         $get = Request::param();
@@ -66,23 +63,14 @@ class Order extends Base
 
         $allocate = MemberAllocate::get($get['id']);
         $member = Member::get($allocate['member_id']);
-        $newsTypesView = ['edit_wedding_order', 'edit_banquet_order', 'edit_full_order'];
-        if (isset($newsTypesView[$member['news_type']])) {
-            $view = $newsTypesView[$member['news_type']];
-        } else {
-            $view = $newsTypesView[2];
-        }
 
         $halls = BanquetHall::getBanquetHalls();
         $this->assign('halls', $halls);
 
-        return $this->fetch($view);
+        $this->assign('member', $member);
+        return $this->fetch('edit_order');
     }
 
-    public function editOrder()
-    {
-
-    }
 
     #### 一站式完成订单
     public function doEditOrderEntire()

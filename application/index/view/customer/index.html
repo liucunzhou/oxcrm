@@ -52,7 +52,7 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            {:search(["event"=>"searchCustomer", "text"=>"高级搜索"])}
+                            {:button(["event"=>"searchCustomer", "text"=>"高级搜索"])}
                             {:button(["event"=>"addCustomer", "text"=>"添加客资"])}
                             {:button(["event"=>"assignToWashManager", "text"=>"清洗组主管"])}
                             {:button(["event"=>"assignToWashStaff", "text"=>"清洗组客服"])}
@@ -64,7 +64,6 @@
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
                             {:button(["event"=>"visitCustomer", "text"=>"回访", "type"=>"edit"])}
-                            {:button(["event"=>"visitLogs", "text"=>"回访记录", "type"=>"edit"])}
                             {:button(["event"=>"editCustomer", "text"=>"编辑", "type"=>"edit"])}
                         </div>
                     </script>
@@ -98,9 +97,11 @@
             title: '我的客资'
             ,
             cols: [[{"type": "checkbox", "width": 60, "fixed": "left"}, {
-                "field": "member_no",
-                "title": "\u5ba2\u8d44\u7f16\u53f7",
-                "width": 120
+                "field": "visit_amount",
+                "title": "回访数",
+                "width": 120,
+                "align": "center",
+                "event": "visitLogs",
             }, {"field": "realname", "title": "\u5ba2\u6237\u59d3\u540d", "width": 120}, {
                 "field": "mobile",
                 "title": "\u8054\u7cfb\u65b9\u5f0f",

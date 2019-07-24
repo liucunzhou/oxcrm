@@ -10,22 +10,14 @@ class Csv
             return false;
         }
 
-        $repetitive = [];
         $data = [];
         while (!feof($fp)) {
             $row = fgetcsv($fp);
             if (empty($row[1])) continue;
-            // $isExist = Member::checkMobile($row[1]);
-            if(false) {
-                $repetitive[] = $row;
-            } else {
-                $data[] = $row;
-                ### 写入到手机号列表
-                // Member::pushMoblie($row[1]);
-            }
+            $data[] = $row;
         }
         fclose($fp);
 
-        return [$data, $repetitive];
+        return $data;
     }
 }

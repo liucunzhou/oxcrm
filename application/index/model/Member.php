@@ -52,10 +52,10 @@ class Member extends Model
         return $data;
     }
 
-    public static function pushMoblie($mobile)
+    public static function pushMoblie($mobile, $memberId)
     {
         $hashKey = "mobiles";
-        redis()->hSet($hashKey, $mobile, 1);
+        redis()->hSet($hashKey, $mobile, $memberId);
     }
 
     ### 更新缓存

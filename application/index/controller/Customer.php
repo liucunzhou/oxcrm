@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\model\Csv;
+use app\index\model\DuplicateLog;
 use app\index\model\Hotel;
 use app\index\model\Intention;
 use app\index\model\Member;
@@ -14,6 +15,7 @@ use app\index\model\User;
 use app\index\model\UserAuth;
 use think\facade\Request;
 use think\facade\Session;
+use think\response\Download;
 
 class Customer extends Base
 {
@@ -434,7 +436,6 @@ class Customer extends Base
                     'repeat' => count($data[1])
                 ];
                 redis()->hMset($hashKey, $cacheData);
-                // $this->assign('file', $cacheData);
                 return json(['code' => '200', 'msg' => '上传成功,请继续分配', 'data' => $cacheData]);
             } else {
                 return json(['code' => '500', 'msg' => '上传失败']);
@@ -451,7 +452,12 @@ class Customer extends Base
      */
     public function export()
     {
+        // $down = new
+        $hashKey = "batch_upload:";
 
+
+        $download = new Download("dd");
+        return $download->name('无效客资.csv');
     }
 
     /***
@@ -504,17 +510,19 @@ class Customer extends Base
         ### 检验分配数量
         $sum = array_sum($manager);
         if ($sum < $fileData['amount']) {
-            // return json(['code'=>'500', 'msg'=>'分配数量小于上传数量']);
+            return json(['code'=>'500', 'msg'=>'分配数量小于上传数量']);
         }
         if ($sum > $fileData['amount']) {
-            // return json(['code'=>'500', 'msg'=>'分配数量大于上传数量']);
+            return json(['code'=>'500', 'msg'=>'分配数量大于上传数量']);
         }
 
         ### 开始分配
         $time = time();
         $result = Csv::readCsv($fileData['file']);
+        print_r($result);
+
         $member = [];
-        foreach ($result[0] as $key => $row) {
+        foreach ($result as $key => $row) {
             if ($row[0] == '客户名称') continue;
             $MemberModel = new Member();
             $data = [];
@@ -530,10 +538,14 @@ class Customer extends Base
             $data['wedding_date'] = $row[7];
             $data['zone'] = $row[8];
             $data['hotel_id'] = $row[9];
+            $data['source_id'] = $row[10];
             $data['create_time'] = $time;
             $result = $MemberModel->insert($data);
             if ($result) {
-                $member[] = $MemberModel->getLastInsID();
+                $memberId = $MemberModel->getLastInsID();
+                $member[] = $memberId;
+                ### 写入到手机号列表
+                Member::pushMoblie($row[1], $memberId);
             }
         }
 
@@ -546,7 +558,8 @@ class Customer extends Base
                 $AllocateModel = new MemberAllocate();
                 $data = [];
                 $data['operate_id'] = $operateId;
-                $data['manager_id'] = $k;
+                $data['user_id'] = $member[$start];
+                $data['wash_manager_id'] = $k;
                 $data['member_id'] = $member[$start];
                 $data['create_time'] = $time;
                 $AllocateModel->insert($data);
@@ -628,7 +641,7 @@ class Customer extends Base
             if (empty($post['realname'])) {
                 return json([
                     'code' => '400',
-                    'msg' => '客户称谓不能为空',
+                    'msg' => '客户姓名不能为空',
                 ]);
             }
 
@@ -640,8 +653,19 @@ class Customer extends Base
         $Model->startTrans();
 
         ### 验证手机号唯一性
-        $checked1 = $Model::checkMobile($post['mobile']);
-        if ($checked1) {
+        $memberedId = $Model::checkMobile($post['mobile']);
+        if ($memberedId) {
+
+            ### 加入重复日志
+            $data = [];
+            $data['user_id'] = $this->user['id'];
+            $data['member_id'] = $memberedId;
+            $data['source_id'] = $post['source_id'];
+            $data['create_time'] = time();
+            $DuplicateLog = new DuplicateLog();
+            $DuplicateLog->insert($data);
+
+
             return json([
                 'code' => '400',
                 'msg' => $post['mobile'] . '手机号已经存在',
@@ -656,7 +680,6 @@ class Customer extends Base
         ### 新添加客资要加入到分配列表中
         if (empty($post['id'])) {
             $data = [];
-            // $data
             $data['operate_id'] = $user['id'];
             $data['user_id'] = $user['id'];
             $data['member_id'] = $Model->id;
@@ -695,7 +718,7 @@ class Customer extends Base
             $Model->commit();
 
             ### 加入到手机号缓存
-            $post['id'] && $Model::pushMoblie($post['mobile']);
+            $post['id'] && $Model::pushMoblie($post['mobile'], $Model->id);
 
             ### 添加操作记录
             OperateLog::appendTo($Model);
@@ -974,10 +997,6 @@ class Customer extends Base
         ]);
     }
 
-    /**
-     * 回访客资
-     * @return mixed
-     */
     public function visitCustomer()
     {
         // 获取用户信息
@@ -1049,6 +1068,11 @@ class Customer extends Base
         $result = $Model->save($post);
         if ($result) {
             // empty($post['id']) && $post['id'] = $Model->id;
+            $Member = Member::get($post['member_id']);
+            $Member->visit_amount = ['inc', 1];
+            $Member->save();
+
+            OperateLog::appendTo($Model);
             return json(['code' => '200', 'msg' => $action . '成功']);
         } else {
             return json(['code' => '500', 'msg' => $action . '失败']);

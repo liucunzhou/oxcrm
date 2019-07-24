@@ -47,7 +47,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">宴会厅</label>
                     <div class="layui-input-block">
-                        <select name="hotel_id" id="hotel_id" class="input-field">
+                        <select name="hotel_id" id="hotel_id" lay-search>
                             <option value="0">--请选择宴会厅--</option>
                             <{foreach name="halls" item="val"}>
                             <option value="{$val['id']}" <{if $data['hotel_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>
@@ -128,6 +128,12 @@
                 ,form = layui.form;
 
         form.render(null, 'component-form-group');
+        laydate.render({
+            elem: '#wedding_date'
+        });
+        laydate.render({
+            elem: '#wedding_date'
+        });
         laydate.render({
             elem: '#wedding_date'
         });
