@@ -76,7 +76,7 @@
         var height = window.innerHeight;
         var width = window.innerWidth * 0.6;
         table.on('toolbar(table)', function(obj){
-            url = '{:url("Hotel/addBanquetHall")}';
+            url = '{:url("BanquetHall/addBanquetHall")}';
             var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
                 case 'addBanquetHall':
@@ -98,7 +98,7 @@
             var id = obj.data.id;
             switch (obj.event) {
                 case 'deleteBanquetHall':
-                    url = '{:url("Hotel/deleteBanquetHall")}';
+                    url = '{:url("BanquetHall/deleteBanquetHall")}';
                     $.post(url,{id:id}, function (res) {
                         if(res.code == '200') {
                             table.reload("table");
@@ -108,7 +108,7 @@
                     });
                     break;
                 case 'editBanquetHall':
-                    url = '{:url("Hotel/editBanquetHall")}?id=' + id;
+                    url = '{:url("BanquetHall/editBanquetHall")}?id=' + id;
                     layer.open({
                         type: 2,
                         title: '编辑宴会厅',

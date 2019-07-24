@@ -612,24 +612,26 @@ class Customer extends Base
     public function doEditCustomer()
     {
         $post = Request::post();
-        if (empty($post['mobile'])) {
-            return json([
-                'code' => '400',
-                'msg' => '手机号不能为空',
-            ]);
-        }
-
-        if (empty($post['realname'])) {
-            return json([
-                'code' => '400',
-                'msg' => '客户称谓不能为空',
-            ]);
-        }
 
         if ($post['id']) {
             $action = '编辑客资';
             $Model = \app\index\model\Member::get($post['id']);
         } else {
+
+            if (empty($post['mobile'])) {
+                return json([
+                    'code' => '400',
+                    'msg' => '手机号不能为空',
+                ]);
+            }
+
+            if (empty($post['realname'])) {
+                return json([
+                    'code' => '400',
+                    'msg' => '客户称谓不能为空',
+                ]);
+            }
+
             $action = '添加客资';
             $Model = new \app\index\model\Member();
             $Model->member_no = date('YmdHis') . rand(100, 999);
@@ -650,6 +652,7 @@ class Customer extends Base
         $result1 = $Model->save($post);
         $user = session("user");
 
+        $MemberAllocate = new MemberAllocate();
         ### 新添加客资要加入到分配列表中
         if (empty($post['id'])) {
             $data = [];
@@ -682,9 +685,9 @@ class Customer extends Base
 
                     break;
             }
-
-            $MemberAllocate = new MemberAllocate();
             $result2 = $MemberAllocate->insert($data);
+        } else {
+            $result2 = 1;
         }
 
         if ($result1 && $result2) {
@@ -692,7 +695,7 @@ class Customer extends Base
             $Model->commit();
 
             ### 加入到手机号缓存
-            $Model::pushMoblie($post['mobile']);
+            $post['id'] && $Model::pushMoblie($post['mobile']);
 
             ### 添加操作记录
             OperateLog::appendTo($Model);

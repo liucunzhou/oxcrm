@@ -1,0 +1,389 @@
+<!-- 面包屑 -->
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>订单管理</li>
+        <li>一站订单</li>
+        <li>{$_GET['id']?'编辑':'添加'}订单</li>
+    </ul>
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+</div>
+<div class="page-content">
+    <div class="page-header header_title">
+        <h3 class="blue">{$Request.param.id?'编辑':'添加'}一站式订单信息</h3>
+    </div>
+    <div class="page-body">
+        <form class="form form-order ajax_form" method="post" data-action="{:url('Order/doEditOrderEntire')}" role="form">
+            <div class="form-container">
+                <div class="form-body">
+                    <div class="form-groups">
+                        <div class="form-group">
+                            <label class="flex-control-label">渠道来源</label>
+                            <div class="flex-control-input">
+                                <select name="source_id" id="source_id" class="form-control" valid-selected="1">
+                                    <option <{if condition="$data['source_id'] eq '1'"}>selected<{/if}> value="1">--选择渠道--</option>
+                                </select>
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">签约日期</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="sign_date" id="sign_date" value="{$data['sign_date']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">举办日期</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="wedding_date" id="wedding_date" value="{$data['wedding_date']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">新郎姓名</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="bridegroom" id="bridegroom" value="{$data['bridegroom']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">新郎电话</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="bridegroom_mobile" id="bridegroom_mobile" value="{$data['bridegroom_mobile']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">新娘姓名</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="bride" id="bride" value="{$data['bride']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">新娘电话</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="bride_mobile" id="bride_mobile" value="{$data['bride_mobile']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">一站式</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="is_entire" id="is_entire" value="{$data['is_entire']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">一站式价格</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="entire_price" id="entire_price" value="{$data['entire_price']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">桌数</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="table_amount" id="table_amount" value="{$data['table_amount']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">餐标</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="table_price" id="table_price" value="{$data['table_price']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">酒水</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="wine_fee" id="wine_fee" value="{$data['wine_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">服务费</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="service_fee" id="service_fee" value="{$data['service_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">应收客人</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="income_customer_fee" id="income_customer_fee" value="{$data['income_customer_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">收婚庆进场费</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="income_wedding_celebration_admission_fee" id="income_wedding_celebration_admission_fee" value="{$data['income_wedding_celebration_admission_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">收入总额</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="income_fee" id="income_fee" value="{$data['income_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">付酒店进场费</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="pay_hotel_admission_fee" id="pay_hotel_admission_fee" value="{$data['pay_hotel_admission_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">应付酒店</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="pay_hotel_fee" id="pay_hotel_fee" value="{$data['pay_hotel_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">平台渠道费</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="platform_source_fee" id="platform_source_fee" value="{$data['platform_source_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">个人渠道费</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="person_source_fee" id="person_source_fee" value="{$data['person_source_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">其他</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="other_source_fee" id="other_source_fee" value="{$data['other_source_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">红丝婚庆结算</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="hongsi_settlement_fee" id="hongsi_settlement_fee" value="{$data['hongsi_settlement_fee']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">婚宴提成</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="wedding_banquet_commission" id="wedding_banquet_commission" value="{$data['wedding_banquet_commission']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">婚庆提成</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="wedding_celebration_commission" id="wedding_celebration_commission" value="{$data['wedding_celebration_commission']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">支出总额</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="total_pay" id="total_pay" value="{$data['total_pay']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">营收</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="revenue" id="revenue" value="{$data['revenue']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">毛利</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="gross_profit" id="gross_profit" value="{$data['gross_profit']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">最终提成</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="end_commission" id="end_commission" value="{$data['end_commission']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">签单销售</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="sales_id" id="sales_id" value="{$data['sales_id']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">区域经理</label>
+                                        <div class="flex-control-input">
+                                            <input type="manager_id" name="manager_id" id="manager_id" value="{$data['manager_id']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">区域经理提成</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="manager_commission" id="manager_commission" value="{$data['manager_commission']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="flex-control-label">区域经理引流提成</label>
+                                        <div class="flex-control-input">
+                                            <input type="text" name="manager_recommend_commission" id="manager_recommend_commission" value="{$data['manager_recommend_commission']}" class="form-control">
+                                            <div class="form-tips"><span class="tis_import">*</span></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">备注：</label>
+                            <div class="flex-control-input">
+                                <textarea type="remark" name="remark" id="sort" class="form-control"></textarea>
+                                <div class="form-tips">
+                                    <span class="tis_import"></span>
+                                    值为整数,数值越大首页排的越靠前
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="flex-control-input">
+                                <div class="footer-fixed-bottom text-left">
+                                    <input type="hidden" name="referer" value="{$_SERVER['HTTP_REFERER']}"/>
+                                    <input type="hidden" name="id" value="{$Request.param.id}" id="id"/>
+                                    <input type="submit" value="保存" class="btn btn-save-blue">
+                                    <a class="btn btn-save-gray" href="javascript:history.go(-1)">返回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--表单页面帮助说明-->
+                <div class="form-aside">
+                    <dl class="helper">
+                        <dt>帮助说明</dt>
+                        <dd>
+                            <i class="icon-angle-right bigger-110"></i>
+                            <div class="text">说明</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

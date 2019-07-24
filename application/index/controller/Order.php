@@ -2,6 +2,9 @@
 namespace app\index\controller;
 
 
+use app\index\model\BanquetHall;
+use app\index\model\Member;
+use app\index\model\MemberAllocate;
 use think\facade\Request;
 
 class Order extends Base
@@ -52,6 +55,35 @@ class Order extends Base
         return $this->fetch('index');
     }
 
+    /**
+     * 创建订单
+     * @return mixed
+     */
+    public function createOrder()
+    {
+        $get = Request::param();
+        if(empty($get['id'])) return false;
+
+        $allocate = MemberAllocate::get($get['id']);
+        $member = Member::get($allocate['member_id']);
+        $newsTypesView = ['edit_wedding_order', 'edit_banquet_order', 'edit_full_order'];
+        if (isset($newsTypesView[$member['news_type']])) {
+            $view = $newsTypesView[$member['news_type']];
+        } else {
+            $view = $newsTypesView[2];
+        }
+
+        $halls = BanquetHall::getBanquetHalls();
+        $this->assign('halls', $halls);
+
+        return $this->fetch($view);
+    }
+
+    public function editOrder()
+    {
+
+    }
+
     #### 一站式完成订单
     public function doEditOrderEntire()
     {
@@ -73,15 +105,5 @@ class Order extends Base
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
         }
-    }
-
-    /**
-     * 创建订单
-     * @return mixed
-     */
-    public function createOrder()
-    {
-
-        return $this->fetch();
     }
 }
