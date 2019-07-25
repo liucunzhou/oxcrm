@@ -88,7 +88,7 @@ class Customer extends Base
                     }
                     break;
                 default :
-                    $map[] = ['user_id', '=', $user['id']];
+                    $map[] = ['user_id', '<>', 0];
             }
             $list = model('MemberAllocate')->where($map)->with('member')->paginate($get['limit'], false, $config);
 
@@ -441,8 +441,18 @@ class Customer extends Base
                 return json(['code' => '500', 'msg' => '上传失败']);
             }
         }
-        $upload = redis()->hMget($hashKey, ['file', 'amount', 'repeat']);
-        $this->assign('upload', $upload);
+        $fileData = redis()->hMget($hashKey, ['file', 'amount', 'repeat']);
+        $this->assign('fileData', $fileData);
+
+        $users = User::getUsers();
+        foreach ($users as $key => $value) {
+            $auth = UserAuth::getUserLogicAuth($value["id"]);
+            $roleIds = explode(',', $auth['role_ids']);
+            if (!in_array(7, $roleIds) && !in_array(2, $roleIds)) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
 
         return $this->fetch();
     }
@@ -460,31 +470,6 @@ class Customer extends Base
         return $download->name('无效客资.csv');
     }
 
-    /***
-     * 上传并分配到洗单组主管视图
-     * @return mixed
-     */
-    public function allocate()
-    {
-        $users = User::getUsers();
-        foreach ($users as $key => $value) {
-            $auth = UserAuth::getUserLogicAuth($value["id"]);
-            $roleIds = explode(',', $auth['role_ids']);
-            if (!in_array(7, $roleIds) && !in_array(2, $roleIds)) {
-                unset($users[$key]);
-            }
-        }
-        $this->assign('users', $users);
-
-        $user = Session::get("user");
-        $hashKey = "batch_upload:" . $user['id'];
-        $fileData = redis()->hMGet($hashKey, ['file', 'amount']);
-        $this->assign('fileData', $fileData);
-
-
-        return $this->fetch();
-    }
-
     /**
      * 分配到洗单组主管逻辑
      * @return \think\response\Json
@@ -497,6 +482,9 @@ class Customer extends Base
         $hashKey = "batch_upload:" . $user['id'];
         $operateId = $user['id'];
         $fileData = redis()->hMGet($hashKey, ['file', 'amount']);
+        if (empty($fileData['file']) || $fileData['amount']==0) {
+            return json(['code'=>'500', 'msg'=>'没有要分配的客资']);
+        }
 
         ### 获取分配信息
         $manager = [];
@@ -519,11 +507,10 @@ class Customer extends Base
         ### 开始分配
         $time = time();
         $result = Csv::readCsv($fileData['file']);
-        print_r($result);
 
         $member = [];
-        foreach ($result as $key => $row) {
-            if ($row[0] == '客户名称') continue;
+        foreach ($result[0] as $key => $row) {
+            if (empty($row)) continue;
             $MemberModel = new Member();
             $data = [];
             $data['member_no'] = date('YmdHis') . rand(100, 999);
@@ -558,7 +545,7 @@ class Customer extends Base
                 $AllocateModel = new MemberAllocate();
                 $data = [];
                 $data['operate_id'] = $operateId;
-                $data['user_id'] = $member[$start];
+                $data['user_id'] = $k;
                 $data['wash_manager_id'] = $k;
                 $data['member_id'] = $member[$start];
                 $data['create_time'] = $time;

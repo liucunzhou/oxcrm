@@ -25,18 +25,17 @@
                 <div class="layui-card-header">
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-sm" id="upload">上传客资</button>
-                        <button class="layui-btn layui-btn-sm" id="allocate">导入并分配</button>
                         <a class="layui-btn layui-btn-sm" href="{:url('Customer/export')}" target="_blank">导出重复</a>
-                        <a class="layui-btn layui-btn-sm" href="/cutomer_template.csv" target="_blank">下载模版</a>
+                        <a class="layui-btn layui-btn-sm" href="/customer_template.csv" target="_blank">下载模版</a>
                     </div>
                 </div>
                 <div class="layui-card-body">
                     <table class="layui-table">
                         <colgroup>
-                            <col width="200">
+                            <col width="120">
                             <col>
                         </colgroup>
-                        <{if !empty($upload['file'])}>
+                        <{if !empty($fileData['file'])}>
                         <tr>
                             <td>友情提示:</td>
                             <td>上次的客资尚未分配</td>
@@ -44,14 +43,44 @@
                         <{/if}>
                         <tr>
                             <td>有效客资:</td>
-                            <td><span id="amount">{$upload.amount}</span></td>
+                            <td><span id="amount">{$fileData.amount}</span></td>
                         </tr>
                         <tr>
                             <td>重复客资:</td>
-                            <td><span id="repeat">{$upload.repeat}</span></td>
+                            <td><span id="repeat">{$fileData.repeat}</span></td>
                         </tr>
 
                     </table>
+
+                    <form class="layui-form" method="post" action="{:url('Customer/doAllocate')}" lay-filter="component-form-group">
+                        <p>
+                            已经分配<span class="assigned_amount">0</span>条,
+                            还剩<span class="unassigned_amount">{$fileData['amount']}</span>条未分配
+                        </p>
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="120">
+                                <col>
+                            </colgroup>
+                            <{foreach name="users" item="val"}>
+                            <tr>
+                                <td>{$val['realname']}</td>
+                                <td>
+                                    <input type="text" name="user_{$val['id']}" class="layui-input">
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                        </table>
+
+                        <div class="layui-form-item layui-layout-admin">
+                            <div class="layui-input-block">
+                                <div class="layui-footer" style="left: 0;">
+                                    <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即分配</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -64,11 +93,10 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table', 'upload'], function () {
-        var admin = layui.admin,
-            table = layui.table,
-            $ = layui.jquery,
-            upload = layui.upload;
+    }).use(['index', 'table', 'upload', 'form'], function () {
+        var $ = layui.jquery
+            ,upload = layui.upload
+            ,form = layui.form;
 
         url = '/index/customer/import.html';
         upload.render({
@@ -88,21 +116,19 @@
             }
         });
 
-
-        var height = window.innerHeight;
-        var width = window.innerWidth * 0.6;
-        var url = '';
-        $("#allocate").click(function () {
-            url = '/index/customer/allocate.html';
-            layer.open({
-                type: 2,
-                title: '导入并分配',
-                content: url,
-                area: [width + 'px', height + 'px'],
-                offset: 'rb'
+        form.render(null, 'component-form-group');
+        form.on('submit(form-submit)', function (data) {
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function(result){
+                console.log(result);
+                alert(result.msg);
+                if(result.code == '200') {
+                    window.location.reload();
+                }
             });
+            return false;
         });
-
     });
 </script>
 </body>
