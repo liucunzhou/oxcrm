@@ -13,16 +13,27 @@ class Order extends Base
     {
         if(Request::isAjax()) {
             $get = Request::param();
-            $map = [];
             $config = [
                 'page' => $get['page']
             ];
+
+            $map[] = ['news_type', '=', '2'];
             $list = model('OrderEntire')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            $sources = \app\index\model\Source::getSources();
+            $users = \app\index\model\User::getUsers();
+            $halls = BanquetHall::getBanquetHalls();
+            foreach ($data as $key=>&$value) {
+                $value['source_id'] = isset($sources[$value['source_id']]) ? $sources[$value['source_id']]['title'] : '——';
+                $value['sales_id'] = isset($users[$value['sales_id']]) ? $users[$value['sales_id']]['realname'] : '——';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '——';
+            }
+
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $list->getCollection()
+                'data'  => $data
             ];
             return json($result);
         } else {
@@ -37,10 +48,36 @@ class Order extends Base
      */
     public function wedding()
     {
-        $Order = new \app\index\model\OrderEntire();
-        $list = $Order->order('create_time desc')->paginate(15);
-        $this->assign('list', $list);
-        return $this->fetch('index');
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+
+            $map[] = ['news_type', '=', '1'];
+            $list = model('OrderEntire')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            $sources = \app\index\model\Source::getSources();
+            $users = \app\index\model\User::getUsers();
+            $halls = BanquetHall::getBanquetHalls();
+            foreach ($data as $key=>&$value) {
+                $value['source_id'] = isset($sources[$value['source_id']]) ? $sources[$value['source_id']]['title'] : '——';
+                $value['sales_id'] = isset($users[$value['sales_id']]) ? $users[$value['sales_id']]['realname'] : '——';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '——';
+            }
+
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
     /**
@@ -49,10 +86,37 @@ class Order extends Base
      */
     public function banquet()
     {
-        $Order = new \app\index\model\OrderEntire();
-        $list = $Order->order('create_time desc')->paginate(15);
-        $this->assign('list', $list);
-        return $this->fetch('index');
+
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $map = [];
+            $config = [
+                'page' => $get['page']
+            ];
+
+            $map[] = ['news_type', '=', '0'];
+            $list = model('OrderEntire')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            $sources = \app\index\model\Source::getSources();
+            $users = \app\index\model\User::getUsers();
+            $halls = BanquetHall::getBanquetHalls();
+            foreach ($data as $key=>&$value) {
+                $value['source_id'] = isset($sources[$value['source_id']]) ? $sources[$value['source_id']]['title'] : '——';
+                $value['sales_id'] = isset($users[$value['sales_id']]) ? $users[$value['sales_id']]['realname'] : '——';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '——';
+            }
+
+            $result = [
+                'code'  => 0,
+                'msg'   => '获取数据成功',
+                'count' => $list->total(),
+                'data'  => $data
+            ];
+            return json($result);
+        } else {
+            $this->view->engine->layout(false);
+            return $this->fetch();
+        }
     }
 
 
@@ -66,7 +130,7 @@ class Order extends Base
 
         $halls = BanquetHall::getBanquetHalls();
         $this->assign('halls', $halls);
-
+        $this->assign('allocate', $allocate);
         $this->assign('member', $member);
         return $this->fetch('edit_order');
     }
@@ -84,7 +148,9 @@ class Order extends Base
             $Model = new \app\index\model\OrderEntire();
         }
 
+        $user = session('user');
         // $Model::create($post);
+        $Model->user_id = $user['id'];
         $result = $Model->save($post);
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;

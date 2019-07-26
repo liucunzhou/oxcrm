@@ -16,13 +16,13 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-header">我的资料</div>
-                <div class="layui-card-body" pad15>
+                <div class="layui-card-body">
 
                     <div class="layui-form" lay-filter="">
                         <div class="layui-form-item">
                             <label class="layui-form-label">我的角色</label>
                             <div class="layui-input-inline">
-
+                                <input type="text" value="{$role['title']}" readonly class="layui-input">
                             </div>
                             <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
                         </div>
@@ -39,13 +39,13 @@
                                 <input type="text" name="nickname" value="{$user['nickname']}" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">性别</label>
-                            <div class="layui-input-block">
-                                <input type="radio" name="sex" value="男" title="男" {$user['sex']?'checked':''}>
-                                <input type="radio" name="sex" value="女" title="女" {$user['sex']?'':'checked'}>
-                            </div>
-                        </div>
+                        <!--<div class="layui-form-item">-->
+                            <!--<label class="layui-form-label">性别</label>-->
+                            <!--<div class="layui-input-block">-->
+                                <!--<input type="radio" name="sex" value="男" title="男" {$user['sex']?'checked':''}>-->
+                                <!--<input type="radio" name="sex" value="女" title="女" {$user['sex']?'':'checked'}>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <!--<div class="layui-form-item">-->
                             <!--<label class="layui-form-label">头像</label>-->
                             <!--<div class="layui-input-inline">-->

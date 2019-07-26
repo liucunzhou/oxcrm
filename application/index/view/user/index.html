@@ -64,22 +64,18 @@
             ,
             title: '员工管理'
             ,
-            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 50}, {
-                "field": "department_id",
-                "title": "\u90e8\u95e8"
-            }, {"field": "nickname", "title": "\u6635\u79f0"}, {
-                "field": "realname",
-                "title": "\u59d3\u540d",
-                "width": 120
-            }, {"field": "mobile", "title": "\u624b\u673a\u53f7", "width": 120}, {
-                "field": "sort",
-                "title": "\u6392\u5e8f",
-                "width": 80
-            }, {"field": "is_valid", "title": "\u72b6\u6001", "width": 80}, {
-                "field": "create_time",
-                "title": "\u521b\u5efa\u65f6\u95f4",
-                "width": 165
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "width": 130}]]
+            cols: [[
+                {"field": "id", "title": "ID", "width": 50},
+                {"field": "department_id", "title": "部门"},
+                {"field": "role_id", "title": "角色", "align":"center"},
+                {"field": "nickname", "title": "昵称"},
+                {"field": "realname", "title": "姓名", "width": 120},
+                {"field": "mobile", "title": "手机号", "width": 120},
+                {"field": "sort", "title": "排序", "width": 80},
+                {"field": "is_valid", "title": "状态", "width": 80},
+                {"field": "create_time", "title": "创建时间", "width": 165},
+                {"type": "tool", "title": "操作", "toolbar": "#table-tool", "width": 130}
+            ]]
             ,
             page: true
         });

@@ -37,6 +37,24 @@ class Customer extends Base
             ];
 
             switch ($roleIds) {
+                case 15: // 客服经理和洗单组客服一样
+                    $map[] = ['operate_id', '=', $user['id']];
+                    // 分配到洗单客服状态过滤
+                    if (isset($get['assign_status'])) {
+                        $map[] = ['wash_manager_assign_status', '=', $get['assign_status']];
+                    }
+
+                    // 有效客资分配到推荐组主管状态
+                    if (isset($get['active_assign_status'])) {
+                        $map[] = ['wash_manager_active_assign_status', '=', $get['active_assign_status']];
+                        $map[] = ['wash_status', '=', 1];
+                    }
+
+                    // 洗单客服回访状态过滤
+                    if (isset($get['status'])) {
+                        $map[] = ['wash_status', '=', $get['status']];
+                    }
+                    break;
                 case 7: // 洗单组主管
                     $map[] = ['wash_manager_id', '=', $user['id']];
                     // 分配到洗单客服状态过滤
@@ -47,6 +65,7 @@ class Customer extends Base
                     // 有效客资分配到推荐组主管状态
                     if (isset($get['active_assign_status'])) {
                         $map[] = ['wash_manager_active_assign_status', '=', $get['active_assign_status']];
+                        $map[] = ['wash_status', '=', 1];
                     }
 
                     // 洗单客服回访状态过滤
@@ -88,8 +107,11 @@ class Customer extends Base
                     }
                     break;
                 default :
+
+                    $map[] = ['wash_manager_assign_status', '=', 0];
                     $map[] = ['user_id', '<>', 0];
             }
+
             $list = model('MemberAllocate')->where($map)->with('member')->paginate($get['limit'], false, $config);
 
             if (!empty($list)) {
@@ -123,10 +145,11 @@ class Customer extends Base
 
         } else {
             switch ($roleIds) {
+                case 15: // 客服经理
                 case 7: // 洗单组主管
                     $tabs = [
-                        ['text' => '已分配', 'url' => url('customer/index', ['assign_status' => 1]), 'checked' => $get['assign_status'] === '1' ? 1 : 0],
                         ['text' => '未分配', 'url' => url('customer/index', ['assign_status' => 0]), 'checked' => $get['assign_status'] === '0' ? 1 : 0],
+                        ['text' => '已分配', 'url' => url('customer/index', ['assign_status' => 1]), 'checked' => $get['assign_status'] === '1' ? 1 : 0],
                         ['text' => '有效已分配', 'url' => url('customer/index', ['active_assign_status' => 1]), 'checked' => $get['active_assign_status'] === '1' ? 1 : 0],
                         ['text' => '有效未分配', 'url' => url('customer/index', ['active_assign_status' => 0]), 'checked' => $get['active_assign_status'] === '0' ? 1 : 0],
                         ['text' => '无效客资', 'url' => url('customer/index', ['status' => 2]), 'checked' => $get['status'] === '2' ? 1 : 0],
@@ -137,7 +160,7 @@ class Customer extends Base
                     $tabs = [
                         ['text' => '有效客资', 'url' => url('customer/index', ['status' => 1]), 'checked' => $get['status'] === '1' ? 1 : 0],
                         ['text' => '无效客资', 'url' => url('customer/index', ['status' => 2]), 'checked' => $get['status'] === '2' ? 1 : 0],
-                        ['text' => '未跟进', 'url' => url('customer/index', ['status' => 0]), 'checked' => $get['status'] === '1' ? 1 : 0],
+                        ['text' => '未跟进', 'url' => url('customer/index', ['status' => 0]), 'checked' => $get['status'] === '0' ? 1 : 0],
                     ];
                     break;
                 case 3: // 推荐组主管
@@ -538,6 +561,7 @@ class Customer extends Base
 
         $startArr = [];
         foreach ($manager as $k => $v) {
+            $auth = UserAuth::getUserLogicAuth($k);
             $start = array_sum($startArr);
             $end = $start + $v;
             for ($start; $start < $end; $start++) {
@@ -546,8 +570,14 @@ class Customer extends Base
                 $data = [];
                 $data['operate_id'] = $operateId;
                 $data['user_id'] = $k;
-                $data['wash_manager_id'] = $k;
+                if($auth['role_ids'] == '2') {
+                    $data['wash_staff_id'] = $k;
+                } else {
+                    $data['wash_manager_id'] = $k;
+                }
+
                 $data['member_id'] = $member[$start];
+
                 $data['create_time'] = $time;
                 $AllocateModel->insert($data);
             }
@@ -651,7 +681,6 @@ class Customer extends Base
             $data['create_time'] = time();
             $DuplicateLog = new DuplicateLog();
             $DuplicateLog->insert($data);
-
 
             return json([
                 'code' => '400',
@@ -791,13 +820,14 @@ class Customer extends Base
             $map = [];
             $map[] = ['id', '=', $id];
 
-            $data['customer_staff_id'] = $post['staff'];
+            $data['wash_staff_id'] = $post['staff'];
+            $data['wash_manager_assign_status'] = 1;
             $Model->save($data, $map);
         }
 
         return json([
             'code' => '200',
-            'msg' => '分发到二级客服成功'
+            'msg' => '分配到洗单组客服成功'
         ]);
     }
 
@@ -834,7 +864,7 @@ class Customer extends Base
             $map = [];
             $map[] = ['id', '=', $id];
             $data['recommend_manager_id'] = $post['staff'];
-            $data['recommend_manager_assign_status'] = 1;
+            $data['wash_manager_active_assign_status'] = 1;
             // 标记公海客资
             $data['is_sea'] = 1;
             $Model->save($data, $map);
@@ -842,7 +872,7 @@ class Customer extends Base
 
         return json([
             'code' => '200',
-            'msg' => '分发到二级客服成功'
+            'msg' => '有效客资分配到推荐组主管成功'
         ]);
     }
 
@@ -880,12 +910,13 @@ class Customer extends Base
             $map[] = ['id', '=', $id];
 
             $data['recommend_staff_id'] = $post['staff'];
+            $data['recommend_manager_assign_status'] = 1;
             $Model->save($data, $map);
         }
 
         return json([
             'code' => '200',
-            'msg' => '分发到二级客服成功'
+            'msg' => '分配到推荐组客服成功'
         ]);
     }
 
@@ -918,7 +949,7 @@ class Customer extends Base
 
         return json([
             'code' => '200',
-            'msg' => '分发到门店成功'
+            'msg' => '推送到门店销售成功'
         ]);
     }
 
@@ -993,7 +1024,11 @@ class Customer extends Base
         $roleIds = $auth['role_ids'];
         // 获取意向状态
         if (in_array($roleIds, [2, 7])) { // 洗单组回访
-            $intentions = ['跟进中', '有效客资', '无效客资'];
+            $intentions = [
+                ['title' => '跟进中'],
+                ['title' => '有效客资'],
+                ['title' => '无效客资']
+            ];
         } else {
             $intentions = Intention::getIntentions();
         }
@@ -1004,9 +1039,12 @@ class Customer extends Base
         // 酒店列表
         $hotels = Hotel::getHotels();
         $get = Request::param();
+        ### 获取分配信息
+        $allocate = MemberAllocate::get($get['id']);
+
         ### 获取用户基本信息
         $newsTypes = ['婚宴信息', '婚庆信息', '一站式'];
-        $customer = Member::get($get['id']);
+        $customer = Member::get($allocate['member_id']);
         if (!$auth['is_show_entire_mobile']) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
         }
@@ -1020,7 +1058,7 @@ class Customer extends Base
             // 只能查看自己的回访记录
             $map[] = ['user_id', '=', $user['id']];
         }
-        $map[] = ['member_id', '=', $get['id']];
+        $map[] = ['member_id', '=', $allocate['member_id']];
         $visits = model('MemberVisit')->where($map)->select()->toArray();
         foreach ($visits as &$value) {
             $time = strtotime($value['create_time']);
@@ -1047,21 +1085,38 @@ class Customer extends Base
             $action = '添加回访成功';
             $Model = new \app\index\model\MemberVisit();
         }
-
+        $Model->startTrans();
+        ### 保存回访记录
+        $allocate = MemberAllocate::get($post['member_allocate_id']);
         $user = Session::get("user");
+        $Model->member_id = $allocate['member_id'];
         $Model->user_id = $user['id'];
+        $result1 = $Model->save($post);
 
-        // $Model::create($post);
-        $result = $Model->save($post);
-        if ($result) {
-            // empty($post['id']) && $post['id'] = $Model->id;
-            $Member = Member::get($post['member_id']);
-            $Member->visit_amount = ['inc', 1];
-            $Member->save();
+        ### 该客资的回放次数+1
+        $Member = Member::get($allocate['member_id']);
+        $Member->visit_amount = ['inc', 1];
+        $result2 = $Member->save();
 
+        ### 获取用户的角色,同步分配表中的客资状态
+        $auth = UserAuth::getUserLogicAuth($user['id']);
+        $roleIds = $auth['role_ids'];
+        if(in_array($roleIds, [2,7])) {
+            $allocate->wash_status = $post['status'];
+        } else {
+            $allocate->intention_status = $post['status'];
+        }
+        $result3 = $allocate->save();
+
+
+        if ($result1 && $result2 && $result3) {
+            $Model->commit();
+
+            ### 记录log日志
             OperateLog::appendTo($Model);
             return json(['code' => '200', 'msg' => $action . '成功']);
         } else {
+            $Model->rollback();
             return json(['code' => '500', 'msg' => $action . '失败']);
         }
     }
@@ -1085,14 +1140,15 @@ class Customer extends Base
         }
         $this->assign('intentions', $intentions);
 
-        // 获取来源
+        ### 获取来源、酒店、来源等基本信息
         $sources = Source::getSources();
-        // 酒店列表
         $hotels = Hotel::getHotels();
-        $get = Request::param();
-        ### 获取用户基本信息
         $newsTypes = ['婚宴信息', '婚庆信息', '一站式'];
-        $customer = Member::get($get['id']);
+
+        ### 获取用户信息
+        $get = Request::param();
+        $allocate = MemberAllocate::get($get['id']);
+        $customer = Member::get($allocate['member_id']);
         if (!$auth['is_show_entire_mobile']) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
         }
@@ -1106,7 +1162,7 @@ class Customer extends Base
             // 只能查看自己的回访记录
             $map[] = ['user_id', '=', $user['id']];
         }
-        $map[] = ['member_id', '=', $get['id']];
+        $map[] = ['member_id', '=', $allocate['member_id']];
         $visits = model('MemberVisit')->where($map)->select()->toArray();
         foreach ($visits as &$value) {
             $time = strtotime($value['create_time']);

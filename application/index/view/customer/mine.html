@@ -186,8 +186,7 @@
 
         //监听行工具事件
         table.on('tool(table)', function (obj) {
-            var id = obj.data.member_id;
-            var member_allocate_id = obj.data.id;
+            var id = obj.data.id;
             switch (obj.event) {
                 case 'editCustomer':
                     url = '/index/customer/editcustomer.html?id=' + id;
@@ -200,7 +199,7 @@
                     });
                     break;
                 case 'visitCustomer':
-                    url = '/index/customer/visitcustomer.html?id=' + id + '&member_allocate_id=' + member_allocate_id;
+                    url = '/index/customer/visitcustomer.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '回访',

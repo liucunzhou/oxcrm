@@ -14,7 +14,7 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Customer/doEditCustomer')}" lay-filter="component-form-group">
-                <{if $aciton=='add'}>
+                <{if $action=='add'}>
                     <div class="layui-form-item">
                         <label class="layui-form-label">客资来源</label>
                         <div class="layui-input-block">
@@ -30,7 +30,7 @@
                             </select>
                         </div>
                     </div>
-                <{else }>
+                <{else /}>
                     <div class="layui-form-item">
                         <label class="layui-form-label">客资来源</label>
                         <div class="layui-input-block">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <{if $aciton=='add'}>
+                <{if $action=='add'}>
                     <div class="layui-form-item">
                         <label class="layui-form-label">联系电话</label>
                         <div class="layui-input-block">

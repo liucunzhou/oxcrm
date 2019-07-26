@@ -56,7 +56,7 @@
                     <label class="layui-form-label">用户角色</label>
                     <div class="layui-input-block">
                         <{volist name="roles" id="role"}>
-                            <input type="checkbox" name="role[]" value="{$role.id}" title="{$role.title}" <{if !empty($data['role_ids']) && in_array($role['id'], $data['role_ids'])}>checked<{/if}>/>
+                            <input type="radio" name="role" value="{$role.id}" title="{$role.title}" <{if !empty($data['role_ids']) && in_array($role['id'], $data['role_ids'])}>checked<{/if}>/>
                         <{/volist}>
                     </div>
                 </div>

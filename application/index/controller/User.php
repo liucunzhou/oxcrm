@@ -13,7 +13,8 @@ class User extends Base
     public function index()
     {
         if(Request::isAjax()) {
-            // 获取部门列表
+            // 获取权限、部门列表
+            $roles = AuthGroup::getRoles();
             $departments = Department::getDepartments();
 
             $get = Request::param();
@@ -26,6 +27,7 @@ class User extends Base
             foreach ($data as &$value) {
                 $value['department_id'] = $departments[$value['department_id']]['title'];
                 $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
+                $value['role_id'] = $roles[$value['role_id']]['title'];
             }
 
             $result = [
@@ -120,14 +122,13 @@ class User extends Base
         $post = Request::post();
 
         $Model = new \app\index\model\UserAuth();
-
         $where[] = ['user_id','=',$post['user_id']];
         $newObj = $Model->where($where)->find();
         !empty($newObj) && $Model = $newObj;
 
         $Model->user_id = $post['user_id'];
         $Model->department_id = $post['department_id'];
-        !empty($post['role']) && $Model->role_ids = implode(',', $post['role']);
+        !empty($post['role']) && $Model->role_ids = $post['role'];
         !empty($post['store']) && $Model->store_ids = implode(',', $post['store']);
         !empty($post['source']) && $Model->source_ids = implode(',', $post['source']);
         $Model->show_visit_log = $post['show_visit_log'];
@@ -135,11 +136,13 @@ class User extends Base
         $result = $Model->save();
 
         if($result) {
-            $map[] = ['id', '=', $post['user_id']];
-            \app\index\model\User::update(['department_id'=>$post['department_id']], $map);
             ### 更新用户信息缓存
+            $user = \app\index\model\User::get($post['user_id']);
+            $user->department_id = $post['department_id'];
+            $user->role_id = $post['role'];
+            $user->save();
+            ### 更新该用户的权限缓存
             $Model::updateCache($post['user_id']);
-
             ### 添加操作日志
             \app\index\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '用户权限成功', 'redirect'=>$post['referer']]);
@@ -168,7 +171,11 @@ class User extends Base
 
     public function info()
     {
+
         $user = \think\facade\Session::get("user");
+        $auth = UserAuth::getUserLogicAuth($user['id']);
+        $roles = AuthGroup::getRoles();
+        $this->assign('role', $roles[$auth['role_ids']]);
         $this->assign("user", $user);
         return $this->fetch();
     }
@@ -180,7 +187,21 @@ class User extends Base
 
     public function doRepassword()
     {
+        $post = Request::post();
+        $user = \think\facade\Session::get("user");
+        $user = \app\index\model\User::get($user['id']);
+        $post['password'] = md5($post['password']);
+        if ($user['password'] != $post['password']) {
+            return json(['code'=>'500', 'msg'=>'初始密码不正确']);
+        }
+        $user->password = md5($post['newpassword']);
+        $result = $user->save();
 
+        if($result) {
+            return json(['code'=>'200', 'msg'=>'修改密码成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=>'修改密码失败']);
+        }
     }
 
     public function sendMessage()

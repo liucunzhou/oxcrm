@@ -1,176 +1,135 @@
-<!-- 面包屑 -->
-<div class="breadcrumbs" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>首页</li>
-        <li>数据统计</li>
-        <li>数据总览</li>
-    </ul>
 
-    <div class="widget-toolbar">
-        <a href="javascript:history.go(-1);">
-            <span class="glyphicon glyphicon-share-alt"></span>
-            <span class="text">返回</span>
-        </a>
-    </div>
-    <!--<div class="widget-toolbar">-->
-    <!--<a href="javascript:void(0);" class="search-action-modal">-->
-    <!--<span class="text">高级筛选</span>-->
-    <!--</a>-->
-    <!--</div>-->
-    <div class="widget-toolbar no-border">
-        <form>
-            <input type="text" name="keywords" placeholder="请输入品牌名称"/>
-            <a class="icon-search" href="javascript:void(0);"></a>
-        </form>
-    </div>
-</div>
-<!--页面详情-->
-<div class="page-content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th class="left">渠道</th>
-                        <th class="center">总数据</th>
-                        <th class="center">有效客户</th>
-                        <th class="center">婚宴成单</th>
-                        <th class="center">婚庆成单</th>
-                        <th class="center">意向客户</th>
-                        <th class="center">待转换客户</th>
-                        <th class="center">无效客户</th>
-                        <th class="center">重单</th>
-                    </tr>
-                    </thead>
 
-                    <tr>
-                        <th class="left">大众点评</th>
-                        <th class="center">100</th>
-                        <th class="center">80</th>
-                        <th class="center">60</th>
-                        <th class="center">20</th>
-                        <th class="center">20</th>
-                        <th class="center">0</th>
-                        <th class="center">0</th>
-                        <th class="center">0</th>
-                    </tr>
-                </table>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>系统统计</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">上传概览(1000)</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                <div carousel-item>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>非重复客资总数</h3>
+                                                <p><cite style="color: #FF5722;">5</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>重复客资总数</h3>
+                                                <p><cite style="color: #FF5722;">5</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">客资客资（1000）</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                <div carousel-item>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                                <h3>有效客资</h3>
+                                                <p><cite>66</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                                                <h3>无效客资</h3>
+                                                <p><cite>12</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a lay-href="template/goodslist.html" class="layadmin-backlog-body">
+                                                <h3>跟进中</h3>
+                                                <p><cite>99</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                                <h3>待跟进</h3>
+                                                <p><cite>20</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据统计概览</div>
+                        <div class="layui-card-body">
+
+                            <table class="layui-table">
+                                <thead>
+                                <tr>
+                                    <th class="left">渠道</th>
+                                    <th class="center">总数据</th>
+                                    <th class="center">有效客户</th>
+                                    <th class="center">婚宴成单</th>
+                                    <th class="center">婚庆成单</th>
+                                    <th class="center">意向客户</th>
+                                    <th class="center">待转换客户</th>
+                                    <th class="center">无效客户</th>
+                                    <th class="center">重单</th>
+                                </tr>
+                                </thead>
+
+                                <tr>
+                                    <th class="left">大众点评</th>
+                                    <th class="center">100</th>
+                                    <th class="center">80</th>
+                                    <th class="center">60</th>
+                                    <th class="center">20</th>
+                                    <th class="center">20</th>
+                                    <th class="center">0</th>
+                                    <th class="center">0</th>
+                                    <th class="center">0</th>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div id="container"></div>
 </div>
-<include file="customer/search" />
-<script src="/static/js/hchart/highcharts.js"></script>
-<script src="/static/js/hchart/modules/exporting.js"></script>
-<script src="/static/js/hchart/modules/export-data.js"></script>
-<script src="/static/js/hchart/modules/accessibility.js"></script>
-<script type="text/javascript">
-    Highcharts.chart('container', {
-        chart: {
-            type: 'spline'
-        },
 
-        accessibility: {
-            description: '数据总览'
-        },
-
-        legend: {
-            symbolWidth: 40
-        },
-
-        title: {
-            text: '数据总览'
-        },
-
-        subtitle: {
-            text: '各平台营收'
-        },
-
-        yAxis: {
-            title: {
-                text: '金额,单位万'
-            }
-        },
-
-        xAxis: {
-            title: {
-                text: 'Time'
-            },
-            accessibility: {
-                description: '2019年上半年'
-            },
-            categories: ['一月', '二月', '三月', '四月', '五月']
-        },
-
-        tooltip: {
-            split: true
-        },
-
-        plotOptions: {
-            series: {
-                point: {
-                    events: {
-                        click: function () {
-                            window.location.href = this.series.options.website;
-                        }
-                    }
-                },
-                cursor: 'pointer'
-            }
-        },
-
-        series: [
-            {
-                name: '大众点评',
-                data: [74, 69.6, 63.7, 63.9, 88],
-                website: 'https://www.freedomscientific.com/Products/Blindness/JAWS'
-            }, {
-                name: '百度',
-                data: [8, 34.8, 43.0, 51.2, 58],
-                website: 'https://www.nvaccess.org',
-                dashStyle: 'Dot'
-            }, {
-                name: '微博',
-                data: [6, 20.2, 30.7, 36.8, 78],
-                website: 'http://www.apple.com/accessibility/osx/voiceover',
-                dashStyle: 'ShortDot',
-                color: Highcharts.getOptions().colors[7]
-            }, {
-                name: '头条',
-                data: [23, 19.0, 20.7, 13.9, 66],
-                website: 'http://www.gwmicro.com/window-eyes',
-                dashStyle: 'Dash',
-                color: Highcharts.getOptions().colors[0]
-            }, {
-                name: '抖音',
-                data: [0, 6.1, 6.8, 5.3, 98],
-                website: 'http://www.zoomtext.com/products/zoomtext-magnifierreader',
-                dashStyle: 'ShortDashDot',
-                color: Highcharts.getOptions().colors[8]
-            }, {
-                name: '微信',
-                data: [0, 16.2, 22.1, 26.2, 88],
-                website: 'https://www.satogo.com',
-                dashStyle: 'ShortDash',
-                color: Highcharts.getOptions().colors[1]
-            }
-        ],
-
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 500
-                },
-                chartOptions: {
-                    legend: {
-                        itemWidth: 150
-                    }
-                }
-            }]
-        }
-    });
-
+<script src="/assets/layui/layui.js?t=1"></script>
+<script>
+    layui.config({
+        base: '/assets/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'console']);
 </script>
+</body>
+</html>

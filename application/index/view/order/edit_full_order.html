@@ -47,7 +47,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">宴会厅</label>
                     <div class="layui-input-block">
-                        <select name="hotel_id" id="hotel_id" class="input-field">
+                        <select name="banquet_hall_id" id="banquet_hall_id" class="input-field">
                             <option value="0">--请选宴会厅--</option>
                             <{foreach name="halls" item="val"}>
                             <option value="{$val['id']}" <{if $data['hotel_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>

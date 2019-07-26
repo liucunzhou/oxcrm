@@ -16,4 +16,8 @@ class OrderEntire extends Model
     protected $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
 
+    protected $type = [
+        'sign_date' => 'timestamp',
+        'wedding_date' => 'timestamp'
+    ];
 }

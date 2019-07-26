@@ -101,6 +101,7 @@
                     </div>
                 </div>
 
+                <!--
                 <div class="layui-form-item" show-range="0_1_2">
                     <label class="layui-form-label">签单销售</label>
                     <div class="layui-input-block">
@@ -112,6 +113,7 @@
                     <div class="layui-input-block">
                     </div>
                 </div>
+                -->
 
                 <div class="layui-form-item" show-range="0_1_2">
                     <label class="layui-form-label">备注</label>
@@ -122,7 +124,9 @@
 
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
                     <div class="layui-input-block">
-                        <input type="hidden" name="id" value="{$data['id']}" data-version="{$Think.VERSION}"/>
+                        <input type="hidden" name="member_allocate_id" value="{$allocate['id']}"/>
+                        <input type="hidden" name="member_id" value="{$allocate['member_id']}"/>
+                        <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>

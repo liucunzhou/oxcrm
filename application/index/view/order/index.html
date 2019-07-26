@@ -64,122 +64,86 @@
             ,
             title: '订单管理'
             ,
-            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": "120"}, {
-                "field": "admin_id",
-                "title": "\u64cd\u4f5c\u5458",
-                "width": "120"
-            }, {"field": "customer_id", "title": "\u5ba2\u6237\u59d3\u540d", "width": "120"}, {
-                "field": "source_id",
-                "title": "\u6e20\u9053\u6765\u6e90",
-                "width": "120"
-            }, {"field": "sales_id", "title": "\u8ddf\u5355\u9500\u552e", "width": "120"}, {
-                "field": "manager_id",
-                "title": "\u533a\u57df\u7ecf\u7406",
-                "width": "120"
-            }, {"field": "sign_date", "title": "\u7b7e\u7ea6\u65e5\u671f", "width": "120"}, {
-                "field": "wedding_date",
-                "title": "\u5a5a\u793c\u65e5\u671f",
-                "width": "120"
-            }, {
-                "field": "bridegroom",
-                "title": "\u65b0\u90ce\u59d3\u540d",
-                "width": "120"
-            }, {"field": "bridegroom_mobile", "title": "\u65b0\u90ce\u624b\u673a", "width": "120"}, {
-                "field": "bride",
-                "title": "\u65b0\u5a18\u59d3\u540d",
-                "width": "120"
-            }, {"field": "bride_mobile", "title": "\u65b0\u5a18\u624b\u673a", "width": "120"}, {
-                "field": "is_entire",
-                "title": "\u4e00\u7ad9\u5f0f",
-                "width": "120"
-            }, {
-                "field": "entire_price",
-                "title": "\u4e00\u7ad9\u5f0f\u4ef7\u683c",
-                "width": "120"
-            }, {"field": "table_amount", "title": "\u684c\u6570", "width": "120"}, {
-                "field": "table_price",
-                "title": "\u9910\u6807",
-                "width": "120"
-            }, {"field": "wine_fee", "title": "\u9152\u6c34", "width": "120"}, {
-                "field": "service_fee",
-                "title": "\u670d\u52a1\u8d39",
-                "width": "120"
-            }, {
-                "field": "income_customer_fee",
-                "title": "\u5e94\u6536\u5ba2\u4eba\u8d39\u7528",
-                "width": "120"
-            }, {
-                "field": "income_wedding_celebration_admission_fee",
-                "title": "\u6536\u5a5a\u5e86\u8fdb\u573a\u8d39",
-                "width": "120"
-            }, {
-                "field": "income_fee",
-                "title": "\u6536\u5165\u603b\u989d",
-                "width": "120"
-            }, {
-                "field": "pay_hotel_admission_fee",
-                "title": "\u4ed8\u9152\u5e97\u8fdb\u573a\u8d39",
-                "width": "120"
-            }, {
-                "field": "pay_hotel_fee",
-                "title": "\u5e94\u4ed8\u9152\u5e97\u8d39\u7528",
-                "width": "120"
-            }, {
-                "field": "platform_source_fee",
-                "title": "\u5e73\u53f0\u6e20\u9053\u8d39\u7528",
-                "width": "120"
-            }, {
-                "field": "person_source_fee",
-                "title": "\u4e2a\u4eba\u6e20\u9053\u8d39\u7528",
-                "width": "120"
-            }, {
-                "field": "other_source_fee",
-                "title": "\u5176\u4ed6",
-                "width": "120"
-            }, {
-                "field": "hongsi_settlement_fee",
-                "title": "\u7ea2\u4e1d\u5a5a\u5e86\u7ed3\u7b97\u8d39",
-                "width": "120"
-            }, {
-                "field": "wedding_banquet_commission",
-                "title": "\u5a5a\u5bb4\u63d0\u6210",
-                "width": "120"
-            }, {
-                "field": "wedding_celebration_commission",
-                "title": "\u5a5a\u5e86\u63d0\u6210",
-                "width": "120"
-            }, {"field": "total_pay", "title": "\u652f\u51fa\u603b\u989d", "width": "120"}, {
-                "field": "revenue",
-                "title": "\u8425\u6536",
-                "width": "120"
-            }, {"field": "gross_profit", "title": "\u6bdb\u5229", "width": "120"}, {
-                "field": "end_commission",
-                "title": "\u6700\u7ec8\u63d0\u6210",
-                "width": "120"
-            }, {
-                "field": "manager_commission",
-                "title": "\u533a\u57df\u7ecf\u7406\u63d0\u6210",
-                "width": "120"
-            }, {
-                "field": "manager_recommend_commission",
-                "title": "\u533a\u57df\u7ecf\u7406\u5f15\u6d41\u63d0\u6210",
-                "width": "120"
-            }, {"field": "create_time", "title": "\u521b\u5efa\u65f6\u95f4", "width": "120"}, {
-                "field": "update_time",
-                "title": "update_time",
-                "width": "120"
-            }, {"field": "delete_time", "title": "delete_time", "width": "120"}, {
-                "field": "remark",
-                "title": "remark",
-                "width": "120"
-            }, {
-                "field": "tool",
-                "title": "\u64cd\u4f5c",
-                "width": "120",
-                "fixed": "right",
-                "type": "tool",
-                "toolbar": "#table-tool"
-            }]]
+            cols: [[
+                {
+                    "field":"realname",
+                    "title":"客户姓名",
+                    "width":120
+                },
+                {
+                    "field":"mobile",
+                    "title":"客户电话",
+                    "width":120
+                },
+                {
+                    "field":"source_id",
+                    "title":"渠道来源",
+                    "width":120
+                },
+                {
+                    "field":"sales_id",
+                    "title":"跟单销售",
+                    "width":120
+                },
+                {
+                    "field":"manager_id",
+                    "title":"区域经理",
+                    "width":120
+                },
+                {
+                    "field":"sign_date",
+                    "title":"签约日期",
+                    "width":120
+                },
+                {
+                    "field":"wedding_date",
+                    "title":"婚礼日期",
+                    "width":120
+                },
+                {
+                    "field":"banquet_hall_id",
+                    "title":"宴会厅",
+                    "width":120
+                },
+                {
+                    "field":"entire_price",
+                    "title":"一站式价格",
+                    "width":120
+                },
+                {
+                    "field":"table_amount",
+                    "title":"桌数",
+                    "width":120
+                },
+                {
+                    "field":"table_price",
+                    "title":"餐标",
+                    "width":120
+                },
+                {
+                    "field":"wedding_banquet_commission",
+                    "title":"婚宴提成",
+                    "width":120
+                },
+                {
+                    "field":"wedding_celebration_commission",
+                    "title":"婚庆提成",
+                    "width":120
+                },
+                {
+                    "field":"create_time",
+                    "title":"创建时间",
+                    "width":120
+                },
+                {
+                    "field":"tool",
+                    "title":"操作",
+                    "width":120,
+                    "fixed":"right",
+                    "type":"tool",
+                    "toolbar":"#table-tool"
+                }
+            ]]
             ,
             page: true
         });

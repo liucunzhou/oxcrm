@@ -15,6 +15,7 @@ class Base extends Controller
         $user = session("user");
         if(!$user) $this->redirect('/index/passport/login');
         $this->user = $user;
+        $this->assign('user', $user);
 
         // 监控登陆的端口
         if (Request::isMobile()) {
