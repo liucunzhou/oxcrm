@@ -83,6 +83,19 @@ class Store extends Model
         return $stores;
     }
 
+    public static function getStoreListByArea($params)
+    {
+        $map = [];
+        $map[] = ['area_id', '=', $params['id']];
+        ### 一站式信息,选择一站式酒店
+        if($params['news_type'] == 2) {
+            $map[] = ['is_entire', '=', 1];
+        }
+        $data = self::where($map)->order('is_valid desc,sort desc,id asc')->column('id,brand_id,title', 'id');
+
+        return $data;
+    }
+
     public static function updateCache()
     {
         self::getStoreList(true);

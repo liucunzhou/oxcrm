@@ -48,37 +48,42 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
-        var admin = layui.admin
-                , table = layui.table;
-
+        var table = layui.table;
         table.render({
-            elem: '#table'
-            ,
-            url: '/index/intention/index.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '意向管理'
-            ,
-            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 80}, {
-                "field": "title",
-                "title": "\u610f\u5411\u540d\u79f0"
-            }, {"field": "sort", "title": "\u6392\u5e8f", "width": 120}, {
-                "field": "is_valid",
-                "title": "\u72b6\u6001",
-                "width": 120
-            }, {"field": "create_time", "title": "\u521b\u5efa\u65e5\u671f", "width": 180}, {
-                "type": "tool",
-                "title": "\u64cd\u4f5c",
-                "toolbar": "#table-tool",
-                "width": 200
-            }]]
-            ,
-            page: true
+            elem: '#table',
+            url: '/index/intention/index.html',
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '意向管理',
+            cols: [[
+                {
+                    "field": "id",
+                    "title": "编号",
+                    "width": 80
+                }, {
+                    "field": "title",
+                    "title": "标题"
+                }, {
+                    "field": "type",
+                    "title": "类型",
+                    "width": 80
+                }, {
+                    "field": "sort",
+                    "title": "排序",
+                    "width": 80
+                }, {
+                    "field": "is_valid",
+                    "title": "状态",
+                    "width": 80
+                }, {"field": "create_time", "title": "\u521b\u5efa\u65e5\u671f", "width": 180}, {
+                    "type": "tool",
+                    "title": "操作",
+                    "toolbar": "#table-tool",
+                    "width": 200
+                }
+            ]]
+            ,page: true
         });
 
         var height = window.innerHeight;

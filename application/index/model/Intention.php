@@ -33,6 +33,25 @@ class Intention extends Model
         return $data;
     }
 
+    public static function getIntentionsByRole($roleId)
+    {
+        switch ($roleId) {
+            case 2:
+            case 7:
+                $data = [
+                    ['title' => '未跟进'],
+                    ['title' => '有效客资'],
+                    ['title' => '无效客资'],
+                    ['title' => '跟进中']
+                ];
+                break;
+            default:
+                $data = self::getIntentions();
+        }
+
+        return $data;
+    }
+
     ### 更新缓存
     public static function updateCache()
     {

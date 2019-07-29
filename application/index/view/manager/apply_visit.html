@@ -23,13 +23,30 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <{foreach name="tabs" item="val"}>
+                            <{if $val['checked'] == '1'}>
+                            <li class="layui-this">
+                                <a href="{$val.url}">{$val.text}</a>
+                            </li>
+                            <{else /}>
+                            <li>
+                                <a href="{$val.url}">{$val.text}</a>
+                            </li>
+                            <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
                     <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <{if empty($get['status'])}>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"confirmVisitApply", "text"=>"确认回访申请"])}
-                            {:button(["event"=>"cancelVisitApply", "text"=>"驳回回访申请"])}
+                            <a class="layui-btn layui-btn-sm" lay-event="confirmVisitApply">确认回访申请</a>
+                            <a class="layui-btn layui-btn-sm" lay-event="cancelVisitApply">驳回回访申请</a>
                         </div>
                     </script>
+                    <{/if}>
                 </div>
             </div>
         </div>
@@ -48,52 +65,87 @@
 
         table.render({
             elem: '#table'
-            ,
-            url: '{$Think.server.REQUEST_URI}'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '我的客资'
-            ,
-            cols: [[{"type": "checkbox", "width": 80, "fixed": "left"}, {
-                "field": "member_no",
-                "title": "\u5ba2\u8d44\u7f16\u53f7",
-                "width": 120
-            }, {"field": "realname", "title": "\u5ba2\u6237\u59d3\u540d", "width": 120}, {
-                "field": "mobile",
-                "title": "\u8054\u7cfb\u65b9\u5f0f",
-                "width": 120
-            }, {"field": "mobile1", "title": "\u5176\u5b83", "width": 120}, {
-                "field": "source_id",
-                "title": "\u5ba2\u8d44\u6765\u6e90",
-                "width": 120
-            }, {"field": "news_type", "title": "\u4fe1\u606f\u7c7b\u578b", "width": 120}, {
-                "field": "hotel_id",
-                "title": "\u5165\u4f4f\u9152\u5e97",
-                "width": 120
-            }, {"field": "banquet_size", "title": "\u5bb4\u4f1a\u89c4\u6a21", "width": 120}, {
-                "field": "budget",
-                "title": "\u9884\u7b97",
-                "width": 120
-            }, {
-                "field": "intention_status",
-                "title": "\u610f\u5411\u72b6\u6001",
-                "width": 120
-            }, {"field": "wedding_date", "title": "\u5a5a\u793c\u65e5\u671f", "width": 120}, {
-                "field": "zone",
-                "title": "\u533a\u57df",
-                "width": 120
-            }, {"field": "remark", "title": "\u5907\u6ce8", "width": 200}, {
-                "field": "create_time",
-                "title": "\u521b\u5efa\u65e5\u671f",
-                "width": 180
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "fixed":"right", "width": 200}]]
-            ,
-            page: true
+            ,url: '{$Think.server.REQUEST_URI}'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '我的客资'
+            ,cols: [[
+                {
+                    "type": "checkbox",
+                    "width": 50,
+                    "fixed": "left"
+                }, {
+                    "field": "user_id",
+                    "title": "申请者",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "visit_amount",
+                    "title": "回访",
+                    "width": 60,
+                    "align": "center",
+                    "event": "visitCustomer",
+                }, {
+                    "field": "realname",
+                    "title": "客户姓名",
+                    "width": 88,
+                    "align": "center"
+                }, {
+                    "field": "mobile",
+                    "title": "手机号",
+                    "width": 108,
+                    "align": "center"
+                }, {
+                    "field": "banquet_size",
+                    "title": "桌数",
+                    "width": 60,
+                    "align": "center"
+                }, {
+                    "field": "budget",
+                    "title": "预算",
+                    "width": 90,
+                    "align": "center"
+                },{
+                    "field": "wedding_date",
+                    "title": "订婚日期",
+                    "width": 106,
+                    "align": "center"
+                }, {
+                    "field": "zone",
+                    "title": "区域",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "hotel_id",
+                    "title": "酒店",
+                    "width": 200,
+                    "align": "center"
+                }, {
+                    "field": "source_id",
+                    "title": "客资来源",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "intention_status",
+                    "title": "回访状态",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "news_type",
+                    "title": "信息类型",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "remark",
+                    "title": "备注"
+                }, {
+                    "field": "create_time",
+                    "title": "创建日期",
+                    "width": 165
+                }
+            ]]
+            ,page: true
         });
 
         var getSelectedIds = function (jsonArr) {
@@ -125,7 +177,7 @@
                     url = '/index/manager/confirmvisitapply.html';
                     $.post(url, {ids:ids}, function (res) {
                         if(res.code == '200') {
-                            alert(res.msg);
+                            layer.msg(res.msg);
                             table.reload();
                         } else {
                             layer.msg(res.msg);

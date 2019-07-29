@@ -24,4 +24,5 @@ class Base extends Controller
             $this->view->config('view_path', $path);
         }
     }
+
 }

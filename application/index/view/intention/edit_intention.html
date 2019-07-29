@@ -26,6 +26,19 @@
                         <input type="text" name="sort" value="{$data[sort]}" lay-verify="number" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-block">
+                        <select name="type" lay-verify="">
+                            <option value=""></option>
+                            <option value="other" <{if $data['type']=='other'}>selected<{/if}>>其它</option>
+                            <option value="wash" <{if $data['type']=='wash'}>selected<{/if}>>洗单组</option>
+                            <option value="store" <{if $data['type']=='store'}>selected<{/if}>>门店</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">上/下线</label>
                     <div class="layui-input-block">
@@ -87,7 +100,7 @@
         form.on('submit(form-submit)', function (data) {
             var url = data.form.action;
             var params = data.field;
-            $.post(url, params, function (result) {
+            $.post(url, params, function (res) {
                 if (res.code == '200') {
                     parent.layui.table.reload("table");
                     parent.layer.closeAll();

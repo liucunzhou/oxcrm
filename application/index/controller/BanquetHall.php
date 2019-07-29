@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\index\model\Store;
 use think\facade\Request;
 
 class BanquetHall extends Base
@@ -36,10 +37,13 @@ class BanquetHall extends Base
 
     public function editBanquetHall()
     {
+
         $get = Request::param();
         $brand = \app\index\model\BanquetHall::get($get['id']);
         $this->assign('data', $brand);
 
+        $hotels = Store::getStoreList();
+        $this->assign("hotels", $hotels);
         return $this->fetch();
     }
 

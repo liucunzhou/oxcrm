@@ -36,7 +36,7 @@ class User extends Model
         $data = json_decode($data, true);
         if(empty($data) || $update) {
             $map[] = ['id', '=', $id];
-            $data = self::where($map)->field('id,role_id,nickname,realname,dingding,mobile,email')->find()->toArray();
+            $data = self::where($map)->field('id,role_id,department_id,nickname,realname,dingding,mobile,email')->find()->toArray();
             $json = json_encode($data);
             $result = redis()->hSet($cacheKey, $id, $json);
         }
@@ -49,7 +49,7 @@ class User extends Model
         $cacheKey = 'users';
         $data = redis()->get($cacheKey);
         if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,nickname,realname', 'id');
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email', 'id');
             $json = json_encode($data);
             $result = redis()->set($cacheKey, $json);
         } else {
@@ -88,17 +88,7 @@ class User extends Model
         $data = json_decode($data, true);
         if(empty($data) || $update) {
 
-            $authIds = [];
-            $roleIds = explode(',', $user);
-            foreach ($roleIds as $role) {
-                $authIds[] = AuthGroup::getAuthGroupItems($role);
-            }
-
-            $authIds = array_unique($authIds);
-            foreach ($authIds as $authId) {
-                $data[] = Auth::getAuth($authId);
-            }
-
+            $data = AuthGroup::getAuthGroup($user['role_id']);
             $json = json_encode($data);
             $result = redis()->hSet($cacheKey, $id, $json);
         }

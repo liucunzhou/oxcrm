@@ -125,6 +125,23 @@
                         offset: 'rb'
                     });
                     break;
+                case 'deleteAuth':
+                    if(id == undefined) {
+                        layer.msg("请选择要申请的客资");
+                        return false;
+                    }
+
+                    url = '/index/auth/deleteAuth.html?id=' + id;
+                    $.post(url, {id:id}, function (res) {
+                        if(res.code == '200') {
+                            parent.layui.table.reload("table");
+                            parent.layer.closeAll();
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
+                    break;
+                    break;
             };
         });
 

@@ -74,17 +74,64 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">咨询酒店</label>
+                    <label class="layui-form-label">所在省份</label>
                     <div class="layui-input-block">
-                        <select name="hotel_id" id="hotel_id" lay-verify="required" lay-search>
-                            <option value="0">--请选择酒店--</option>
-                            <{foreach name="hotels" item="val"}>
-                                <option value="{$val['id']}" <{if $data['hotel_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>
+                        <select name="province_id" id="province_id" lay-filter="province_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="provinces"}>
+                            <option value="{$val['id']}" <{eq name="data['province_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
                             <{/foreach}>
                         </select>
                     </div>
                 </div>
 
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在城市</label>
+                    <div class="layui-input-block">
+                        <select name="city_id" id="city_id" lay-filter="city_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="cities"}>
+                            <option value="{$val['id']}" <{eq name="data['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在区/县</label>
+                    <div class="layui-input-block">
+                        <select name="area_id" id="area_id" lay-filter="area_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="areas"}>
+                            <option value="{$val['id']}" <{eq name="data['area_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">咨询酒店</label>
+                    <div class="layui-input-block">
+                        <select name="hotel_id" id="hotel_id" lay-filter="hotel_id" lay-search>
+                            <option value="0"></option>
+                            <{foreach name="hotels" item="val"}>
+                            <{if $customer['hotel_id']==$val['id']}>
+                            <option value="{$val['id']}" selected>{$val['title']}</option>
+                            <{else /}>
+                            <option value="{$val['id']}" >{$val['title']}</option>
+                            <{/if}>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所选区域</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="zone" id="zone" readonly value="{$customer['zone']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">桌数</label>
@@ -100,18 +147,11 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">区域</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="zone" value="{$data['zone']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">婚期</label>
                     <div class="layui-input-block">
-                        <input type="text" name="wedding_date" value="{$data['wedding_date']}" id="wedding_date" lay-verify="0" class="layui-input">
+                        <input type="text" name="wedding_date" value="{$data['wedding_date']}" id="wedding_date" lay-verify="0" class="layui-date layui-input">
                     </div>
                 </div>
 
@@ -149,17 +189,56 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
         var $ = layui.jquery
             ,laydate = layui.laydate
-            ,form = layui.form;
+            ,form = layui.form
+            ,laytpl = layui.laytpl;
 
         form.render(null, 'component-form-group');
         laydate.render({
             elem: '#wedding_date',
-            type: 'date'
+            type: 'datetime'
         });
 
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#area_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(area_id)", function (data) {
+            var url = '{:url("Store/getStoreListByArea")}';
+            var news_type = $("#news_type").val();
+            $.post(url, {id:data.value,news_type:news_type}, function (result) {
+                var getTpl = storeOptionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#hotel_id").html(html);
+                    form.render("select");
+                    var zone = $("#city_id").find("option:selected").text() + $("#area_id").find("option:selected").text();
+                    $("#zone").val(zone);
+                });
+
+            });
+        });
 
         /* 监听提交 */
         form.on('submit(form-submit)', function (data) {
@@ -176,6 +255,18 @@
             return false;
         });
     });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
+</script>
+<script id="storeOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.title }}</option>
+    {{#  }); }}
 </script>
 </body>
 </html>

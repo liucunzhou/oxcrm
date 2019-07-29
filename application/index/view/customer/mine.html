@@ -43,13 +43,8 @@
                         <div class="layui-btn-container">
                             {:button(["event"=>"searchCustomer", "text"=>"高级搜索"])}
                             {:button(["event"=>"addCustomer", "text"=>"添加客资"])}
+                            {:button(["event"=>"assignToStoreStaff", "text"=>"分配到门市"])}
                             {:button(["event"=>"createOrder", "text"=>"生成订单"])}
-                        </div>
-                    </script>
-                    <script type="text/html" id="table-tool">
-                        <div class="layui-btn-container">
-                            {:button(["event"=>"visitCustomer", "text"=>"回访"])}
-                            {:button(["event"=>"editCustomer", "text"=>"编辑"])}
                         </div>
                     </script>
                 </div>
@@ -70,54 +65,84 @@
 
         table.render({
             elem: '#table'
-            ,
-            url: '{$Think.server.REQUEST_URI}'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '我的客资'
-            ,
-            cols: [[{"type": "radio", "width": 80, "fixed": "left"}, {
-                "field": "visit_amount",
-                "title": "回访数",
-                "width": 120,
-                "align": "center",
-                "event": "visitLogs",
-            }, {"field": "realname", "title": "\u5ba2\u6237\u59d3\u540d", "width": 120}, {
-                "field": "mobile",
-                "title": "\u8054\u7cfb\u65b9\u5f0f",
-                "width": 120
-            }, {
-                "field": "source_id",
-                "title": "\u5ba2\u8d44\u6765\u6e90",
-                "width": 120
-            }, {"field": "news_type", "title": "\u4fe1\u606f\u7c7b\u578b", "width": 120}, {
-                "field": "hotel_id",
-                "title": "\u5165\u4f4f\u9152\u5e97",
-                "width": 120
-            }, {"field": "banquet_size", "title": "\u5bb4\u4f1a\u89c4\u6a21", "width": 120}, {
-                "field": "budget",
-                "title": "\u9884\u7b97",
-                "width": 120
-            }, {
-                "field": "intention_status",
-                "title": "\u610f\u5411\u72b6\u6001",
-                "width": 120
-            }, {"field": "wedding_date", "title": "\u5a5a\u793c\u65e5\u671f", "width": 120}, {
-                "field": "zone",
-                "title": "\u533a\u57df",
-                "width": 120
-            }, {"field": "remark", "title": "\u5907\u6ce8", "width": 200}, {
-                "field": "create_time",
-                "title": "\u521b\u5efa\u65e5\u671f",
-                "width": 180
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "fixed":"right", "width": 220}]]
-            ,
-            page: true
+            ,url: '{$Think.server.REQUEST_URI}'
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '我的客资'
+            ,cols: [[
+                {
+                    "type": "checkbox",
+                    "width": 50,
+                    "fixed": "left"
+                }, {
+                    "field": "visit_amount",
+                    "title": "回访",
+                    "width": 60,
+                    "align": "center",
+                    "event": "visitCustomer",
+                }, {
+                    "field": "realname",
+                    "title": "客户姓名",
+                    "width": 88,
+                    "align": "center"
+                }, {
+                    "field": "mobile",
+                    "title": "手机号",
+                    "width": 108,
+                    "align": "center"
+                }, {
+                    "field": "banquet_size",
+                    "title": "桌数",
+                    "width": 60,
+                    "align": "center"
+                }, {
+                    "field": "budget",
+                    "title": "预算",
+                    "width": 90,
+                    "align": "center"
+                },{
+                    "field": "wedding_date",
+                    "title": "订婚日期",
+                    "width": 106,
+                    "align": "center"
+                }, {
+                    "field": "zone",
+                    "title": "区域",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "hotel_id",
+                    "title": "酒店",
+                    "width": 200,
+                    "align": "center"
+                }, {
+                    "field": "source_id",
+                    "title": "客资来源",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "intention_status",
+                    "title": "回访状态",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "news_type",
+                    "title": "信息类型",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "remark",
+                    "title": "备注"
+                }, {
+                    "field": "create_time",
+                    "title": "创建日期",
+                    "width": 165
+                }
+            ]]
+            ,page: true
+            ,limit: 15
+            ,limits: [15,20,30]
         });
 
         var getSelectedIds = function (jsonArr) {
@@ -152,7 +177,22 @@
                     url = '/index/customer/addcustomer.html';
                     layer.open({
                         type: 2,
-                        title: '添加客服',
+                        title: '添加客户',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'assignToStoreStaff':
+                    if(checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/customer/assigntostorestaff.html?ids='+ids;
+                    layer.open({
+                        type: 2,
+                        title: '分发到门市销售',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'
@@ -187,9 +227,10 @@
         //监听行工具事件
         table.on('tool(table)', function (obj) {
             var id = obj.data.id;
+            var member_id = obj.data.member_id;
             switch (obj.event) {
                 case 'editCustomer':
-                    url = '/index/customer/editcustomer.html?id=' + id;
+                    url = '/index/customer/editcustomer.html?member_id=' + member_id;
                     layer.open({
                         type: 2,
                         title: '编辑',
@@ -199,22 +240,23 @@
                     });
                     break;
                 case 'visitCustomer':
-                    url = '/index/customer/visitcustomer.html?id=' + id;
+                    url = '/index/customer/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
                     layer.open({
                         type: 2,
                         title: '回访',
                         content: url,
-                        area: [width + 'px', height + 'px'],
+                        area: [window.innerWidth + 'px', window.innerHeight + 'px'],
                         offset: 'rb'
                     });
                     break;
                 case 'visitLogs':
+                    id = obj.data.member_id;
                     url = '/index/customer/visitlogs.html?id=' + id;
                     layer.open({
                         type: 2,
                         title: '回访记录',
                         content: url,
-                        area: [width + 'px', height + 'px'],
+                        area: [window.innerWidth + 'px', window.innerHeight + 'px'],
                         offset: 'rb'
                     });
                     break;

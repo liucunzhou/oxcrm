@@ -8,114 +8,216 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <style>
+        *{
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-card">
-        <table class="layui-table">
-            <tr>
-                <td>客资来源</td>
-                <td>{$customer['source_id']}</td>
-                <td>信息类型</td>
-                <td>{$customer['news_type']}</td>
-            </tr>
-            <tr>
-                <td>联系人</td>
-                <td>{$customer['realname']}</td>
-                <td>联系电话</td>
-                <td>{$customer['mobile']}</td>
-            </tr>
-            <tr>
-                <td>桌数</td>
-                <td>{$customer['banquet_size']}</td>
-                <td>预算</td>
-                <td>{$customer['budget']}</td>
-            </tr>
-            <tr>
-                <td>婚期</td>
-                <td>{$customer['wedding_date']}</td>
-                <td>区域</td>
-                <td>{$customer['zone']}</td>
-            </tr>
-            <tr>
-                <td>酒店</td>
-                <td colspan="3">{$customer['hotel_id']}</td>
-            </tr>
-            <tr>
-                <td>备注</td>
-                <td colspan="3">{$customer['remark']}</td>
-            </tr>
-        </table>
+        <form class="layui-form" action="{:url('Customer/doVisitCustomer')}" lay-filter="component-form-group">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" action="{:url('Customer/doVisit')}" lay-filter="component-form-group">
-                <{if $auth['is_update_intention']}>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">跟进状态</label>
-                    <div class="layui-input-block">
-                        <select name="status" id="status">
-                            <option value=""></option>
-                            <{foreach item="val" name="intentions"}>
-                            <option value="{$key}">{$val['title']}</option>
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">信息类型</label>
+                    <div class="layui-input-inline">
+                        <select name="news_type" id="news_type" class="input-field">
+                            <option value="0" <{if $customer['news_type']==0}>selected<{/if}>>婚宴信息</option>
+                            <option value="1" <{if $customer['news_type']==1}>selected<{/if}>>婚庆信息</option>
+                            <option value="2" <{if $customer['news_type']==2}>selected<{/if}>>一站式</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">客资来源</label>
+                    <div class="layui-input-inline">
+                        <select name="source_id" id="source_id">
+                            <option value="0">--选择来源--</option>
+                            <{foreach name="sources" item="val"}>
+                                <{if $customer['source_id']==$val['id']}>
+                                    <option value="{$val['id']}" selected>{$val['title']}</option>
+                                <{else /}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                <{/if}>
                             <{/foreach}>
                         </select>
                     </div>
                 </div>
-                <{/if}>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">下次跟进</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="next_visit_time" id="next_visit_time" value="{$data['next_visit_time']}" class="layui-input date" autocomplete="off">
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="realname" value="{$customer['realname']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">备注</label>
-                    <div class="layui-input-block">
-                        <textarea name="content" class="layui-input" style="height: 100px;"></textarea>
+                <div class="layui-inline">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="mobile" value="{$customer['mobile']}" readonly lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
-                <div class="vist-list">
-                    <h4 class="blue">
-                        <span>回访历史</span>
-                        <small>(已回访{:count($visits)}次)</small>
-                    </h4>
+                <div class="layui-inline">
+                    <label class="layui-form-label">婚期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="wedding_date" id="wedding_date" value="{$customer['wedding_date']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
 
-                    <table class="layui-table">
-                        <colgroup>
-                            <col width="100">
-                            <col width="100">
-                            <col width="100">
-                            <col>
-                        </colgroup>
-                        <tr class="table-header">
-                            <th>回访者</th>
-                            <th>回访时间</th>
-                            <th>回访状态</th>
-                            <th>备注</th>
-                        </tr>
-                        <{foreach item="val" name="visits"}>
-                            <tr>
-                                <td>{$val['user_id']}</td>
-                                <td>{$val['create_time']}</td>
-                                <td>{$val['status']}</td>
-                                <td>{$val['content']}</td>
-                            </tr>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">桌数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="banquet_size" value="{$customer['banquet_size']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">预算</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="budget" value="{$customer['budget']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所选区域</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="zone" id="zone" readonly value="{$customer['zone']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">所在省份</label>
+                    <div class="layui-input-inline">
+                        <select name="province_id" id="province_id" lay-filter="province_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="provinces"}>
+                            <option value="{$val['id']}" <{eq name="customer['province_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">所在城市</label>
+                    <div class="layui-input-inline">
+                        <select name="city_id" id="city_id" lay-filter="city_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="cities"}>
+                            <option value="{$val['id']}" <{eq name="customer['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">所在区/县</label>
+                    <div class="layui-input-inline">
+                        <select name="area_id" id="area_id" lay-filter="area_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="areas"}>
+                            <option value="{$val['id']}" <{eq name="customer['area_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">咨询酒店</label>
+                <div class="layui-input-block">
+                    <select name="hotel_id" id="hotel_id" lay-filter="hotel_id" lay-search>
+                        <option value="0"></option>
+                        <{foreach name="hotels" item="val"}>
+                            <{if $customer['hotel_id']==$val['id']}>
+                                <option value="{$val['id']}" selected>{$val['title']}</option>
+                            <{else /}>
+                                <option value="{$val['id']}" >{$val['title']}</option>
+                            <{/if}>
                         <{/foreach}>
-                    </table>
+                    </select>
                 </div>
+            </div>
 
-                <div class="layui-form-item layui-layout-admin">
-                    <div class="layui-input-block">
-                        <input type="hidden" name="member_allocate_id" id="member_allocate_id" value="{$Request.param.id}">
-                        <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
-                        </div>
+            <{if $auth['is_update_intention']}>
+            <div class="layui-form-item">
+                <label class="layui-form-label">跟进状态</label>
+                <div class="layui-input-block">
+                    <select name="status" id="status">
+                        <option value=""></option>
+                        <{foreach item="val" name="intentions"}>
+                        <option value="{$key}">{$val['title']}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+            <{/if}>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">下次跟进</label>
+                <div class="layui-input-block">
+                    <input type="text" name="next_visit_time" id="next_visit_time" value="{$data['next_visit_time']}" class="layui-input date" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea name="content" class="layui-input" style="height: 100px;"></textarea>
+                </div>
+            </div>
+
+            <div class="vist-list">
+                <h4 class="blue">
+                    <span>回访历史</span>
+                    <small>(已回访{:count($visits)}次)</small>
+                </h4>
+
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="100">
+                        <col width="100">
+                        <col width="100">
+                        <col>
+                    </colgroup>
+                    <tr class="table-header">
+                        <th>回访者</th>
+                        <th>回访时间</th>
+                        <th>回访状态</th>
+                        <th>备注</th>
+                    </tr>
+                    <{foreach item="val" name="visits"}>
+                        <tr>
+                            <td>{$val['user_id']}</td>
+                            <td>{$val['create_time']}</td>
+                            <td>{$val['status']}</td>
+                            <td>{$val['content']}</td>
+                        </tr>
+                    <{/foreach}>
+                </table>
+            </div>
+
+            <div class="layui-form-item layui-layout-admin">
+                <div class="layui-input-block">
+                    <input type="hidden" name="member_allocate_id" id="member_allocate_id" value="{$Request.param.allocate_id}">
+                    <input type="hidden" name="member_id" id="member_id" value="{$Request.param.member_id}">
+                    <div class="layui-footer" style="left: 0;">
+                        <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
+        </form>
     </div>
 </div>
 <script src="/assets/layui/layui.js"></script>
@@ -124,17 +226,62 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
         var $ = layui.jquery
             , layer = layui.layer
             , laydate = layui.laydate
-            , form = layui.form;
+            , form = layui.form
+            , laytpl = layui.laytpl;
 
         form.render(null, 'component-form-group');
         laydate.render({
             elem: '#next_visit_time',
             type: 'datetime'
         });
+        laydate.render({
+            elem: '#wedding_date',
+            type: 'datetime'
+        });
+
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#area_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(area_id)", function (data) {
+            var url = '{:url("Store/getStoreListByArea")}';
+            var news_type = $("#news_type").val();
+            $.post(url, {id:data.value,news_type:news_type}, function (result) {
+                var getTpl = storeOptionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#hotel_id").html(html);
+                    form.render("select");
+                    var zone = $("#city_id").find("option:selected").text() + $("#area_id").find("option:selected").text();
+                    $("#zone").val(zone);
+                });
+
+            });
+        });
+
 
         /* 监听提交 */
         form.on('submit(form-submit)', function (data) {
@@ -151,6 +298,18 @@
             return false;
         });
     });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
+</script>
+<script id="storeOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.title }}</option>
+    {{#  }); }}
 </script>
 </body>
 </html>

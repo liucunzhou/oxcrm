@@ -192,7 +192,7 @@ class User extends Base
         $user = \app\index\model\User::get($user['id']);
         $post['password'] = md5($post['password']);
         if ($user['password'] != $post['password']) {
-            return json(['code'=>'500', 'msg'=>'初始密码不正确']);
+            return json(['code'=>'500', 'msg'=>'请输入原密码']);
         }
         $user->password = md5($post['newpassword']);
         $result = $user->save();

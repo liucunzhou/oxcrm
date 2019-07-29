@@ -34,6 +34,54 @@
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">所在省份</label>
+                    <div class="layui-input-block">
+                        <select name="province_id" id="province_id" lay-filter="province_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="provinces"}>
+                            <option value="{$val['id']}" <{eq name="data['province_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在城市</label>
+                    <div class="layui-input-block">
+                        <select name="city_id" id="city_id" lay-filter="city_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="cities"}>
+                            <option value="{$val['id']}" <{eq name="data['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在区/县</label>
+                    <div class="layui-input-block">
+                        <select name="area_id" id="area_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="areas"}>
+                            <option value="{$val['id']}" <{eq name="data['area_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否一站式</label>
+                    <div class="layui-input-block">
+                        <select name="is_entire" id="is_entire">
+                            <option value="0"
+                            <{eq name="data['is_entire']" value="0"}>selected<{/eq}>>否</option>
+                            <option value="1"
+                            <{eq name="data['is_entire']" value="1"}>selected<{/eq}>>是</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">上线/下线</label>
                     <div class="layui-input-block">
                         <select name="is_valid" id="is_valid">
@@ -70,12 +118,11 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
         var $ = layui.$
-                , admin = layui.admin
-                , element = layui.element
-                , layer = layui.layer
-                , form = layui.form;
+            , layer = layui.layer
+            , form = layui.form
+            , laytpl = layui.laytpl;
 
         form.render(null, 'component-form-group');
 
@@ -92,6 +139,30 @@
             }
         });
 
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#area_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
         /* 监听提交 */
         form.on('submit(form-submit)', function (data) {
             var url = data.form.action;
@@ -105,9 +176,14 @@
                 }
             });
             return false;
-            return false;
         });
     });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
 </script>
 </body>
 </html>

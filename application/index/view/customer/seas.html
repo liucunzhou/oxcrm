@@ -28,7 +28,7 @@
 
                     <script type="text/html" id="toolbar">
                         <div class="layui-btn-container">
-                            <a class="layui-btn layui-btn-xs" lay-event="doApply">申请回访</a>
+                            <a class="layui-btn layui-btn-sm" lay-event="doApply">申请回访</a>
                         </div>
                     </script>
 
@@ -58,24 +58,74 @@
             ,title: '客资公海'
             ,defaultToolbar: ['filter']
             ,cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                ,{"field": "visit_amount", "title": "回访数", "width": 120, "align": "center", "event": "visitLogs"}
-                ,{field:'realname', title:'客户姓名', width:120, edit: 'text'}
-                ,{field:'mobile', title:'联系电话', width:120, edit: 'text'}
-                ,{field:'mobile1', title:'其他电话', width:120}
-                ,{field:'publisher', title:'发布员', width:120}
-                ,{field:'sale', title:'跟单员', width:120}
-                ,{field:'new_type', title:'信息类型', width:120}
-                ,{field:'ordered_staff', title:'成单人', width:120}
-                ,{field:'change', title:'转婚庆', width:120}
-                ,{field:'banquet_size', title:'宴会规模', width:120}
-                ,{field:'budget', title:'预算', width:120}
-                ,{field:'wedding_intention', title:'跟进状态', width:120}
-                ,{field:'zone', title:'区域', width:120}
-                ,{field:'hotel', title:'酒店', width:120}
-                ,{field:'source', title:'客户来源', width:120}
-                ,{field:'create_time', title:'创建时间', width:180}
-                // ,{fixed: 'right', title:'操作', toolbar: '#tool', width:150}
+                {
+                    "type": "checkbox",
+                    "width": 50,
+                    "fixed": "left"
+                }, {
+                    "field": "visit_amount",
+                    "title": "回访",
+                    "width": 60,
+                    "align": "center",
+                    "event": "visitLogs",
+                }, {
+                    "field": "realname",
+                    "title": "客户姓名",
+                    "width": 88,
+                    "align": "center"
+                }, {
+                    "field": "mobile",
+                    "title": "手机号",
+                    "width": 108,
+                    "align": "center"
+                }, {
+                    "field": "banquet_size",
+                    "title": "桌数",
+                    "width": 60,
+                    "align": "center"
+                }, {
+                    "field": "budget",
+                    "title": "预算",
+                    "width": 90,
+                    "align": "center"
+                },{
+                    "field": "wedding_date",
+                    "title": "订婚日期",
+                    "width": 106,
+                    "align": "center"
+                }, {
+                    "field": "zone",
+                    "title": "区域",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "hotel_id",
+                    "title": "酒店",
+                    "width": 200,
+                    "align": "center"
+                }, {
+                    "field": "source_id",
+                    "title": "客资来源",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "intention_status",
+                    "title": "回访状态",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "news_type",
+                    "title": "信息类型",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "remark",
+                    "title": "备注"
+                }, {
+                    "field": "create_time",
+                    "title": "创建日期",
+                    "width": 165
+                }
             ]]
             ,page: true
         });
@@ -122,10 +172,10 @@
 
         //监听行工具事件
         table.on('tool(table)', function(obj){
-            var id = obj.data.member_id;
+            var member_id = obj.data.id;
             switch (obj.event) {
                 case 'visitLogs':
-                    url = '/index/customer/visitlogs.html?id=' + id;
+                    url = '/index/customer/visitLogs.html?member_id=' + member_id;
                     layer.open({
                         type: 2,
                         title: '回访记录',

@@ -10,6 +10,7 @@ namespace app\index\controller;
 
 
 use app\index\model\Brand;
+use app\index\model\Region;
 use think\facade\Request;
 
 class Store extends Base
@@ -64,6 +65,21 @@ class Store extends Base
         $data = \app\index\model\Store::get($get['id']);
         $this->assign('data', $data);
 
+        $provinces = Region::getProvinceList();
+        $this->assign('provinces', $provinces);
+
+        $cities = [];
+        if($data['province_id']) {
+            $cities = Region::getCityList($data['province_id']);
+        }
+        $this->assign('cities', $cities);
+
+        $areas = [];
+        if($data['city_id']) {
+            $areas = Region::getAreaList($data['city_id']);
+        }
+        $this->assign('areas', $areas);
+
         $this->view->engine->layout(false);
         return $this->fetch();
     }
@@ -108,5 +124,13 @@ class Store extends Base
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);
         }
+    }
+
+    public function getStoreListByArea()
+    {
+        $post = Request::post();
+        $storeList = \app\index\model\Store::getStoreListByArea($post);
+
+        return json($storeList);
     }
 }

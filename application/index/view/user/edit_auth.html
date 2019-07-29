@@ -53,6 +53,15 @@
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">来源显示</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="is_update_intention" value="1" title="来源别名" <{if $data['is_show_entire_mobile']}>checked<{/if}>/>
+                        <input type="radio" name="is_update_intention" value="0" title="来源名称" <{if !$data['is_show_entire_mobile']}>checked<{/if}>/>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">用户角色</label>
                     <div class="layui-input-block">
                         <{volist name="roles" id="role"}>
