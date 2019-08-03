@@ -10,22 +10,22 @@ class Tab
             case 15: // 客服经理
             case 7: // 洗单组主管
                 $tabs = [
-                    ['text' => '未分配', 'url' => url('customer/index', ['assign_status' => 0]), 'checked' => $get['assign_status'] === '0' ? 1 : 0],
-                    ['text' => '已分配', 'url' => url('customer/index', ['assign_status' => 1]), 'checked' => $get['assign_status'] === '1' ? 1 : 0],
-                    ['text' => '有效已分配', 'url' => url('customer/index', ['active_assign_status' => 1]), 'checked' => $get['active_assign_status'] === '1' ? 1 : 0],
+                    ['text' => '未分配', 'url' => url('customer/index', ['assign_status' => 0]), 'checked' => isset($get['assign_status']) && $get['assign_status'] === '0' ? 1 : 0],
+                    ['text' => '已分配', 'url' => url('customer/index', ['assign_status' => 1]), 'checked' => isset($get['assign_status']) && $get['assign_status'] === '1' ? 1 : 0],
+                    ['text' => '有效已分配', 'url' => url('customer/index', ['active_assign_status' => 1]), 'checked' => isset($get['active_assign_status']) && $get['active_assign_status'] === '1' ? 1 : 0],
                     ['text' => '有效未分配', 'url' => url('customer/index', ['active_assign_status' => 0]), 'checked' => empty($get) || $get['active_assign_status'] === '0' ? 1 : 0],
-                    ['text' => '无效客资', 'url' => url('customer/index', ['wash_status' => 2]), 'checked' => $get['wash_status'] === '2' ? 1 : 0],
-                    ['text' => '跟进中', 'url' => url('customer/index', ['wash_status' => 3]), 'checked' => $get['wash_status'] === '3' ? 1 : 0],
-                    ['text' => '未跟进', 'url' => url('customer/index', ['wash_status' => 0]), 'checked' => $get['wash_status'] === '0' ? 1 : 0],
+                    ['text' => '无效客资', 'url' => url('customer/index', ['wash_status' => 2]), 'checked' => isset($wash_satatus) && $get['wash_status'] === '2' ? 1 : 0],
+                    ['text' => '跟进中', 'url' => url('customer/index', ['wash_status' => 3]), 'checked' => isset($wash_satatus) && $get['wash_status'] === '3' ? 1 : 0],
+                    ['text' => '未跟进', 'url' => url('customer/index', ['wash_status' => 0]), 'checked' => isset($wash_satatus) && $get['wash_status'] === '0' ? 1 : 0],
                 ];
                 break;
             case 2: // 洗单组客服
                 $tabs = [
-                    ['text' => '有效已分配', 'url' => url('customer/index', ['active_assign_status' => 1]), 'checked' => $get['active_assign_status'] === '1' ? 1 : 0],
+                    ['text' => '有效已分配', 'url' => url('customer/index', ['active_assign_status' => 1]), 'checked' => isset($get['active_assign_status']) && $get['active_assign_status'] === '1' ? 1 : 0],
                     ['text' => '有效未分配', 'url' => url('customer/index', ['active_assign_status' => 0]), 'checked' => empty($get)|| $get['active_assign_status'] === '0' ? 1 : 0],
-                    ['text' => '无效客资', 'url' => url('customer/index', ['wash_status' => 2]), 'checked' => $get['wash_status'] === '2' ? 1 : 0],
-                    ['text' => '跟进中', 'url' => url('customer/index', ['wash_status' => 3]), 'checked' => $get['wash_status'] === '3' ? 1 : 0],
-                    ['text' => '未跟进', 'url' => url('customer/index', ['wash_status' => 0]), 'checked' => $get['wash_status'] === '0' ? 1 : 0],
+                    ['text' => '无效客资', 'url' => url('customer/index', ['wash_status' => 2]), 'checked' => isset($wash_satatus) && $get['wash_status'] === '2' ? 1 : 0],
+                    ['text' => '跟进中', 'url' => url('customer/index', ['wash_status' => 3]), 'checked' => isset($wash_satatus) && $get['wash_status'] === '3' ? 1 : 0],
+                    ['text' => '未跟进', 'url' => url('customer/index', ['wash_status' => 0]), 'checked' => isset($wash_satatus) && $get['wash_status'] === '0' ? 1 : 0],
                 ];
                 break;
             case 3: // 推荐组主管
@@ -33,7 +33,7 @@ class Tab
             case 10: // 派单组主管
             case 11: // 派单组客服
                 $tabs = [
-                    ['text' => '已分配', 'url' => url('customer/index', ['assign_status' => 1]), 'checked' => $get['assign_status'] === '1' ? 1 : 0],
+                    ['text' => '已分配', 'url' => url('customer/index', ['assign_status' => 1]), 'checked' => isset($get['assign_status']) && $get['assign_status'] === '1' ? 1 : 0],
                     ['text' => '未分配', 'url' => url('customer/index', ['assign_status' => 0]), 'checked' => empty($get) || $get['assign_status'] === '0' ? 1 : 0],
                 ];
                 break;

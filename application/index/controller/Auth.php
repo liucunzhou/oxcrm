@@ -84,14 +84,14 @@ class Auth extends Base
         }
     }
 
-    public function delete()
+    public function deleteAuth()
     {
         $get = Request::param();
         $result = \app\index\model\Auth::get($get['id'])->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\Auth::updateCache($get['id']);
+            // \app\index\model\Auth::updateCache($get['id']);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

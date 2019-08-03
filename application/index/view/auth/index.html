@@ -49,43 +49,51 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
-        var admin = layui.admin
-            , table = layui.table;
+        var $ = layui.jquery
+            ,table = layui.table;
 
         table.render({
-            elem: '#table'
-            ,
-            url: '/index/auth/index.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '模块管理'
-            ,
-            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 60}, {
-                "field": "parent_id",
-                "title": "\u6a21\u5757\u540d",
-                "width": 100
-            }, {"field": "title", "title": "\u4e8b\u4ef6"}, {
-                "field": "route",
-                "title": "\u8def\u7531"
-            }, {
-                "field": "is_menu", "title": "是否菜单", "width": 100
-            }, {"field": "is_valid", "title": "\u72b6\u6001", "width": 80}, {
-                "field": "sort",
-                "title": "\u6392\u5e8f",
-                "width": 80
-            }, {"field": "create_time", "title": "\u521b\u5efa\u65f6\u95f4", "width": 165}, {
-                "type": "tool",
-                "title": "\u64cd\u4f5c",
-                "toolbar": "#table-tool",
-                "width": 120
-            }]]
-            ,
-            page: true
+            elem: '#table',
+            url: '/index/auth/index.html',
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '模块管理',
+            cols: [[
+                {
+                    "field": "id",
+                    "title": "ID",
+                    "width": 60
+                }, {
+                    "field": "parent_id",
+                    "title": "模块",
+                    "width": 100
+                }, {
+                    "field": "title",
+                    "title": "事件"
+                }, {
+                    "field": "route",
+                    "title": "路由"
+                }, {
+                    "field": "is_menu",
+                    "title": "是否菜单",
+                    "width": 100
+                }, {
+                    "field": "is_valid",
+                    "title": "状态",
+                    "width": 80
+                }, {
+                    "field": "sort",
+                    "title": "排序",
+                    "width": 80
+                }, {"field": "create_time", "title": "\u521b\u5efa\u65f6\u95f4", "width": 165}, {
+                    "type": "tool",
+                    "title": "操作",
+                    "toolbar": "#table-tool",
+                    "width": 135
+                }
+            ]]
+            ,page: true
         });
 
         var height = window.innerHeight;
@@ -127,15 +135,15 @@
                     break;
                 case 'deleteAuth':
                     if(id == undefined) {
-                        layer.msg("请选择要申请的客资");
+                        layer.msg("请选择要删除的事件");
                         return false;
                     }
 
                     url = '/index/auth/deleteAuth.html?id=' + id;
                     $.post(url, {id:id}, function (res) {
                         if(res.code == '200') {
-                            parent.layui.table.reload("table");
-                            parent.layer.closeAll();
+                            table.reload("table");
+                            layer.closeAll();
                         } else {
                             layer.msg(res.msg);
                         }

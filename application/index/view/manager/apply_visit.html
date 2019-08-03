@@ -194,7 +194,7 @@
                     $.post(url, {ids:ids}, function (res) {
                         if(res.code == '200') {
                             alert(res.msg);
-                            table.reload();
+                            table.reload("table");
                         } else {
                             layer.msg(res.msg);
                         }
