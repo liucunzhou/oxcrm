@@ -1,19 +1,25 @@
 <?php
 namespace app\index\controller;
 
-use app\index\model\Auth;
-use app\index\model\Module;
-use app\index\model\User;
-use app\index\model\UserAuth;
+use app\common\model\Auth;
+use app\common\model\Module;
+use app\common\model\User;
+use app\common\model\UserAuth;
+use think\facade\Request;
 use think\facade\Session;
 
 class Index extends Base
 {
     public function index()
     {
+        if (Request::isMobile()) {
+            $this->redirect(url('user/info'));
+            return false;
+        }
+
         // 获取系统所有目录
         $modules = Module::getList();
-        $nodes = \app\index\model\Auth::getMenuList();
+        $nodes = \app\common\model\Auth::getMenuList();
         $user = session("user");
         if($user['nickname'] != 'admin') {
             $userAuth = UserAuth::getUserAuthSet($user['id']);

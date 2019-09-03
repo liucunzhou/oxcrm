@@ -23,7 +23,8 @@
         "aliyuncs/oss-sdk-php": "^2.3",
         "topthink/think-swoole": "^2.0",
         "ethanhann/redisearch-php": "^1.5",
-        "ethanhann/redis-raw": "^0.3.1"
+        "ethanhann/redis-raw": "^0.3.1",
+        "firebase/php-jwt": "^5.0"
     },
     "autoload": {
         "psr-4": {

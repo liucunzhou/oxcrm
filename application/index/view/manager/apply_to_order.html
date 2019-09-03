@@ -23,12 +23,62 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
-                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <form class="layui-form layui-hide" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="">
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
 
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="">
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <{foreach name="tabs" item="val"}>
+                            <{if $val['checked'] == '1'}>
+                            <li class="layui-this">
+                                <a href="{$val.url}">{$val.text}</a>
+                            </li>
+                            <{else /}>
+                            <li>
+                                <a href="{$val.url}">{$val.text}</a>
+                            </li>
+                            <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
+                        <{if empty($get['status'])}>
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="confirmVisitApply">确认申请</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="cancelVisitApply">取消申请</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="confirmOrderApply">确认申请</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="cancelOrderApply">取消申请</button>
+                        </div>
+                        <{/if}>
+                    </script>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="editOrder">编辑</button>
                         </div>
                     </script>
                 </div>
@@ -43,58 +93,229 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
-        var admin = layui.admin
-                , $ = layui.jquery
-                , table = layui.table;
+    }).use(['index', 'table', 'laydate'], function () {
+        var $ = layui.jquery
+            ,table = layui.table
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
 
         table.render({
-            elem: '#table'
-            ,
-            url: '/index/customer/mine.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '我的客资'
-            ,
-            cols: [[{"type": "checkbox", "width": 80, "fixed": "left"}, {
-                "field": "member_no",
-                "title": "\u5ba2\u8d44\u7f16\u53f7",
-                "width": 120
-            }, {"field": "realname", "title": "\u5ba2\u6237\u59d3\u540d", "width": 120}, {
-                "field": "mobile",
-                "title": "\u8054\u7cfb\u65b9\u5f0f",
-                "width": 120
-            }, {"field": "mobile1", "title": "\u5176\u5b83", "width": 120}, {
-                "field": "source_id",
-                "title": "\u5ba2\u8d44\u6765\u6e90",
-                "width": 120
-            }, {"field": "news_type", "title": "\u4fe1\u606f\u7c7b\u578b", "width": 120}, {
-                "field": "hotel_id",
-                "title": "\u5165\u4f4f\u9152\u5e97",
-                "width": 120
-            }, {"field": "banquet_size", "title": "\u5bb4\u4f1a\u89c4\u6a21", "width": 120}, {
-                "field": "budget",
-                "title": "\u9884\u7b97",
-                "width": 120
-            }, {
-                "field": "intention_status",
-                "title": "\u610f\u5411\u72b6\u6001",
-                "width": 120
-            }, {"field": "wedding_date", "title": "\u5a5a\u793c\u65e5\u671f", "width": 120}, {
-                "field": "zone",
-                "title": "\u533a\u57df",
-                "width": 120
-            }, {"field": "remark", "title": "\u5907\u6ce8", "width": 200}, {
-                "field": "create_time",
-                "title": "\u521b\u5efa\u65e5\u671f",
-                "width": 180
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "fixed":"right", "width": 200}]]
-            ,
+            elem: '#table',
+            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '订单确认',
+            cols: [[
+                {
+                    "type": "checkbox",
+                    "width": 50,
+                    "fixed": "left"
+                },
+                {
+                    "field":"news_type",
+                    "title":"信息类型",
+                    "width":120
+                },
+                {
+                    "field":"realname",
+                    "title":"客户姓名",
+                    "width":120
+                },
+                {
+                    "field":"mobile",
+                    "title":"客户电话",
+                    "width":120
+                },
+                {
+                    "field":"source_id",
+                    "title":"渠道来源",
+                    "width":120
+                },
+                {
+                    "field":"sales_id",
+                    "title":"跟单销售",
+                    "width":120
+                },
+                {
+                    "field":"manager_id",
+                    "title":"区域经理",
+                    "width":120
+                },
+                {
+                    "field":"sign_date",
+                    "title":"签约日期",
+                    "width":120
+                },
+                {
+                    "field":"wedding_date",
+                    "title":"婚礼日期",
+                    "width":120
+                },
+                {
+                    "field":"bridegroom",
+                    "title":"新郎姓名",
+                    "width":120
+                },
+                {
+                    "field":"bridegroom_mobile",
+                    "title":"新郎电话",
+                    "width":120
+                },
+                {
+                    "field":"bride",
+                    "title":"新娘姓名",
+                    "width":120
+                },
+                {
+                    "field":"bride_mobile",
+                    "title":"新郎电话",
+                    "width":120
+                },
+                {
+                    "field":"banquet_hall_id",
+                    "title":"宴会厅",
+                    "width":120
+                },
+                {
+                    "field":"entire_price",
+                    "title":"一站式价格",
+                    "width":120
+                },
+                {
+                    "field":"table_amount",
+                    "title":"桌数",
+                    "width":120
+                },
+                {
+                    "field":"table_price",
+                    "title":"餐标",
+                    "width":120
+                },
+                {
+                    "field":"wine_fee",
+                    "title":"酒水费用",
+                    "width":120
+                },
+                {
+                    "field":"service_fee",
+                    "title":"服务费",
+                    "width":120
+                },
+                {
+                    "field":"income_customer_fee",
+                    "title":"应收客人费用",
+                    "width":120
+                },
+                {
+                    "field":"income_wedding_celebration_admission_fee",
+                    "title":"收婚庆进场费",
+                    "width":120
+                },
+                {
+                    "field":"income_fee",
+                    "title":"收入总额",
+                    "width":120
+                },
+                {
+                    "field":"pay_hotel_admission_fee",
+                    "title":"付酒店进场费",
+                    "width":120
+                },
+                {
+                    "field":"pay_hotel_fee",
+                    "title":"应付酒店费用",
+                    "width":120
+                },
+                {
+                    "field":"platform_source_fee",
+                    "title":"平台渠道费用",
+                    "width":120
+                },
+                {
+                    "field":"person_source_fee",
+                    "title":"个人渠道费用",
+                    "width":120
+                },
+                {
+                    "field":"other_source_fee",
+                    "title":"其他",
+                    "width":120
+                },
+                {
+                    "field":"hongsi_settlement_fee",
+                    "title":"红丝婚庆结算费",
+                    "width":120
+                },
+                {
+                    "field":"wedding_banquet_commission",
+                    "title":"婚宴提成",
+                    "width":120
+                },
+                {
+                    "field":"wedding_celebration_commission",
+                    "title":"婚庆提成",
+                    "width":120
+                },
+                {
+                    "field":"wedding_celebration_commission",
+                    "title":"婚庆提成",
+                    "width":120
+                },
+                {
+                    "field":"total_pay",
+                    "title":"支出总额",
+                    "width":120
+                },
+                {
+                    "field":"revenue",
+                    "title":"营收",
+                    "width":120
+                },
+                {
+                    "field":"gross_profit",
+                    "title":"毛利",
+                    "width":120
+                },
+                {
+                    "field":"end_commission",
+                    "title":"最终提成",
+                    "width":120
+                },
+                {
+                    "field":"manager_commission",
+                    "title":"区域经理提成",
+                    "width":120
+                },
+                {
+                    "field":"manager_recommend_commission",
+                    "title":"区域经理引流提成",
+                    "width":120
+                },
+                {
+                    "field":"remark",
+                    "title":"备注",
+                    "width":120
+                },
+                {
+                    "field":"create_time",
+                    "title":"创建时间",
+                    "width":120
+                },
+                {
+                    "field":"tool",
+                    "title":"操作",
+                    "width":120,
+                    "fixed":"right",
+                    "type":"tool",
+                    "toolbar":"#table-tool"
+                }
+            ]],
             page: true
         });
 
@@ -117,101 +338,58 @@
             var url = '';
             var ids = '';
             switch (obj.event) {
-                case 'confirmVisitApply':
-                    if (checkedboxes.length < 1) {
-                        layer.msg("请先选择要分配的客资");
-                        return false;
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
                     }
+                    break;
 
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/distribute.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '分发到二级客服',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'confirmVisitApply':
+                case 'confirmOrderApply':
                     if(checkedboxes.length < 1) {
-                        layer.msg("请县选择要分配的客资");
+                        layer.msg("请选择要要确认的申请");
                         return false;
                     }
                     ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/tostore.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '分发到门店',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'apply_visit':
-                    if(checkedboxes.length < 1) {
-                        layer.msg("请选择要申请的客资");
-                        return false;
-                    }
-                    ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/doapply.html';
+                    url = '/index/manager/confirmorderapply.html';
                     $.post(url, {ids:ids}, function (res) {
                         if(res.code == '200') {
-                            alert(res.msg);
-                            parent.window.location.reload();
+                            layer.msg(res.msg);
+                            table.reload();
                         } else {
                             layer.msg(res.msg);
                         }
                     });
                     break;
-                case 'apply_order':
+                case 'cancelOrderApply':
                     if(checkedboxes.length < 1) {
-                        layer.msg("请选择要申请成单的客资");
+                        layer.msg("请选择要要驳回的申请");
                         return false;
-                    };
+                    }
                     ids = getSelectedIds(checkedboxes);
-                    url = '/index/customer/applyorder.html?ids='+ids;
-                    layer.open({
-                        type: 2,
-                        title: '申请成单',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
+                    url = '/index/manager/cancelorderapply.html';
+                    $.post(url, {ids:ids}, function (res) {
+                        if(res.code == '200') {
+                            alert(res.msg);
+                            table.reload("table");
+                        } else {
+                            layer.msg(res.msg);
+                        }
                     });
-                    break;
             }
             ;
         });
 
         //监听行工具事件
         table.on('tool(table)', function (obj) {
-            var id = obj.data.member_id;
+            var id = obj.data.order_id;
             switch (obj.event) {
-                case 'edit':
-                    url = '/index/customer/editcustomer.html?id=' + id;
+                case 'editOrder':
+                    url = '/index/order/editorder.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '编辑',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'visit':
-                    url = '/index/customer/visit.html?id=' + id;
-                    layer.open({
-                        type: 2,
-                        title: '回访',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'count':
-                    url = '/index/customer/logs.html?id=' + id;
-                    layer.open({
-                        type: 2,
-                        title: '回访记录',
+                        title: '编辑订单',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'

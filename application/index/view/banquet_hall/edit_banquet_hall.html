@@ -20,7 +20,7 @@
                             <select name="store_id" id="store_id" lay-filter="store_id" lay-search>
                                 <option value="0"></option>
                                 <{foreach name="hotels" item="val"}>
-                                    <{if $data['hotel_id']==$val['id']}>
+                                    <{if $data['store_id']==$val['id']}>
                                         <option value="{$val['id']}" selected>{$val['title']}</option>
                                     <{else /}>
                                         <option value="{$val['id']}">{$val['title']}</option>

@@ -1,8 +1,8 @@
 <?php
 namespace app\index\controller;
 
-use app\index\model\Intention;
-use app\index\model\Source;
+use app\common\model\Intention;
+use app\common\model\Source;
 use think\Controller;
 
 class Search extends Controller

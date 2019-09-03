@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分配到门店销售</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('Allocate/doAssignToStoreStaff')}" lay-filter="component-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择客服</label>
+                    <div class="layui-input-block">
+                        <select id="staffs" lay-filter="staffs" lay-search>
+                            <option value="0"></option>
+                            <{foreach name="staffs" item="val"}>
+                                <option value="{$val['id']}" >{$val['realname']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">已选客服</label>
+                    <div class="layui-input-block" id="selected_staff_box">
+
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <input type="hidden" name="ids" id="ids" value="{$Request.param.ids}" />
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="create-form">立即分配</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            ,table = layui.table
+            ,form = layui.form;
+
+        form.render(null, 'component-form');
+        form.on("select(staffs)", function (data) {
+            console.log(data);
+            let text = $("#staffs").find("option:selected").text();
+            let appended = false;
+            $(".staff").each(function(i, n){
+                var staffId = $(n).val();
+                if(data.value == staffId) {
+                    appended = true;
+                }
+            });
+
+            if(!appended) {
+                // 设置显示checkbox
+                let checkboxHtml = '<input type="checkbox" name="staff[]" lay-filter="staff"  class="staff" title="' + text + '" value="' + data.value + '" checked>';
+                $("#selected_staff_box").append(checkboxHtml);
+                form.render('checkbox');
+            }
+        });
+
+        /* 监听提交 */
+        form.on('submit(create-form)', function (data) {
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function(result){
+                console.log(result);
+                alert(result.msg);
+                if(result.code == '200') {
+                    parent.window.location.reload();
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
+

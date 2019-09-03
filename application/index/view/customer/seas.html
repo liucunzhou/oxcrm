@@ -24,10 +24,45 @@
             <div class="layui-card">
                 <!--<div class="layui-card-header">酒店管理</div>-->
                 <div class="layui-card-body">
+                    <form class="layui-form layui-hide" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="">
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                    <option value="{$val['id']}">{$val['realname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="keywords" id="keywords" lay-verify="0" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="">
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <table class="layui-hide" id="table" lay-filter="table"></table>
 
                     <script type="text/html" id="toolbar">
                         <div class="layui-btn-container">
+                            <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a>
                             <a class="layui-btn layui-btn-sm" lay-event="doApply">申请回访</a>
                         </div>
                     </script>
@@ -47,19 +82,27 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function(){
+    }).use(['index', 'table', 'laydate'], function () {
         var $ = layui.jquery
-            ,table = layui.table;
+            ,table = layui.table
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
+
         table.render({
             elem: 'table'
-            ,url: '{$Think.server.REQUEST_URI}'
+            ,url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}"
             ,toolbar: '#toolbar'
             ,height: 'full-100'
             ,title: '客资公海'
             ,defaultToolbar: ['filter']
             ,cols: [[
                 {
-                    "type": "checkbox",
+                    "type": "radio",
                     "width": 50,
                     "fixed": "left"
                 }, {
@@ -99,17 +142,17 @@
                     "width": 100,
                     "align": "center"
                 }, {
-                    "field": "hotel_id",
+                    "field": "hotel_text",
                     "title": "酒店",
                     "width": 200,
                     "align": "center"
                 }, {
-                    "field": "source_id",
-                    "title": "客资来源",
+                    "field": "source_text",
+                    "title": "客资渠道",
                     "width": 100,
                     "align": "center"
                 }, {
-                    "field": "intention_status",
+                    "field": "active_status",
                     "title": "回访状态",
                     "width": 100,
                     "align": "center"
@@ -128,6 +171,8 @@
                 }
             ]]
             ,page: true
+            ,limit: 20
+            ,limits: [20,30]
         });
 
         var getSelectedIds = function (jsonArr) {
@@ -140,7 +185,7 @@
         }
 
         var height = window.innerHeight;
-        var width = window.innerWidth * 0.6;
+        var width = window.innerWidth;
         var url = '';
         //头工具栏事件
         table.on('toolbar(table)', function(obj){
@@ -149,6 +194,14 @@
             var ids = '';
             var url = '';
             switch(obj.event){
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
                 case 'doApply':
                     if (checkedboxes.length < 1) {
                         layer.msg("请先选择要分配的客资");
@@ -175,7 +228,7 @@
             var member_id = obj.data.id;
             switch (obj.event) {
                 case 'visitLogs':
-                    url = '/index/customer/visitLogs.html?member_id=' + member_id;
+                    url = '/index/visit/visitLogs.html?member_id=' + member_id;
                     layer.open({
                         type: 2,
                         title: '回访记录',
@@ -186,9 +239,6 @@
                     break;
             };
         });
-
-
-
     });
 </script>
 </body>

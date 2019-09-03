@@ -41,7 +41,7 @@
                                         <{php}>$pathinfo = pathinfo($field['source']);<{/php}>
                                         <{literal}>
                                             <{php}>
-                                            $options = app\index\model\<{/literal}>{$pathinfo['filename']}<{literal}>::getList();
+                                            $options = app\common\model\<{/literal}>{$pathinfo['filename']}<{literal}>::getList();
                                             <{/php}>
                                         <{/literal}>
                                         <select name="{$key}" lay-verify="{$field.placeholder}">

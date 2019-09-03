@@ -1,9 +1,9 @@
 <?php
 namespace app\index\controller;
 
-use app\index\model\AuthGroup;
-use app\index\model\Module;
-use app\index\model\OperateLog;
+use app\common\model\AuthGroup;
+use app\common\model\Module;
+use app\common\model\OperateLog;
 use think\facade\Request;
 
 class Auth extends Base
@@ -16,7 +16,17 @@ class Auth extends Base
             $config = [
                 'page' => $get['page']
             ];
-            $list = model('auth')->order("parent_id,sort desc")->paginate($get['limit'], false, $config);
+            if (isset($get['title']) && !empty($get['title'])) {
+                $get['title'] = trim($get['title']);
+                $map[] = ['title', 'like', "%{$get['title']}%"];
+            }
+
+            if (isset($get['route']) && !empty($get['route'])) {
+                $get['route'] = trim($get['route']);
+                $map[] = ['route', 'like', "%{$get['route']}%"];
+            }
+
+            $list = model('auth')->where($map)->order("parent_id,sort desc")->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
                 $value['parent_id'] = $modules[$value['parent_id']]['name'] ? $modules[$value['parent_id']]['name'] : '系统模块';
@@ -50,7 +60,7 @@ class Auth extends Base
         $this->assign('modules', $modules);
 
         $post = Request::param();
-        $data = \app\index\model\Auth::get($post['id']);
+        $data = \app\common\model\Auth::get($post['id']);
         $this->assign('data', $data);
 
         $this->view->engine->layout(false);
@@ -62,10 +72,10 @@ class Auth extends Base
         $post = Request::post();
         if($post['id']) {
             $action = '编辑权限';
-            $Model = \app\index\model\Auth::get($post['id']);
+            $Model = \app\common\model\Auth::get($post['id']);
         } else {
             $action = '添加权限';
-            $Model = new \app\index\model\Auth();
+            $Model = new \app\common\model\Auth();
         }
 
         // $Model::create($post);
@@ -74,10 +84,10 @@ class Auth extends Base
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;
             ### 更新缓存
-            \app\index\model\Auth::updateCache($post['id']);
+            \app\common\model\Auth::updateCache($post['id']);
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -87,11 +97,11 @@ class Auth extends Base
     public function deleteAuth()
     {
         $get = Request::param();
-        $result = \app\index\model\Auth::get($get['id'])->delete();
+        $result = \app\common\model\Auth::get($get['id'])->delete();
 
         if($result) {
             // 更新缓存
-            // \app\index\model\Auth::updateCache($get['id']);
+            // \app\common\model\Auth::updateCache($get['id']);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);
@@ -135,7 +145,7 @@ class Auth extends Base
     public function editGroup()
     {
         $get = Request::param();
-        $brand = \app\index\model\AuthGroup::get($get['id']);
+        $brand = \app\common\model\AuthGroup::get($get['id']);
         $this->assign('data', $brand);
 
         $this->view->engine->layout(false);
@@ -147,10 +157,10 @@ class Auth extends Base
         $post = Request::post();
         if($post['id']) {
             $action = '编辑权限分组';
-            $Model = \app\index\model\AuthGroup::get($post['id']);
+            $Model = \app\common\model\AuthGroup::get($post['id']);
         } else {
             $action = '添加权限分组';
-            $Model = new \app\index\model\AuthGroup();
+            $Model = new \app\common\model\AuthGroup();
         }
 
         // $Model::create($post);
@@ -159,10 +169,10 @@ class Auth extends Base
         if($result) {
             empty($post['id']) && $post['id'] = $Model->getLastInsID();
             ### 更新缓存
-            \app\index\model\AuthGroup::updateCache($post['id']);
+            \app\common\model\AuthGroup::updateCache($post['id']);
 
             ### 添加日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -172,7 +182,7 @@ class Auth extends Base
     public function assignAuth()
     {
         $get = Request::param();
-        $data = \app\index\model\AuthGroup::getAuthGroup($get['id']);
+        $data = \app\common\model\AuthGroup::getAuthGroup($get['id']);
         $this->assign('data', $data);
 
         $authSelected = explode(',', $data['auth_set']);
@@ -181,7 +191,7 @@ class Auth extends Base
         $modules = Module::getModules();
         $this->assign('modules', $modules);
 
-        $items = \app\index\model\Auth::getList();
+        $items = \app\common\model\Auth::getList();
         $this->assign('items', $items);
         return $this->fetch();
     }
@@ -211,7 +221,7 @@ class Auth extends Base
             AuthGroup::updateCache($post['id']);
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json([
                 'code'  => '200',
                 'msg'   => '权限分配成功'
@@ -227,15 +237,15 @@ class Auth extends Base
     public function deleteGroup()
     {
         $get = Request::param();
-        $Model = \app\index\model\AuthGroup::get($get['id']);
+        $Model = \app\common\model\AuthGroup::get($get['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\AuthGroup::updateCache($get['id']);
+            \app\common\model\AuthGroup::updateCache($get['id']);
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);
@@ -273,7 +283,7 @@ class Auth extends Base
 
         $now = time();
         $nodes = [];
-        $AuthModel = new \app\index\model\Auth();
+        $AuthModel = new \app\common\model\Auth();
         foreach ($fileNames as $key=>$value){
             $actions = $this->getControllerActions($value);
             $module = substr($key, 0, -4);

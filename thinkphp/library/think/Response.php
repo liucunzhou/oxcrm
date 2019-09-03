@@ -79,8 +79,8 @@ class Response
      */
     public function __construct($data = '', $code = 200, array $header = [], $options = [])
     {
-        $this->data($data);
 
+        $this->data($data);
         if (!empty($options)) {
             $this->options = array_merge($this->options, $options);
         }

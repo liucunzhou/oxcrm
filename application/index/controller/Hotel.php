@@ -46,7 +46,7 @@ class Hotel extends Base
     public function editHotel()
     {
         $get = Request::param();
-        $brand = \app\index\model\Hotel::get($get['id']);
+        $brand = \app\common\model\Hotel::get($get['id']);
         $this->assign('data', $brand);
 
         $this->view->engine->layout(false);
@@ -60,10 +60,10 @@ class Hotel extends Base
             $action = '编辑酒店';
             if(isset($post['create_time'])) unset($post['create_time']);
             if(isset($post['modify_time'])) unset($post['modify_time']);
-            $Model = \app\index\model\Hotel::get($post['id']);
+            $Model = \app\common\model\Hotel::get($post['id']);
         } else {
             $action = '添加酒店';
-            $Model = new \app\index\model\Hotel();
+            $Model = new \app\common\model\Hotel();
         }
 
         // $Model::create($post);
@@ -71,10 +71,10 @@ class Hotel extends Base
 
         if($result) {
             ### 更新缓存
-            \app\index\model\Hotel::updateCache();
+            \app\common\model\Hotel::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -84,15 +84,15 @@ class Hotel extends Base
     public function deleteHotel()
     {
         $get = Request::param();
-        $Model = \app\index\model\Hotel::get($get['id']);
+        $Model = \app\common\model\Hotel::get($get['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\Hotel::updateCache();
+            \app\common\model\Hotel::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

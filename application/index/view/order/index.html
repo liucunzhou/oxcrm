@@ -23,10 +23,40 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <form class="layui-form layui-hide" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="">
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                    <option value="{$val['id']}">{$val['realname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="">
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="search">高级搜索</button>
+                            <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a>
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
@@ -47,24 +77,30 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
-        var admin = layui.admin
-                , table = layui.table;
+    }).use(['index', 'table', 'laydate'], function () {
+        var $ = layui.jquery
+            ,table = layui.table
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
 
         table.render({
             elem: '#table'
-            ,
-            url: '/index/order/index.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '订单管理'
-            ,
-            cols: [[
+            ,url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}"
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '订单管理'
+            ,cols: [[
+                {
+                    "type": "checkbox",
+                    "width": 50,
+                    "fixed": "left"
+                },
                 {
                     "field":"realname",
                     "title":"客户姓名",
@@ -101,6 +137,26 @@
                     "width":120
                 },
                 {
+                    "field":"bridegroom",
+                    "title":"新郎姓名",
+                    "width":120
+                },
+                {
+                    "field":"bridegroom_mobile",
+                    "title":"新郎电话",
+                    "width":120
+                },
+                {
+                    "field":"bride",
+                    "title":"新娘姓名",
+                    "width":120
+                },
+                {
+                    "field":"bride_mobile",
+                    "title":"新郎电话",
+                    "width":120
+                },
+                {
                     "field":"banquet_hall_id",
                     "title":"宴会厅",
                     "width":120
@@ -121,6 +177,61 @@
                     "width":120
                 },
                 {
+                    "field":"wine_fee",
+                    "title":"酒水费用",
+                    "width":120
+                },
+                {
+                    "field":"service_fee",
+                    "title":"服务费",
+                    "width":120
+                },
+                {
+                    "field":"income_customer_fee",
+                    "title":"应收客人费用",
+                    "width":120
+                },
+                {
+                    "field":"income_wedding_celebration_admission_fee",
+                    "title":"收婚庆进场费",
+                    "width":120
+                },
+                {
+                    "field":"income_fee",
+                    "title":"收入总额",
+                    "width":120
+                },
+                {
+                    "field":"pay_hotel_admission_fee",
+                    "title":"付酒店进场费",
+                    "width":120
+                },
+                {
+                    "field":"pay_hotel_fee",
+                    "title":"应付酒店费用",
+                    "width":120
+                },
+                {
+                    "field":"platform_source_fee",
+                    "title":"平台渠道费用",
+                    "width":120
+                },
+                {
+                    "field":"person_source_fee",
+                    "title":"个人渠道费用",
+                    "width":120
+                },
+                {
+                    "field":"other_source_fee",
+                    "title":"其他",
+                    "width":120
+                },
+                {
+                    "field":"hongsi_settlement_fee",
+                    "title":"红丝婚庆结算费",
+                    "width":120
+                },
+                {
                     "field":"wedding_banquet_commission",
                     "title":"婚宴提成",
                     "width":120
@@ -128,6 +239,46 @@
                 {
                     "field":"wedding_celebration_commission",
                     "title":"婚庆提成",
+                    "width":120
+                },
+                {
+                    "field":"wedding_celebration_commission",
+                    "title":"婚庆提成",
+                    "width":120
+                },
+                {
+                    "field":"total_pay",
+                    "title":"支出总额",
+                    "width":120
+                },
+                {
+                    "field":"revenue",
+                    "title":"营收",
+                    "width":120
+                },
+                {
+                    "field":"gross_profit",
+                    "title":"毛利",
+                    "width":120
+                },
+                {
+                    "field":"end_commission",
+                    "title":"最终提成",
+                    "width":120
+                },
+                {
+                    "field":"manager_commission",
+                    "title":"区域经理提成",
+                    "width":120
+                },
+                {
+                    "field":"manager_recommend_commission",
+                    "title":"区域经理引流提成",
+                    "width":120
+                },
+                {
+                    "field":"remark",
+                    "title":"备注",
                     "width":120
                 },
                 {
@@ -144,8 +295,7 @@
                     "toolbar":"#table-tool"
                 }
             ]]
-            ,
-            page: true
+            ,page: true
         });
 
         var height = window.innerHeight;
@@ -156,6 +306,14 @@
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
             switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
                 case 'add':
                     var data = checkStatus.data;
                     url = '/index/order/addorder.html';
@@ -173,12 +331,13 @@
 
         //监听行工具事件
         table.on('tool(table)', function (obj) {
+            let id = obj.data.id;
             switch (obj.event) {
                 case 'edit':
-                    url = '/index/order/editorder.html';
+                    url = '/index/order/editorder.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '编辑',
+                        title: '编辑订单',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'

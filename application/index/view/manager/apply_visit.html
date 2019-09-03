@@ -22,7 +22,38 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
+
                 <div class="layui-card-body">
+                    <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="">
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="">
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="layui-tab">
                         <ul class="layui-tab-title">
                             <{foreach name="tabs" item="val"}>
@@ -59,9 +90,16 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
+    }).use(['index', 'table', 'laydate'], function () {
         var $ = layui.jquery
-            ,table = layui.table;
+            ,table = layui.table
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
 
         table.render({
             elem: '#table'
@@ -178,7 +216,7 @@
                     $.post(url, {ids:ids}, function (res) {
                         if(res.code == '200') {
                             layer.msg(res.msg);
-                            table.reload();
+                            table.reload("table");
                         } else {
                             layer.msg(res.msg);
                         }
@@ -217,21 +255,11 @@
                         offset: 'rb'
                     });
                     break;
-                case 'visit':
-                    url = '/index/customer/visit.html?id=' + id;
+                case 'visitCustomer':
+                    url = '/index/visit/visitlogs.html?member_id=' + id;
                     layer.open({
                         type: 2,
-                        title: '回访',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'count':
-                    url = '/index/customer/logs.html?id=' + id;
-                    layer.open({
-                        type: 2,
-                        title: '回访记录',
+                        title: '回访历史',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'

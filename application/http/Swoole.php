@@ -13,17 +13,18 @@ class Swoole extends Server
         'worker_num'=> 4,
         'daemonize' => false,
         'backlog'  => 128,
-
     ];
 
     public function onOpen($server, $request)
     {
-
+        echo "connect successs\n";
     }
 
     public function onReceive($server, $fd, $from_id, $data)
     {
-
+        echo "receive";
+        $d = json_decode($data);
+        $this->swoole->task($d);
     }
 
     public function onMessage($server, $frame)
@@ -41,9 +42,22 @@ class Swoole extends Server
         }
     }
 
+    public function onTask($server, $taskId, $workerId, $data)
+    {
+        echo 'task';
+        $obj = new Task();
+        $method = $data['action'];
+        $message = $data['message'];
+        $flag = $obj->$method($server, $message);
+        return $flag;
+    }
+
+
     public function onRequest($request, $response)
     {
-
+        echo "request";
+        print_r($request);
+        print_r($response);
     }
 
     public function onClose($server, $fd)
@@ -129,8 +143,9 @@ class Swoole extends Server
      * @param $server
      * @param $frame
      */
-    protected function chat($server, $frame, $data)
+    protected function chat($server, $data)
     {
+        echo "chat...";
         $redis = redis();
         $hashKey = 'user-fd';
         $toFd = $redis->hGet($hashKey, $data['to']['id']);

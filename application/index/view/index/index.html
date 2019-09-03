@@ -34,13 +34,13 @@
                         <i class="layui-icon layui-icon-refresh-3"></i>
                     </a>
                 </li>
-                <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="{:url('Customer/mine')}?keywords=">
-                </li>
+                <!--<li class="layui-nav-item layui-hide-xs" lay-unselect>-->
+                    <!--<input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="{:url('Customer/mine')}?keywords=">-->
+                <!--</li>-->
             </ul>
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                 <li class="layui-nav-item" lay-unselect>
-                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
+                    <a lay-href="{:url('notice/index')}" layadmin-event="message" lay-text="消息中心">
                         <i class="layui-icon layui-icon-notice"></i>
 
                         <!-- 如果有新消息，则显示小圆点 -->
@@ -70,7 +70,7 @@
                         <dd><a lay-href="{:url('User/info')}">基本资料</a></dd>
                         <dd><a lay-href="{:url('User/repassword')}">修改密码</a></dd>
                         <hr>
-                        <dd layadmin-event="logout" style="text-align: center;"><a lay-href="{:url('/index/Passport/logout')}">退出</a></dd>
+                        <dd><a href="{:url('/index/Passport/logout')}">退出</a></dd>
                     </dl>
                 </li>
 
@@ -86,7 +86,7 @@
         <!-- 侧边菜单 -->
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
-                <div class="layui-logo" lay-href="home/console.html">
+                <div class="layui-logo" lay-href="{:url('user/info')}">
                     <span>CRM系统</span>
                 </div>
 
@@ -153,32 +153,24 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index'], function () {
-        var layer = layui.layer;
+        var url = "{:url('Notice/getNotice')}";
+        var $ = layui.jquery;
+        var pause = false;
 
-        var socket = new WebSocket('ws://121.42.184.177:9501');
-        socket.onopen = function(res){
-            var loginStr = JSON.stringify(loginAction);
-            socket.send(loginStr)
-        }
+        let timer = setInterval(function(){
+            if(pause) return false;
+            $.get(url, function(res){
 
-        socket.onmessage = function(res){
-            // var result = JSON.parse(res);
-            console.log(res);
-            alert(res.data);
-        };
-
-        var user = {
-            id: {$Think.session.user.id},
-            realname: '{$Think.session.user.realname}',
-            nickname: '{$Think.session.user.nickname}'
-        };
-
-        var loginAction = {
-            action : 'login',
-            data : {
-                user : user
-            }
-        };
+                if(res.code == '200') {
+                    pause = true;
+//                    layer.alert(res.msg, function(index){
+//                        pause = false;
+//                        //do something
+//                        layer.close(index);
+//                    });
+                }
+            });
+        }, 1000000)
     });
 </script>
 </body>

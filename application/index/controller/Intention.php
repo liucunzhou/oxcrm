@@ -9,6 +9,7 @@
 namespace app\index\controller;
 
 
+use app\common\model\AuthGroup;
 use think\facade\Request;
 
 class Intention extends Base
@@ -34,7 +35,6 @@ class Intention extends Base
             ];
             return json($result);
         } else {
-            $this->view->engine->layout(false);
             return $this->fetch();
         }
     }
@@ -48,7 +48,7 @@ class Intention extends Base
     public function editIntention()
     {
         $get = Request::param();
-        $data = \app\index\model\Intention::get($get['id']);
+        $data = \app\common\model\Intention::get($get['id']);
         $this->assign('data', $data);
 
         $this->view->engine->layout(false);
@@ -59,18 +59,18 @@ class Intention extends Base
     {
         $post = Request::post();
         if($post['id']) {
-            $Model = \app\index\model\Intention::get($post['id']);
+            $Model = \app\common\model\Intention::get($post['id']);
         } else {
-            $Model = new \app\index\model\Intention();
+            $Model = new \app\common\model\Intention();
         }
 
         // $Model::create($post);
         $result = $Model->save($post);
 
         if($result) {
-
+            $Model::getIntentions(true);
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '添加成功']);
         } else {
             return json(['code'=>'500', 'msg'=> '添加失败']);
@@ -80,15 +80,15 @@ class Intention extends Base
     public function deleteIntention()
     {
         $get = Request::param();
-        $Model = \app\index\model\Intention::get($get['id']);
+        $Model = \app\common\model\Intention::get($get['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\Intention::updateCache();
+            \app\common\model\Intention::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

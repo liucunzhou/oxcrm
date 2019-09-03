@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>绑定客户信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('Customer/bindCustomer')}" lay-filter="component-form-group">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">绑定的手机</label>
+                    <div class="layui-input-block">
+                        <input type="text" readonly value="{$Request.param.mobile}" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话1</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile[]" lay-verify="pmobile" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话2</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile[]" lay-verify="pmobile" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话3</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile[]" lay-verify="pmobile" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话4</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile[]" lay-verify="pmobile" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话5</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile[]" lay-verify="pmobile" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">已绑定</label>
+                    <div class="layui-input-block">
+                        <{if !empty($mobiles)}>
+                            <table class="layui-table">
+                                <{foreach name="mobiles" item="mobile"}>
+                                    <tr>
+                                        <td>{$mobile}</td>
+                                    </tr>
+                                <{/foreach}>
+                            </table>
+                        <{else /}>
+                            <div class="layui-bg-green" style="padding: 10px;">暂无绑定</div>
+                        <{/if}>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <input type="hidden" name="target" value="{$Request.param.mobile}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">确认绑定</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
+        var $ = layui.jquery
+            ,laydate = layui.laydate
+            ,form = layui.form
+            ,laytpl = layui.laytpl;
+
+        form.render(null, 'component-form-group');
+        laydate.render({
+            elem: '#wedding_date',
+            type: 'datetime'
+        });
+
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#area_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(area_id)", function (data) {
+            var url = '{:url("Store/getStoreListByArea")}';
+            var news_type = $("#news_type").val();
+            $.post(url, {id:data.value,news_type:news_type}, function (result) {
+                var getTpl = storeOptionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#hotel_id").html(html);
+                    form.render("select");
+                    var zone = $("#city_id").find("option:selected").text() + $("#area_id").find("option:selected").text();
+                    $("#zone").val(zone);
+                });
+
+            });
+        });
+
+        form.verify({
+            pmobile: function(value, item){ //value：表单的值、item：表单的DOM对象
+
+                if(value !='' && (isNaN(value) || value.length != 11)) {
+                    return '请填写正确的手机号';
+                }
+            }
+        });
+
+        /* 监听提交 */
+        form.on('submit(form-submit)', function (data) {
+            let url = data.form.action;
+            let mobiles = [];
+            let fields = data.field;
+            for(i in fields) {
+                if(i!='target' && fields[i]) {
+                    mobiles.push(fields[i]);
+                }
+            }
+
+            if(mobiles.length < 1) {
+                layer.msg('请填写至少一个手机号');
+                return false;
+            }
+
+            let str = mobiles.join(',');
+            let params = {
+                mobiles: str,
+                target: fields.target
+            };
+
+            $.post(url, params, function (res) {
+                if (res.code == '200') {
+                    parent.layui.table.reload("table");
+                    parent.layer.closeAll();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
+</script>
+<script id="storeOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.title }}</option>
+    {{#  }); }}
+</script>
+</body>
+</html>

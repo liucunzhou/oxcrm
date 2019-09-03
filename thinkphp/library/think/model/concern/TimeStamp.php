@@ -52,10 +52,10 @@ trait TimeStamp
      */
     protected function formatDateTime($format, $time = 'now', $timestamp = false)
     {
+
         if (empty($time)) {
             return;
         }
-
         if (false === $format) {
             return $time;
         } elseif (false !== strpos($format, '\\')) {
@@ -66,10 +66,11 @@ trait TimeStamp
             $dateTime = new DateTime();
             $dateTime->setTimestamp($time);
         } else {
-            $dateTime = new DateTime($time);
+            // $dateTime = new DateTime($time);
         }
 
-        return $dateTime->format($format);
+        // return $dateTime->format($format);
+        return date('Y-m-d H:i', $time);
     }
 
     /**

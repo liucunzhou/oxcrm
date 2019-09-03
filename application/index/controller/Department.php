@@ -39,7 +39,7 @@ class Department extends Base
 
     public function addDepartment()
     {
-        $departments = \app\index\model\Department::getDepartments();
+        $departments = \app\common\model\Department::getDepartments();
         $this->assign('departments', $departments);
 
         $this->view->engine->layout(false);
@@ -48,11 +48,11 @@ class Department extends Base
 
     public function editDepartment()
     {
-        $departments = \app\index\model\Department::getDepartments();
+        $departments = \app\common\model\Department::getDepartments();
         $this->assign('departments', $departments);
 
         $get = Request::param();
-        $data = \app\index\model\Department::get($get['id']);
+        $data = \app\common\model\Department::get($get['id']);
         $this->assign('data', $data);
 
         $this->view->engine->layout(false);
@@ -64,10 +64,10 @@ class Department extends Base
         $post = Request::post();
         if($post['id']) {
             $action = '编辑部门';
-            $Model = \app\index\model\Department::get($post['id']);
+            $Model = \app\common\model\Department::get($post['id']);
         } else {
             $action = '添加部门';
-            $Model = new \app\index\model\Department();
+            $Model = new \app\common\model\Department();
         }
 
         $result = $Model->save($post);
@@ -75,18 +75,21 @@ class Department extends Base
 
             empty($post['id']) && $post['id'] = $Model->id;
             if($post['parent_id']) {
-                $parent = \app\index\model\Department::get($post['parent_id']);
-                $path = $parent['path'] . '-' . $post['id'];
+                $parent = \app\common\model\Department::get($post['parent_id']);
+                $path = $parent['path'] . $post['id'].'-';
                 $depth = substr_count($path, '-');
             } else {
-                $path = '0'.'-'.$post['id'];
+                $path = '0'.'-'.$post['id'].'-';
                 $depth = 1;
             }
             $Model->save(['path' => $path, 'depth' => $depth]);
+            // 更新所有孩子节点
+            // $children = $Model::getTree($post['id']);
+
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
-            // \app\index\model\Source::updateCache();
+            \app\common\model\OperateLog::appendTo($Model);
+            // \app\common\model\Source::updateCache();
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -96,14 +99,14 @@ class Department extends Base
     public function deleteDepartment()
     {
         $get = Request::param();
-        $Model = \app\index\model\Brand::get($get['id']);
+        $Model = \app\common\model\Brand::get($get['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            // \app\index\model\Brand::updateCache();
+            // \app\common\model\Brand::updateCache();
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

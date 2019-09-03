@@ -15,7 +15,7 @@ use think\facade\Env;
 // | Swoole设置 php think swoole命令行下有效
 // +----------------------------------------------------------------------
 return [
-    'swoole_class' => 'app\http\Swoole', // 自定义服务类名称
+   //  'swoole_class' => 'app\http\Swoole', // 自定义服务类名称
 ];
 
 /**

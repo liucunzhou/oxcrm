@@ -53,26 +53,26 @@
             , table = layui.table;
 
         table.render({
-            elem: '#table'
-            ,
-            url: '/index/department/index.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '部门管理'
-            ,
-            cols: [[{"field": "title", "title": "\u90e8\u95e8"}, {
-                "type": "tool",
-                "title": "\u64cd\u4f5c",
-                "toolbar": "#table-tool",
-                "width": 200
-            }]]
-            ,
-            page: true
+            elem: '#table',
+            url: '/index/department/index.html',
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '部门管理',
+            cols: [[
+                {
+                    "field": "title",
+                    "title": "部门名称"
+                }, {
+                    "type": "tool",
+                    "title": "操作",
+                    "toolbar": "#table-tool",
+                    "width": 200
+                }
+            ]],
+            page: true,
+            limit: 200,
+            limits: [200,500]
         });
 
         var height = window.innerHeight;

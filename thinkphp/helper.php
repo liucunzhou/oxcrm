@@ -428,6 +428,25 @@ if (!function_exists('json')) {
     }
 }
 
+if (!function_exists('xjson')) {
+    /**
+     * 获取\think\response\Json对象实例
+     * @param mixed   $data 返回的数据
+     * @param integer $code 状态码
+     * @param array   $header 头部
+     * @param array   $options 参数
+     * @return \think\response\Json
+     */
+    function xjson($data = [], $code = 200, $header = [], $options = [])
+    {
+        header('content-type:application:json;charset=utf8');
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Methods:POST');
+        header('Access-Control-Allow-Headers:x-requested-with,content-type');
+        return Response::create($data, 'json', $code, $header, $options);
+    }
+}
+
 if (!function_exists('jsonp')) {
     /**
      * 获取\think\response\Jsonp对象实例

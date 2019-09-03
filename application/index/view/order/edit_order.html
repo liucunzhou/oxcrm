@@ -60,7 +60,7 @@
                         <select name="banquet_hall_id" id="banquet_hall_id" lay-search>
                             <option value="0">--请选宴会厅--</option>
                             <{foreach name="halls" item="val"}>
-                            <option value="{$val['id']}" <{if $data['hotel_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>
+                            <option value="{$val['id']}" <{if $data['banquet_hall_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>
                             <{/foreach}>
                         </select>
                     </div>
@@ -70,6 +70,13 @@
                     <label class="layui-form-label">价格</label>
                     <div class="layui-input-block">
                         <input type="text" name="entire_price" value="{$data['entire_price']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_1_2">
+                    <label class="layui-form-label">折扣</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="discount" value="{$data['discount']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -88,6 +95,83 @@
                 </div>
 
                 <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">酒水费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="wine_fee" value="{$data['wine_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">服务费</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="service_fee" value="{$data['service_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">应收客人费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="income_customer_fee" value="{$data['income_customer_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">收婚庆进场费</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="income_wedding_celebration_admission_fee" value="{$data['income_wedding_celebration_admission_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">收入总额</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="income_fee" value="{$data['income_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">付酒店进场费</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="pay_hotel_admission_fee" value="{$data['pay_hotel_admission_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">应付酒店费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="pay_hotel_fee" value="{$data['pay_hotel_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">平台渠道费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="platform_source_fee" value="{$data['platform_source_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">个人渠道费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="person_source_fee" value="{$data['person_source_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">其它</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="other_source_fee" value="{$data['other_source_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">红丝婚庆结算费</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hongsi_settlement_fee" value="{$data['hongsi_settlement_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
                     <label class="layui-form-label">婚宴提成</label>
                     <div class="layui-input-block">
                         <input type="text" name="wedding_banquet_commission" value="{$data['wedding_banquet_commission']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
@@ -100,6 +184,49 @@
                         <input type="text" name="wedding_celebration_commission" value="{$data['wedding_celebration_commission']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">支出总额</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="total_pay" value="{$data['total_pay']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">营收</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="revenue" value="{$data['revenue']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">毛利</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="gross_profit" value="{$data['gross_profit']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">最终提成</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="end_commission" value="{$data['end_commission']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">区域经理提成</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="manager_commission" value="{$data['manager_commission']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" show-range="0_2">
+                    <label class="layui-form-label">区域经理引流提成</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="manager_recommend_commission" value="{$data['manager_recommend_commission']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
 
                 <!--
                 <div class="layui-form-item" show-range="0_1_2">
@@ -151,11 +278,11 @@
         form.render(null, 'component-form-group');
         laydate.render({
             elem: '#sign_date',
-            type: 'datetime'
+            type: 'date'
         });
         laydate.render({
             elem: '#wedding_date',
-            type: 'datetime'
+            type: 'date'
         });
 
         form.on('select(news_type)', function(data){

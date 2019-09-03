@@ -2,14 +2,12 @@
 namespace app\index\controller;
 
 
-use app\index\model\Operate;
-use app\index\model\OperateLog;
+use app\common\model\Operate;
+use app\common\model\OperateLog;
+use app\common\model\UserAuth;
 use think\Controller;
 use think\facade\Request;
 use think\facade\Session;
-
-use vod\Request\V20170321\GetPlayInfoRequest;
-use vod\Request\V20170321\GetVideoPlayAuthRequest;
 
 
 class Passport extends Controller
@@ -29,19 +27,29 @@ class Passport extends Controller
             $this->result([], 500, $Validate->getError());
         }
 
-        $Passport = new \app\index\model\Passport();
+        $Passport = new \app\common\model\Passport();
         $user = $Passport->checkUserPassword($post);
         if(!$user) {
             $this->result([], 500, '密码不正确');
         }
-        Session::set('user', $user);
 
-        if (Request::isMobile()) {
-            $path = url('Index/User/info');
-        } else {
-            $path = url('Index/Index/index');
+//        if (Request::isMobile()) {
+//            $path = url('Index/User/info');
+//        } else {
+//            $path = url('Index/Index/index');
+//        }
+        $path = url('Index/Index/index');
+
+        if($user['is_valid'] == 0){
+            $this->result([], 500, '账号已经下线');
         }
 
+        $auth = UserAuth::getUserLogicAuth($user['id']);
+        if(empty($auth)) {
+            $this->result([], 500, '尚未开通权限,请联系管理员开通权限!');
+        }
+
+        Session::set('user', $user);
         // 加入登录记录
         $ip = Request::ip();
         $action = Request::path();
@@ -57,6 +65,6 @@ class Passport extends Controller
     public function logout()
     {
         Session::delete("user");
-        $this->redirect(url('Index/Passport/login'));
+        $this->redirect('passport/login');
     }
 }

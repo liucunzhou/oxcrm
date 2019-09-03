@@ -20,6 +20,18 @@
                         <input type="text" name="title" value="{$data[title]}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">独立意向</label>
+                    <div class="layui-input-block">
+                        <select name="has_intentions" lay-verify="">
+                            <option value=""></option>
+                            <option value="0" <{if $data[has_intentions]==0}>selected<{/if}>>无</option>
+                            <option value="1" <{if $data[has_intentions]==1}>selected<{/if}>>有</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <label class="layui-form-label">上/下线</label>
                     <div class="layui-input-block">

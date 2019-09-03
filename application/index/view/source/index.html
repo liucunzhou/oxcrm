@@ -23,6 +23,19 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <ul class="layui-tab-title">
+                        <{foreach name="tabs" item="val"}>
+                            <{if $val['checked'] == '1'}>
+                                <li class="layui-this">
+                                    <a href="{$val.url}">{$val.text}</a>
+                                </li>
+                            <{else /}>
+                                <li>
+                                    <a href="{$val.url}">{$val.text}</a>
+                                </li>
+                            <{/if}>
+                        <{/foreach}>
+                    </ul>
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
@@ -52,37 +65,23 @@
             , table = layui.table;
 
         table.render({
-            elem: '#table'
-            ,
-            url: '/index/source/index.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '来源管理'
-            ,
-            cols: [[{"field": "id", "title": "ID", "width": 80}, {
-                "field": "parent_id",
-                "title": "\u5e73\u53f0"
-            }, {"field": "title", "title": "\u6765\u6e90"}, {
-                "field": "alias",
-                "title": "\u522b\u540d",
-                "width": 120
-            }, {"field": "sort", "title": "\u6392\u5e8f", "width": 80}, {
-                "field": "is_valid",
-                "title": "\u72b6\u6001",
-                "width": 80
-            }, {"field": "create_time", "title": "\u521b\u5efa\u65f6\u95f4", "width": 180}, {
-                "type": "tool",
-                "title": "\u64cd\u4f5c",
-                "toolbar": "#table-tool",
-                "width": 200
-            }]]
-            ,
-            page: true
+            elem: '#table',
+            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '来源管理',
+            cols: [[
+                {"field": "id", "title": "ID", "width": 80},
+                {"field": "title", "title": "平台来源"},
+                {"field": "sort", "title": "排序", "width": 80},
+                {"field": "is_valid", "title": "状态", "width": 80},
+                {"field": "create_time", "title": "创建时间", "width": 180},
+                {"type": "tool", "title": "操作", "toolbar": "#table-tool", "width": 200}
+            ]],
+            page: true,
+            limit: 30,
+            limits: [30,50]
         });
 
         var height = window.innerHeight;
@@ -123,7 +122,7 @@
                     });
                     break;
                 case 'deleteSource':
-                    url = '/index/source/delsource.html';
+                    url = '/index/source/deletesource.html';
                     var params = {id:id};
                     $.post(url, params, function (res) {
                         if (res.code == '200') {

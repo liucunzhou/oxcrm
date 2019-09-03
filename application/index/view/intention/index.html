@@ -51,7 +51,7 @@
         var table = layui.table;
         table.render({
             elem: '#table',
-            url: '/index/intention/index.html',
+            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
             height: 'full-100',
             defaultToolbar: ['filter'],
             toolbar: '#table-toolbar',

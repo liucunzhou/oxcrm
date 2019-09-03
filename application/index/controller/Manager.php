@@ -8,15 +8,18 @@
 
 namespace app\index\controller;
 
-use app\index\model\Allocate;
-use app\index\model\Hotel;
-use app\index\model\Intention;
-use app\index\model\MemberApply;
-use app\index\model\Source;
-use app\index\model\Store;
-use app\index\model\Tab;
-use app\index\model\User;
-use app\index\model\UserAuth;
+use app\common\model\Allocate;
+use app\common\model\Hotel;
+use app\common\model\Intention;
+use app\common\model\Member;
+use app\common\model\MemberAllocate;
+use app\common\model\MemberApply;
+use app\common\model\OrderApply;
+use app\common\model\Source;
+use app\common\model\Store;
+use app\common\model\Tab;
+use app\common\model\User;
+use app\common\model\UserAuth;
 use think\facade\Request;
 
 class Manager extends Base
@@ -59,9 +62,8 @@ class Manager extends Base
                 'page' => $get['page']
             ];
 
-            if (isset($get['status'])) {
-                $map[] = ['apply_status', '=', $get['status']];
-            }
+            $status = !isset($get['status']) || $get['status'] == 0 ? 0 : $get['status'];
+            $map[] = ['apply_status', '=', $status];
             $list = model('MemberApply')->where($map)->with('member')->paginate($get['limit'], false, $config);
             $data = $list->getCollection()->toArray();
             foreach ($data as &$value) {
@@ -69,7 +71,7 @@ class Manager extends Base
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
-                $value['user_id'] =  $users[$value['user_id']]['nickname'];
+                $value['user_id'] =  $users[$value['user_id']]['realname'];
                 $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
                 $value['news_type'] = $newsTypes[$value['news_type']];
                 $value['hotel_id'] = $hotels[$value['hotel_id']];
@@ -113,10 +115,10 @@ class Manager extends Base
             $MemberApply = MemberApply::get($id);
             $applyData = $MemberApply->getData();
 
-            $data['user_id'] = $applyData['user_id'];
-            $data['member_id'] = $applyData['member_id'];
-            $data['create_time'] = time();
-            $result = Allocate::updateAllocate($applyData['user_id'], $applyData['member_id'], $data);
+            $member = Member::get($applyData['member_id']);
+            $data = $member->getData();
+            $data['active_status'] = 0;
+            $result = MemberAllocate::updateAllocateData($applyData['user_id'], $applyData['member_id'], $data);
             if($result) {
                 $MemberApply->apply_status = 1;
                 $MemberApply->save();
@@ -151,6 +153,104 @@ class Manager extends Base
         return json([
             'code'  => '200',
             'msg'   => '驳回回访申请成功'
+        ]);
+    }
+
+    // 申请成单l
+    public function applyToOrder()
+    {
+        $get = Request::param();
+        if (Request::isAjax()) {
+            $users = User::getUsers();
+            $hotels = Hotel::getHotels();
+            $sources = Source::getSources();
+            $newsTypes = ['婚宴信息', '婚庆信息', '婚宴转婚庆'];
+            $config = [
+                'page' => $get['page']
+            ];
+
+            $status = !isset($get['status']) || $get['status'] == 0 ? 0 : $get['status'];
+            $map[] = ['apply_status', '=', $status];
+            $list = model('OrderApply')->where($map)->with('OrderEntire')->paginate($get['limit'], false, $config);
+
+            if (!empty($list)) {
+                $data = $list->getCollection()->toArray();
+                foreach ($data as &$value) {
+                    if (empty($value['order_entire'])) continue;
+                    $order = $value['order_entire'];
+                    unset($order['id']);
+                    $value = array_merge($value, $order);
+                    $value['news_type'] = $newsTypes[$value['news_type']];
+                    $value['source_id'] = isset($sources[$value['source_id']]) ? $sources[$value['source_id']]['title'] : '——';
+                    $value['sales_id'] = isset($users[$value['sales_id']]) ? $users[$value['sales_id']]['realname'] : '——';
+                    $value['manager_id'] = isset($users[$value['manager_id']]) ? $users[$value['manager_id']]['realname'] : '——';
+                    $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '——';
+                }
+            }
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $list->total(),
+                'data' => $data
+            ];
+            return json($result);
+
+        } else {
+            $tabs = Tab::applyToOrder($get);
+            $this->assign('tabs', $tabs);
+            $this->assign('get', $get);
+            return $this->fetch();
+        }
+    }
+
+    // 确认回访申请
+    public function confirmOrderApply()
+    {
+        $ids = Request::post("ids");
+        $ids = explode(',', $ids);
+        if (empty($ids)) {
+            return json([
+                'code'  => '500',
+                'msg'   => '要确认的回访申请不能为空'
+            ]);
+        }
+
+        $total = count($ids);
+        foreach ($ids as $id) {
+            $Apply = OrderApply::get($id);
+            $Apply->apply_status = 1;
+            $Apply->save();
+
+        }
+
+        return json([
+            'code'  => '200',
+            'msg'   => '确认申请确认成功'
+        ]);
+    }
+
+    // 驳回回访申请
+    public function cancelOrderApply()
+    {
+        $ids = Request::post("ids");
+        $ids = explode(',', $ids);
+        if (empty($ids)) {
+            return json([
+                'code'  => '500',
+                'msg'   => '要驳回的回访申请不能为空'
+            ]);
+        }
+
+        foreach ($ids as $id) {
+            $Apply = OrderApply::get($id);
+            $Apply->apply_status = 2;
+            $Apply->save();
+        }
+
+        return json([
+            'code'  => '200',
+            'msg'   => '驳回订单申请成功'
         ]);
     }
 }

@@ -23,16 +23,60 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+
+                            <div class="layui-inline">
+                                <select name="role_id" id="role_id" lay-filter="role_id">
+                                    <option value="0">请选择角色</option>
+                                    <{foreach name="roles" item="val"}>
+                                        <option value="{$val.id}">{$val.title}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="department_id" id="department_id" lay-filter="department_id">
+                                    <option value="0">--父级部门--</option>
+                                    <{foreach item="val" name="departments"}>
+                                        <option value="{$val['id']}" ><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="nickname" lay-verify="0" placeholder="用户名" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="realname" lay-verify="0" placeholder="真实姓名" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="mobile" lay-verify="0" placeholder="手机号" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                                <button class="layui-btn" lay-submit="" lay-filter="form-reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm" lay-event="add">添加员工</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="assignDepartmentToStaff">分配部门</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="assignRoleToStaff">分配角色</button>
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
                             <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="merge">合并</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
                         </div>
                     </script>
                 </div>
@@ -48,37 +92,53 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
-        var admin = layui.admin
-            ,table = layui.table;
+        var $ = layui.jquery
+            ,table = layui.table
+            ,form = layui.form;
 
         table.render({
-            elem: '#table'
-            ,
-            url: '/index/user/index.html'
-            ,
-            height: 'full-100'
-            ,
-            defaultToolbar: ['filter']
-            ,
-            toolbar: '#table-toolbar'
-            ,
-            title: '员工管理'
-            ,
+            elem: '#table',
+            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '员工管理',
             cols: [[
-                {"field": "id", "title": "ID", "width": 50},
+                {"type": "checkbox", "width": 50, "fixed": "left"},
+                {"field": "id", "title": "ID", "width": 80},
                 {"field": "department_id", "title": "部门"},
                 {"field": "role_id", "title": "角色", "align":"center"},
-                {"field": "nickname", "title": "昵称"},
+                {"field": "nickname", "title": "用户名"},
                 {"field": "realname", "title": "姓名", "width": 120},
                 {"field": "mobile", "title": "手机号", "width": 120},
                 {"field": "sort", "title": "排序", "width": 80},
                 {"field": "is_valid", "title": "状态", "width": 80},
-                {"field": "create_time", "title": "创建时间", "width": 165},
-                {"type": "tool", "title": "操作", "toolbar": "#table-tool", "width": 130}
-            ]]
-            ,
+                // {"field": "create_time", "title": "创 建时间", "width": 165},
+                {"type": "tool", "title": "操作", "toolbar": "#table-tool", "width": 226}
+            ]],
             page: true
+            ,limit: 100
+            ,limits: [100,150]
         });
+
+        let department_id = 0;
+        form.on("select(department_id)", function (data) {
+            department_id = data.elem.value;
+        });
+
+        let role_id = 0;
+        form.on("select(role_id)", function (data) {
+            role_id = data.elem.value;
+        });
+
+        var getSelectedIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+                ids.push(value.id)
+            });
+
+            return ids.join(',');
+        }
 
         var height = window.innerHeight;
         var width = window.innerWidth * 0.6;
@@ -86,8 +146,50 @@
         //头工具栏事件
         table.on('toolbar(table)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+
             var url = '';
             switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
+                case "assignDepartmentToStaff":
+                    var ids = getSelectedIds(checkedboxes);
+                    if(checkedboxes.length < 1) {
+                        layer.msg("请先选择要绑定的员工");
+                        return false;
+                    }
+
+                    url = '/index/user/assignDepartmentToStaff';
+                    $.post(url, {
+                        ids: ids,
+                        department_id: department_id
+                    }, function(res){
+                        layer.msg(res.msg);
+                        table.reload("table");
+                    });
+                    break;
+                case "assignRoleToStaff":
+                    var ids = getSelectedIds(checkedboxes);
+                    if(checkedboxes.length < 1) {
+                        layer.msg("请先选择要绑定的员工");
+                        return false;
+                    }
+
+                    url = '/index/user/assignRoleToStaff';
+                    $.post(url, {
+                        ids: ids,
+                        role_id: role_id
+                    }, function(res){
+                        layer.msg(res.msg);
+                        table.reload("table");
+                    });
+                    break;
                 case 'add':
                     var data = checkStatus.data;
                     url = '/index/user/adduser.html';
@@ -99,12 +201,12 @@
                         offset: 'rb'
                     });
                     break;
-            }
-            ;
+            };
         });
 
         //监听行工具事件
         table.on('tool(table)', function (obj) {
+            console.log(obj);
             var id = obj.data.id;
             switch (obj.event) {
                 case 'edit':
@@ -127,8 +229,30 @@
                         offset: 'rb'
                     });
                     break;
+
+                case 'merge':
+                    var checkStatus = table.checkStatus("table");
+                    var checkedboxes = checkStatus.data;
+                    var ids = getSelectedIds(checkedboxes);
+                    url = '/index/user/merge.html';
+                    $.post(url, {id:id,ids:ids}, function (res) {
+                        layer.msg(res.msg);
+                        table.reload("table");
+                    });
+                    break;
+
+                case 'delete':
+                    url = '/index/user/deleteUser.html?id=' + id;
+                    $.get(url, function(res){
+                        if(res.code == '200') {
+                            layer.msg(res.msg);
+                            table.reload("table")
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
+                    break;
             }
-            ;
         });
 
     });

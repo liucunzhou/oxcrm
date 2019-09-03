@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 
-use app\index\model\Store;
+use app\common\model\Store;
 use think\facade\Request;
 
 class BanquetHall extends Base
@@ -14,6 +14,11 @@ class BanquetHall extends Base
             $config = [
                 'page' => $get['page']
             ];
+
+            if (isset($get['title'])) {
+                $map[] = ['title', 'like', "%{$get['title']}%"];
+            }
+
             $fields = 'id,title,sort,create_time';
             $list = model('BanquetHall')->field($fields)->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
@@ -37,10 +42,9 @@ class BanquetHall extends Base
 
     public function editBanquetHall()
     {
-
         $get = Request::param();
-        $brand = \app\index\model\BanquetHall::get($get['id']);
-        $this->assign('data', $brand);
+        $data = \app\common\model\BanquetHall::get($get['id']);
+        $this->assign('data', $data);
 
         $hotels = Store::getStoreList();
         $this->assign("hotels", $hotels);
@@ -54,10 +58,10 @@ class BanquetHall extends Base
             $action = '编辑宴会厅';
             if(isset($post['create_time'])) unset($post['create_time']);
             if(isset($post['modify_time'])) unset($post['modify_time']);
-            $Model = \app\index\model\BanquetHall::get($post['id']);
+            $Model = \app\common\model\BanquetHall::get($post['id']);
         } else {
             $action = '添加宴会厅';
-            $Model = new \app\index\model\BanquetHall();
+            $Model = new \app\common\model\BanquetHall();
         }
 
         // $Model::create($post);
@@ -65,10 +69,10 @@ class BanquetHall extends Base
 
         if($result) {
             ### 更新缓存
-            \app\index\model\BanquetHall::updateCache();
+            \app\common\model\BanquetHall::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -78,15 +82,15 @@ class BanquetHall extends Base
     public function deleteBanquetHall()
     {
         $get = Request::param();
-        $Model = \app\index\model\BanquetHall::get($get['id']);
+        $Model = \app\common\model\BanquetHall::get($get['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\BanquetHall::updateCache();
+            \app\common\model\BanquetHall::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

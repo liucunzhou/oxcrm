@@ -60,6 +60,7 @@ class Auth extends Model
         return $data;
     }
 
+
     public static function getMenuList()
     {
         $nlist = [];

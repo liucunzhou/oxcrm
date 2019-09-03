@@ -2,11 +2,12 @@
 namespace app\index\controller;
 
 use app\http\Swoole;
-use app\index\model\AuthGroup;
-use app\index\model\Department;
-use app\index\model\UserAuth;
+use app\common\model\AuthGroup;
+use app\common\model\Department;
+use app\common\model\UserAuth;
 use think\facade\Request;
 use think\Session;
+use app\common\model\Region;
 
 class User extends Base
 {
@@ -22,6 +23,26 @@ class User extends Base
             $config = [
                 'page' => $get['page']
             ];
+            if (isset($get['role_id']) && !empty($get['role_id'])) {
+                $get['role_id'] = trim($get['role_id']);
+                $map[] = ['role_id', '=', $get['role_id']];
+            }
+
+            if (isset($get['nickname']) && !empty($get['nickname'])) {
+                $get['nickname'] = trim($get['nickname']);
+                $map[] = ['nickname', 'like', "%{$get['nickname']}%"];
+            }
+
+            if (isset($get['realname']) && !empty($get['realname'])) {
+                $get['realname'] = trim($get['realname']);
+                $map[] = ['realname', 'like', "%{$get['realname']}%"];
+            }
+
+            if (isset($get['mobile']) && !empty($get['mobile'])) {
+                $get['mobile'] = trim($get['mobile']);
+                $map[] = ['mobile', 'like', "%{$get['mobile']}%"];
+            }
+
             $list = model('user')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
@@ -38,34 +59,64 @@ class User extends Base
             ];
             return json($result);
         } else {
+            $roles = \app\common\model\AuthGroup::getRoles();
+            $this->assign('roles', $roles);
+
+            ### 获取部门分组
+            $departments = \app\common\model\Department::getDepartments();
+            $this->assign('departments', $departments);
             return $this->fetch();
         }
     }
 
     public function addUser()
     {
+        $provinces = Region::getProvinceList();
+        $this->assign('provinces', $provinces);
+
         return $this->fetch('edit_user');
     }
 
     public function editUser()
     {
         $get = Request::param();
-        $data = \app\index\model\User::get($get['id']);
+        $data = \app\common\model\User::get($get['id']);
         $this->assign('data', $data);
+
+        $provinces = Region::getProvinceList();
+        $this->assign('provinces', $provinces);
+
+        $cities = [];
+        if($data['province_id']) {
+            $cities = Region::getCityList($data['province_id']);
+        }
+        $this->assign('cities', $cities);
 
         return $this->fetch();
     }
 
     public function doEditUser()
     {
-
         $post = Request::post();
+        $post['nickname'] = trim($post['nickname']);
+        $post['realname'] = trim($post['realname']);
+        $post['mobile'] = trim($post['mobile']);
+        $post['email'] = trim($post['email']);
         if($post['id']) {
+            // $user = \app\common\model\User::getByNickname($post['nickname']);
             $action = '编辑用户';
-            $Model = \app\index\model\User::get($post['id']);
+            $Model = \app\common\model\User::get($post['id']);
+            if(empty($Model->user_no)) {
+                $userNo = microtime().rand(100000,1000000);
+                $Model->user_no = md5($userNo);
+            }
+
         } else {
+
             $action = '添加用户';
-            $Model = new \app\index\model\User();
+            $Model = new \app\common\model\User();
+            $userNo = microtime().rand(100000,1000000);
+            $Model->user_no = md5($userNo);
         }
 
         if($post['password']) {
@@ -73,7 +124,6 @@ class User extends Base
         } else {
             unset($post['password']);
         }
-
         $result = $Model->save($post);
 
         if($result) {
@@ -82,7 +132,7 @@ class User extends Base
             $Model::updateCache($post['id']);
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功', 'redirect'=>$post['referer']]);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -99,7 +149,7 @@ class User extends Base
         $this->assign('data', $data);
 
         ### 获取部门分组
-        $departments = \app\index\model\Department::getDepartments();
+        $departments = \app\common\model\Department::getDepartments();
         $this->assign('departments', $departments);
 
         ### 获取所有角色
@@ -107,11 +157,11 @@ class User extends Base
         $this->assign('roles', $roles);
 
         ### 按品牌进行分组的门店
-        $brands = \app\index\model\Store::getStoresGroupByBrand();
+        $brands = \app\common\model\Store::getStoresGroupByBrand();
         $this->assign('brands', $brands);
 
         ### 按平台进行分组的门店
-        $platforms = \app\index\model\Source::getSouresGroupByPlatform();
+        $platforms = \app\common\model\Source::getSouresGroupByPlatform();
         $this->assign('platforms', $platforms);
 
         return $this->fetch();
@@ -121,7 +171,7 @@ class User extends Base
     {
         $post = Request::post();
 
-        $Model = new \app\index\model\UserAuth();
+        $Model = new \app\common\model\UserAuth();
         $where[] = ['user_id','=',$post['user_id']];
         $newObj = $Model->where($where)->find();
         !empty($newObj) && $Model = $newObj;
@@ -133,18 +183,18 @@ class User extends Base
         !empty($post['source']) && $Model->source_ids = implode(',', $post['source']);
         $Model->show_visit_log = $post['show_visit_log'];
         $Model->is_show_entire_mobile = $post['is_show_entire_mobile'];
-        $result = $Model->save();
+        $result = $Model->save($post);
 
         if($result) {
             ### 更新用户信息缓存
-            $user = \app\index\model\User::get($post['user_id']);
+            $user = \app\common\model\User::get($post['user_id']);
             $user->department_id = $post['department_id'];
             $user->role_id = $post['role'];
             $user->save();
             ### 更新该用户的权限缓存
             $Model::updateCache($post['user_id']);
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '用户权限成功', 'redirect'=>$post['referer']]);
         } else {
             return json(['code'=>'500', 'msg'=> '用户权限失败']);
@@ -154,15 +204,15 @@ class User extends Base
     public function deleteUser()
     {
         $get = Request::param();
-        $Model = \app\index\model\User::get($get['id']);
+        $Model = \app\common\model\User::get($get['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\User::updateCache();
+            \app\common\model\User::updateUserList();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);
@@ -189,7 +239,7 @@ class User extends Base
     {
         $post = Request::post();
         $user = \think\facade\Session::get("user");
-        $user = \app\index\model\User::get($user['id']);
+        $user = \app\common\model\User::get($user['id']);
         $post['password'] = md5($post['password']);
         if ($user['password'] != $post['password']) {
             return json(['code'=>'500', 'msg'=>'请输入原密码']);
@@ -204,10 +254,97 @@ class User extends Base
         }
     }
 
-    public function sendMessage()
+    public function assignDepartmentToStaff()
     {
-        $Swoole = new Swoole();
-        $Swoole->sendMessage();
+        $post = Request::param();
+        if(empty($post['department_id'])) {
+            return json(['code'=>'500', 'msg'=>'请选择部门']);
+        }
 
+        if(empty($post['ids'])) {
+            return json(['code'=>'500', 'msg'=>'请选择员工']);
+        }
+
+        $ids = explode(',',  $post['ids']);
+        foreach($ids as $key=>$val) {
+            $map = [];
+            $map[] = ['user_id', '=', $val];
+            $Auth = UserAuth::where($map)->find();
+            if(!empty($Auth)) {
+                $Auth->department_id = $post['department_id'];
+                $Auth->save();
+            } else {
+                $data = [];
+                $data['user_id'] = $val;
+                $data['department_id'] = $post['department_id'];
+                $data['create_time'] = time();
+                $Auth = new UserAuth();
+                $Auth->insert($data);
+            }
+
+            // 同步到用户信息
+            $user = \app\common\model\User::get($val);
+            $user->save(['department_id'=>$post['department_id']]);
+        }
+
+        return json(['code'=>'200', 'msg'=>'设置用户部门成功']);
+    }
+
+    public function assignRoleToStaff()
+    {
+        $post = Request::param();
+        if(empty($post['role_id'])) {
+            return json(['code'=>'500', 'msg'=>'请选择角色']);
+        }
+
+        if(empty($post['ids'])) {
+            return json(['code'=>'500', 'msg'=>'请选择员工']);
+        }
+
+        $ids = explode(',',  $post['ids']);
+        foreach($ids as $key=>$val) {
+            $map = [];
+            $map[] = ['user_id', '=', $val];
+            $Auth = UserAuth::where($map)->find();
+            if(!empty($Auth)) {
+                $Auth->role_ids = $post['role_id'];
+                $Auth->save();
+            } else {
+                $data = [];
+                $data['user_id'] = $val;
+                $data['role_ids'] = $post['role_id'];
+                $data['create_time'] = time();
+                $Auth = new UserAuth();
+                $Auth->insert($data);
+            }
+
+            // 同步到用户信息
+            $user = \app\common\model\User::get($val);
+            $user->save(['role_id' => $post['role_id']]);
+        }
+
+        return json(['code'=>'200', 'msg'=>'设置用户部门成功']);
+    }
+
+    public function merge()
+    {
+        $post = Request::param();
+        $ids = explode(',', $post['ids']);
+
+        $map[] = ['id', 'in', $ids];
+        $userNos = \app\common\model\User::where($map)->column("user_no");
+        $userNoStr = implode(',', $userNos);
+        $UserModel = new \app\common\model\User();
+        $result = $UserModel->save(['user_nos'=>$userNoStr,'ids'=>$post['ids']], $map);
+        if($result) {
+
+            foreach ($ids as $id) {
+                \app\common\model\User::updateCache($id);
+            }
+
+            return json(['code'=>'200', 'msg'=>'合并成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=>'合并失败']);
+        }
     }
 }

@@ -779,7 +779,6 @@ layui.define('view', function(exports){
 
     admin.tabsPage.elem = othis;
     //admin.prevRouter[router.path[0]] = router.href; //记录上一次各菜单的路由信息
-
     //执行跳转
     var topLayui = parent === self ? layui : top.layui;
     topLayui.index.openTabsPage(href, text || othis.text());

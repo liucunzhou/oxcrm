@@ -26,8 +26,20 @@
             <div class="layui-card">
                 <!--<div class="layui-card-header">宴会厅管理</div>-->
                 <div class="layui-card-body">
-                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input type="text" name="title" lay-verify="0" placeholder="门店名称" autocomplete="off" class="layui-input">
+                            </div>
 
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                                <button class="layui-btn" lay-submit="" lay-filter="form-reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="toolbar">
                         <div class="layui-btn-container">
                             {:button(["event"=>"addBanquetHall", "text"=>"添加宴会厅", "atype"=>""])}
@@ -57,7 +69,7 @@
 
         table.render({
             elem: '#table'
-            ,url: '{:url("BanquetHall/index")}'
+            ,url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}"
             ,toolbar: '#toolbar'
             ,height:'full-100'
             ,title: '宴会厅数据表'

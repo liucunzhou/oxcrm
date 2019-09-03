@@ -13,16 +13,17 @@ class Base extends Controller
     {
         // 验证登录
         $user = session("user");
-        if(!$user) $this->redirect('/index/passport/login');
+
+        if(!$user) $this->redirect('/index/passport/login', ['parent'=>1]);
         $this->user = $user;
         $this->assign('user', $user);
 
         // 监控登陆的端口
-        if (Request::isMobile()) {
-            $path = $this->app->getModulePath();
-            $path .= 'mobile/';
-            $this->view->config('view_path', $path);
-        }
+//        if (Request::isMobile()) {
+//            $path = $this->app->getModulePath();
+//            $path .= 'mobile/';
+//            $this->view->config('view_path', $path);
+//        }
     }
 
 }

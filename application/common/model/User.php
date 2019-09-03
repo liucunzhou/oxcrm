@@ -1,0 +1,170 @@
+<?php
+namespace app\common\model;
+
+use think\Model;
+use think\model\concern\SoftDelete;
+
+class User extends Model
+{
+    protected $pk = 'id';
+    protected $autoWriteTimestamp = true;
+    protected $updateTime = 'modify_time';
+
+    ### 软删除设置
+    use SoftDelete;
+    protected $deleteTime = 'delete_time';
+    protected $defaultSoftDelete = 0;
+
+    public function userAuth()
+    {
+        return $this->hasOne('UserAuth');
+    }
+
+    /**
+     * 获取后台用户详情
+     * @param $id
+     * @param bool $update
+     * @return array|mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public static function getUser($id,$update=false)
+    {
+        $cacheKey = 'user';
+        $data = redis()->hGet($cacheKey, $id);
+        $data = json_decode($data, true);
+        if(empty($data) || $update) {
+            $map[] = ['id', '=', $id];
+            $data = self::where($map)->field('id,role_id,department_id,nickname,realname,dingding,mobile,email')->find()->toArray();
+            $json = json_encode($data);
+            $result = redis()->hSet($cacheKey, $id, $json);
+        }
+
+        return $data;
+    }
+
+    public static function getUserByNo($userNo, $update=false)
+    {
+        $cacheKey = 'users-no';
+        $data = redis()->hGet($cacheKey, $userNo);
+        if(empty($data) || $update) {
+            $data = self::where(['user_no'=>$userNo])->column('user_no,id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'user_no');
+            $json = json_encode($data);
+            $result = redis()->hSet($cacheKey, $userNo, $json);
+        } else {
+
+            $data = json_decode($data, true);
+        }
+
+        return $data;
+    }
+
+    public static function getUsers($update=false)
+    {
+        $cacheKey = 'users';
+        $data = redis()->get($cacheKey);
+        if(empty($data) || $update) {
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'id');
+            $json = json_encode($data);
+            $result = redis()->set($cacheKey, $json);
+        } else {
+
+            $data = json_decode($data, true);
+        }
+
+        return $data;
+    }
+
+
+    public static function checkAuth($id, $auth)
+    {
+        $user = self::getUser($id);
+        if (empty($user['role_id'])) {
+            return [];
+        }
+
+        $authSet = self::getUserAuthSet($id);
+        if(in_array($auth, $authSet)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function getUserAuthSet($id, $update=false)
+    {
+        $user = self::getUser($id);
+        if (empty($user['role_id'])) {
+            return [];
+        }
+
+        $cacheKey = 'user_group';
+        $data = redis()->hGet($cacheKey, $id);
+        $data = json_decode($data, true);
+        if(empty($data) || $update) {
+            $data = AuthGroup::getAuthGroup($user['role_id']);
+            $json = json_encode($data);
+            $result = redis()->hSet($cacheKey, $id, $json);
+        }
+
+        return $data;
+    }
+
+    public static function getUsersByDepartmentId($departmentId)
+    {
+        $departments = Department::getTree($departmentId);
+        if(empty($departments)) return false;
+        $map = [];
+        if(count($departments) > 1) {
+            $map[] = ['department_id', 'in', $departments];
+        } else {
+            $map[] = ['department_id', '=', $departments[0]];
+        }
+        $users = self::where($map)->column('id');
+
+        return $users;
+    }
+
+    public static function getUsersInfoByDepartmentId($departmentId)
+    {
+        $departments = Department::getTree($departmentId);
+        if(empty($departments)) return false;
+        $map = [];
+        if(count($departments) > 1) {
+            $map[] = ['department_id', 'in', $departments];
+        } else {
+            $map[] = ['department_id', '=', $departments[0]];
+        }
+        $users = self::where($map)->column('id,role_id,department_id,nickname,realname');
+
+        return $users;
+    }
+
+    public static function getTopManager($user) {
+        if(empty($user['department_id'])) return 0;
+
+        $department = Department::getDepartment($user['department_id']);
+        $path = explode('-',$department['path']);
+
+        $managerDeparentId = $path[1];
+        $managers = User::where(['department_id'=>$managerDeparentId])->column('id');
+        if(empty($managers)) {
+            return 0;
+        } else {
+            return $managers[0];
+        }
+    }
+
+    public static function updateCache($id)
+    {
+        self::getUser($id, true);
+        self::getUserAuthSet($id, true);
+        self::getUsers(true);
+    }
+
+    public static function updateUserList()
+    {
+        self::getUsers(true);
+    }
+}

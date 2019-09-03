@@ -40,7 +40,7 @@ class Brand extends Base
     public function editBrand()
     {
         $get = Request::param();
-        $brand = \app\index\model\Brand::get($get['id']);
+        $brand = \app\common\model\Brand::get($get['id']);
         $this->assign('data', $brand);
 
         $this->view->engine->layout(false);
@@ -52,20 +52,20 @@ class Brand extends Base
         $post = Request::post();
         if($post['id']) {
             $action = '更新品牌';
-            $Model = \app\index\model\Brand::get($post['id']);
+            $Model = \app\common\model\Brand::get($post['id']);
         } else {
             $action = '添加品牌';
-            $Model = new \app\index\model\Brand();
+            $Model = new \app\common\model\Brand();
         }
 
         // $Model::create($post);
         $result = $Model->save($post);
         if($result) {
             ### 更新缓存
-            \app\index\model\Brand::updateCache();
+            \app\common\model\Brand::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
@@ -75,15 +75,15 @@ class Brand extends Base
     public function deleteBrand()
     {
         $post = Request::post();
-        $Model = \app\index\model\Brand::get($post['id']);
+        $Model = \app\common\model\Brand::get($post['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\Brand::updateCache();
+            \app\common\model\Brand::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);

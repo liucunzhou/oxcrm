@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="13e72df9-d1e5-4717-aab5-aa91b7c456cf" name="hongsiyun" url="http://crm.hongsizg.com">
+        <fileTransfer host="crm.hongsizg.com" port="22" rootFolder="/data/platform" accessType="SFTP" password="dfe2dfc5dfc4dfcddfd9dfc3dfd3dfdfdfc4df9bdf98df99" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

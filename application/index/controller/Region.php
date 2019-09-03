@@ -17,7 +17,7 @@ class Region extends Controller
     public function getProvinceList()
     {
         $post = Request::param();
-        $data = \app\index\model\Region::getCityList($post['id']);
+        $data = \app\common\model\Region::getCityList($post['id']);
 
         return json($data);
     }
@@ -25,7 +25,7 @@ class Region extends Controller
     public function getCityList()
     {
         $post = Request::param();
-        $data = \app\index\model\Region::getCityList($post['id']);
+        $data = \app\common\model\Region::getCityList($post['id']);
 
         return json($data);
     }
@@ -33,7 +33,7 @@ class Region extends Controller
     public function getAreaList()
     {
         $post = Request::param();
-        $data = \app\index\model\Region::getAreaList($post['id']);
+        $data = \app\common\model\Region::getAreaList($post['id']);
 
         return json($data);
     }

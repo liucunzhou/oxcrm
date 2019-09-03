@@ -36,6 +36,14 @@ class Redirect extends Response
      */
     protected function output($data)
     {
+        /**
+        if(isset($this->params['parent'])) {
+
+        } else {
+            $this->header['Location'] = $this->getTargetUrl();
+        }
+         ***/
+
         $this->header['Location'] = $this->getTargetUrl();
 
         return;

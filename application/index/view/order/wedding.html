@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>订单管理</title>
+    <title>婚庆--订单管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -23,10 +23,40 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
+                    <form class="layui-form layui-hide" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="">
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                    <option value="{$val['id']}">{$val['realname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="">
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="search">高级搜索</button>
+                            <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a>
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
@@ -47,10 +77,16 @@
         base: '/assets/'
     }).extend({
         index: 'lib/index'
-    }).use(['index', 'table'], function () {
-        var admin = layui.admin
+    }).use(['index', 'table', 'laydate'], function () {
+        var $ = layui.jquery
             ,table = layui.table
-            ,$ = layui.jquery;
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
 
         table.render({
             elem: '#table',
@@ -128,6 +164,15 @@
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
             switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
+
                 case 'add':
                     var data = checkStatus.data;
                     url = '/index/order/addorder.html';
@@ -147,6 +192,14 @@
         table.on('tool(table)', function (obj) {
             var id = obj.data.id;
             switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
                 case 'edit':
                     url = '/index/order/editorder.html?id='+id;
                     layer.open({

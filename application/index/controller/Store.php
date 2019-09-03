@@ -9,8 +9,8 @@
 namespace app\index\controller;
 
 
-use app\index\model\Brand;
-use app\index\model\Region;
+use app\common\model\Brand;
+use app\common\model\Region;
 use think\facade\Request;
 
 class Store extends Base
@@ -24,6 +24,11 @@ class Store extends Base
             $config = [
                 'page' => $get['page']
             ];
+
+            if (isset($get['title'])) {
+                $map[] = ['title', 'like', "%{$get['title']}%"];
+            }
+
             $list = model('store')->where($map)->order('brand_id,is_valid desc,sort desc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
@@ -62,7 +67,7 @@ class Store extends Base
 
         ### 获取门店详情
         $get = Request::param();
-        $data = \app\index\model\Store::get($get['id']);
+        $data = \app\common\model\Store::get($get['id']);
         $this->assign('data', $data);
 
         $provinces = Region::getProvinceList();
@@ -88,9 +93,9 @@ class Store extends Base
     {
         $post = Request::post();
         if($post['id']) {
-            $Model = \app\index\model\Store::get($post['id']);
+            $Model = \app\common\model\Store::get($post['id']);
         } else {
-            $Model = new \app\index\model\Store();
+            $Model = new \app\common\model\Store();
         }
 
         // $Model::create($post);
@@ -98,10 +103,10 @@ class Store extends Base
 
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;
-            \app\index\model\Store::updateCache($post['id']);
+            \app\common\model\Store::updateCache($post['id']);
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=> '添加成功']);
         } else {
             return json(['code'=>'500', 'msg'=> '添加失败']);
@@ -111,15 +116,15 @@ class Store extends Base
     public function deleteStore()
     {
         $post = Request::post();
-        $Model = \app\index\model\Store::get($post['id']);
+        $Model = \app\common\model\Store::get($post['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\index\model\Store::updateCache();
+            \app\common\model\Store::updateCache();
 
             ### 添加操作日志
-            \app\index\model\OperateLog::appendTo($Model);
+            \app\common\model\OperateLog::appendTo($Model);
             return json(['code'=>'200', 'msg'=>'删除成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'删除失败']);
@@ -129,7 +134,7 @@ class Store extends Base
     public function getStoreListByArea()
     {
         $post = Request::post();
-        $storeList = \app\index\model\Store::getStoreListByArea($post);
+        $storeList = \app\common\model\Store::getStoreListByArea($post);
 
         return json($storeList);
     }
