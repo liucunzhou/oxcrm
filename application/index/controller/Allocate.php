@@ -39,7 +39,7 @@ class Allocate extends Base
         $this->scales = Scale::getScaleList();
 
         if (!Request::isAjax()) {
-            $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
+            $staffes = User::getUsersInfoByDepartmentId($this->user['department_id'], false);
             $this->assign('staffes', $staffes);
             $this->assign('sources', $this->sources);
         }
@@ -74,7 +74,7 @@ class Allocate extends Base
         $fileData = redis()->hMget($hashKey, ['file', 'amount', 'repeat']);
         $this->assign('fileData', $fileData);
 
-        $users = User::getUsers();
+        $users = User::getUsers(false);
         foreach ($users as $key => $value) {
             $auth = UserAuth::getUserLogicAuth($value["id"]);
             $roleIds = explode(',', $auth['role_ids']);
@@ -139,6 +139,12 @@ class Allocate extends Base
             $sourceText = mb_convert_encoding($sourceText, 'UTF-8', 'GBK');
             $cityName = trim($row[3]);
             $cityName = mb_convert_encoding($cityName, 'UTF-8', 'GBK');
+
+            $row[1] = trim($row[1]);
+            $row[1] = intval($row[1]);
+            $originMember = Member::checkMobile($row[1]);
+            if(!empty($originMember)) continue;
+
             $MemberModel = new Member();
             $data = [];
             $data['member_no'] = date('YmdHis') . rand(100, 999);
@@ -216,7 +222,7 @@ class Allocate extends Base
      */
     public function assignToWashGroup()
     {
-        $users = User::getUsers();
+        $users = User::getUsers(false);
         foreach ($users as $key => $value) {
             if (!in_array($value['role_id'], [2, 7])) {
                 unset($users[$key]);
@@ -262,7 +268,7 @@ class Allocate extends Base
      */
     public function assignToRecommendGroup()
     {
-        $users = User::getUsers();
+        $users = User::getUsers(false);
         foreach ($users as $key => $value) {
             if (!in_array($value['role_id'], [3, 4])) {
                 unset($users[$key]);
@@ -278,10 +284,10 @@ class Allocate extends Base
      */
     public function assignToStoreStaff()
     {
-        $users = User::getUsers();
+        $users = User::getUsers(false);
         $staffs = [];
         foreach ($users as $value) {
-            if ($value['role_id'] == '5' || $value['role_id'] == '8') {
+            if ($value['role_id'] == '5' || $value['role_id'] == '8' || $value['role_id'] == '6') {
                 array_push($staffs, $value);
             }
         }
@@ -336,9 +342,7 @@ class Allocate extends Base
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
         $MemberAllocate = new MemberAllocate();
-        $MemberAllocate->startTrans();
         $result1 = $MemberAllocate->insert($data);
-
         // 更新分配状态
         $data = [];
         if($allocate->active_status == 5) {
@@ -351,12 +355,10 @@ class Allocate extends Base
         $allocate->save($data);
 
         if($result1) {
-            $MemberAllocate->commit();
             ### 记录log日志
             OperateLog::appendTo($allocate);
             $result = true;
         } else {
-            $MemberAllocate->rollback();
             $result = false;
         }
 

@@ -28,7 +28,7 @@ class MemberAllocate extends Model
         return $data;
     }
 
-    public static function updateAllocateData($userId, $memberId, $data)
+    public static function insertAllocateData($userId, $memberId, $data)
     {
         unset($data['id']);
         unset($data['create_time']);
@@ -45,8 +45,31 @@ class MemberAllocate extends Model
             $data['update_time'] = 0;
             $data['create_time'] = time();
             $MemberAllocate = new MemberAllocate();
-            // $result = $MemberAllocate->allowField(true)->insert($data);
             $result = $MemberAllocate->allowField(true)->save($data);
+        }
+
+        return $result;
+    }
+
+    public static function updateAllocateData($userId, $memberId, $data)
+    {
+        unset($data['id']);
+        unset($data['create_time']);
+        $data['user_id'] = $userId;
+        $data['member_id'] = $memberId;
+
+        $map = [];
+        $map[] = ['user_id', '=', $userId];
+        $map[] = ['member_id', '=', $memberId];
+        $allocate = self::where($map)->find();
+        if($allocate) {
+            $result = $allocate->allowField(true)->save($data);
+        } else {
+            // $data['update_time'] = 0;
+            // $data['create_time'] = time();
+            // $MemberAllocate = new MemberAllocate();
+            // $result = $MemberAllocate->allowField(true)->save($data);
+            $result = 1;
         }
 
         return $result;

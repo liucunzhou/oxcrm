@@ -8,6 +8,7 @@ use think\model\concern\SoftDelete;
 class Member extends Model
 {
     protected $pk = 'id';
+    // protected $autoWriteTimestamp = false;
     protected $autoWriteTimestamp = true;
     protected $updateTime = 'modify_time';
 

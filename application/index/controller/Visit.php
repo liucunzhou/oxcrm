@@ -109,9 +109,12 @@ class Visit extends Base
     {
         $post = Request::post();
         $Member = Member::get($post['member_id']);
+        $originAllocate = MemberAllocate::getAllocate($this->user['id'], $post['member_id']);
+        if (empty($originAllocate)) {
+            return json(['code' => '500', 'msg' => '您不能回访这个客资']);
+        }
 
         $Model = model("MemberVisit");
-        $Model->startTrans();
         ### 保存回访信息
         if (!empty($post['next_visit_time'])) {
             $post['next_visit_time'] = strtotime($post['next_visit_time']);
@@ -146,7 +149,6 @@ class Visit extends Base
         $result2 = $Member->save($post);
 
         if ($result1 && $result2) {
-            $Model->commit();
             ### 同步分配信息
             MemberAllocate::updateAllocateData($this->user['id'], $post['member_id'], $post);
 
@@ -163,7 +165,6 @@ class Visit extends Base
             OperateLog::appendTo($Model);
             return json(['code' => '200', 'msg' => '回访成功']);
         } else {
-            $Model->rollback();
             return json(['code' => '500', 'msg' => '回访失败']);
         }
     }

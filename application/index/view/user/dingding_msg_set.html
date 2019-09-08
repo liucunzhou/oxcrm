@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>钉钉消息设置</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>钉钉消息设置</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="addDingEvent">添加事件</button>
+                        </div>
+                    </script>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="editDingEvent">编辑</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="deleteDingEvent">删除</button>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table'], function () {
+        var $ = layui.jquery
+            ,table = layui.table
+            ,form = layui.form;
+
+        table.render({
+            elem: '#table',
+            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            toolbar: '#table-toolbar',
+            title: '钉钉消息设置',
+            cols: [[
+                {"type": "checkbox", "width": 50, "fixed": "left"},
+                {"field": "id", "title": "ID", "width": 80},
+                {"field": "event", "title": "事件"},
+                {"field": "sort", "title": "排序", "width": 80},
+                {"field": "is_valid", "title": "状态", "width": 80},
+                {"field": "create_time", "title": "创建时间", "width": 165},
+                {"type": "tool", "title": "操作", "toolbar": "#table-tool", "width": 226}
+            ]],
+            page: true
+            ,limit: 100
+            ,limits: [100,150]
+        });
+
+        let department_id = 0;
+        form.on("select(department_id)", function (data) {
+            department_id = data.elem.value;
+        });
+
+        let role_id = 0;
+        form.on("select(role_id)", function (data) {
+            role_id = data.elem.value;
+        });
+
+        var getSelectedIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+                ids.push(value.id)
+            });
+
+            return ids.join(',');
+        }
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+
+            var url = '';
+            switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
+                case "assignDepartmentToStaff":
+                    var ids = getSelectedIds(checkedboxes);
+                    if(checkedboxes.length < 1) {
+                        layer.msg("请先选择要绑定的员工");
+                        return false;
+                    }
+
+                    url = '/index/user/assignDepartmentToStaff';
+                    $.post(url, {
+                        ids: ids,
+                        department_id: department_id
+                    }, function(res){
+                        layer.msg(res.msg);
+                        table.reload("table");
+                    });
+                    break;
+                case "assignRoleToStaff":
+                    var ids = getSelectedIds(checkedboxes);
+                    if(checkedboxes.length < 1) {
+                        layer.msg("请先选择要绑定的员工");
+                        return false;
+                    }
+
+                    url = '/index/user/assignRoleToStaff';
+                    $.post(url, {
+                        ids: ids,
+                        role_id: role_id
+                    }, function(res){
+                        layer.msg(res.msg);
+                        table.reload("table");
+                    });
+                    break;
+                case 'add':
+                    var data = checkStatus.data;
+                    url = '/index/user/adduser.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加员工',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function (obj) {
+            console.log(obj);
+            var id = obj.data.id;
+            switch (obj.event) {
+                case 'edit':
+                    url = '/index/user/edituser.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'auth':
+                    url = '/index/user/editauth.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '授权',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+                case 'merge':
+                    var checkStatus = table.checkStatus("table");
+                    var checkedboxes = checkStatus.data;
+                    var ids = getSelectedIds(checkedboxes);
+                    url = '/index/user/merge.html';
+                    $.post(url, {id:id,ids:ids}, function (res) {
+                        layer.msg(res.msg);
+                        table.reload("table");
+                    });
+                    break;
+
+                case 'delete':
+                    url = '/index/user/deleteUser.html?id=' + id;
+                    $.get(url, function(res){
+                        if(res.code == '200') {
+                            layer.msg(res.msg);
+                            table.reload("table")
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
+                    break;
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

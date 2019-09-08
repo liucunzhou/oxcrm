@@ -31,46 +31,24 @@ class User extends Model
      */
     public static function getUser($id,$update=false)
     {
-        $cacheKey = 'user';
-        $data = redis()->hGet($cacheKey, $id);
-        $data = json_decode($data, true);
-        if(empty($data) || $update) {
-            $map[] = ['id', '=', $id];
-            $data = self::where($map)->field('id,role_id,department_id,nickname,realname,dingding,mobile,email')->find()->toArray();
-            $json = json_encode($data);
-            $result = redis()->hSet($cacheKey, $id, $json);
-        }
+        $map[] = ['id', '=', $id];
+        $data = self::where($map)->field('id,role_id,department_id,nickname,realname,dingding,mobile,email')->find()->toArray();
 
         return $data;
     }
 
     public static function getUserByNo($userNo, $update=false)
     {
-        $cacheKey = 'users-no';
-        $data = redis()->hGet($cacheKey, $userNo);
-        if(empty($data) || $update) {
-            $data = self::where(['user_no'=>$userNo])->column('user_no,id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'user_no');
-            $json = json_encode($data);
-            $result = redis()->hSet($cacheKey, $userNo, $json);
-        } else {
-
-            $data = json_decode($data, true);
-        }
-
+        $data = self::where(['user_no'=>$userNo])->column('user_no,id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'user_no');
         return $data;
     }
 
-    public static function getUsers($update=false)
+    public static function getUsers($withTrashed=true,$update=false)
     {
-        $cacheKey = 'users';
-        $data = redis()->get($cacheKey);
-        if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'id');
-            $json = json_encode($data);
-            $result = redis()->set($cacheKey, $json);
+        if($withTrashed) {
+            $data = self::withTrashed()->order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'id');
         } else {
-
-            $data = json_decode($data, true);
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'id');
         }
 
         return $data;
@@ -99,15 +77,7 @@ class User extends Model
             return [];
         }
 
-        $cacheKey = 'user_group';
-        $data = redis()->hGet($cacheKey, $id);
-        $data = json_decode($data, true);
-        if(empty($data) || $update) {
-            $data = AuthGroup::getAuthGroup($user['role_id']);
-            $json = json_encode($data);
-            $result = redis()->hSet($cacheKey, $id, $json);
-        }
-
+        $data = AuthGroup::getAuthGroup($user['role_id']);
         return $data;
     }
 
@@ -126,7 +96,7 @@ class User extends Model
         return $users;
     }
 
-    public static function getUsersInfoByDepartmentId($departmentId)
+    public static function getUsersInfoByDepartmentId($departmentId, $withTrashed=true)
     {
         $departments = Department::getTree($departmentId);
         if(empty($departments)) return false;
@@ -136,7 +106,11 @@ class User extends Model
         } else {
             $map[] = ['department_id', '=', $departments[0]];
         }
-        $users = self::where($map)->column('id,role_id,department_id,nickname,realname');
+        if($withTrashed) {
+            $users = self::withTrashed()->where($map)->column('id,role_id,department_id,nickname,realname');
+        } else {
+            $users = self::where($map)->column('id,role_id,department_id,nickname,realname');
+        }
 
         return $users;
     }

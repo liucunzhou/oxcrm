@@ -47,6 +47,12 @@ class Source extends Model
         return $data;
     }
 
+    public static function getAllSource($update=false)
+    {
+        $data = self::order('is_valid desc,sort desc,id asc')->column('id,parent_id,title,alias', 'id');
+        return $data;
+    }
+
     public static function getSourcesIndexOfTitle()
     {
         $sources = self::getSources();

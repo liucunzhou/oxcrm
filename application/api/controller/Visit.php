@@ -43,6 +43,7 @@ class Visit extends Base
     {
         ### 获取用户基本信息
         $customer = Member::get($this->params['member_id']);
+        $customer['source_text'] = $this->sources[$customer['source_id']] ? $this->sources[$customer['source_id']]['title'] : $customer['source_text'];
 
         ### 获取回访日志,检测是否拥有查看所有回访的权限
         $auth = UserAuth::getUserLogicAuth($this->user['id']);
@@ -74,7 +75,6 @@ class Visit extends Base
         $auth = UserAuth::getUserLogicAuth($this->user['id']);
         $visits = MemberVisit::getMemberVisitList($this->user, $auth, $customer);
 
-
         return xjson([
            'code'   => '200',
             'msg'   => '获取回访信息成功',
@@ -89,15 +89,19 @@ class Visit extends Base
     {
         $post = Request::post();
         $Member = Member::get($post['member_id']);
+        $originAllocate = MemberAllocate::getAllocate($this->user['id'], $post['member_id']);
+        if (empty($originAllocate)) {
+            return xjson(['code' => '500', 'msg' => '您不能回访这条客资']);
+        }
 
-        $Model = model("MemberVisit");
-        $Model->startTrans();
         ### 保存回访信息
+        $Model = model("MemberVisit");
         if(!empty($post['next_visit_time'])) {
             $post['next_visit_time'] = strtotime($post['next_visit_time']);
         } else {
             $post['next_visit_time'] = 0;
         }
+
         $Model->status = $post['active_status'];
         $Model->member_no = $Member->member_no;
         $visitNo = microtime().rand(100000,1000000);
@@ -114,24 +118,19 @@ class Visit extends Base
             $Member->banquet_size = $post['banquet_size'];
             $Member->news_type = $post['news_type'];
             $Member->zone = $post['zone'];
-
             if (isset($post['active_status'])) {
                 $Member->status = $post['active_status'];
                 $Member->active_status = $post['active_status'];
             }
-
             if (isset($post['hotel_id']) && $post['hotel_id'] > 0) {
                 $Member->hotel_text = $this->hotels[$post['hotel_id']]['title'];
             }
         }
         $Member->visit_amount = ['inc', 1];
         $result2 = $Member->save($post);
-
         if ($result1 && $result2) {
-            $Model->commit();
             ### 同步分配信息
             MemberAllocate::updateAllocateData($this->user['id'], $post['member_id'], $post);
-
             ### 添加下次回访提醒
             if($post['next_visit_time'] > 0) {
                 $Notice = new Notice();
@@ -141,15 +140,11 @@ class Visit extends Base
                 $Notice->appendNotice('visit', $from, $to, $post['next_visit_time'], $content);
             }
 
-            ### 记录log日志
             OperateLog::appendTo($Model);
             return xjson(['code' => '200', 'msg' => '回访成功']);
         } else {
-            $Model->rollback();
             return xjson(['code' => '500', 'msg' => '回访失败']);
         }
     }
-
-
 
 }

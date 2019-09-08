@@ -21,6 +21,8 @@ class Csv
             }
             if(!$row) break;
 
+            $row[1] = trim($row[1]);
+            $row[1] = intval($row[1]);
             $originMember = Member::checkMobile($row[1]);
             if(!empty($originMember)) {
                 $repetitive[] = $originMember->toArray();
@@ -57,7 +59,7 @@ class Csv
                 if ($originMember) {
                     $sourceText = mb_convert_encoding($row[2], 'UTF-8', 'GBK');
                     $sourceId = $sources[$sourceText];
-                    Member::updateRepeatLog($originMember, $sourceId, $user, $sourcesIndexOfId);
+                    // Member::updateRepeatLog($originMember, $sourceId, $user, $sourcesIndexOfId);
                     $originSourceText = mb_convert_encoding($originMember->source_text, 'GBK');
                     $repeatLog = mb_convert_encoding($originMember->repeat_log, 'GBK');
                     $repeatLog = str_replace(',',":::", $repeatLog);

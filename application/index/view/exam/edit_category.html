@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>E5W系统</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- basic styles -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/ace.min.css" />
+    <link rel="stylesheet" href="/static/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="/static/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/static/css/ace.extend.css?1725150504" />
+    <link rel="stylesheet" href="/static/css/ace-ie.min.css" />
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/ace-extra.min.js"></script>
+    <script src="/static/js/ace.min.js"></script>
+    <script src="/static/js/ace-elements.min.js"></script>
+    <script src="/static/layer/layer.js"></script>
+    <script src="/static/js/ace.extend.js"></script>
+</head>
+
+<body>
+<!-- 面包屑 -->
+<div class="breadcrumbs" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>首页</li>
+        <li>部门权限</li>
+        <li>用户管理</li>
+        <li>添加用户信息</li>
+    </ul>
+    <div class="widget-toolbar">
+        <a href="javascript:history.go(-1);">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            <span class="text">返回</span>
+        </a>
+    </div>
+</div>
+<div class="page-content">
+    <div class="page-header header_title">
+        <h3 class="blue">添加用户信息</h3>
+    </div>
+    <div class="page-body">
+        <form class="form ajax-form" method="post" data-action="/index/tool/doedituser.html" role="form">
+            <div class="form-container">
+                <div class="form-body">
+                    <div class="form-groups">
+                        <div class="form-group">
+                            <label class="flex-control-label">所属部门</label>
+                            <div class="flex-control-input">
+                                <div class="form-tips"><span class="tis_import">*请选择上级部门</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">用户昵称</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="nickname" id="nickname" value="" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">真实姓名</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="realname" id="realname" value="" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">登录密码</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="password" id="password" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">钉钉编号</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="dingding" id="dingding" value="" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 门店名称 -->
+                        <div class="form-group">
+                            <label class="flex-control-label">联系电话</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="mobile" id="mobile" value="" class="form-control">
+                                <div class="form-tips"><span class="tis_import">*</span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">有/无效</label>
+                            <div class="flex-control-input">
+                                <select name="is_valid" id="is_valid" class="form-control" valid-selected="1">
+                                    <option  value="1">有效</option>
+                                    <option  value="0">无效</option>
+                                </select>
+                                <div class="form-tips"><span class="tis_import"></span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="flex-control-label">排序</label>
+                            <div class="flex-control-input">
+                                <input type="text" name="sort" id="sort" value="" class="form-control" valid-input="{type:['integer','请输入整数']}"/>
+                                <div class="form-tips">
+                                    <span class="tis_import"></span>
+                                    值为整数,数值越大首页排的越靠前
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="flex-control-input">
+                                <div class="footer-fixed-bottom text-left">
+                                    <input type="hidden" name="referer" value=""/>
+                                    <input type="hidden" name="id" value="" id="id"/>
+                                    <input type="submit" value="保存" class="btn btn-save-blue">
+                                    <a class="btn btn-save-gray" href="javascript:history.go(-1)">返回</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--表单页面帮助说明-->
+                <div class="form-aside">
+                    <dl class="helper">
+                        <dt>帮助说明</dt>
+                        <dd>
+                            <i class="icon-angle-right bigger-110"></i>
+                            <div class="text">说明</div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

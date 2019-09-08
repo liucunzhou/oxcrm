@@ -64,10 +64,11 @@ class Manager extends Base
 
             $status = !isset($get['status']) || $get['status'] == 0 ? 0 : $get['status'];
             $map[] = ['apply_status', '=', $status];
-            $list = model('MemberApply')->where($map)->with('member')->paginate($get['limit'], false, $config);
+            $list = model('MemberApply')->where($map)->with('member')->order('create_time desc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection()->toArray();
             foreach ($data as &$value) {
                 $member = $value['member'];
+                if(!is_array($member) || empty($value['member'])) continue;
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
@@ -118,7 +119,7 @@ class Manager extends Base
             $member = Member::get($applyData['member_id']);
             $data = $member->getData();
             $data['active_status'] = 0;
-            $result = MemberAllocate::updateAllocateData($applyData['user_id'], $applyData['member_id'], $data);
+            $result = MemberAllocate::insertAllocateData($applyData['user_id'], $applyData['member_id'], $data);
             if($result) {
                 $MemberApply->apply_status = 1;
                 $MemberApply->save();

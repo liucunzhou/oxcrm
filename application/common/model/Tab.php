@@ -100,7 +100,7 @@ class Tab
                         }
                     } else if ($val['id'] == 6) { // 意向客资
                         if (isset($get['possible_assign_status'])) {
-                            $vars['status'] = 5;
+                            $vars['status'] = 6;
                             // 有效已分配选中转台
                             $vars['possible_assign_status'] = 1;
                             $url = url('customer/mine', $vars);
@@ -122,7 +122,7 @@ class Tab
                                 'checked' => $checked
                             ];
                         } else {
-                            $vars['status'] = 5;
+                            $vars['status'] = 6;
                             // 有效已分配未选状态
                             $vars['possible_assign_status'] = 1;
                             $url = url('customer/mine', $vars);

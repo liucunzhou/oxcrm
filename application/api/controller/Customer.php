@@ -46,7 +46,7 @@ class Customer extends Base
     public function sea()
     {
         $get = Request::param();
-        $get['limit'] = $get['limit'] ? $get['limit'] : 60;
+        $get['limit'] = $get['limit'] ? $get['limit'] : 400;
         $config = [
             'page' => $get['page']
         ];
@@ -61,8 +61,10 @@ class Customer extends Base
         }
 
         if (isset($get['staff']) && $get['staff'] > 0) {
-            $map[] = ['user_id', '=' . $get['staff']];
+            $map[] = ['user_id', '=', $get['staff']];
         }
+
+        $map[] = ['active_status', 'not in', [3,4]];
 
         if (isset($get['date_range']) && !empty($get['date_range'])) {
             $range = explode('~', $get['date_range']);
@@ -104,24 +106,27 @@ class Customer extends Base
 
         $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection()->toArray();
-
-        if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-            if (isset($data[0]) && !empty($data[0])) {
+        if(isset($get['keywords']) && strlen($get['keywords']) == 11) {
+            if(isset($data[0]) && !empty($data[0])) {
                 $data[0]['active_status'] = 0;
-                MemberAllocate::updateAllocateData($this->user['id'], $data[0]['id'], $data[0]);
+                MemberAllocate::insertAllocateData($this->user['id'], $data[0]['id'], $data[0]);
             }
         }
 
+        $users = User::getUsers();
         foreach ($data as &$value) {
+            $value['operator'] = $users[$value['operate_id']]['realname'];
             $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
             $value['news_type'] = $this->newsTypes[$value['news_type']];
             $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
-            if ($this->auth['is_show_alias'] == '1') {
-                $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['alias'] : $value['source_text'];
+
+            if($this->auth['is_show_alias'] == '1') {
+                $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
             } else {
-                $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
             }
         }
+
         $result = [
             'code' => 0,
             'msg' => '获取数据成功',
@@ -136,88 +141,76 @@ class Customer extends Base
     public function mine()
     {
         $get = Request::param();
-        $get['limit'] = $get['limit'] ? $get['limit'] : 60;
+        $get['limit'] = isset($get['limit']) ? $get['limit'] : 400;
+        $get['get'] = isset($get['page']) ? $get['page'] : 0;
         $config = [
             'page' => $get['page']
         ];
         $map = Search::customerMine($this->user, $get);
         isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
         if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-            $map = [];
             $mobiles = MobileRelation::getMobiles($get['keywords']);
-            if (!empty($mobiles)) {
+            if(!empty($mobiles)) {
                 $map[] = ['mobile', 'in', $mobiles];
             } else {
                 $map[] = ['mobile', '=', $get['keywords']];
             }
-            $list = model('MemberAllocate')::hasWhere('member', $map, "Member.*")->order('id desc')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-            $map = [];
             $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-            $list = model('MemberAllocate')::hasWhere('member', $map, 'Member.*')->order('id desc')->with('member')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-            $map = [];
             $map[] = ['mobile', '=', $get['keywords']];
-        } else {
-            $list = model('MemberAllocate')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
         }
 
-        if (!empty($list)) {
+        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+        if(!empty($list)) {
             $users = User::getUsers();
             $data = $list->getCollection()->toArray();
-            if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                if (isset($data[0]) && !empty($data[0])) {
+            /**
+            if(isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                if(isset($data[0]) && !empty($data[0])) {
                     $data[0]['active_status'] = 0;
-                    MemberAllocate::updateAllocateData($this->user['id'], $data[0]['id'], $data[0]);
+                    MemberAllocate::updateAllocateData($this->user['id'], $data[0]['member_id'], $data[0]);
                 }
             }
+             * **/
 
             foreach ($data as &$value) {
-                $value['allocate_time'] = $value['create_time'];
+                $value['operator'] = $users[$value['operate_id']]['realname'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];
-                if (!empty($get['keywords'])) {
-                    $value['member_id'] = $value['id'];
-                }
-                if (empty($value['member'])) {
-                    $memberObj = Member::get($value['member_id']);
-                    if ($memberObj) {
-                        $member = $memberObj->getData();
-                    } else {
-                        $member = [];
-                    }
-                } else {
-                    $member = $value['member'];
-                    unset($value['member']);
-                }
-
-                if (empty($member)) continue;
-
-                $member['member_id'] = $member['id'];
-                unset($member['id']);
-                $value = array_merge($value, $member);
                 $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
-                $value['intention_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
-                if ($this->auth['is_show_alias'] == '1') {
-                    $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['alias'] : $value['source_text'];
+                $value['allocate_time'] = $value['create_time'];
+                if($value['member_create_time']>0) {
+                    $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
                 } else {
-                    $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                    $value['member_create_time'] = $value['create_time'];
                 }
-                $value['create_time'] = date('Y-m-d H:i', $member['create_time']);
+
+                if($value['member_id'] > 0) {
+                    $memberObj = Member::get($value['member_id']);
+                    $value['visit_amount'] = $memberObj->visit_amount;
+                    if($this->auth['is_show_alias'] == '1') {
+                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                    } else {
+                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                    }
+                }
             }
+
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
                 'count' => $list->total(),
-                'data' => $data
+                'data' => $data,
+                'map' => $map
             ];
         } else {
+
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
-                'count' => 0,
                 'data' => []
             ];
         }
@@ -243,6 +236,7 @@ class Customer extends Base
             $data = $list->getCollection()->toArray();
             foreach ($data as &$value) {
                 $member = $value['member'];
+                if (empty($member)) continue;
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
@@ -327,7 +321,13 @@ class Customer extends Base
             }
         }
 
-        $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
+        $staffes = User::getUsersInfoByDepartmentId($this->user['department_id'], false);
+        $staff = [
+            'id' => 'all',
+            'realname' => '所有员工'
+        ];
+        array_unshift($staffes, $staff);
+
         $areas = Region::getAreaList($city_id);
         $areas = array_values($areas);
         $sources = array_values($this->sources);
@@ -369,6 +369,8 @@ class Customer extends Base
         $Model = new Member();
         $Model->member_no = date('YmdHis') . rand(100, 999);
 
+        $post['mobile'] = trim($post['mobile']);
+        $post['mobile'] = intval($post['mobile']);
         ### 验证手机号唯一性
         $originMember = $Model::checkMobile($post['mobile']);
         if ($originMember) {
@@ -378,30 +380,26 @@ class Customer extends Base
             ]);
         }
 
-        ### 开启事务
-        $Model->startTrans();
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
-            $Model->source_text = $this->sources[$post['source_id']]['alias'];
+            $Model->source_text = $this->sources[$post['source_id']]['title'];
         }
         ### 基本信息入库
         $Model->is_sea = 1;
         unset($post['token']);
+        $Model->operate_id = $this->user['id'];
         $result1 = $Model->save($post);
 
         ### 新添加客资要加入到分配列表中
-        $result2 = MemberAllocate::updateAllocateData($this->user['id'], $Model->id, $post);
+        $post['operate_id'] = $this->user['id'];
+        MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
 
-        if ($result1 && $result2) {
-            ### 提交数据
-            $Model->commit();
-
+        if ($result1) {
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);
             $result = xjson(['code' => 0, 'msg' => '添加客资成功']);
         } else {
-            $Model->rollback();
             $result = xjson(['code' => '500', 'msg' => '添加客资失败, 请重试']);
         }
 
@@ -413,20 +411,13 @@ class Customer extends Base
 
         $post = Request::param();
         $Model = Member::get($post['id']);
-        ### 开启事务
-        $Model->startTrans();
         $result2 = MemberAllocate::updateAllocateData($this->user['id'], $Model->id, $post);
-
         if ($result2) {
-            ### 提交数据
-            $Model->commit();
-
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);
             return xjson(['code' => 0, 'msg' => '编辑客户信息成功']);
         } else {
-            $Model->rollback();
             return xjson(['code' => 500, 'msg' => '编辑客户信息失败, 请重试']);
         }
     }
@@ -456,6 +447,8 @@ class Customer extends Base
             $map[] = ['next_visit_time', '>', 0];
             $map[] = ['next_visit_time', '<', $tomorrow];
         }
+
+        $map[] = ['active_status', 'not in', [3,4]];
 
         if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
             $map = [];

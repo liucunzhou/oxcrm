@@ -39,6 +39,7 @@ class Base extends Controller
             ]);
             exit;
         }
+
         $this->user = (array)$user;
     }
 

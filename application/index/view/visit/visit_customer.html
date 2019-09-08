@@ -394,6 +394,11 @@
             let nextVisitTime = $("#next_visit_time").val();
             let content = $("#content").val();
 
+            if(activeStatus == 0) {
+                layer.msg('请选择跟进状态');
+                return false;
+            }
+
             if((activeStatus != 3 && activeStatus != 4) && nextVisitTime == '') {
                 layer.msg('请选择下次回访时间');
                 return false;

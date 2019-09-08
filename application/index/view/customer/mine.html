@@ -23,7 +23,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
-                    <form class="layui-form layui-hide" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                    <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <select name="staff" lay-verify="" lay-search>
@@ -87,6 +87,14 @@
                             {:button(["event"=>"createOrder", "text"=>"申请成单"])}
                         </div>
                     </script>
+                    <{if $user['nickname'] == 'admin'}>
+                        <script type="text/html" id="table-tool">
+                            <div class="layui-btn-container">
+                                {:button(["event"=>"editCustomer", "text"=>"编辑"])}
+                                {:button(["event"=>"deleteCustomer", "text"=>"删除"])}
+                            </div>
+                        </script>
+                    <{/if}>
                 </div>
             </div>
         </div>
@@ -123,6 +131,11 @@
                     "align": "center",
                     "event": "visitCustomer",
                 }, {
+                    "field": "operator",
+                    "title": "录入者",
+                    "width": 88,
+                    "align": "center"
+                },{
                     "field": "user_realname",
                     "title": "跟单人",
                     "width": 88,
@@ -185,10 +198,19 @@
                     "title": "分配时间",
                     "width": 165
                 }, {
-                    "field": "create_time",
+                    "field": "member_create_time",
                     "title": "创建日期",
                     "width": 165
+                },
+                <{if $user['nickname'] == 'admin'}>
+                {
+                    "type": "tool",
+                    "title": "操作",
+                    "toolbar": "#table-tool",
+                    "width": 226,
+                    "fixed": "right"
                 }
+                <{/if}>
             ]]
             ,page: true
             ,limit: 20
@@ -368,6 +390,17 @@
                         content: url,
                         area: [window.innerWidth + 'px', window.innerHeight + 'px'],
                         offset: 'rb'
+                    });
+                    break;
+                case 'deleteCustomer':
+                    url = '/index/customer/deleteCustomer.html?id=' + id;
+                    $.get(url, function (res) {
+                        if(res.code =='200') {
+                            layer.msg("删除成功");
+                            table.reload("table");
+                        } else {
+                            layser.msg(res.msg);
+                        }
                     });
                     break;
             };

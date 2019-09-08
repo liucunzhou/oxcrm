@@ -90,7 +90,7 @@ class Task extends Command
     {
         $redis = redis();
         $map = [];
-        // $map[] = ['id', '=', 469];
+        $map[] = ['id', '=', 469];
         $users = User::withTrashed()->where($map)->select();
         foreach($users as $user) {
             $where = [];
@@ -720,20 +720,28 @@ class Task extends Command
      */
     protected function getDateTimeStr8Bytes($rawData)
     {
-        $rawData = trim($rawData);
+        echo $rawData = trim($rawData);
 
-        if($rawData == '0x0000000000000000') return 0;
+        if($rawData == '0x002D247F018B80D4') return 0;
 
-        if($rawData == '0x0000000000000000') return 0;
+        if($rawData == 'x0000000000000000') return 0;
 
+        echo "\nrawData\n";
         // 1900-01-01 的时间戳
         $start = -2209017600;
-        $hex = substr($rawData, 0, 9);    // 4字节表示剩余的部分 faction
-        $stamp = hexdec($hex) * 86400;
-        $seconds = $start + $stamp;
-        if($seconds > 1564850585) {
-            $seconds = 1564850585;
-        }
+        echo $hex = substr($rawData, 0, 9);    // 4字节表示剩余的部分 faction
+        echo $stamp = hexdec($hex) * 86400;
+
+        echo "\necho seconds\n";
+        echo $seconds = $start + $stamp;
+        echo "\n";
+
+        if($seconds > time()) return 0;
+
+
+        //if($seconds < 1472741871) {
+        //    $seconds = 1472741871;
+        //}
 
         $date = date('Y-m-d', $seconds);;
 

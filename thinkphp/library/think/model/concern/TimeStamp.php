@@ -54,8 +54,9 @@ trait TimeStamp
     {
 
         if (empty($time)) {
-            return;
+            return 0;
         }
+
         if (false === $format) {
             return $time;
         } elseif (false !== strpos($format, '\\')) {
@@ -69,7 +70,8 @@ trait TimeStamp
             // $dateTime = new DateTime($time);
         }
 
-        // return $dateTime->format($format);
+         // return $dateTime->format($format);
+        // return date('Y-m-d H:i', 0);
         return date('Y-m-d H:i', $time);
     }
 

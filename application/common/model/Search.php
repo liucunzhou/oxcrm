@@ -37,10 +37,18 @@ class Search
             case 1: // 管理员
 
             case 15: // 客服经理
-
+                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
             case 7: // 洗单组主管
-                if(!isset($get['staff'])) $map[] = self::getUserStaffs($user);
+                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
             case 2: // 洗单组客服
                 $map[] = ['user_id', '=', $user['id']];
@@ -49,19 +57,31 @@ class Search
                 $map[] = self::getUserStaffs($user);
                 break;
             case 4: // 推荐组客服
-                if(!isset($get['staff']))  $map[] = ['user_id', '=', $user['id']];
+                if(!isset($get['staff']) || empty($get['staff']))  $map[] = ['user_id', '=', $user['id']];
                 break;
             case 10: // 派单组主管
-                if(!isset($get['staff'])) $map[] = self::getUserStaffs($user);
+                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
             case 11: // 派单组客服
                 $map[] = ['user_id', '=', $user['id']];
                 break;
             case 5: // 门店主管
-                if(!isset($get['staff'])) $map[] = self::getUserStaffs($user);
+                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
             case 6:
-                if(!isset($get['staff'])) $map[] = self::getUserStaffs($user);
+                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
             case 8: // 门店销售
                 $map[] = ['user_id', '=', $user['id']];
@@ -72,7 +92,7 @@ class Search
                 break;
 
             default :
-                $map = [];
+                $map[] = ['user_id', '=', $user['id']];
                 break;
         }
 
@@ -101,7 +121,7 @@ class Search
         }
 
         if (isset($get['date_range']) && !empty($get['date_range'])) {
-            $range = explode('~', $get['date_range']);
+            $range = self::getDateRange($get['next_visit_time']);
             $map[] = ['create_time', 'between', $range];
         }
 
@@ -152,7 +172,6 @@ class Search
         if(!empty($user['department_id'])) {
             $staffs = User::getUsersByDepartmentId($user['department_id']);
             if($staffs) {
-                // array_push($staffs, $user['id']);
                 $map = ['user_id', 'in', $staffs];
             } else {
                 $map = ['user_id', '=', $user['id']];

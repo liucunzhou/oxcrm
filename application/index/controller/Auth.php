@@ -242,7 +242,7 @@ class Auth extends Base
 
         if($result) {
             // 更新缓存
-            \app\common\model\AuthGroup::updateCache($get['id']);
+            // \app\common\model\AuthGroup::updateCache($get['id']);
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);

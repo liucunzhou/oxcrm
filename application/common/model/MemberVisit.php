@@ -20,6 +20,15 @@ class MemberVisit extends Model
         return $this->belongsTo('member', 'member_id');
     }
 
+    public static function getMemberVisitCount($member)
+    {
+        $map = [];
+        $map[] = ['member_id', '=', $member['id']];
+        $allocate = MemberAllocate::where($map)->select();
+        $count = [];
+
+    }
+
     public static function getMemberVisitList($user, $auth, $member)
     {
         $self = false;
@@ -27,14 +36,16 @@ class MemberVisit extends Model
         if ($auth['show_visit_log']===0) $self = true;
 
         $map = [];
-        $map[] = ['member_no', '=', $member['member_no']];
+        $map[] = ['member_id', '=', $member['id']];
         $list = self::where($map)->order('create_time desc')->select();
+        $userIds = [];
         if (!empty($list)) {
             $visits = $data = $list->toArray();
             $count = [];
             foreach ($visits as &$value) {
                 $memberId = $value['member_id'];
                 $userId = $value['user_id'];
+                $userIds[] = $userId;
                 $time = strtotime($value['create_time']);
                 $value['create_time'] = date('y/m/d H:i', $time);
                 $cuser = User::getUserByNo($value['clienter_no']);
@@ -67,6 +78,26 @@ class MemberVisit extends Model
             }
             $visits = array_filter($visits);
         }
+
+        if($userIds) {
+            $userIds = array_unique($userIds);
+            $map = [];
+            $map[] = ['member_id', '=', $member['id']];
+            $allocateRs = MemberAllocate::where($map)->select();
+            if ($allocateRs) {
+                $users = User::getUsers();
+                foreach ($allocateRs as $allocate) {
+                    $cuserId = $allocate->user_id;
+                    if(!in_array($cuserId, $userIds)) {
+                        $count[$cuserId]['user_id'] = $users[$cuserId]['realname'];
+                        $count[$cuserId]['allocate_create_time'] = $allocate->create_time;
+                        $count[$cuserId]['next_visit_time'] = '-';
+                        $count[$cuserId]['visit_times'] = 0;
+                    }
+                }
+            }
+        }
+
 
         return ['log'=>$visits, 'count'=>$count];
     }
