@@ -1,4 +1,4 @@
 /config/database.php
 /uploads
 /runtime
-/update/*
+/update
