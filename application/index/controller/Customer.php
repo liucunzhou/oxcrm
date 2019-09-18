@@ -78,6 +78,7 @@ class Customer extends Base
             return json($result);
 
         } else {
+
             $get = Request::param();
             $get['create_time'] = str_replace('+', '', $get['create_time']);
             $this->assign('get', $get);
