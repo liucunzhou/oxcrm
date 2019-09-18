@@ -28,6 +28,8 @@ do
     other=`git rev-list --all --objects | grep $sha`
     #lineBreak=`echo -e "\n"`
     output="${output}\n${size},${compressedSize},${other}"
+
+    git filter-branch --force --index-filter "git rm -rf --cached --ignore-unmatch ${other}" --prune-empty --tag-name-filter cat -- --all
 done
 
 echo -e $output | column -t -s ', '
