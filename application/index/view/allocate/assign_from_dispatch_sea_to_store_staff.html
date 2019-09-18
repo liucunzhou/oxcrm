@@ -13,7 +13,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Customer/doAssignToStoreStaff')}" lay-filter="component-form">
+            <form class="layui-form" method="post" action="{:url('Allocate/doAssignToStoreStaff')}" lay-filter="component-form">
                 <div class="layui-form-item">
                     <label class="layui-form-label">选择客服</label>
                     <div class="layui-input-block">
@@ -56,8 +56,15 @@
             ,table = layui.table
             ,form = layui.form;
 
+
+        $(document).on("focus", ".layui-select-title input", function () {
+            console.log($(this).html());
+            $(this).val('');
+        });
+
         form.render(null, 'component-form');
         form.on("select(staffs)", function (data) {
+            form.render("select");
             console.log(data);
             let text = $("#staffs").find("option:selected").text();
             let appended = false;

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>系统统计</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">区间选择</div>
+                        <div class="layui-card-body">
+                            <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <select name="department_id" id="department_id" lay-filter="department_id">
+                                            <option value="0">选择部门</option>
+                                            <{foreach item="val" name="departments"}>
+                                                <option value="{$val['id']}" ><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
+                                            <{/foreach}>
+                                        </select>
+                                    </div>
+
+                                    <div class="layui-inline">
+                                        <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
+                                    </div>
+
+                                    <div class="layui-inline ">
+                                        <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                                    </div>
+                                    <div class="layui-inline ">
+                                        <button class="layui-btn" lay-submit="" lay-filter="form-submit">导出</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">客资总数</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
+                                <div carousel-item>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs3">
+                                            <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                                <h3>总客资</h3>
+                                                <p><cite>{$total[0]}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" onclick="layer.tips('不跳转', this, {tips: 3});" class="layadmin-backlog-body">
+                                                <h3>未跟进</h3>
+                                                <p><cite>{$total[1]}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a lay-href="template/goodslist.html" class="layadmin-backlog-body">
+                                                <h3>跟进中</h3>
+                                                <p><cite>{$total[2]}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                                <h3>有效客资</h3>
+                                                <p><cite>{$total[3]}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a lay-href="app/content/comment.html" class="layadmin-backlog-body">
+                                                <h3>意向客资</h3>
+                                                <p><cite>{$total[4]}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                                                <h3>无效客资</h3>
+                                                <p><cite>{$total[5]}</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a lay-href="app/forum/list.html" class="layadmin-backlog-body">
+                                                <h3>失效客资</h3>
+                                                <p><cite>{$total[6]}</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据统计概览</div>
+                        <div class="layui-card-body">
+
+                            <table class="layui-table">
+                                <thead>
+                                <tr>
+                                    <th class="left">渠道</th>
+                                    <th class="center">总数据</th>
+                                    <th class="center">未跟进</th>
+                                    <th class="center">跟进中</th>
+                                    <th class="center">有效客资</th>
+                                    <th class="center">意向客资</th>
+                                    <th class="center">无效客资</th>
+                                    <th class="center">失效客资</th>
+                                    <!--<th class="center">重单</th>-->
+                                </tr>
+                                </thead>
+
+                                <{foreach name='groupSource' item='val'}>
+                                <tr>
+                                    <th class="left">{$key}</th>
+                                    <th class="center">{$val[100]}</th>
+                                    <th class="center">{$val[0]}</th>
+                                    <th class="center">{$val[1]}</th>
+                                    <th class="center">{$val[5]}</th>
+                                    <th class="center">{$val[6]}</th>
+                                    <th class="center">{$val[3]}</th>
+                                    <th class="center">{$val[4]}</th>
+                                    <!--<th class="center">0</th>-->
+                                </tr>
+                                <{/foreach}>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/layui/layui.js?t=1"></script>
+<script>
+    layui.config({
+        base: '/assets/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'table', 'laydate', 'console'], function () {
+        var $ = layui.jquery
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '.date_range',
+            type: 'date',
+            range: '~'
+        });
+
+    });
+</script>
+</body>
+</html>
