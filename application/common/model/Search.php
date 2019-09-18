@@ -10,7 +10,17 @@ class Search
         }
 
         if (isset($get['status'])) {
-            $map[] = ['active_status', '=', $get['status']];
+            if($user['role_id'] == 10 || $user['role_id'] == 11) { // 派单组
+                if($get['status'] == 1) {
+                    $map[] = ['active_status', 'in', [1,5,6]];
+                } else if ($get['status'] == 1) {
+                    $map[] = ['active_status', 'in', [3,4]];
+                } else {
+                    $map[] = ['active_status', '=', $get['status']];
+                }
+            } else {
+                $map[] = ['active_status', '=', $get['status']];
+            }            
         }
 
         if (isset($get['active_assign_status'])) {
