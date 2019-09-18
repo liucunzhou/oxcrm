@@ -33,3 +33,5 @@ do
 done
 
 echo -e $output | column -t -s ', '
+
+rm -rf .git/refs/original/git reflog expire --expire=now --allgit gc --prune=now
