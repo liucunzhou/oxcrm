@@ -98,337 +98,331 @@
     <script src="/assets/layui/layui.js"></script>
     <script>
         layui.config({
-                base: '/assets/' //静态资源所在路径
-            }).extend({
-                index: 'lib/index' //主入口模块
-            }).use(['index', 'table', 'laydate'], function() {
-                    var $ = layui.jquery,
-                        table = layui.table,
-                        laydate = layui.laydate;
+            base: '/assets/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'table', 'laydate'], function() {
+            var $ = layui.jquery,
+                table = layui.table,
+                laydate = layui.laydate;
 
-                    table.render({
-                            elem: '#table',
-                            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
-                            height: 'full-100',
-                            defaultToolbar: ['filter'],
-                            toolbar: '#table-toolbar',
-                            title: '我的客资',
-                            cols: [
-                                [{
-                                    "type": "checkbox",
-                                    "width": 50,
-                                    "fixed": "left"
-                                }, {
-                                    "type": "tool",
-                                    "toolbar": "#table-tool",
-                                    "title": "操作",
-                                    "width": 88,
-                                    "align": "center",
-                                }, {
-                                    "field": "visit_amount",
-                                    "title": "回访",
-                                    "width": 60,
-                                    "align": "center",
-                                    "event": "visitCustomer",
-                                }, {
-                                    "field": "assign_status",
-                                    "title": "是否分配",
-                                    "width": 88,
-                                    "align": "center"
-                                }, {
-                                    "field": "user_realname",
-                                    "title": "跟单人",
-                                    "width": 88,
-                                    "align": "center"
-                                }, {
-                                    "field": "realname",
-                                    "title": "客户姓名",
-                                    "width": 88,
-                                    "align": "center"
-                                }, {
-                                    "field": "mobile",
-                                    "title": "手机号",
-                                    "width": 108,
-                                    "align": "center"
-                                }, {
-                                    "field": "banquet_size",
-                                    "title": "桌数",
-                                    "width": 60,
-                                    "align": "center"
-                                }, {
-                                    "field": "budget",
-                                    "title": "预算",
-                                    "width": 90,
-                                    "align": "center"
-                                }, {
-                                    "field": "wedding_date",
-                                    "title": "订婚日期",
-                                    "width": 106,
-                                    "align": "center"
-                                }, {
-                                    "field": "zone",
-                                    "title": "区域",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "hotel_text",
-                                    "title": "酒店",
-                                    "width": 200,
-                                    "align": "center"
-                                }, {
-                                    "field": "source_text",
-                                    "title": "客资渠道",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "active_status",
-                                    "title": "回访状态",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "news_type",
-                                    "title": "信息类型",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "remark",
-                                    "title": "备注"
-                                }, {
-                                    "field": "allocate_type",
-                                    "title": "获取方式",
-                                    "width": 88
-                                }, {
-                                    "field": "allocate_time",
-                                    "title": "分配时间",
-                                    "width": 165
-                                }, {
-                                    "field": "member_create_time",
-                                    "title": "创建日期",
-                                    "width": 165
-                                }, < {
-                                    if $user['nickname'] == 'admin'
-                                } > {
-                                    "type": "tool",
-                                    "title": "操作",
-                                    "toolbar": "#table-tool",
-                                    "width": 226,
-                                    "fixed": "right"
-                                } < {
-                                    /if}>
-                                ]], page: true, limit: 20, limits: [20, 30]
-                            });
+            table.render({
+                elem: '#table',
+                url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+                height: 'full-100',
+                defaultToolbar: ['filter'],
+                toolbar: '#table-toolbar',
+                title: '我的客资',
+                cols: [
+                    [{
+                        "type": "checkbox",
+                        "width": 50,
+                        "fixed": "left"
+                    }, {
+                        "type": "tool",
+                        "toolbar": "#table-tool",
+                        "title": "操作",
+                        "width": 88,
+                        "align": "center",
+                    }, {
+                        "field": "visit_amount",
+                        "title": "回访",
+                        "width": 60,
+                        "align": "center",
+                        "event": "visitCustomer",
+                    }, {
+                        "field": "assign_status",
+                        "title": "是否分配",
+                        "width": 88,
+                        "align": "center"
+                    }, {
+                        "field": "user_realname",
+                        "title": "跟单人",
+                        "width": 88,
+                        "align": "center"
+                    }, {
+                        "field": "realname",
+                        "title": "客户姓名",
+                        "width": 88,
+                        "align": "center"
+                    }, {
+                        "field": "mobile",
+                        "title": "手机号",
+                        "width": 108,
+                        "align": "center"
+                    }, {
+                        "field": "banquet_size",
+                        "title": "桌数",
+                        "width": 60,
+                        "align": "center"
+                    }, {
+                        "field": "budget",
+                        "title": "预算",
+                        "width": 90,
+                        "align": "center"
+                    }, {
+                        "field": "wedding_date",
+                        "title": "订婚日期",
+                        "width": 106,
+                        "align": "center"
+                    }, {
+                        "field": "zone",
+                        "title": "区域",
+                        "width": 100,
+                        "align": "center"
+                    }, {
+                        "field": "hotel_text",
+                        "title": "酒店",
+                        "width": 200,
+                        "align": "center"
+                    }, {
+                        "field": "source_text",
+                        "title": "客资渠道",
+                        "width": 100,
+                        "align": "center"
+                    }, {
+                        "field": "active_status",
+                        "title": "回访状态",
+                        "width": 100,
+                        "align": "center"
+                    }, {
+                        "field": "news_type",
+                        "title": "信息类型",
+                        "width": 100,
+                        "align": "center"
+                    }, {
+                        "field": "remark",
+                        "title": "备注"
+                    }, {
+                        "field": "allocate_type",
+                        "title": "获取方式",
+                        "width": 88
+                    }, {
+                        "field": "allocate_time",
+                        "title": "分配时间",
+                        "width": 165
+                    }, {
+                        "field": "member_create_time",
+                        "title": "创建日期",
+                        "width": 165
+                    }]
+                ],
+                page: true,
+                limit: 20,
+                limits: [20, 30]
+            });
 
-                        laydate.render({
-                            elem: '.date_range',
-                            type: 'date',
-                            range: '~'
+            laydate.render({
+                elem: '.date_range',
+                type: 'date',
+                range: '~'
+            });
+
+            var getSelectedIds = function(jsonArr) {
+                var ids = [];
+                jsonArr.forEach(function(value, key) {
+                    ids.push(value.id)
+                });
+
+                return ids.join(',');
+            };
+
+            var getSelectedMemberIds = function(jsonArr) {
+                var ids = [];
+                jsonArr.forEach(function(value, key) {
+                    ids.push(value.member_id)
+                });
+                return ids.join(',');
+            };
+
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.6;
+            var url = '';
+            //头工具栏事件
+            table.on('toolbar(table)', function(obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                var checkedboxes = checkStatus.data;
+                var url = '';
+                var ids = '';
+                switch (obj.event) {
+                    case "searchCustomer":
+                        if ($("#advance-search").hasClass("layui-hide")) {
+                            $("#advance-search").removeClass("layui-hide");
+                        } else {
+                            $("#advance-search").addClass("layui-hide");
+                        }
+                        break;
+
+                    case 'addCustomer':
+                        url = '/index/customer/addcustomer.html';
+                        layer.open({
+                            type: 2,
+                            title: '添加客户',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
                         });
+                        break;
 
-                        var getSelectedIds = function(jsonArr) {
-                            var ids = [];
-                            jsonArr.forEach(function(value, key) {
-                                ids.push(value.id)
-                            });
+                    case 'bindCustomer':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要绑定的客资");
+                            return false;
+                        }
+                        if (checkedboxes.length > 1) {
+                            layer.msg("一次只能绑定一个客资");
+                            return false;
+                        }
 
-                            return ids.join(',');
-                        };
-
-                        var getSelectedMemberIds = function(jsonArr) {
-                            var ids = [];
-                            jsonArr.forEach(function(value, key) {
-                                ids.push(value.member_id)
-                            });
-                            return ids.join(',');
-                        };
-
-                        var height = window.innerHeight;
-                        var width = window.innerWidth * 0.6;
-                        var url = '';
-                        //头工具栏事件
-                        table.on('toolbar(table)', function(obj) {
-                            var checkStatus = table.checkStatus(obj.config.id);
-                            var checkedboxes = checkStatus.data;
-                            var url = '';
-                            var ids = '';
-                            switch (obj.event) {
-                                case "searchCustomer":
-                                    if ($("#advance-search").hasClass("layui-hide")) {
-                                        $("#advance-search").removeClass("layui-hide");
-                                    } else {
-                                        $("#advance-search").addClass("layui-hide");
-                                    }
-                                    break;
-
-                                case 'addCustomer':
-                                    url = '/index/customer/addcustomer.html';
-                                    layer.open({
-                                        type: 2,
-                                        title: '添加客户',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'bindCustomer':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要绑定的客资");
-                                        return false;
-                                    }
-                                    if (checkedboxes.length > 1) {
-                                        layer.msg("一次只能绑定一个客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/customer/bindCustomer.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '绑定客资',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToWashGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntowashgroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分配到洗单组',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToRecommendGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntorecommendgroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到推荐组',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToDispatchGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assignToDispatchGroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到派单组',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-
-                                case 'assignToStoreStaff':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntostorestaff.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到门市销售',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-                                case 'createOrder':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-
-                                    if (checkedboxes.length > 1) {
-                                        layer.msg("每次申请一张订单");
-                                        return false;
-                                    }
-
-                                    var order_status = checkedboxes.order_status;
-                                    if (order_status == '1') {
-                                        layer.msg("该客资已经已经成单");
-                                        return false;
-                                    }
-                                    url = '/index/order/createorder.html?id=' + checkedboxes[0].id + '&member_id=' + checkedboxes[0].member_id + '&user_id=' + checkedboxes[0].user_id;
-                                    layer.open({
-                                        type: 2,
-                                        title: '生成订单',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                            };
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/customer/bindCustomer.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '绑定客资',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
                         });
+                        break;
 
-                        //监听行工具事件
-                        table.on('tool(table)', function(obj) {
-                            console.log(obj.data);
-                            var id = obj.data.id;
-                            var member_id = obj.data.member_id;
-                            switch (obj.event) {
-                                case 'editCustomer':
-
-                                    url = '/index/customer/editcustomer.html?member_id=' + member_id;
-                                    layer.open({
-                                        type: 2,
-                                        title: '编辑',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'visitCustomer':
-                                    url = '/index/visit/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
-                                    layer.open({
-                                        type: 2,
-                                        title: '回访客户',
-                                        content: url,
-                                        area: [window.innerWidth + 'px', window.innerHeight + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-                                case 'deleteCustomer':
-                                    url = '/index/customer/deleteCustomer.html?id=' + id;
-                                    $.get(url, function(res) {
-                                        if (res.code == '200') {
-                                            layer.msg("删除成功");
-                                            table.reload("table");
-                                        } else {
-                                            layser.msg(res.msg);
-                                        }
-                                    });
-                                    break;
-                            };
+                    case 'assignToWashGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntowashgroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分配到洗单组',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
                         });
+                        break;
 
-                    });
+                    case 'assignToRecommendGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntorecommendgroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到推荐组',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'assignToDispatchGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assignToDispatchGroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到派单组',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+
+                    case 'assignToStoreStaff':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntostorestaff.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到门市销售',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+                    case 'createOrder':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+
+                        if (checkedboxes.length > 1) {
+                            layer.msg("每次申请一张订单");
+                            return false;
+                        }
+
+                        var order_status = checkedboxes.order_status;
+                        if (order_status == '1') {
+                            layer.msg("该客资已经已经成单");
+                            return false;
+                        }
+                        url = '/index/order/createorder.html?id=' + checkedboxes[0].id + '&member_id=' + checkedboxes[0].member_id + '&user_id=' + checkedboxes[0].user_id;
+                        layer.open({
+                            type: 2,
+                            title: '生成订单',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(table)', function(obj) {
+                console.log(obj.data);
+                var id = obj.data.id;
+                var member_id = obj.data.member_id;
+                switch (obj.event) {
+                    case 'editCustomer':
+
+                        url = '/index/customer/editcustomer.html?member_id=' + member_id;
+                        layer.open({
+                            type: 2,
+                            title: '编辑',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'visitCustomer':
+                        url = '/index/visit/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
+                        layer.open({
+                            type: 2,
+                            title: '回访客户',
+                            content: url,
+                            area: [window.innerWidth + 'px', window.innerHeight + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+                    case 'deleteCustomer':
+                        url = '/index/customer/deleteCustomer.html?id=' + id;
+                        $.get(url, function(res) {
+                            if (res.code == '200') {
+                                layer.msg("删除成功");
+                                table.reload("table");
+                            } else {
+                                layser.msg(res.msg);
+                            }
+                        });
+                        break;
+                };
+            });
+
+        });
     </script>
 </body>
 
