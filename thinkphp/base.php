@@ -13,10 +13,8 @@ namespace think;
 // 载入Loader类
 require __DIR__ . '/library/think/Loader.php';
 
-echo '123';
 // 注册自动加载
 Loader::register();
-exit;
 
 // 注册错误和异常处理机制
 Error::register();
