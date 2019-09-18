@@ -1,4 +1,5 @@
 <?php
+
 namespace app\index\controller;
 
 use app\common\model\DuplicateLog;
@@ -93,7 +94,7 @@ class Visit extends Base
         ### 获取城市列表
         $cities = Region::getCityList(0);
         $this->assign('cities', $cities);
-        if(in_array($this->user['role_id'], [3,4,10,11])) {
+        if (in_array($this->user['role_id'], [3, 4, 10, 11])) {
             $this->assign('source_type', "select");
         } else {
             $this->assign('source_type', "input");
@@ -113,8 +114,10 @@ class Visit extends Base
         $post = Request::post();
         $Member = Member::get($post['member_id']);
         $originAllocate = MemberAllocate::getAllocate($this->user['id'], $post['member_id']);
-        if (empty($originAllocate)) {
-            return json(['code' => '500', 'msg' => '您不能回访这个客资']);
+        if ($this->user['role_id'] != 10 && $this->user['role_id'] != 11) {
+            if (empty($originAllocate)) {
+                return json(['code' => '500', 'msg' => '您不能回访这个客资']);
+            }
         }
 
         $Model = model("MemberVisit");
@@ -135,14 +138,14 @@ class Visit extends Base
         ### 该客资的回放次数+1
         if (in_array($this->user['role_id'], [3, 4, 10, 11])) {
             // 推荐组＆派单组修改信息的时候自动同步到到客资基本信息
-            if(isset($post['realname'])) $Member->realname = $post['realname'];
-            if(isset($post['budget'])) $Member->budget = $post['budget'];
-            if(isset($post['banquet_size'])) $Member->banquet_size = $post['banquet_size'];
-            if(isset($post['news_type'])) $Member->news_type = $post['news_type'];
-            if(isset($post['source_id'])) $Member->source_id = $post['source_id'];
-            if(isset($post['source_id'])) $Model->source_text = $this->sources[$post['source_id']]['title'];
-            if(isset($post['zone'])) $Member->zone = $post['zone'];
-            if(isset($post['hotel_text'])) $Member->hotel_text = $post['hotel_text'];
+            if (isset($post['realname'])) $Member->realname = $post['realname'];
+            if (isset($post['budget'])) $Member->budget = $post['budget'];
+            if (isset($post['banquet_size'])) $Member->banquet_size = $post['banquet_size'];
+            if (isset($post['news_type'])) $Member->news_type = $post['news_type'];
+            if (isset($post['source_id'])) $Member->source_id = $post['source_id'];
+            if (isset($post['source_id'])) $Model->source_text = $this->sources[$post['source_id']]['title'];
+            if (isset($post['zone'])) $Member->zone = $post['zone'];
+            if (isset($post['hotel_text'])) $Member->hotel_text = $post['hotel_text'];
             if (isset($post['active_status'])) {
                 // $Member->status = $post['active_status'];
                 $Member->active_status = $post['active_status'];
@@ -240,7 +243,7 @@ class Visit extends Base
         $this->assign('cities', $cities);
 
         $areas = [];
-        if(!empty($this->user['city_id'])) {
+        if (!empty($this->user['city_id'])) {
             $areas = Region::getAreaList($this->user['city_id']);
         }
         $this->assign('areas', $areas);
@@ -265,5 +268,4 @@ class Visit extends Base
             return json(['code' => '500', 'msg' => '修改客户资料失败, 请重试']);
         }
     }
-
 }
