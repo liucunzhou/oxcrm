@@ -53,6 +53,13 @@
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">其他联系</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile1" value="{$data['mobile1']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">信息类型</label>
                     <div class="layui-input-block">
                         <select name="news_type" id="news_type" class="input-field">
@@ -139,12 +146,6 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">其他联系</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="mobile1" value="{$data['mobile1']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
@@ -259,7 +260,6 @@
         $(document).on("click", ".layui-form-checkbox" , function(){
             if($(this).hasClass("layui-form-checked")) {
                 let text = $(this).find("span").text();
-                console.log(text);
                 let zoneStr = $("#zone").val();
                 if (zoneStr == '') {
                     zoneStr = text;
@@ -273,7 +273,6 @@
                 $("#zone").val(zoneStr);
             } else {
                 let text = $(this).find("span").text();
-                console.log(text);
                 let zoneStr = $("#zone").val();
                 if (zoneStr == '') {
                     zoneStr = text;
@@ -290,8 +289,13 @@
             }
         });
 
+        $(document).on("focus", ".layui-select-title input", function () {
+            console.log($(this).html());
+            $(this).val('');
+        });
+
         form.on("select(hotel_id)", function (data) {
-            console.log(data);
+            form.render("select");
             let text = $("#hotel_id").find("option:selected").text();
             let target = "#hotel_text";
             let str = $(target).val();

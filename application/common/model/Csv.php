@@ -22,7 +22,11 @@ class Csv
             if(!$row) break;
 
             $row[1] = trim($row[1]);
-            $row[1] = intval($row[1]);
+            $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
+            $row[1] = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $row[1]);
+            $row[1] = preg_replace("/[\n\r\t]/", ' ', $row[1]);
+
+            // $row[1] = intval($row[1]);
             $originMember = Member::checkMobile($row[1]);
             if(!empty($originMember)) {
                 $repetitive[] = $originMember->toArray();
@@ -52,8 +56,16 @@ class Csv
 
             if ($n==0) {
                 $n = $n + 1;
+                $row[3] = mb_convert_encoding($row[3], 'GBK');
+                $row[2] = mb_convert_encoding($row[2], 'GBK');
+                $row[1] = mb_convert_encoding($row[1], 'GBK');
+                $row[0] = mb_convert_encoding($row[0], 'GBK');
                 fputcsv($nfp, $row);
             } else {
+                $row[1] = trim($row[1]);
+                $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
+                $row[1] = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $row[1]);
+                $row[1] = preg_replace("/[\n\r\t]/", " ", $row[1]);
                 $originMember = Member::checkMobile($row[1]);
                 //print_r($originMember);
                 if ($originMember) {
@@ -65,6 +77,10 @@ class Csv
                     $repeatLog = str_replace(',',":::", $repeatLog);
                     $row[4] = $originSourceText.':::'.$repeatLog;
                     // $row[4] = $originMember->source_text.':::'.str_replace(",",":::", $originMember->repeat_log);
+                    $row[3] = mb_convert_encoding($row[3], 'GBK');
+                    $row[2] = mb_convert_encoding($row[2], 'GBK');
+                    $row[1] = mb_convert_encoding($row[1], 'GBK');
+                    $row[0] = mb_convert_encoding($row[0], 'GBK');
                     fputcsv($nfp, $row);
                 }
             }

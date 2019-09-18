@@ -3,10 +3,13 @@ namespace app\index\controller;
 
 use app\api\model\Member;
 use app\common\model\Client;
+use app\common\model\MemberAllocate;
+use app\common\model\MemberVisit;
 use app\common\model\Source;
 use app\common\model\User;
 use Firebase\JWT\JWT;
 use think\Controller;
+use think\facade\Request;
 
 class Test extends Controller
 {
@@ -42,7 +45,13 @@ class Test extends Controller
 
     public function decode()
     {
-        $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mzc3LCJpZHMiOiIiLCJyb2xlX2lkIjoiOCIsImRlcGFydG1lbnRfaWQiOjI4LCJhZG1pbl9pZCI6MCwibmlja25hbWUiOiIxMzkxODU2MjI3NSIsInJlYWxuYW1lIjoiXHU5ZWM0XHU0ZjUwXHU1NDFiIiwiZGluZ2RpbmciOiIxODI2MDU1MDUwNjY5MzE0IiwibW9iaWxlIjoiMTM5MTg1NjIyNzUiLCJlbWFpbCI6IiIsInNvcnQiOjAsImlzX3ZhbGlkIjoxLCJkZWxldGVfdGltZSI6MCwibW9kaWZ5X3RpbWUiOiIyMDE5LTA5LTA2IDExOjU3IiwiY3JlYXRlX3RpbWUiOiIyMDE5LTA4LTA0IDE3OjA3IiwidXNlcl9ubyI6ImNsaWVudGVyXzM5NDA0NTQ4MTU4NTQxOWZhMGZhNzcwYmQ3NmIzZmUzIiwidXNlcl9ub3MiOm51bGwsImluX3RpbWUiOm51bGwsImZhbWlseV9tb2JpbGUiOm51bGwsImlkX2NhcmQiOm51bGwsImF2YXRhciI6IiIsInNleCI6IjAiLCJvcmlnaW5fZGVwYXJ0bWVudF9pZCI6InxzeXN0ZW1yb2xlX2FmNjMwNzlkNGEwYjQ1ZWU5NTkwYmQzMWEyYTA5NDUzfCIsInByb3ZpbmNlX2lkIjo4MDEsImNpdHlfaWQiOjgwMn0.vkwiZLHtzbwqF6L7bnGoAk-k-J64RKDX-FofPQoq3Gc';
+        $post = Request::param();
+        if(empty($post['token'])) {
+            $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzgzLCJyb2xlX2lkIjoiOCIsImRlcGFydG1lbnRfaWQiOjMxLCJhZG1pbl9pZCI6MCwibmlja25hbWUiOiIxNTIyMTc5MjkzMiIsInJlYWxuYW1lIjoiXHU2Yzg4XHU1MTQzXHU2MDdhIiwiZGluZ2RpbmciOiIiLCJtb2JpbGUiOiIxNTIyMTc5MjkzMiIsImVtYWlsIjoiIiwic29ydCI6MCwiaXNfdmFsaWQiOjEsImRlbGV0ZV90aW1lIjowLCJtb2RpZnlfdGltZSI6IjIwMTktMDgtMjEgMTE6MDk6MDYiLCJjcmVhdGVfdGltZSI6IjIwMTktMDItMjcgMTE6NTg6NDYiLCJ1c2VyX25vIjoiY2xpZW50ZXJfZWY5YTIzYjFlZWY0NDNmMzk2YjM2MzdlZjZmOGZhMmUiLCJpbl90aW1lIjpudWxsLCJmYW1pbHlfbW9iaWxlIjpudWxsLCJpZF9jYXJkIjpudWxsLCJhdmF0YXIiOiIiLCJzZXgiOiIgMCIsIm9yaWdpbl9kZXBhcnRtZW50X2lkIjoifHN5c3RlbXJvbGVfYWY2MzA3OWQ0YTBiNDVlZTk1OTBiZDMxYTJhMDk0NTN8IiwicHJvdmluY2VfaWQiOjAsImNpdHlfaWQiOjgwMn0.ykOz6DO8aL7eYvpXqanOCaAE0Wxxu03S0mfxPaI--GU';
+        } else {
+            $token = $post['token'];
+        }
+        // $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTUzLCJpZHMiOiIiLCJyb2xlX2lkIjoiOCIsImRlcGFydG1lbnRfaWQiOjUyLCJhZG1pbl9pZCI6MCwibmlja25hbWUiOiIxODMyMTI3NzQxMSIsInJlYWxuYW1lIjoiXHU2ZDRiXHU4YmQ1IiwiZGluZ2RpbmciOiIwNTU1MzI0NzE5Nzk1NDM5IiwibW9iaWxlIjoiMTgzMjEyNzc0MTEiLCJlbWFpbCI6IiIsInNvcnQiOjAsImlzX3ZhbGlkIjoxLCJkZWxldGVfdGltZSI6MCwibW9kaWZ5X3RpbWUiOiIyMDE5LTA5LTE3IDE5OjA3IiwiY3JlYXRlX3RpbWUiOiIyMDE5LTA4LTA0IDE0OjMxIiwidXNlcl9ubyI6ImNsaWVudGVyXzUzNzIzNWYzOGNiMzQzNjRhM2ZmMTgwMjQwNWI3OGQ5IiwidXNlcl9ub3MiOm51bGwsImluX3RpbWUiOm51bGwsImZhbWlseV9tb2JpbGUiOm51bGwsImlkX2NhcmQiOm51bGwsImF2YXRhciI6IiIsInNleCI6IjAiLCJvcmlnaW5fZGVwYXJ0bWVudF9pZCI6InxzeXN0ZW1yb2xlX2FmNjMwNzlkNGEwYjQ1ZWU5NTkwYmQzMWEyYTA5NDUzfCIsInByb3ZpbmNlX2lkIjowLCJjaXR5X2lkIjowfQ.R9xODEmgwqdXIoudfz3q9ZLF61_8h1EwkqKs_IcwVqw';
         $user = JWT::decode($token, 'hongsi', ['HS256']);
         echo "<pre>";
         print_r($user);
@@ -78,5 +87,62 @@ class Test extends Controller
             // echo $member->getLastSql();
         }
         echo "</table>";
+    }
+
+    public function sysncAllocateTime()
+    {
+        $get = Request::param();
+        $config = [
+            'page' => $get['page']
+        ];
+        $endTime = 1567526400;
+        $map[] = ['create_time', '<', $endTime];
+        $allocates = MemberAllocate::where($map)->paginate(10000, false, $config);
+        // echo MemberAllocate::getLastSql();
+        // exit;
+        foreach ($allocates as $allocate) {
+            $map = [];
+            $map['user_id'] = $allocate->user_id;
+            $map['member_id'] = $allocate->member_id;
+
+            $visit = MemberVisit::where($map)->order('create_time asc')->find();
+            echo MemberVisit::getLastSql();
+            echo "<br>";
+            if($visit) {
+                $data = [];
+                $data['create_time'] = strtotime($visit->create_time);
+                $allocate->save($data);
+                echo $allocate->getLastSql();
+                echo "<br>";
+            }
+        }
+    }
+
+    public function checkAllocateTime()
+    {
+        $get = Request::param();
+        $config = [
+            'page' => $get['page']
+        ];
+
+        $map = [];
+        $map[] = ['create_time', 'between', [1567440000,1567526400]];
+        // $map[] = ['create_time', '>', 1567440000];
+        echo "<pre>";
+        $allocates = MemberAllocate::where($map)->paginate(10000, false, $config);
+        // echo MemberAllocate::getLastSql();
+        foreach ($allocates as $allocate){
+            $map = [];
+            $map['user_id'] = $allocate->user_id;
+            $map['member_id'] = $allocate->member_id;
+            $visit = MemberVisit::where($map)->order('create_time asc')->find();
+            if(empty($visit)) {
+                echo $allocate->id.":".$allocate->member_create_time;
+                echo "<br>";
+                $allocate->save(['create_time'=>$allocate->member_create_time]);
+                echo $allocate->getLastSql();
+                echo "<br>";
+            }
+        }
     }
 }

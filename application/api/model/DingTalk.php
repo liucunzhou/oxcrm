@@ -61,15 +61,20 @@ class DingTalk
     {
         // $url = "https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2?access_token={$this->accessToken}";
         $url = "https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2";
-
         $data['access_token'] = $this->accessToken;
         $data['agent_id'] = $this->agentId;
         $data['userid_list'] = implode(',', $userIds);
         $data['msg'] = $message;
         // $result = \HttpRequest::postData($url, $data);
-        print_r($data);
         $result = $this->curlPost($url, $data);
-        print_r($result);
+    }
+
+    public function textMessage($content)
+    {
+        $data['msgtype'] = 'text';
+        $data['text']['content'] =  $content;
+
+        return json_encode($data);
     }
 
     public function linkMessage($title, $text, $link)
@@ -93,7 +98,6 @@ class DingTalk
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $rs = curl_exec($ch);
         $error = curl_error($ch);
-        print_r($error);
         curl_close($ch);
 
         return $rs;

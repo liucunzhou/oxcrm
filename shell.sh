@@ -14,5 +14,7 @@
 /usr/local/php/bin/php /data/platform/think Task --action member_to_cache --page 11
 /usr/local/php/bin/php /data/platform/think Task --action member_to_cache --page 12
 /usr/local/php/bin/php /data/platform/think Task --action assign
-`
-`
+
+
+### 未回访提醒
+/usr/local/php/bin/php /data/platform/think Notice --action noticeStoretNovist

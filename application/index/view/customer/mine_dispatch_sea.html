@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的客资</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>我的客资</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="" lay-search>
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                        <option value="{$val['id']}">{$val['realname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="mobile" name="keywords" id="keywords" lay-verify="0" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="">
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                        <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <{foreach name="tabs" item="val"}>
+                                <{if $val['checked'] == '1'}>
+                                    <li class="layui-this">
+                                        <a href="{$val.url}">{$val.text}</a>
+                                    </li>
+                                <{else /}>
+                                    <li>
+                                        <a href="{$val.url}">{$val.text}</a>
+                                    </li>
+                                <{/if}>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+                    <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
+                            {:button(["event"=>"addCustomer", "text"=>"添加客资"])}
+                            {:button(["event"=>"assignFromDispatchSeaToStoreStaff", "text"=>"分配到门市销售"])}
+                            {:button(["event"=>"assignFromDispatchSeaToDispatchStaff", "text"=>"分配到派单组客服"])}
+                            <a class="layui-btn layui-btn-sm" lay-event="assignFromDispatchSeaToStoreStaff">分配到门市销售</a>
+                            <a class="layui-btn layui-btn-sm" lay-event="assignFromDispatchSeaToDispatchStaff">分配到派单组客服</a>
+                        </div>
+                    </script>
+                    <script type="text/html" id="table-tool">
+                        <div class="layui-btn-container">
+                            <a class="layui-btn layui-btn-sm" lay-event="getCustomerFromDispatch">索取</a>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table', 'laydate'], function () {
+        var $ = layui.jquery
+            ,table = layui.table
+            ,laydate = layui.laydate;
+
+        table.render({
+            elem: '#table'
+            ,url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}"
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            ,toolbar: '#table-toolbar'
+            ,title: '我的客资'
+            ,cols: [[
+                {
+                    "type": "checkbox",
+                    "width": 50,
+                    "fixed": "left"
+                }, {
+                    "field": "visit_amount",
+                    "title": "回访",
+                    "width": 60,
+                    "align": "center",
+                    "event": "visitLogs",
+                }, {
+                    "field": "operator",
+                    "title": "是否分配",
+                    "width": 88,
+                    "align": "center"
+                },{
+                    "type" : "tool",
+                    "toolbar": "#table-tool",
+                    "title": "索取",
+                    "width": 88,
+                    "align": "center",
+                    // "event": "getCustomerFromDispatch",
+                },{
+                    "field": "realname",
+                    "title": "客户姓名",
+                    "width": 88,
+                    "align": "center"
+                }, {
+                    "field": "mobile",
+                    "title": "手机号",
+                    "width": 108,
+                    "align": "center"
+                }, {
+                    "field": "banquet_size",
+                    "title": "桌数",
+                    "width": 60,
+                    "align": "center"
+                }, {
+                    "field": "budget",
+                    "title": "预算",
+                    "width": 90,
+                    "align": "center"
+                },{
+                    "field": "wedding_date",
+                    "title": "订婚日期",
+                    "width": 106,
+                    "align": "center"
+                }, {
+                    "field": "zone",
+                    "title": "区域",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "hotel_text",
+                    "title": "酒店",
+                    "width": 200,
+                    "align": "center"
+                }, {
+                    "field": "source_text",
+                    "title": "客资渠道",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "active_status",
+                    "title": "回访状态",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "news_type",
+                    "title": "信息类型",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "remark",
+                    "title": "备注"
+                }, {
+                    "field": "create_time",
+                    "title": "创建日期",
+                    "width": 165
+                }
+            ]]
+            ,page: true
+            ,limit: 20
+            ,limits: [20,30]
+        });
+
+        laydate.render({
+            elem: '.date_range',
+            type: 'date',
+            range: '~'
+        });
+
+        var getSelectedIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+               ids.push(value.id)
+            });
+
+            return ids.join(',');
+        };
+
+        var getSelectedMemberIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+                ids.push(value.member_id)
+            });
+            return ids.join(',');
+        };
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+            var url = '';
+            var ids = '';
+            switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+                    break;
+
+                case 'addCustomer':
+                    url = '/index/customer/addcustomer.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加客户',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+                case 'assignFromDispatchSeaToStoreStaff':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/allocate/assignfromdispatchseatostorestaff.html?ids='+ids;
+                    layer.open({
+                        type: 2,
+                        title: '分配到门市销',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+                case 'assignFromDispatchSeaToDispatchStaff':
+                    if(checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/allocate/assignFromDispatchSeaToDispatchStaff.html?ids='+ids;
+                    layer.open({
+                        type: 2,
+                        title: '分配到分配组客服',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function (obj) {
+            console.log(obj.data);
+            var id = obj.data.id;
+            switch (obj.event) {
+                case 'editCustomer':
+                    url = '/index/customer/editcustomer.html?member_id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+                case 'getCustomerFromDispatch':
+                    if(!confirm("确认索取客资?")) {
+                        return false;
+                    }
+
+                    url = '/index/customer/getCustomerFromDispatch.html?id=' + id;
+                    $.get(url, function (res) {
+                        if(res.code =='200') {
+                            layer.msg("索取成功");
+                            table.reload("table");
+                        } else {
+                            layser.msg(res.msg);
+                        }
+                    });
+                    break;
+                case 'visitLogs':
+                    url = '/index/visit/visitCustomer.html?member_id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '回访记录',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+            };
+        });
+
+    });
+</script>
+</body>
+</html>

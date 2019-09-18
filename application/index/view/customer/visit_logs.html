@@ -14,12 +14,12 @@
     <div class="layui-card">
         <table class="layui-table">
             <tr>
+                <td>发布人</td>
+                <td>{$customer['operate_id']}</td>
                 <td>信息类型</td>
                 <td>{$newsTypes[$customer['news_type']]}</td>
                 <td>客资渠道</td>
-                <td>{$sources[$customer['source_id']]['alias']}</td>
-                <td>客资来源</td>
-                <td>{$recommenders}</td>
+                <td colspan="3">{$customer['source_text']}</td>
             </tr>
             <tr>
                 <td>联系人</td>

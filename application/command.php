@@ -11,4 +11,5 @@
 
 return [
     'app\common\command\Task',
+    'app\common\command\Notice',
 ];

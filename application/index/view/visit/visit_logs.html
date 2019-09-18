@@ -14,12 +14,12 @@
     <div class="layui-card">
         <table class="layui-table">
             <tr>
+                <td>发布人</td>
+                <td>{$customer['operate_id']}</td>
                 <td>信息类型</td>
                 <td>{$newsTypes[$customer['news_type']]}</td>
                 <td>客资渠道</td>
-                <td>{$sourceText}</td>
-                <td>重复来源</td>
-                <td>{$repeat}</td>
+                <td>{$customer['source_text']}</td>
             </tr>
             <tr>
                 <td>联系人</td>
@@ -41,8 +41,6 @@
                 <td>{$customer['zone']}</td>
                 <td>预定酒店</td>
                 <td colspan="3">{$customer['hotel_text']}</td>
-            </tr>
-            <tr>
             </tr>
             <tr>
                 <td>备注</td>

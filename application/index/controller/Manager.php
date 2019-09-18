@@ -64,22 +64,41 @@ class Manager extends Base
 
             $status = !isset($get['status']) || $get['status'] == 0 ? 0 : $get['status'];
             $map[] = ['apply_status', '=', $status];
-            $list = model('MemberApply')->where($map)->with('member')->order('create_time desc')->paginate($get['limit'], false, $config);
-            $data = $list->getCollection()->toArray();
-            foreach ($data as &$value) {
-                $member = $value['member'];
-                if(!is_array($member) || empty($value['member'])) continue;
-                unset($member['id']);
-                unset($value['member']);
-                $value = array_merge($value, $member);
-                $value['user_id'] =  $users[$value['user_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
-                $value['news_type'] = $newsTypes[$value['news_type']];
-                $value['hotel_id'] = $hotels[$value['hotel_id']];
-                if($this->auth['is_show_alias'] == '1') {
-                    $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['alias'] : '未知';
-                } else {
-                    $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : '未知';
+            if(!empty($get['realname'])) {
+
+                $list = model('MemberApply')->where($map)->where('member_id', 'in', function ($query) use ($get) {
+                    $map = [];
+                    $map[] = ['realname', 'like', "%{$get['realname']}%"];
+                    $query->table('tk_member')->where($map)->field('id');
+                })->with('member')->order('create_time desc')->paginate($get['limit'], false, $config);
+
+            } else if(!empty($get['mobile'])) {
+                $list = model('MemberApply')->where($map)->where('member_id', 'in', function ($query) use ($get) {
+                    $map = [];
+                    $map[] = ['mobile', 'like', "%{$get['mobile']}%"];
+                    $query->table('tk_member')->where($map)->field('id');
+                })->with('member')->order('create_time desc')->paginate($get['limit'], false, $config);
+            } else {
+                $list = model('MemberApply')->where($map)->with('member')->order('create_time desc')->paginate($get['limit'], false, $config);
+            }
+
+            if(!empty($list)) {
+                $data = $list->getCollection()->toArray();
+                foreach ($data as &$value) {
+                    $member = $value['member'];
+                    if (!is_array($member) || empty($value['member'])) continue;
+                    unset($member['id']);
+                    unset($value['member']);
+                    $value = array_merge($value, $member);
+                    $value['user_id'] = $users[$value['user_id']]['realname'];
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['news_type'] = $newsTypes[$value['news_type']];
+                    $value['hotel_id'] = $hotels[$value['hotel_id']];
+                    if ($this->auth['is_show_alias'] == '1') {
+                        $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['alias'] : '未知';
+                    } else {
+                        $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : '未知';
+                    }
                 }
             }
 
@@ -111,7 +130,9 @@ class Manager extends Base
             ]);
         }
 
+        $userList = User::getUsers();
         $total = count($ids);
+        $users = [];
         foreach ($ids as $id) {
             $MemberApply = MemberApply::get($id);
             $applyData = $MemberApply->getData();
@@ -119,11 +140,20 @@ class Manager extends Base
             $member = Member::get($applyData['member_id']);
             $data = $member->getData();
             $data['active_status'] = 0;
+            $data['allocate_type'] = 2;
             $result = MemberAllocate::insertAllocateData($applyData['user_id'], $applyData['member_id'], $data);
             if($result) {
                 $MemberApply->apply_status = 1;
                 $MemberApply->save();
+                $user = $userList[$applyData['user_id']];
+                $users[] = $user['dingding'];
             }
+        }
+
+        if(!empty($users)) {
+            $DingModel = new \app\api\model\DingTalk();
+            $message = $DingModel->linkMessage("新增客资", "新增客资消息", "http://h5.hongsizg.com/pages/customer/mine?status=0&is_into_store=0&page_title=%E6%9C%AA%E8%B7%9F%E8%BF%9B%E5%AE%A2%E8%B5%84&time=".time());
+            $DingModel->sendJobMessage($users, $message);
         }
 
         return json([

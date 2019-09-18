@@ -177,7 +177,6 @@
 
             $.post(url, params, function (res) {
                 if (res.code == '200') {
-                    parent.layui.table.reload("table");
                     parent.layer.closeAll();
                 } else {
                     layer.msg(res.msg);

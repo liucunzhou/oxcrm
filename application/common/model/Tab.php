@@ -36,6 +36,94 @@ class Tab
         return $tabs;
     }
 
+    public static function dispatchMine(&$user, &$get)
+    {
+        $vars = [];
+        $url = url('customer/mine');
+        if (!isset($get['is_into_store']) && !isset($get['status']) && !isset($get['sea'])) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '所有客资',
+            'url' => $url,
+            'checked' => $checked
+        ];
+
+        $vars = [];
+        $vars['sea'] = 1;
+        $url = url('customer/mine', $vars);
+        if (isset($get['sea']) && $get['sea'] == 1) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '派单组公海',
+            'url' => $url,
+            'checked' => $checked
+        ];
+
+        $vars = [];
+        $vars['status'] = 1;
+        $url = url('customer/mine', $vars);
+        if (isset($get['status']) && $get['status'] == 1) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '跟进中',
+            'url' => $url,
+            'checked' => $checked
+        ];
+
+        $vars = [];
+        $vars['status'] = 3;
+        $url = url('customer/mine', $vars);
+        if (isset($get['status']) && $get['status'] == 3) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '失效客资',
+            'url' => $url,
+            'checked' => $checked
+        ];
+
+        $vars = [];
+        $vars['is_into_store'] = 1;
+        $url = url('customer/mine', $vars);
+        if (isset($get['is_into_store']) && $get['is_into_store'] == 1) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '已进店',
+            'url' => $url,
+            'checked' => $checked
+        ];
+        
+        $vars = [];
+        $vars['status'] = 2;
+        $url = url('customer/mine', $vars);
+        if (isset($get['status']) && $get['status'] == 2) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '成单客资',
+            'url' => $url,
+            'checked' => $checked
+        ];
+
+        return $tabs;
+    }
+
     public static function customerMine(&$user, &$get)
     {
         $status = Intention::getIntentions();

@@ -29,30 +29,39 @@
                                 <select name="staff" lay-verify="" lay-search>
                                     <option value="">员工列表</option>
                                     <{foreach name="staffes" item="val"}>
-                                        <option value="{$val['id']}">{$val['realname']}</option>
+                                        <{if $get['staff'] == $val['id']}>
+                                            <option value="{$val['id']}" selected="selected">{$val['realname']}</option>
+                                        <{else /}>
+                                            <option value="{$val['id']}">{$val['realname']}</option>
+                                        <{/if}>
                                     <{/foreach}>
                                 </select>
                             </div>
 
                             <div class="layui-inline">
-                                <input type="text" name="keywords" id="keywords" lay-verify="0" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                                <input type="number" name="keywords" id="keywords" lay-verify="0" value="{$get['keywords']}" placeholder="请输入手机号" autocomplete="off" class="layui-input">
                             </div>
 
                             <div class="layui-inline">
                                 <select name="source" lay-verify="">
                                     <option value="">平台来源</option>
                                     <{foreach name="sources" item="val"}>
-                                        <option value="{$val['id']}">{$val['title']}</option>
+                                        <{if $get['source'] == $val['id']}>
+                                            <option value="{$val['id']}" selected>{$val['title']}</option>
+                                        <{else /}>
+                                            <option value="{$val['id']}">{$val['title']}</option>
+                                        <{/if}>
                                     <{/foreach}>
                                 </select>
                             </div>
 
                             <div class="layui-inline">
-                                <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
+                                <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" value="{$get['create_time']}" autocomplete="off" class="date_range layui-input">
                             </div>
 
                             <div class="layui-inline ">
                                 <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                                <a class="layui-btn layui-btn-primary" href="{:url('Customer/mine')}">重置</a>
                             </div>
                         </div>
                     </form>
@@ -130,11 +139,6 @@
                     "width": 60,
                     "align": "center",
                     "event": "visitCustomer",
-                }, {
-                    "field": "operator",
-                    "title": "录入者",
-                    "width": 88,
-                    "align": "center"
                 },{
                     "field": "user_realname",
                     "title": "跟单人",
@@ -194,6 +198,10 @@
                     "field": "remark",
                     "title": "备注"
                 }, {
+                    "field": "allocate_type",
+                    "title": "获取方式",
+                    "width": 88
+                },{
                     "field": "allocate_time",
                     "title": "分配时间",
                     "width": 165

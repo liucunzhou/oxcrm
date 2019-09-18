@@ -36,6 +36,7 @@ class Customer extends Base
     protected $auth = [];
     protected $budgets = [];
     protected $scales = [];
+    protected $allocateTypes = ['分配获取', '全号搜索', '公海申请', '自行添加'];
 
     protected function initialize()
     {
@@ -48,7 +49,7 @@ class Customer extends Base
         $this->budgets = \app\common\model\Budget::getBudgetList();
         $this->scales = \app\common\model\Scale::getScaleList();
 
-        if(!Request::isAjax()) {
+        if (!Request::isAjax()) {
             $staffes = User::getUsersInfoByDepartmentId($this->user['department_id'], false);
             $staff = [
                 'id' => 'all',
@@ -68,41 +69,103 @@ class Customer extends Base
     public function mine()
     {
         if (Request::isAjax()) {
-            $get = Request::param();
-            $config = [
-                'page' => $get['page']
-            ];
+            // if($this->user['role_id'] == 10 || $this->user['role_id'] == 11) { // 派单组主管、客服
+            if ($this->user['role_id'] == 11) { // 派单组主管、客服
+                $result = $this->getDispatchCustomerList();
+            } else {
+                $result = $this->getCustomerList();
+            }
+            return json($result);
 
-            $map = Search::customerMine($this->user, $get);
-            isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
-            if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                $mobiles = MobileRelation::getMobiles($get['keywords']);
-                if(!empty($mobiles)) {
-                    $map[] = ['mobile', 'in', $mobiles];
+        } else {
+            $get = Request::param();
+            $get['create_time'] = str_replace('+', '', $get['create_time']);
+            $this->assign('get', $get);
+
+            if ($this->user['role_id'] == 11) { // 派单组主管、客服
+                $tabs = Tab::dispatchMine($this->user, $get);
+                $this->assign('tabs', $tabs);
+                if (isset($get['sea'])) {
+                    return $this->fetch('mine_dispatch_sea');
                 } else {
-                    $map[] = ['mobile', '=', $get['keywords']];
+                    return $this->fetch('mine_dispatch');
                 }
-            } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+            } else {
+                $tabs = Tab::customerMine($this->user, $get);
+                $this->assign('tabs', $tabs);
+                return $this->fetch();
+            }
+        }
+    }
+
+    /**
+     * 派单组客资列表
+     */
+    private function getDispatchCustomerList()
+    {
+        $get = Request::param();
+        $config = [
+            'page' => $get['page']
+        ];
+
+        $map = Search::customerDispatchMine($this->user, $get);
+        isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
+        if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+            $mobiles = MobileRelation::getMobiles($get['keywords']);
+            if (!empty($mobiles)) {
+                $map[] = ['mobile', 'in', $mobiles];
+            } else {
                 $map[] = ['mobile', '=', $get['keywords']];
             }
+        } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
+            $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+        } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+            $map[] = ['mobile', '=', $get['keywords']];
+        }
 
-            $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
-            if(!empty($list)) {
-                $users = User::getUsers();
+        if ($get['sea']) {
+            $users = User::getUsers();
+            $map[] = ['dispatch_id', '=', 0];
+            $map[] = ['add_source', '=', 1];
+            $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
+            if (!empty($list)) {
                 $data = $list->getCollection()->toArray();
+                foreach ($data as &$value) {
+                    $value['get_customer_from_dispatch'] = '索取';
+                    $value['operator'] = $users[$value['operate_id']]['realname'];
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['news_type'] = $this->newsTypes[$value['news_type']];
+                    $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
-                /**
-                if(isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                    if(isset($data[0]) && !empty($data[0])) {
-                        $data[0]['active_status'] = 0;
-                        MemberAllocate::updateAllocateData($this->user['id'], $data[0]['member_id'], $data[0]);
+                    if ($this->auth['is_show_alias'] == '1') {
+                        $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                    } else {
+                        $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
                     }
                 }
-                **/
-
+                $result = [
+                    'code' => 0,
+                    'msg' => '获取数据成功',
+                    'pages' => $list->lastPage(),
+                    'count' => $list->total(),
+                    'data' => $data
+                ];
+            } else {
+                $result = [
+                    'code' => 0,
+                    'msg' => '获取数据成功',
+                    'count' => 0,
+                    'data' => []
+                ];
+            }
+        } else {
+            $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+            if (!empty($list)) {
+                $users = User::getUsers();
+                $data = $list->getCollection()->toArray();
                 foreach ($data as &$value) {
+                    $allocateType = $value['allocate_type'];
+                    $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
                     $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
@@ -110,22 +173,24 @@ class Customer extends Base
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                     $value['allocate_time'] = $value['create_time'];
+                    $value['assign_status'] = $value['assign_status'] ? '已分配': '未分配';
 
-                    if($value['member_id'] > 0) {
+                    if ($value['member_id'] > 0) {
                         $memberObj = Member::get($value['member_id']);
                         $value['visit_amount'] = $memberObj->visit_amount;
-                        if($value['member_create_time']>0) {
+                        if ($value['member_create_time'] > 0) {
                             $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
                         } else {
                             $value['member_create_time'] = $memberObj->create_time;
                         }
-                        if($this->auth['is_show_alias'] == '1') {
+                        if ($this->auth['is_show_alias'] == '1') {
                             $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
                         } else {
                             $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
                         }
                     }
                 }
+
                 $result = [
                     'code' => 0,
                     'msg' => '获取数据成功',
@@ -141,16 +206,93 @@ class Customer extends Base
                     'data' => []
                 ];
             }
-            return json($result);
-
-        } else {
-            $get = Request::param();
-            $tabs = Tab::customerMine($this->user, $get);
-            $this->assign('tabs', $tabs);
-            $this->assign('get', $get);
-            return $this->fetch();
         }
+
+        return $result;
     }
+
+
+    /**
+     * 除派单组外我的客资列表
+     */
+    private function getCustomerList()
+    {
+        $get = Request::param();
+        $config = [
+            'page' => $get['page']
+        ];
+        $map = Search::customerMine($this->user, $get);
+        if(isset($get['keywords']) && !empty($get['keywords'])){
+            $get['keywords'] = trim($get['keywords']);
+            preg_match_all('/\d+/',$get['keywords'],$arr);
+
+        }
+
+        if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+            $mobiles = MobileRelation::getMobiles($get['keywords']);
+            if (!empty($mobiles)) {
+                $map[] = ['mobile', 'in', $mobiles];
+            } else {
+                $map[] = ['mobile', '=', $get['keywords']];
+            }
+        } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
+            $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+        } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+            $map[] = ['mobile', '=', $get['keywords']];
+        }
+
+        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+        if (!empty($list)) {
+            $users = User::getUsers();
+            $data = $list->getCollection()->toArray();
+            foreach ($data as &$value) {
+                $allocateType = $value['allocate_type'];
+                $value['allocate_type'] = $this->allocateTypes[$allocateType];
+                $value['operator'] = $users[$value['operate_id']]['realname'];
+                $value['user_realname'] = $users[$value['user_id']]['realname'];
+                $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                $value['news_type'] = $this->newsTypes[$value['news_type']];
+                $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
+                $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                $value['allocate_time'] = $value['create_time'];
+                $value['assign_status'] = $value['assign_status'] ? '已分配': '未分配';
+
+                if ($value['member_id'] > 0) {
+                    $memberObj = Member::get($value['member_id']);
+                    $value['visit_amount'] = $memberObj->visit_amount;
+                    if ($value['member_create_time'] > 0) {
+                        $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
+                    } else {
+                        $value['member_create_time'] = $memberObj->create_time;
+                    }
+                    if ($this->auth['is_show_alias'] == '1') {
+                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                    } else {
+                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                    }
+                }
+            }
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $list->total(),
+                'data' => $data,
+                'map' => $map,
+                'keywords' => strlen($get['keywords'])
+            ];
+        } else {
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => 0,
+                'data' => [],
+                'keywords' => strlen($get['keywords'])
+            ];
+        }
+
+        return $result;
+    }
+
 
     /**
      * 客资公海
@@ -164,16 +306,15 @@ class Customer extends Base
                 'page' => $get['page']
             ];
             $map[] = ['is_sea', '=', '1'];
-            if (isset($get['source']) && $get['source']>0) {
+            if (isset($get['source']) && $get['source'] > 0) {
                 $map[] = ['source_id', '=', $get['source']];
             }
 
             if (isset($get['staff']) && $get['staff'] > 0) {
-                $map[] = ['user_id', '='. $get['staff']];
+                $map[] = ['user_id', '=' . $get['staff']];
             }
 
-            $map[] = ['active_status', 'not in', [3,4]];
-
+            $map[] = ['active_status', 'not in', [3, 4]];
             if (isset($get['date_range']) && !empty($get['date_range'])) {
                 $range = explode('~', $get['date_range']);
                 $range[0] = trim($range[0]);
@@ -183,29 +324,51 @@ class Customer extends Base
                 $map[] = ['create_time', 'between', [$start, $end]];
             }
 
+            ### 省市划分
+            if ($this->user['city_id'] > 0) {
+                $map[] = ['city_id', '=', $this->user['city_id']];
+            }
+
             if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+
                 $map = [];
                 $mobiles = MobileRelation::getMobiles($get['keywords']);
-                if(!empty($mobiles)) {
+                if (!empty($mobiles)) {
                     $map[] = ['mobile', 'in', $mobiles];
                 } else {
                     $map[] = ['mobile', '=', $get['keywords']];
                 }
+                $where1[] = ['mobile', 'like', "%{$get['keywords']}%"];
+                $where2[] = ['mobile1', 'like', "%{$get['keywords']}%"];
+                $list = model('Member')->where($map)->whereOr($where1)->whereOr($where2)->order('create_time desc')->paginate($get['limit'], false, $config);
+
             } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
+
                 $map = [];
                 $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-                $map = [];
-                $map[] = ['mobile', '=', $get['keywords']];
-            }
+                $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
 
-            $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
+            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+
+                $map = [];
+                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+                $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
+
+            } else {
+
+                $list = model('Member')->where($map)->where('id', 'not in', function ($query) {
+                    $map = [];
+                    $map[] = ['user_id', '=', $this->user['id']];
+                    $query->table('tk_member_allocate')->where($map)->field('member_id');
+                })->order('create_time desc')->paginate($get['limit'], false, $config);
+            }
             $data = $list->getCollection()->toArray();
 
-            if(isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                if(isset($data[0]) && !empty($data[0])) {
+            if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                if (isset($data[0]) && !empty($data[0])) {
                     $data[0]['active_status'] = 0;
-                    MemberAllocate::insertAllocateData($this->user['id'], $data[0]['id'], $data[0]);
+                    $data[0]['allocate_type'] = 1;
+                    MemberAllocate::searchAllocateData($this->user['id'], $data[0]['id'], $data[0]);
                 }
             }
 
@@ -216,7 +379,7 @@ class Customer extends Base
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
-                if($this->auth['is_show_alias'] == '1') {
+                if ($this->auth['is_show_alias'] == '1') {
                     $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
                 } else {
                     $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
@@ -250,18 +413,18 @@ class Customer extends Base
             ];
             $map = Search::customerMine($this->user, $get);
 
-            if (!isset($get['next_visit_time']) || empty($get['next_visit_time'])){
+            if (!isset($get['next_visit_time']) || empty($get['next_visit_time'])) {
                 $tomorrow = strtotime('tomorrow');
                 $map[] = ['next_visit_time', '>', 0];
                 $map[] = ['next_visit_time', '<', $tomorrow];
             }
 
-            $map[] = ['active_status', 'not in', [3,4]];
+            $map[] = ['active_status', 'not in', [2, 3, 4]];
 
             if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
                 $map = [];
                 $mobiles = MobileRelation::getMobiles($get['keywords']);
-                if(!empty($mobiles)) {
+                if (!empty($mobiles)) {
                     $map[] = ['mobile', 'in', $mobiles];
                 } else {
                     $map[] = ['mobile', '=', $get['keywords']];
@@ -278,11 +441,11 @@ class Customer extends Base
                 $list = model('MemberAllocate')->where($map)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
             }
 
-            if(!empty($list)) {
+            if (!empty($list)) {
                 $users = User::getUsers();
                 $data = $list->getCollection()->toArray();
-                if(isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                    if(isset($data[0]) && !empty($data[0])) {
+                if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                    if (isset($data[0]) && !empty($data[0])) {
                         $data[0]['active_status'] = 0;
                         MemberAllocate::updateAllocateData($this->user['id'], $data[0]['member_id'], $data[0]);
                     }
@@ -296,7 +459,7 @@ class Customer extends Base
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
-                    if($this->auth['is_show_alias'] == '1') {
+                    if ($this->auth['is_show_alias'] == '1') {
                         $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
                     } else {
                         $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
@@ -304,7 +467,7 @@ class Customer extends Base
                     $value['allocate_time'] = $value['create_time'];
                     $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
 
-                    if($value['member_id'] > 0) {
+                    if ($value['member_id'] > 0) {
                         $memberObj = Member::get($value['member_id']);
                         $value['visit_amount'] = $memberObj->visit_amount;
                     }
@@ -355,7 +518,7 @@ class Customer extends Base
         $this->assign('cities', $cities);
 
         $areas = [];
-        if($this->user['city_id']) {
+        if ($this->user['city_id']) {
             $areas = Region::getAreaList($this->user['city_id']);
         }
         $this->assign('areas', $areas);
@@ -396,7 +559,7 @@ class Customer extends Base
         $this->assign('cities', $cities);
 
         $areas = [];
-        if(!empty($this->user['city_id'])) {
+        if (!empty($this->user['city_id'])) {
             $areas = Region::getAreaList($this->user['city_id']);
         }
         $this->assign('areas', $areas);
@@ -414,7 +577,6 @@ class Customer extends Base
             $action = '编辑客资';
             $Model = \app\common\model\Member::get($post['id']);
         } else {
-
             if (empty($post['mobile'])) {
                 return json([
                     'code' => '400',
@@ -429,11 +591,18 @@ class Customer extends Base
                 ]);
             }
 
+            $post['mobile'] = trim($post['mobile']);
+            $len = strlen($post['mobile']);
+            if ($len != 11) {
+                return xjson([
+                    'code' => '400',
+                    'msg' => '请输入正确的手机号',
+                ]);
+            }
+
             $action = '添加客资';
             $Model = new \app\common\model\Member();
             $Model->member_no = date('YmdHis') . rand(100, 999);
-            $post['mobile'] = trim($post['mobile']);
-            $post['mobile'] = intval($post['mobile']);
             ### 验证手机号唯一性
             $originMember = $Model::checkMobile($post['mobile']);
             if ($originMember) {
@@ -442,6 +611,7 @@ class Customer extends Base
                     'msg' => $post['mobile'] . '手机号已经存在',
                 ]);
             }
+            $Model->operate_id = $this->user['id'];
         }
 
         ### 同步来源名称
@@ -450,11 +620,11 @@ class Customer extends Base
         }
         ### 基本信息入库
         $Model->is_sea = 1;
-        $Model->operate_id = $this->user['id'];
         $result1 = $Model->save($post);
 
         ### 新添加客资要加入到分配列表中
         if (empty($post['id'])) {
+            $post['allocate_type'] = 3;
             $post['operate_id'] = $this->user['id'];
             MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
         }
@@ -462,7 +632,7 @@ class Customer extends Base
         if ($result1) {
             ### 添加操作记录
             OperateLog::appendTo($Model);
-            if(isset($Allocate)) OperateLog::appendTo($Allocate);
+            if (isset($Allocate)) OperateLog::appendTo($Allocate);
             return json(['code' => '200', 'msg' => $action . '成功']);
         } else {
             return json(['code' => '500', 'msg' => $action . '失败, 请重试']);
@@ -470,8 +640,9 @@ class Customer extends Base
     }
 
     ### 绑定客户信息
-    public function bindCustomer(){
-        if(Request::isPost()) {
+    public function bindCustomer()
+    {
+        if (Request::isPost()) {
             $post = Request::param();
             if (empty($post['mobiles'])) {
                 return json([
@@ -481,7 +652,7 @@ class Customer extends Base
             }
 
             $mobiles = explode(',', $post['mobiles']);
-            if(count($mobiles) < 1) {
+            if (count($mobiles) < 1) {
                 return json([
                     'code' => '500',
                     'msg' => '请填写要绑定的手机号,至少两个'
@@ -490,7 +661,7 @@ class Customer extends Base
 
             ### 检测是否已经有绑定的手机号
             $hadMobiles = MobileRelation::getMobiles($post['target']);
-            if(!empty($hadMobiles)) {
+            if (!empty($hadMobiles)) {
                 $mobiles = array_merge($mobiles, $hadMobiles);
             } else {
                 array_push($mobiles, $post['target']);
@@ -499,35 +670,35 @@ class Customer extends Base
             $mobilesStr = implode(',', $mobiles);
             $total = count($mobiles);
             $success = 0;
-            foreach($mobiles as $key=>$mobile) {
+            foreach ($mobiles as $key => $mobile) {
                 $data = [];
                 $data['mobile'] = $mobile;
                 $data['mobiles'] = $mobilesStr;
                 $MobileRelation = new MobileRelation();
-                $origin = $MobileRelation->where(['mobile'=>$mobile])->find();
-                if(empty($origin)) {
+                $origin = $MobileRelation->where(['mobile' => $mobile])->find();
+                if (empty($origin)) {
                     $data['create_time'] = time();
                     $result = $MobileRelation->save($data);
                 } else {
                     $result = $MobileRelation->save($data, ['mobile' => $mobile]);
                 }
 
-                if($result) {
+                if ($result) {
                     $success = $success + 1;
                 }
             }
 
 
-            if($total == $success) {
+            if ($total == $success) {
                 return json([
-                    'code'  => '200',
-                    'msg'   => '绑定号码成功'
+                    'code' => '200',
+                    'msg' => '绑定号码成功'
                 ]);
             } else {
                 $failed = $total - $success;
                 return json([
-                    'code'  => '500',
-                    'msg'   => '绑定成功{$success}个，失败{$failed}个'
+                    'code' => '500',
+                    'msg' => '绑定成功{$success}个，失败{$failed}个'
                 ]);
             }
         } else {
@@ -570,14 +741,14 @@ class Customer extends Base
             $data = $list->getCollection()->toArray();
             foreach ($data as &$value) {
                 $member = $value['member'];
-                if(!is_array($member) || empty($member)) continue;
+                if (!is_array($member) || empty($member)) continue;
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
                 $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['hotel_id'] = $this->hotels[$value['hotel_id']]['title'];
-                if($this->auth['is_show_alias'] == '1') {
+                if ($this->auth['is_show_alias'] == '1') {
                     $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['alias'] : '未知';
                 } else {
                     $value['source_id'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : '未知';
@@ -627,7 +798,7 @@ class Customer extends Base
             $map[] = ['member_id', '=', $id];
             $map[] = ['apply_status', '=', 0];
             $apply = $Model->where($map)->find();
-            if($apply) continue;
+            if ($apply) continue;
 
             $data['user_id'] = $this->user['id'];
             $data['member_id'] = $id;
@@ -647,57 +818,57 @@ class Customer extends Base
     public function checkMobile()
     {
         $post = Request::post();
-        if(!isset($post['mobile'])) {
+        if (!isset($post['mobile'])) {
             return json([
-                'code'   => '500',
-                'msg'    => '请输入手机号'
+                'code' => '500',
+                'msg' => '请输入手机号'
             ]);
         }
 
         ### 手机号验证
         $len = strlen($post['mobile']);
-        if($len != 11){
+        if ($len != 11) {
             return json([
-                'code'   => '501',
-                'msg'    => '请输入正确的手机号'
+                'code' => '501',
+                'msg' => '请输入正确的手机号'
             ]);
         }
 
         ###  根据手机号获取用户信息
         $member = Member::getByMobile($post['mobile']);
-        if(!empty($member)) {
-            $isWriteDuplicate =false;
+        if (!empty($member)) {
+            $isWriteDuplicate = false;
             $repeat = $this->sources[$post['source_id']]['title'];
-            if(isset($this->sources[$post['source_id']]['parent_id'])) {
+            if (isset($this->sources[$post['source_id']]['parent_id'])) {
                 $platformId = $this->sources[$post['source_id']]['parent_id'];
                 $repeatPlatform = $this->sources[$platformId]['title'];
             } else {
                 $repeatPlatform = '';
             }
 
-            if(empty($member->repeat_log)) {
+            if (empty($member->repeat_log)) {
                 $isWriteDuplicate = true;
             } else {
                 ### 检测是否已存在title
-                if(!empty($member->repeat_log) && !empty($repeat) && mb_strpos($member->repeat_log, $repeat)===false) {
-                    $repeat = $member->repeat_log.','.$repeat;
+                if (!empty($member->repeat_log) && !empty($repeat) && mb_strpos($member->repeat_log, $repeat) === false) {
+                    $repeat = $member->repeat_log . ',' . $repeat;
                     $isWriteDuplicate = true;
 
-                    if(!empty($member->repeat_platform_log) && !empty($repeatPlatform) && mb_strpos($member->repeat_platform_log, $repeatPlatform)===false) {
-                        $repeatPlatform = $member->repeat_platform_log.','.$repeatPlatform;
+                    if (!empty($member->repeat_platform_log) && !empty($repeatPlatform) && mb_strpos($member->repeat_platform_log, $repeatPlatform) === false) {
+                        $repeatPlatform = $member->repeat_platform_log . ',' . $repeatPlatform;
                     }
                 }
             }
 
-            if($isWriteDuplicate) {
-                $member->save(['repeat_log' => $repeat, 'repeat_platform_log'=>$repeatPlatform]);
+            if ($isWriteDuplicate) {
+                $member->save(['repeat_log' => $repeat, 'repeat_platform_log' => $repeatPlatform]);
                 $map = [];
                 $map[] = ['user_id', '=', $this->user['id']];
                 $map[] = ['member_id', '=', $member->id];
                 $map[] = ['source_id', '=', $post['source_id']];
                 $repeatLogData = DuplicateLog::where($map)->find();
 
-                if(empty($repeatLogData)) {
+                if (empty($repeatLogData)) {
                     ### 添加回访日志
                     $data = [];
                     $data['user_id'] = $this->user['id'];
@@ -718,7 +889,7 @@ class Customer extends Base
                 $repeatRes = $repeat;
             }
 
-            if(!isset($post['update'])) { ## 添加客资的时候需要检测用户是否已经获取到本客资
+            if (!isset($post['update'])) { ## 添加客资的时候需要检测用户是否已经获取到本客资
                 $allocate = MemberAllocate::getAllocate($this->user['id'], $member->id);
                 if (!empty($allocate)) {
                     ### 提示用户已经拥有本客资
@@ -727,9 +898,9 @@ class Customer extends Base
                 } else {
                     ### 分配客资到该用户
                     $memberData = $member->getData();
-                    MemberAllocate::updateAllocateData($this->user['id'], $member->id, $memberData);
+                    MemberAllocate::insertAllocateData($this->user['id'], $member->id, $memberData);
                     $code = '502';
-                    $msg =  '此客资已经分配给您';
+                    $msg = '此客资已经分配给您';
                 }
 
                 return json([
@@ -751,9 +922,74 @@ class Customer extends Base
         } else {
 
             return json([
-                'code'   => '200',
-                'msg'    => '恭喜，该号码验证通过'
+                'code' => '200',
+                'msg' => '恭喜，该号码验证通过'
             ]);
+        }
+    }
+
+    /**
+     * 追加来源
+     * @return \think\response\Json
+     */
+    public function appendSource()
+    {
+        if (Request::isPost()) {
+            $post = Request::post();
+            ###  根据手机号获取用户信息
+            $member = Member::get($post['id']);
+            $isWriteDuplicate = false;
+            $repeat = $this->sources[$post['source_id']]['title'];
+            if (isset($this->sources[$post['source_id']]['parent_id'])) {
+                $platformId = $this->sources[$post['source_id']]['parent_id'];
+                $repeatPlatform = $this->sources[$platformId]['title'];
+            } else {
+                $repeatPlatform = '';
+            }
+
+            if (empty($member->repeat_log)) {
+                $isWriteDuplicate = true;
+            } else {
+                ### 检测是否已存在title
+                if (!empty($member->repeat_log) && !empty($repeat) && mb_strpos($member->repeat_log, $repeat) === false) {
+                    $repeat = $member->repeat_log . ',' . $repeat;
+                    $isWriteDuplicate = true;
+
+                    if (!empty($member->repeat_platform_log) && !empty($repeatPlatform) && mb_strpos($member->repeat_platform_log, $repeatPlatform) === false) {
+                        $repeatPlatform = $member->repeat_platform_log . ',' . $repeatPlatform;
+                    }
+                }
+            }
+
+            if ($isWriteDuplicate) {
+                $member->save(['repeat_log' => $repeat, 'repeat_platform_log' => $repeatPlatform]);
+                $map = [];
+                $map[] = ['user_id', '=', $this->user['id']];
+                $map[] = ['member_id', '=', $member->id];
+                $map[] = ['source_id', '=', $post['source_id']];
+                $repeatLogData = DuplicateLog::where($map)->find();
+
+                if (empty($repeatLogData)) {
+                    ### 添加回访日志
+                    $data = [];
+                    $data['user_id'] = $this->user['id'];
+                    $data['member_id'] = $member->id;
+                    $data['member_no'] = $member->member_no;
+                    $data['source_id'] = $post['source_id'];
+                    $data['create_time'] = time();
+                    $DuplicateLogModel = new DuplicateLog();
+                    $DuplicateLogModel->insert($data);
+                }
+            }
+
+            return json([
+                'code' => '200',
+                'msg' => '追加来源成功'
+            ]);
+        } else {
+
+            $this->assign('sources', $this->sources);
+            return $this->fetch();
         }
     }
 
@@ -761,7 +997,7 @@ class Customer extends Base
     {
         $post = Request::param();
         $title = [];
-        if($this->auth['is_show_alias']) {
+        if ($this->auth['is_show_alias']) {
             $map = [];
             $map[] = ['member_id', '=', $post['member_id']];
             $list = DuplicateLog::where($map)->group('source_id')->column('source_id');
@@ -787,19 +1023,44 @@ class Customer extends Base
             }
         }
 
-        if(!empty($title)) {
+        if (!empty($title)) {
             return json([
-                'code'   => '200',
-                'msg'    => '获取重复列表成功',
+                'code' => '200',
+                'msg' => '获取重复列表成功',
                 'result' => [
-                    'logs'   => $title
+                    'logs' => $title
                 ]
             ]);
         } else {
             return json([
-                'code'  => '500',
-                'msg'   => '获取重复列表失败'
+                'code' => '500',
+                'msg' => '获取重复列表失败'
             ]);
         }
+    }
+
+    public function getCustomerFromDispatch()
+    {
+        $result = 0;
+        $get = Request::param();
+        $member = Member::get($get['id']);
+        if ($member) {
+            $data = $member->getData();
+            $result = MemberAllocate::insertAllocateData($this->user['id'], $get['id'], $data);
+        }
+
+        if ($result) {
+            $member->save(['dispatch_id' => $this->user['id']]);
+            return json([
+                'code' => '200',
+                'msg' => '索取客资成功'
+            ]);
+        } else {
+            return json([
+                'code' => '500',
+                'msg' => '索取客资失败'
+            ]);
+        }
+
     }
 }

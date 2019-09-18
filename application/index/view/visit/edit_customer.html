@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>更新客户信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('Visit/doEditCustomer')}" lay-filter="component-form-group">
+
+                <div class="layui-form-item layui-hide" id="repeat-item">
+                    <label class="layui-form-label">重复渠道</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="repeat" value="" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="realname" value="{$data['realname']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile" value="{$data['mobile']}" id="mobile" lay-verify="required" readonly autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">信息类型</label>
+                    <div class="layui-input-block">
+                        <select name="news_type" id="news_type" class="input-field">
+                            <option value="0" <{if $data['news_type']==0}>selected<{/if}>>婚宴信息</option>
+                            <option value="1" <{if $data['news_type']==1}>selected<{/if}>>婚庆信息</option>
+                            <option value="2" <{if $data['news_type']==2}>selected<{/if}>>一站式</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在城市</label>
+                    <div class="layui-input-block" id="cities">
+                        <select name="city_id" id="city_id" lay-filter="city_id">
+                            <option value="0"></option>
+                            <{foreach item="val" name="cities"}>
+                            <{if empty($data['city_id'])}>
+                            <option value="{$val['id']}" <{eq name="user['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{else /}>
+                            <option value="{$val['id']}" <{eq name="data['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                            <{/if}>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所在区/县</label>
+                    <div class="layui-input-block" id="areas">
+                        <{foreach item="val" name="areas"}>
+                            <{if in_array($val['id'], $data['area_id'])}>
+                                <input type="checkbox" name="area_id[]" value="{$val.id}" title="{$val.shortname}" lay-filter="area" checked/>
+                            <{else /}>
+                                <input type="checkbox" name="area_id[]" value="{$val.id}" title="{$val.shortname}" lay-filter="area"/>
+                            <{/if}>
+                        <{/foreach}>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所选区域</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="zone" id="zone" value="{$data['zone']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">咨询酒店</label>
+                    <div class="layui-input-block">
+                        <select name="hotel_id" id="hotel_id" lay-filter="hotel_id" lay-search>
+                            <option value="0"></option>
+                            <{foreach name="hotels" item="val"}>
+                                <option value="{$val['id']}" >{$val['title']}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所选酒店</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="hotel_text" id="hotel_text" value="{$data['hotel_text']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">桌数</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="banquet_size" id="banquet_size" value="{$data['banquet_size']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">预算</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="budget" id="budget" value="{$data['budget']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">婚期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="wedding_date" value="{$data['wedding_date']}" id="wedding_date" lay-verify="0" class="layui-date layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">其他联系</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile1" value="{$data['mobile1']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="remark">{$data['remark']}</textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" value="{$data['id']}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <{if empty($data['id'])}>
+                                <button class="layui-btn layui-btn-disabled" lay-submit="" lay-filter="form-submit" id="submit">立即提交</button>
+                            <{else /}>
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit" id="submit">立即提交</button>
+                            <{/if}>
+                            <button type="goback" class="layui-btn layui-btn-primary">返回</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
+        var $ = layui.jquery
+            ,laydate = layui.laydate
+            ,form = layui.form
+            ,laytpl = layui.laytpl;
+
+        form.render(null, 'component-form-group');
+        laydate.render({
+            elem: '#wedding_date',
+            type: 'date',
+            range: '~'
+        });
+
+        var isMobile = false;
+        $("#mobile").on("input",function(e){
+            var source_id = $("#source_id").val();
+            if(source_id == 0) {
+                layer.msg("请先输入来源");
+                $("#mobile").val('');
+                return false;
+            }
+
+            var mobile = e.delegateTarget.value;
+            if (isNaN(mobile)) {
+                layer.msg("请输入正确的手机号码");
+                return false;
+            }
+
+            if(mobile.length > 11) {
+                layer.msg("手机号不能超过11位");
+                return false;
+            }
+
+            // 验证手机号是否重复
+            if (mobile.length == 11) {
+                var url = "{:url('Customer/checkMobile')}";
+                var query = {mobile:mobile,source_id:source_id};
+                $.post(url, query, function (res) {
+                    if(res.code == '200') {
+                        $("#repeat-item").addClass("layui-hide");
+                        $("#submit").removeClass("layui-btn-disabled");
+                    } else {
+                        $("#repeat-item").removeClass("layui-hide");
+                        $("#repeat").val(res.result.repeat);
+                        layer.alert(res.msg);
+                    }
+                    isMobile = true;
+                    form.render("select");
+                });
+            }
+        });
+
+        form.on("select(source_id)", function (data) {
+            var source_id = data.elem.value;
+        });
+
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id:data.value}, function (result) {
+                console.log(result);
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = areaCheckboxes.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#areas").html(html);
+                    form.render("checkbox");
+                });
+            })
+        });
+
+        $(document).on("click", ".layui-form-checkbox" , function(){
+            if($(this).hasClass("layui-form-checked")) {
+                let text = $(this).find("span").text();
+                console.log(text);
+                let zoneStr = $("#zone").val();
+                if (zoneStr == '') {
+                    zoneStr = text;
+                } else {
+                    let zoneArr = zoneStr.split(',');
+                    if (zoneArr.indexOf(text) == -1) {
+                        zoneArr.push(text);
+                    }
+                    zoneStr = zoneArr.join();
+                }
+                $("#zone").val(zoneStr);
+            } else {
+                let text = $(this).find("span").text();
+                console.log(text);
+                let zoneStr = $("#zone").val();
+                if (zoneStr == '') {
+                    zoneStr = text;
+                } else {
+                    let zoneArr = zoneStr.split(',');
+                    let index = zoneArr.indexOf(text);
+                    if ( index != -1) {
+                        zoneArr.splice(index, 1)
+                        console.log(zoneArr);
+                    }
+                    zoneStr = zoneArr.join();
+                }
+                $("#zone").val(zoneStr);
+            }
+        });
+
+        form.on("select(hotel_id)", function (data) {
+            console.log(data);
+            let text = $("#hotel_id").find("option:selected").text();
+            let target = "#hotel_text";
+            let str = $(target).val();
+            if(str == '') {
+                str = text;
+            } else {
+                let arr = str.split(',');
+                if (arr.indexOf(text) == -1) {
+                    arr.push(text);
+                }
+                str = arr.join();
+            }
+            $(target).val(str);
+        });
+
+        /* 监听提交 */
+        form.on('submit(form-submit)', function (data) {
+            if($("#submit").hasClass("layui-btn-disabled")){
+                return  false;
+            }
+
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function (res) {
+                if (res.code == '200') {
+                    parent.location.reload();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
+</script>
+<script id="recommenderOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d.list, function(index, item){ }}
+        {{#  if(d.rid == index){ }}
+            <option value="{{ index }}" selected>{{ item }}</option>
+        {{#  } else { }}
+            <option value="{{ index }}">{{ item }}</option>
+        {{#  } }}
+    {{#  }); }}
+
+</script>
+<script id="storeOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.title }}</option>
+    {{#  }); }}
+</script>
+<script id="areaCheckboxes" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+    <input type="checkbox" name="area_id[]" class="area" value="{{ index }}" title="{{ item.shortname }}"/>
+    {{#  }); }}
+</script>
+<script id="hotelCheckboxes" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+    <input type="checkbox" name="hotel_id[]" value="{{ index }}" title="{{ item.title }}"/>
+    {{#  }); }}
+</script>
+</body>
+</html>

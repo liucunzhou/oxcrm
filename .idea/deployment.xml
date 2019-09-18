@@ -2,14 +2,14 @@
 <project version="4">
   <component name="PublishConfigData" serverName="hongsiyun">
     <serverData>
-      <paths name="e5ws">
+      <paths name="hongsiyun">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="hongsiyun">
+      <paths name="测试机器">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />

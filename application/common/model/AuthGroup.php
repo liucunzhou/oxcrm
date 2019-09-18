@@ -42,6 +42,7 @@ class AuthGroup extends Model
 
     public static function getAuthGroup($id, $update=false)
     {
+        /**
         $cacheKey = 'auth_group';
         $data = redis()->hGet($cacheKey, $id);
         $data = json_decode($data, true);
@@ -51,6 +52,10 @@ class AuthGroup extends Model
             $json = json_encode($data);
             $result = redis()->hSet($cacheKey, $id,$json);
         }
+        **/
+
+        $map[] = ['id', '=', $id];
+        $data = self::where($map)->field('id,title,auth_set')->find()->toArray();
 
         return $data;
     }

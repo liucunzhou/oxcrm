@@ -134,18 +134,26 @@ class Allocate extends Base
         foreach ($result[0] as $key => $row) {
             if (empty($row)) continue;
             $realname = trim($row[0]);
-            $realname = mb_convert_encoding($realname, 'UTF-8', 'GBK');
+            $realname = mb_convert_encoding($realname, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
             $sourceText = trim($row[2]);
-            $sourceText = mb_convert_encoding($sourceText, 'UTF-8', 'GBK');
+            $sourceText = mb_convert_encoding($sourceText, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
             $cityName = trim($row[3]);
-            $cityName = mb_convert_encoding($cityName, 'UTF-8', 'GBK');
+            $cityName = mb_convert_encoding($cityName, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
 
             $row[1] = trim($row[1]);
-            $row[1] = intval($row[1]);
+            $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
+            $row[1] = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $row[1]);
+            $row[1] = preg_replace("/[\n\r\t]/", ' ', $row[1]);
             $originMember = Member::checkMobile($row[1]);
             if(!empty($originMember)) continue;
+            $sourceId = $sources[$sourceText];
+            if (empty($sourceId)) {
+                return json([
+                    'code' => '500',
+                    'msg' => '请确认来源是否存在'
+                ]);
+            }
 
-            $MemberModel = new Member();
             $data = [];
             $data['member_no'] = date('YmdHis') . rand(100, 999);
             $data['realname'] = $realname;
@@ -155,6 +163,8 @@ class Allocate extends Base
             $data['city_id'] = $cities[$cityName];
             $data['operate_id'] = $this->user['id'];
             $data['create_time'] = $time;
+
+            $MemberModel = new Member();
             $result = $MemberModel->insert($data);
             if ($result) {
                 $data['member_id'] = $MemberModel->getLastInsID();
@@ -171,11 +181,12 @@ class Allocate extends Base
                 $AllocateModel = new MemberAllocate();
                 $data = $member[$start];
                 $data['user_id'] = $k;
+                $data['member_create_time'] = $member[$start]['create_time'];
                 $AllocateModel->insert($data);
             }
             $startArr[] = $v;
         }
-         redis()->delete($hashKey);
+        redis()->delete($hashKey);
         return json([
             'code' => '200',
             'msg' => '录入数据成功'
@@ -232,6 +243,22 @@ class Allocate extends Base
         return $this->fetch();
     }
 
+    /***
+     * 分配到派单组视图
+     * @return mixed
+     */
+    public function assignToDispatchGroup()
+    {
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if (!in_array($value['role_id'], [10, 11])) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
+        return $this->fetch();
+    }
+
     /**
      * 分配到洗单组逻辑
      * @return \think\response\Json
@@ -252,6 +279,45 @@ class Allocate extends Base
         foreach ($ids as $id) {
             if (empty($id)) continue;
             $result = $this->executeAllocateToStaff($id, $post['staff']);
+            if($result) $success = $success + 1;
+        }
+
+        $fail = $totals - $success;
+        return json([
+            'code' => '200',
+            'msg' => "分配到洗单组:成功{$success}个,失败{$fail}个"
+        ]);
+    }
+
+    /**
+     * 分配到派单组逻辑
+     * @return \think\response\Json
+     */
+    public function doAssignToDispatchStaff()
+    {
+        $post = Request::post();
+        $ids = explode(',', $post['ids']);
+        if (empty($ids)) {
+            return json([
+                'code' => '500',
+                'msg' => '请选择要分配的客资'
+            ]);
+        }
+
+        $dispatchStaffIds = [];
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if (in_array($value['role_id'], [10, 11])) {
+                // unset($users[$key]);
+                $dispatchStaffIds[] = $value['id'];
+            }
+        }
+
+        $totals = count($ids);
+        $success = 0;
+        foreach ($ids as $id) {
+            if (empty($id)) continue;
+            $result = $this->executeAllocateToDispatch($id, $post['staff'], $dispatchStaffIds);
             if($result) $success = $success + 1;
         }
 
@@ -322,6 +388,12 @@ class Allocate extends Base
         ]);
     }
 
+    /**
+     * 分配到非派单组
+     * @param $id
+     * @param $staff
+     * @return bool
+     */
     private function executeAllocateToStaff($id, $staff)
     {
         $allocate = MemberAllocate::get($id);
@@ -351,12 +423,277 @@ class Allocate extends Base
         if($allocate->active_status == 6) {
             $data['possible_assign_status'] = 1;
         }
+        $data['is_into_store'] = 0;
         $data['assign_status'] = 1;
         $allocate->save($data);
 
         if($result1) {
+            $user = User::get($staff);
+            if(!empty($user['dingding'])) {
+                $users[] = $user['dingding'];
+                $DingModel = new \app\api\model\DingTalk();
+                $message = $DingModel->linkMessage("新增客资", "新增客资消息", "http://h5.hongsizg.com/pages/customer/mine?status=0&is_into_store=0&page_title=%E6%9C%AA%E8%B7%9F%E8%BF%9B%E5%AE%A2%E8%B5%84&time=".time());
+                $DingModel->sendJobMessage($users, $message);
+            }
+
             ### 记录log日志
             OperateLog::appendTo($allocate);
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * f
+     * @param $id
+     * @param $staff
+     * @return bool
+     */
+    private function executeAllocateToDispatch($id, $staff, $dispatchStaffIds)
+    {
+        $allocate = MemberAllocate::get($id);
+        if (!$allocate) false;
+
+        ### 检查该用户是否已经分配过
+        $isAllocated = MemberAllocate::getAllocate($staff, $allocate->member_id);
+        if($isAllocated) return false;
+
+        ### 删除其它分配组员的分配
+        $where = [];
+        $where[] = ['member_id', '=', $allocate->member_id];
+        $where[] = ['user_id', 'in', $dispatchStaffIds];
+        $allocateGroup = new MemberAllocate();
+        $allocateGroup->save(['delete_time'=>time()], $where);
+
+        ### 分配到指定员工
+        $data = $allocate->getData();
+        unset($data['id']);
+        $data['operate_id'] = $this->user['id'];
+        $data['user_id'] = $staff;
+        $data['update_time'] = 0;
+        $data['create_time'] = time();
+        ### 分配后重新回访，修改回访状态
+        $data['active_status'] = 1;
+        $data['active_assign_status'] = 0;
+        $data['possible_assign_status'] = 0;
+        $MemberAllocate = new MemberAllocate();
+        $result1 = $MemberAllocate->insert($data);
+        // 更新分配状态
+        $data = [];
+        if($allocate->active_status == 5) {
+            $data['active_assign_status'] = 1;
+        }
+        if($allocate->active_status == 6) {
+            $data['possible_assign_status'] = 1;
+        }
+        $data['is_into_store'] = 0;
+        $data['assign_status'] = 1;
+        $allocate->save($data);
+
+        if($result1) {
+            $user = User::get($staff);
+            if(!empty($user['dingding'])) {
+                $users[] = $user['dingding'];
+                $DingModel = new \app\api\model\DingTalk();
+                $message = $DingModel->linkMessage("新增客资", "新增客资消息", "http://h5.hongsizg.com/pages/customer/mine?status=0&is_into_store=0&page_title=%E6%9C%AA%E8%B7%9F%E8%BF%9B%E5%AE%A2%E8%B5%84&time=".time());
+                $DingModel->sendJobMessage($users, $message);
+            }
+
+            ### 记录log日志
+            OperateLog::appendTo($allocate);
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    public function assignFromDispatchSeaToDispatchStaff()
+    {
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if (!in_array($value['role_id'], [10, 11])) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
+        return $this->fetch();
+    }
+
+    public function doAssignFromDispatchSeaToDispatchStaff()
+    {
+        $post = Request::post();
+        $ids = explode(',', $post['ids']);
+        if (empty($ids)) {
+            return json([
+                'code' => '500',
+                'msg' => '请选择要分配的客资'
+            ]);
+        }
+
+        $dispatchStaffIds = [];
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if (in_array($value['role_id'], [10, 11])) {
+                // unset($users[$key]);
+                $dispatchStaffIds[] = $value['id'];
+            }
+        }
+
+        $totals = count($ids);
+        $success = 0;
+        foreach ($ids as $id) {
+            if (empty($id)) continue;
+            $result = $this->executeMembertoStaff($id, $post['staff'], $dispatchStaffIds);
+            if($result) $success = $success + 1;
+        }
+
+        $fail = $totals - $success;
+        return json([
+            'code' => '200',
+            'msg' => "分配到洗单组:成功{$success}个,失败{$fail}个"
+        ]);
+    }
+
+    // 从派单组公海分配到门市销售
+    public function assignFromDispatchSeaToStoreStaff()
+    {
+        $users = User::getUsers(false);
+        $staffs = [];
+        foreach ($users as $value) {
+            if ($value['role_id'] == '5' || $value['role_id'] == '8' || $value['role_id'] == '6') {
+                array_push($staffs, $value);
+            }
+        }
+        $this->assign('staffs', $staffs);
+
+        return $this->fetch();
+    }
+
+    public function doAssignFromDispatchSeaToStoreStaff()
+    {
+        $post = Request::post();
+        $ids = explode(',', $post['ids']);
+        if (empty($ids)) {
+            return json([
+                'code' => '500',
+                'msg' => '请选择要分配门店员工'
+            ]);
+        }
+
+        $staffs = $post['staff'];
+        foreach ($staffs as $staff) {
+            foreach ($ids as $id) {
+                if (empty($id)) continue;
+                $result = $this->executeMembertoStoreStaff($id, $staff);
+            }
+        }
+        return json([
+            'code' => '200',
+            'msg' => "分配到推荐组:成功~"
+        ]);
+    }
+
+    /**
+     * 分配到非派单组
+     * @param $id
+     * @param $staff
+     * @return bool
+     */
+    private function executeMembertoStaff($id, $staff, $dispatchStaffIds)
+    {
+
+        ### 检查该用户是否已经分配过
+        $isAllocated = MemberAllocate::getAllocate($staff, $id);
+        if($isAllocated) return false;
+        ### 删除其它分配组员的分配
+        $where = [];
+        $where[] = ['member_id', '=', $id];
+        $where[] = ['user_id', 'in', $dispatchStaffIds];
+        $allocateGroup = new MemberAllocate();
+        $allocateGroup->save(['delete_time'=>time()], $where);
+
+        $member = Member::get($id);
+        $data = $member->getData();
+        unset($data['id']);
+        $data['operate_id'] = $this->user['id'];
+        $data['user_id'] = $staff;
+        $data['update_time'] = 0;
+        $data['create_time'] = time();
+        ### 分配后重新回访
+        $data['active_status'] = 1;
+        $data['assign_status'] = 0;
+        $data['active_assign_status'] = 0;
+        $data['possible_assign_status'] = 0;
+        $MemberAllocate = new MemberAllocate();
+        $result1 = $MemberAllocate->allowField(true)->save($data);
+        ### 标记已分配
+        $member->save(['dispatch_assign_status'=>1,'dispatch_id'=>$staff]);
+
+        if($result1) {
+            $user = User::get($staff);
+            if(!empty($user['dingding'])) {
+                $users[] = $user['dingding'];
+                $DingModel = new \app\api\model\DingTalk();
+                $message = $DingModel->linkMessage("新增客资", "新增客资消息", "http://h5.hongsizg.com/pages/customer/mine?status=1&is_into_store=0&page_title=%E6%9C%AA%E8%B7%9F%E8%BF%9B%E5%AE%A2%E8%B5%84&time=".time());
+                $DingModel->sendJobMessage($users, $message);
+            }
+
+            ### 记录log日志
+            OperateLog::appendTo($MemberAllocate);
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * 分配到非派单组
+     * @param $id
+     * @param $staff
+     * @return bool
+     */
+    private function executeMembertoStoreStaff($id, $staff)
+    {
+
+        ### 检查该用户是否已经分配过
+        $isAllocated = MemberAllocate::getAllocate($staff, $id);
+        if($isAllocated) return false;
+
+        $member = Member::get($id);
+        $data = $member->getData();
+        unset($data['id']);
+        $data['operate_id'] = $this->user['id'];
+        $data['user_id'] = $staff;
+        $data['update_time'] = 0;
+        $data['create_time'] = time();
+        ### 分配后重新回访
+        $data['active_status'] = 1;
+        $data['assign_status'] = 0;
+        $data['active_assign_status'] = 0;
+        $data['possible_assign_status'] = 0;
+        $MemberAllocate = new MemberAllocate();
+        $result1 = $MemberAllocate->allowField(true)->save($data);
+        ### 标记已分配
+        $member->save(['dispatch_assign_status'=>1]);
+
+        if($result1) {
+            $user = User::get($staff);
+            if(!empty($user['dingding'])) {
+                $users[] = $user['dingding'];
+                $DingModel = new \app\api\model\DingTalk();
+                $message = $DingModel->linkMessage("新增客资", "新增客资消息", "http://h5.hongsizg.com/pages/customer/mine?status=0&is_into_store=0&page_title=%E6%9C%AA%E8%B7%9F%E8%BF%9B%E5%AE%A2%E8%B5%84&time=".time());
+                $DingModel->sendJobMessage($users, $message);
+            }
+
+            ### 记录log日志
+            OperateLog::appendTo($MemberAllocate);
             $result = true;
         } else {
             $result = false;

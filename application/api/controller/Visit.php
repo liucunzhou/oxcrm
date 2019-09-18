@@ -69,6 +69,7 @@ class Visit extends Base
         $customer = Member::get($this->params['member_id']);
         if (!$this->auth['is_show_entire_mobile']) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
+            $customer['mobile1'] = substr_replace($customer['mobile'], '****', 3, 4);
         }
 
         ### 获取回访日志,检测是否拥有查看所有回访的权限

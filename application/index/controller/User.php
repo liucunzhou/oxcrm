@@ -225,9 +225,8 @@ class User extends Base
         // $user1 = session('user');
         $user = \think\facade\Session::get("user");
 
-        $auth = UserAuth::getUserLogicAuth($user['id']);
         $roles = AuthGroup::getRoles();
-        $this->assign('role', $roles[$auth['role_ids']]);
+        $this->assign('role', $roles[$user['role_id']]);
         $this->assign("user", $user);
         return $this->fetch();
     }

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="98394d48-51bf-405e-a681-c848cb7d8a01" name="e5ws" url="http://www.e5ws.com">
-        <fileTransfer host="www.e5ws.com" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/data/platform" accessType="SFTP" username="root" keyPair="true">
+      <webServer id="98394d48-51bf-405e-a681-c848cb7d8a01" name="测试机器" url="http://crm.reactphp.club">
+        <fileTransfer host="crm.reactphp.club" port="22" rootFolder="/data/oxcrm" accessType="SFTP" password="dfe6dfc9dfd0df9bdf93df92df9cdf9adf9bdf9adf93df81" username="root">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

@@ -3,6 +3,70 @@ namespace app\common\model;
 
 class Search
 {
+    public static function customerDispatchMine(&$user, &$get)
+    {
+        if(isset($get['status']) && $get['status'] == '-1') {
+            unset($get['status']);
+        }
+
+        if (isset($get['status'])) {
+            $map[] = ['active_status', '=', $get['status']];
+        }
+
+        if (isset($get['active_assign_status'])) {
+            $map[] = ['active_assign_status', '=', $get['active_assign_status']];
+        }
+
+        if (isset($get['is_into_store']) && $get['is_into_store'] > 0) {
+            $map[] = ['is_into_store', '=', 1];
+        }
+
+        if (isset($get['possible_assign_status'])) {
+            $map[] = ['possible_assign_status', '=', $get['possible_assign_status']];
+        }
+
+        if (isset($get['source']) && $get['source'] > 0) {
+            $map[] = ['source_id', '=', $get['source']];
+        }
+
+        if (!isset($get['sea']) && isset($get['staff']) && $get['staff'] > 0) {
+            $map[] = ['user_id', '=', $get['staff']];
+        }
+
+        switch ($user['role_id']) {
+            case 10: // 派单组主管
+                if(!isset($get['sea']) && !empty($get['staff']) && $get['staff'] = 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else if(!isset($get['sea'])){
+                    $map[] = ['user_id', '=', $user['id']];
+                }
+                break;
+            case 11: // 派单组客服
+                if(!isset($get['sea'])) {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
+                break;
+
+            default :
+                if(!isset($get['sea'])) {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
+                break;
+        }
+
+        if(isset($get['create_time']) && !empty($get['create_time'])) {
+            $range = self::getDateRange($get['create_time']);
+            $map[] = ['create_time', 'between', $range];
+        }
+
+        if(!isset($get['sea']) && isset($get['next_visit_time']) && !empty($get['next_visit_time'])) {
+            $range = self::getDateRange($get['next_visit_time']);
+            $map[] = ['next_visit_time', 'between', $range];
+        }
+
+        return $map;
+    }
+
     public static function customerMine(&$user, &$get)
     {
         if(isset($get['status']) && $get['status'] == '-1') {
@@ -160,8 +224,7 @@ class Search
                 break;
 
             default :
-                $map = [];
-                $Model = [];
+                $map[] = ['user_id', '=', $user['id']];
                 break;
         }
 
@@ -181,27 +244,6 @@ class Search
         }
 
         return $map;
-    }
-
-    public static function formatDateRange($range)
-    {
-        switch($range) {
-            case 'today' :
-                // 今天
-                break;
-            case 'tomorrow':
-                // 明天
-                break;
-            case 'this_week';
-                // 本周
-                break;
-            case 'this_month':
-                // 本月
-                break;
-            case stripos($range, '~') > 0 :
-                // 自定义区间
-                break;
-        }
     }
 
     public static function getDateRange($dateRange) {

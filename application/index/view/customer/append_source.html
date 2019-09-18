@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>绑定客户信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('Customer/appendSource')}" lay-filter="component-form-group">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客资来源</label>
+                    <div class="layui-input-block">
+                        <select name="source_id" id="source_id">
+                            <option value="0">--选择来源--</option>
+                            <{foreach name="sources" item="val"}>
+                            <{if $data['source_id']==$val['id']}>
+                            <option value="{$val['id']}" selected>{$val['title']}</option>
+                            <{else /}>
+                            <option value="{$val['id']}">{$val['title']}</option>
+                            <{/if}>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" value="{$Request.param.id}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">确认追加</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
+        var $ = layui.jquery
+            ,laydate = layui.laydate
+            ,form = layui.form
+            ,laytpl = layui.laytpl;
+
+        form.render(null, 'component-form-group');
+        laydate.render({
+            elem: '#wedding_date',
+            type: 'datetime'
+        });
+
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id:data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#area_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(area_id)", function (data) {
+            var url = '{:url("Store/getStoreListByArea")}';
+            var news_type = $("#news_type").val();
+            $.post(url, {id:data.value,news_type:news_type}, function (result) {
+                var getTpl = storeOptionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function(html){
+                    $("#hotel_id").html(html);
+                    form.render("select");
+                    var zone = $("#city_id").find("option:selected").text() + $("#area_id").find("option:selected").text();
+                    $("#zone").val(zone);
+                });
+
+            });
+        });
+
+        form.verify({
+            pmobile: function(value, item){ //value：表单的值、item：表单的DOM对象
+
+                if(value !='' && (isNaN(value) || value.length != 11)) {
+                    return '请填写正确的手机号';
+                }
+            }
+        });
+
+        /* 监听提交 */
+        form.on('submit(form-submit)', function (data) {
+            let url = data.form.action;
+            let fields = data.field;
+            let source_id = fields.source_id;
+
+            if(source_id == 0) {
+                layer.msg('请选择来源');
+                return false;
+            }
+
+            let params = {
+                id: fields.id,
+                source_id: source_id
+            };
+
+            $.post(url, params, function (res) {
+                if (res.code == '200') {
+                    parent.location.reload();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
+</script>
+<script id="storeOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.title }}</option>
+    {{#  }); }}
+</script>
+</body>
+</html>

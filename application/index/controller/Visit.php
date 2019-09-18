@@ -62,6 +62,8 @@ class Visit extends Base
                 $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
             }
         }
+        $users = User::getUsers();
+        $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
         $this->assign('customer', $customer);
 
         ### 获取用户区域列表
@@ -101,6 +103,7 @@ class Visit extends Base
         $this->assign('intentions', $this->status);
         $this->assign('sources', $this->sources);
         $this->assign("hotels", $this->hotels);
+        $this->assign('newsTypes', $this->newsTypes);
         return $this->fetch();
     }
 
@@ -132,16 +135,16 @@ class Visit extends Base
         ### 该客资的回放次数+1
         if (in_array($this->user['role_id'], [3, 4, 10, 11])) {
             // 推荐组＆派单组修改信息的时候自动同步到到客资基本信息
-            $Member->realname = $post['realname'];
-            $Member->budget = $post['budget'];
-            $Member->banquet_size = $post['banquet_size'];
-            $Member->news_type = $post['news_type'];
-            $Member->source_id = $post['source_id'];
-            $Model->source_text = $this->sources[$post['source_id']]['title'];
-            $Member->zone = $post['zone'];
-            $Member->hotel_text = $post['hotel_text'];
+            if(isset($post['realname'])) $Member->realname = $post['realname'];
+            if(isset($post['budget'])) $Member->budget = $post['budget'];
+            if(isset($post['banquet_size'])) $Member->banquet_size = $post['banquet_size'];
+            if(isset($post['news_type'])) $Member->news_type = $post['news_type'];
+            if(isset($post['source_id'])) $Member->source_id = $post['source_id'];
+            if(isset($post['source_id'])) $Model->source_text = $this->sources[$post['source_id']]['title'];
+            if(isset($post['zone'])) $Member->zone = $post['zone'];
+            if(isset($post['hotel_text'])) $Member->hotel_text = $post['hotel_text'];
             if (isset($post['active_status'])) {
-                $Member->status = $post['active_status'];
+                // $Member->status = $post['active_status'];
                 $Member->active_status = $post['active_status'];
             }
         }
@@ -165,7 +168,7 @@ class Visit extends Base
             OperateLog::appendTo($Model);
             return json(['code' => '200', 'msg' => '回访成功']);
         } else {
-            return json(['code' => '500', 'msg' => '回访失败']);
+            return json(['code' => '200', 'msg' => '回访失败']);
         }
     }
 
@@ -176,12 +179,13 @@ class Visit extends Base
     public function visitLogs()
     {
         $get = Request::param();
-
         ### 获取用户基本信息
         $customer = Member::get($get['member_id']);
         if (!$this->auth['is_show_entire_mobile']) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
         }
+        $users = User::getUsers();
+        $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
         $this->assign('customer', $customer);
 
         ### 获取回访日志,检测是否拥有查看所有回访的权限
@@ -208,4 +212,58 @@ class Visit extends Base
 
         return $this->fetch();
     }
+
+    /**
+     * 编辑客资视图
+     * @return mixed
+     */
+    public function editCustomer()
+    {
+        $get = Request::param();
+        ### 来源列表
+        $sources = \app\common\model\Source::getSources();
+        $this->assign('sources', $sources);
+
+        ### 获取推荐人列表
+        $recommenders = \app\common\model\Recommender::column('id,title', id);
+        $this->assign('recommenders', $recommenders);
+
+        ### 酒店列表
+        $hotels = Store::getStoreList();
+        $this->assign("hotels", $hotels);
+
+        $data = \app\common\model\Member::get($get['member_id']);
+        if (!empty($data['area_id'])) $data['area_id'] = explode(',', $data['area_id']);
+        $this->assign('data', $data);
+
+        $cities = Region::getCityList(0);
+        $this->assign('cities', $cities);
+
+        $areas = [];
+        if(!empty($this->user['city_id'])) {
+            $areas = Region::getAreaList($this->user['city_id']);
+        }
+        $this->assign('areas', $areas);
+
+        $action = 'edit';
+        $this->assign('action', $action);
+        return $this->fetch();
+    }
+
+    ### 编辑客户信息
+    public function doEditCustomer()
+    {
+        $post = Request::post();
+        $Model = \app\common\model\Member::get($post['id']);
+        $result1 = $Model->save($post);
+        if ($result1) {
+            MemberAllocate::updateAllocateData($this->user['id'], $Model->id, $post);
+            ### 添加操作记录
+            OperateLog::appendTo($Model);
+            return json(['code' => '200', 'msg' =>  '修改客户资料成功']);
+        } else {
+            return json(['code' => '500', 'msg' => '修改客户资料失败, 请重试']);
+        }
+    }
+
 }
