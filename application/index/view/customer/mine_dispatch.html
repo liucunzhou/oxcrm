@@ -393,6 +393,7 @@
                             var member_id = obj.data.member_id;
                             switch (obj.event) {
                                 case 'editCustomer':
+
                                     url = '/index/customer/editcustomer.html?member_id=' + member_id;
                                     layer.open({
                                         type: 2,
@@ -402,6 +403,7 @@
                                         offset: 'rb'
                                     });
                                     break;
+
                                 case 'visitCustomer':
                                     url = '/index/visit/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
                                     layer.open({
