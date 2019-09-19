@@ -63,8 +63,10 @@ class Visit extends Base
                 $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
             }
         }
-        $users = User::getUsers();
-        $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
+        if($customer['operate_id'] > 0) {
+            $users = User::getUsers();
+            $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
+        }
         $this->assign('customer', $customer);
 
         ### 获取用户区域列表
@@ -187,8 +189,10 @@ class Visit extends Base
         if (!$this->auth['is_show_entire_mobile']) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
         }
-        $users = User::getUsers();
-        $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
+        if($customer['operate_id'] > 0) {
+            $users = User::getUsers();
+            $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
+        }
         $this->assign('customer', $customer);
 
         ### 获取回访日志,检测是否拥有查看所有回访的权限

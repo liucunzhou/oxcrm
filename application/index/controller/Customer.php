@@ -179,6 +179,7 @@ class Customer extends Base
                     if ($value['member_id'] > 0) {
                         $memberObj = Member::get($value['member_id']);
                         $value['visit_amount'] = $memberObj->visit_amount;
+                        $value['remark'] = $memberObj->remark;
                         if ($value['member_create_time'] > 0) {
                             $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
                         } else {
@@ -261,6 +262,7 @@ class Customer extends Base
                 if ($value['member_id'] > 0) {
                     $memberObj = Member::get($value['member_id']);
                     $value['visit_amount'] = $memberObj->visit_amount;
+                    $value['remark'] = $memberObj->remark;
                     if ($value['member_create_time'] > 0) {
                         $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
                     } else {
