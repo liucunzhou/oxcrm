@@ -619,16 +619,19 @@ class Allocate extends Base
 
         $member = Member::get($id);
         $data = $member->getData();
-        unset($data['id']);
         $data['operate_id'] = $this->user['id'];
         $data['user_id'] = $staff;
+        $data['member_id'] = $data['id'];
+        // 设置时间信息
         $data['update_time'] = 0;
         $data['create_time'] = time();
+        $data['member_create_time'] = strtotime($member->create_time);
         ### 分配后重新回访
         $data['active_status'] = 1;
         $data['assign_status'] = 0;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
+        unset($data['id']);
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->allowField(true)->save($data);
         ### 标记已分配
@@ -668,16 +671,18 @@ class Allocate extends Base
 
         $member = Member::get($id);
         $data = $member->getData();
-        unset($data['id']);
         $data['operate_id'] = $this->user['id'];
         $data['user_id'] = $staff;
+        $data['member_id'] = $data['id'];
         $data['update_time'] = 0;
         $data['create_time'] = time();
+        $data['member_create_time'] = strtotime($member->create_time);
         ### 分配后重新回访
         $data['active_status'] = 1;
         $data['assign_status'] = 0;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
+        unset($data['id']);
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->allowField(true)->save($data);
         ### 标记已分配
