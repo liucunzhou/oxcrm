@@ -516,6 +516,7 @@ class Count extends Base
         $map[] = ['create_time', 'between', $$dateRange];
         ### 获取所有去除重复的客资
         $mobiles = MemberAllocate::where($map)->field('mobile')->group('mobile')->select();
+        echo MemberAllocate::getLastSql();
         var_dump($mobiles);
         $data = [];
         $totals = count($mobiles);
