@@ -54,10 +54,9 @@ class Notice extends Command
     public function noticeStoretNovist()
     {
         $map = [];
-        $map[] = ['id', '=', 553];
+        // $map[] = ['id', '=', 553];
         $map[] = ['role_id', 'in', [5,8]];
         $staffObj = User::where($map)->all();
-        print_r($staffObj);
         $staffes = $staffObj->toArray();
         if(empty($staffes)) return false;
 
@@ -72,6 +71,8 @@ class Notice extends Command
         foreach ($allocates as $allocate) {
             // 后台用户信息
             $user = User::get($allocate->user_id);
+            print_r($user);
+            continue;
             // 获取部门信息
             $department = Department::get($user['department_id']);
             $pathArr = explode("-", $department['path']);
@@ -85,7 +86,7 @@ class Notice extends Command
             $createTime = strtotime($allocate->create_time);
             $diff = $time - $createTime - 7200 * ($allocate->notice_time + 1);
             $times = $allocate->notice_time + 1;
-            if($diff < 600 && $diff > 0 && $allocate->notice_time == 0) {
+            if($diff > 0 && $allocate->notice_time == 0) {
 
                 if(!empty($user['dingding'])) {
                     $users[] = $user['dingding'];
@@ -99,7 +100,7 @@ class Notice extends Command
                 $allocate->notice_time = ['inc', 1];
                 $allocate->save();
 
-            } else if($diff < 600 && $diff > 0 && $allocate->notice_time == 1) {
+            } else if($diff > 0 && $allocate->notice_time == 1) {
                 $map = [];
                 $map[] = ['role_id', '=', 5];
                 $map[] = ['department_id', 'in', $pathArr];
@@ -124,7 +125,7 @@ class Notice extends Command
                 $allocate->notice_time = ['inc', 1];
                 $allocate->save();
 
-            } else if($diff < 600 && $diff > 0 && $allocate->notice_time == 2) {
+            } else if($diff > 0 && $allocate->notice_time == 2) {
                 // 区域总监
                 $map = [];
                 $map[] = ['role_id', 'in', [5, 6]];
@@ -150,7 +151,7 @@ class Notice extends Command
                 $allocate->notice_time = ['inc', 1];
                 $allocate->save();
 
-            } else if($diff < 600 && $diff > 0 && $allocate->notice_time == 3) {
+            } else if($diff > 0 && $allocate->notice_time == 3) {
                 // 区域总监
                 $map = [];
                 $map[] = ['role_id', 'in', [5, 6, 26]];
@@ -175,7 +176,7 @@ class Notice extends Command
                 }
                 $allocate->notice_time = ['inc', 1];
                 $allocate->save();
-            } else if($diff < 600 && $diff > 0 && $allocate->notice_time == 4) {
+            } else if($diff > 0 && $allocate->notice_time == 4) {
 
                 // 刘总账号
                 $content = $user['realname'].'有一条手机尾号为'.$mobileLast."的客资未跟进\n";
