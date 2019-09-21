@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="修改排序规则">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/command.php" afterPath="$PROJECT_DIR$/application/command.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/command/Repair.php" afterPath="$PROJECT_DIR$/application/common/command/Repair.php" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -35,8 +34,8 @@
       <file leaf-file-name="Repair.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="55" column="1" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
+            <state relative-caret-position="75">
+              <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -537,7 +536,7 @@
       <workItem from="1568883259683" duration="6189000" />
       <workItem from="1568952264846" duration="5133000" />
       <workItem from="1569036441444" duration="2666000" />
-      <workItem from="1569040300392" duration="284000" />
+      <workItem from="1569040300392" duration="505000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -557,7 +556,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="574650000" />
+    <option name="totallyTimeSpent" value="574871000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="959" extended-state="6" />
@@ -970,8 +969,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="55" column="1" selection-start-line="55" selection-start-column="1" selection-end-line="55" selection-end-column="1" />
+        <state relative-caret-position="75">
+          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
           <folding />
         </state>
       </provider>
