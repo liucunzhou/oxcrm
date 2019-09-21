@@ -63,17 +63,17 @@ class Repair extends Command
                 if($key == 0) {
                     $targetId = $member->id;
                 } else {
-                    $ids[] = $member->id;
+                    $member_id = $member->id;
                     $member->delete(true);
 
                     $where1 = [];
-                    $where1[] = ['member_id', 'in', $ids];
+                    $where1[] = ['member_id', '=', $member_id];
                     $MemberAllocate = new MemberAllocate();
                     $MemberAllocate->save(['member_id'=>$targetId], $where1);
                     echo $MemberAllocate->getLastSql();
                     echo "\n";
                     $where2 = [];
-                    $where2[] = ['member_id', 'in', $ids];
+                    $where2[] = ['member_id', '=', $member_id];
                     $MemberVisit = new MemberVisit();
                     $MemberVisit->save(['member_id'=>$targetId], $where2);
                     echo $MemberAllocate->getLastSql();
