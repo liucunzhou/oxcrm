@@ -533,7 +533,9 @@ class Customer extends Base
         ### 基本信息入库
         $Model->is_sea = 1;
         unset($post['token']);
-        $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
+        if(in_array($this->user['role_id'], [5,6,8,26])) {
+            $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
+        }
         $Model->operate_id = $this->user['id'];
         $result1 = $Model->save($post);
 

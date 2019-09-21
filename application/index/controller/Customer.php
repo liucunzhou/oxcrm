@@ -616,6 +616,10 @@ class Customer extends Base
                 ]);
             }
             $Model->operate_id = $this->user['id'];
+
+            if(in_array($this->user['role_id'], [5,6,8,26])) {
+                $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
+            }
         }
 
         ### 同步来源名称
