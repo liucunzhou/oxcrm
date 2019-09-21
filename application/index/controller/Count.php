@@ -196,7 +196,7 @@ class Count extends Base
             $this->assign('dimension', '员工');
         }
 
-        if($request['department_id']) {
+        if ($request['department_id']) {
 
             $userIds = User::getUsersByDepartmentId($request['department_id']);
             if (!empty($userIds) && !empty($request['create_time'])) {
@@ -264,59 +264,58 @@ class Count extends Base
                 // $total[7] = MemberAllocate::where($map)->count();
 
                 $this->assign('total', $total);
-            }
 
+                $map = [];
+                $map[] = ['source_text', '<>', ''];
+                $map[] = ['user_id', 'in', $userIds];
+                $map[] = ['create_time', 'between', $range];
+                if ($dimension == 'source') {
+                    $result = MemberAllocate::where($map)->field('source_text,active_status,count(*) as amount')->group('source_text,active_status')->select();
+                    if (!empty($result)) {
+                        $groupSource = [];
+                        $groupData = $result->toArray();
+                        foreach ($groupData as $key => $value) {
+                            $k = $value['source_text'];
+                            $activeStatus = $value['active_status'];
+                            $groupSource[$k][$activeStatus] = $value['amount'];
+                            $groupSource[$k]['text'] = $value['source_text'];
+                        }
 
-            $map = [];
-            $map[] = ['source_text', '<>', ''];
-            $map[] = ['user_id', 'in', $userIds];
-            $map[] = ['create_time', 'between', $range];
-            if($dimension == 'source') {
-                $result = MemberAllocate::where($map)->field('source_text,active_status,count(*) as amount')->group('source_text,active_status')->select();
-                if (!empty($result)) {
-                    $groupSource = [];
-                    $groupData = $result->toArray();
-                    foreach ($groupData as $key => $value) {
-                        $k = $value['source_text'];
-                        $activeStatus = $value['active_status'];
-                        $groupSource[$k][$activeStatus] = $value['amount'];
-                        $groupSource[$k]['text'] = $value['source_text'];
+                        $totalsArr = [];
+                        foreach ($groupSource as &$group) {
+                            $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
+                            $group[100] = $total;
+                            $totalsArr[] = $total;
+                        }
+
+                        $totalSum = array_sum($totalsArr);
+                        $groupSource['总计'][100] = $totalSum;
+                        $this->assign('groupSource', $groupSource);
                     }
+                } else {
+                    $users = User::getUsers();
+                    $result = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
+                    if (!empty($result)) {
+                        $groupSource = [];
+                        $groupData = $result->toArray();
+                        foreach ($groupData as $key => $value) {
+                            $userId = $value['user_id'];
+                            $activeStatus = $value['active_status'];
+                            $groupSource[$userId][$activeStatus] = $value['amount'];
+                            $groupSource[$userId]['text'] = $users[$value['user_id']]['realname'];
+                        }
 
-                    $totalsArr = [];
-                    foreach ($groupSource as &$group) {
-                        $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                        $group[100] = $total;
-                        $totalsArr[] = $total;
+                        $totalsArr = [];
+                        foreach ($groupSource as &$group) {
+                            $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
+                            $group[100] = $total;
+                            $totalsArr[] = $total;
+                        }
+
+                        $totalSum = array_sum($totalsArr);
+                        $groupSource['总计'][100] = $totalSum;
+                        $this->assign('groupSource', $groupSource);
                     }
-
-                    $totalSum = array_sum($totalsArr);
-                    $groupSource['总计'][100] = $totalSum;
-                    $this->assign('groupSource', $groupSource);
-                }
-            } else {
-                $users = User::getUsers();
-                $result = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
-                if (!empty($result)) {
-                    $groupSource = [];
-                    $groupData = $result->toArray();
-                    foreach ($groupData as $key => $value) {
-                        $userId = $value['user_id'];
-                        $activeStatus = $value['active_status'];
-                        $groupSource[$userId][$activeStatus] = $value['amount'];
-                        $groupSource[$userId]['text'] = $users[$value['user_id']]['realname'];
-                    }
-
-                    $totalsArr = [];
-                    foreach ($groupSource as &$group) {
-                        $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                        $group[100] = $total;
-                        $totalsArr[] = $total;
-                    }
-
-                    $totalSum = array_sum($totalsArr);
-                    $groupSource['总计'][100] = $totalSum;
-                    $this->assign('groupSource', $groupSource);
                 }
             }
         }
@@ -341,7 +340,7 @@ class Count extends Base
             $this->assign('dimension', '员工');
         }
 
-        if($request['department_id']) {
+        if ($request['department_id']) {
 
             $userIds = User::getUsersByDepartmentId($request['department_id']);
             if (!empty($userIds) && !empty($request['create_time'])) {
@@ -410,61 +409,65 @@ class Count extends Base
                 // $total[7] = MemberAllocate::where($map)->count();
 
                 $this->assign('total', $total);
+
+
+                $map = [];
+                $map[] = ['source_text', '<>', ''];
+                $map[] = ['user_id', 'in', $userIds];
+                $map[] = ['create_time', 'between', $range];
+                if ($dimension == 'source') {
+                    $this->groupBySource($request['department_id'], $range);
+                    /**
+                     * $result = MemberAllocate::where($map)->field('source_text,active_status,count(*) as amount')->group('source_text,active_status')->select();
+                     * if (!empty($result)) {
+                     * $groupSource = [];
+                     * $groupData = $result->toArray();
+                     * foreach ($groupData as $key => $value) {
+                     * $k = $value['source_text'];
+                     * $activeStatus = $value['active_status'];
+                     * $groupSource[$k][$activeStatus] = $value['amount'];
+                     * $groupSource[$k]['text'] = $value['source_text'];
+                     * }
+                     *
+                     * $totalsArr = [];
+                     * foreach ($groupSource as &$group) {
+                     * $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
+                     * $group[100] = $total;
+                     * $totalsArr[] = $total;
+                     * }
+                     *
+                     * $totalSum = array_sum($totalsArr);
+                     * $groupSource['总计'][100] = $totalSum;
+                     * $this->assign('groupSource', $groupSource);
+                     * }
+                     **/
+                } else {
+                    $users = User::getUsers();
+                    $result = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
+                    if (!empty($result)) {
+                        $groupSource = [];
+                        $groupData = $result->toArray();
+                        foreach ($groupData as $key => $value) {
+                            $userId = $value['user_id'];
+                            $activeStatus = $value['active_status'];
+                            $groupSource[$userId][$activeStatus] = $value['amount'];
+                            $groupSource[$userId]['text'] = $users[$value['user_id']]['realname'];
+                        }
+
+                        $totalsArr = [];
+                        foreach ($groupSource as &$group) {
+                            $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
+                            $group[100] = $total;
+                            $totalsArr[] = $total;
+                        }
+
+                        $totalSum = array_sum($totalsArr);
+                        $groupSource['总计'][100] = $totalSum;
+                        $this->assign('groupSource', $groupSource);
+                    }
+                }
             }
 
-
-            $map = [];
-            $map[] = ['source_text', '<>', ''];
-            $map[] = ['user_id', 'in', $userIds];
-            $map[] = ['create_time', 'between', $range];
-            if($dimension == 'source') {
-                $result = MemberAllocate::where($map)->field('source_text,active_status,count(*) as amount')->group('source_text,active_status')->select();
-                if (!empty($result)) {
-                    $groupSource = [];
-                    $groupData = $result->toArray();
-                    foreach ($groupData as $key => $value) {
-                        $k = $value['source_text'];
-                        $activeStatus = $value['active_status'];
-                        $groupSource[$k][$activeStatus] = $value['amount'];
-                        $groupSource[$k]['text'] = $value['source_text'];
-                    }
-
-                    $totalsArr = [];
-                    foreach ($groupSource as &$group) {
-                        $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                        $group[100] = $total;
-                        $totalsArr[] = $total;
-                    }
-
-                    $totalSum = array_sum($totalsArr);
-                    $groupSource['总计'][100] = $totalSum;
-                    $this->assign('groupSource', $groupSource);
-                }
-            } else {
-                $users = User::getUsers();
-                $result = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
-                if (!empty($result)) {
-                    $groupSource = [];
-                    $groupData = $result->toArray();
-                    foreach ($groupData as $key => $value) {
-                        $userId = $value['user_id'];
-                        $activeStatus = $value['active_status'];
-                        $groupSource[$userId][$activeStatus] = $value['amount'];
-                        $groupSource[$userId]['text'] = $users[$value['user_id']]['realname'];
-                    }
-
-                    $totalsArr = [];
-                    foreach ($groupSource as &$group) {
-                        $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                        $group[100] = $total;
-                        $totalsArr[] = $total;
-                    }
-
-                    $totalSum = array_sum($totalsArr);
-                    $groupSource['总计'][100] = $totalSum;
-                    $this->assign('groupSource', $groupSource);
-                }
-            }
         }
 
         $this->assign('request', $request);
@@ -505,9 +508,66 @@ class Count extends Base
         return $this->fetch();
     }
 
+    private function groupBySource($departmentId, $dateRange)
+    {
+        $userIds = User::getUsersByDepartmentId($departmentId);
+        $map[] = ['source_text', '<>', ''];
+        $map[] = ['user_id', 'in', $userIds];
+        $map[] = ['create_time', 'between', $$dateRange];
+        ### 获取所有去除重复的客资
+        $mobiles = MemberAllocate::where($map)->field('mobile')->group('mobile')->select();
+        $data = [];
+        $totals = count($mobiles);
+        foreach ($mobiles as $row) {
+            $mobile = $row->mobile;
+            $allocateObj = new MemberAllocate();
+            $where = [];
+            $where[] = ['mobile', '=', $mobile];
+            $where[] = ['user_id', 'in', $userIds];
+            $allocates = $allocateObj->where($where)->select();
+            foreach ($allocates as $allocate) {
+                $activeStatus = $allocate->active_status;
+                // 成单客户
+                if ($activeStatus == 2) {
+                    continue;
+                }
 
-    private function getDateRange($dateRange) {
-        if($dateRange == 'today') {
+                // 有效客户
+                if ($activeStatus == 5) {
+                    continue;
+                }
+
+                // 意向客户
+                if ($activeStatus == 6) {
+                    continue;
+                }
+
+                // 跟进中
+                if ($activeStatus == 1) {
+                    continue;
+                }
+
+                // 未跟进
+                if ($activeStatus == 0) {
+                    continue;
+                }
+
+                // 无效客户
+                if ($activeStatus == 4) {
+                    continue;
+                }
+
+                // 失效客户
+                if ($activeStatus == 3) {
+                    continue;
+                }
+            }
+        }
+    }
+
+    private function getDateRange($dateRange)
+    {
+        if ($dateRange == 'today') {
 
             $start = strtotime(date('Y-m-d'));
             $end = strtotime('tomorrow');
