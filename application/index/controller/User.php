@@ -130,6 +130,7 @@ class User extends Base
             empty($post['id']) && $post['id'] = $Model->id;
             ### 更新用户信息缓存
             $Model::updateCache($post['id']);
+            UserAuth::updateCache($post['id']);
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);
@@ -322,6 +323,10 @@ class User extends Base
             // 同步到用户信息
             $user = \app\common\model\User::get($val);
             $user->save(['role_id' => $post['role_id']]);
+
+            // 更新用户缓存
+            \app\common\model\User::updateCache($val);
+            UserAuth::updateCache($val);
         }
 
         return json(['code'=>'200', 'msg'=>'设置用户部门成功']);

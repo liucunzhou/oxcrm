@@ -17,119 +17,13 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">区间选择</div>
-                        <div class="layui-card-body">
-                            <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
-                                <div class="layui-form-item">
-                                    <div class="layui-inline">
-                                        <select name="dimension" id="dimension" lay-filter="dimension">
-                                            <option value="0">选择纬度</option>
-                                            <option value="source">来源</option>
-                                            <option value="staff">员工</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="layui-inline">
-                                        <select name="department_id" id="department_id" lay-filter="department_id">
-                                            <option value="0">选择部门</option>
-                                            <{foreach item="val" name="departments"}>
-                                                <option value="{$val['id']}" ><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
-                                            <{/foreach}>
-                                        </select>
-                                    </div>
-
-                                    <div class="layui-inline">
-                                        <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
-                                    </div>
-
-                                    <div class="layui-inline ">
-                                        <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
-                                    </div>
-                                    <div class="layui-inline ">
-                                        <button class="layui-btn" lay-submit="" lay-filter="form-submit">导出</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-md12">
-                    <div class="layui-card">
-                        <div class="layui-card-header">客资总数</div>
-                        <div class="layui-card-body">
-
-                            <div class="layui-carousel layadmin-carousel layadmin-backlog">
-                                <div carousel-item>
-                                    <ul class="layui-row layui-col-space10">
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time']])}" class="layadmin-backlog-body">
-                                                <h3>总客资</h3>
-                                                <p><cite>{$total[0]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>0])}" class="layadmin-backlog-body">
-                                                <h3>未跟进</h3>
-                                                <p><cite>{$total[1]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>1])}" class="layadmin-backlog-body">
-                                                <h3>跟进中</h3>
-                                                <p><cite>{$total[2]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>5])}" class="layadmin-backlog-body">
-                                                <h3>有效客资</h3>
-                                                <p><cite>{$total[3]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>6])}" class="layadmin-backlog-body">
-                                                <h3>意向客资</h3>
-                                                <p><cite>{$total[4]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>4])}" class="layadmin-backlog-body">
-                                                <h3>无效客资</h3>
-                                                <p><cite>{$total[5]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>3])}" class="layadmin-backlog-body">
-                                                <h3>失效客资</h3>
-                                                <p><cite>{$total[6]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'is_into_store'=>1])}" class="layadmin-backlog-body">
-                                                <h3>进店客资</h3>
-                                                <p><cite>{$total[7]}</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a lay-href="{:url('Customer/mine', ['create_time'=>$get['create_time'],'status'=>2])}" class="layadmin-backlog-body">
-                                                <h3>订单客资</h3>
-                                                <p><cite>{$total[8]}</cite></p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-md12">
-                    <div class="layui-card">
                         <div class="layui-card-header">数据统计概览</div>
                         <div class="layui-card-body">
 
                             <table class="layui-table">
                                 <thead>
                                 <tr>
-                                    <th class="left">{$dimension}</th>
+                                    <th class="left">渠道</th>
                                     <th class="center">总数据</th>
                                     <th class="center">未跟进</th>
                                     <th class="center">跟进中</th>
@@ -146,7 +40,7 @@
                                 <{foreach name='groupSource' item='val'}>
                                 <tr>
                                     <th class="left">
-                                        <a class="staffSource" href="javascript:void('0');" data-href="{:url('count/countStaffSource', ['user_id'=>$key, 'create_time'=>$request['create_time']])}">{$val['text']}</a>
+                                       {$val['text']}
                                     </th>
                                     <th class="center">{$val[100]}</th>
                                     <th class="center">{$val[0]}</th>
@@ -184,17 +78,6 @@
             elem: '.date_range',
             type: 'date',
             range: '~'
-        });
-
-        $('.staffSource').click(function () {
-            let url = $(this).attr("data-href");
-            layer.open({
-                type: 2,
-                title: '回访客户',
-                content: url,
-                area: [window.innerWidth + 'px', window.innerHeight + 'px'],
-                offset: 'rb'
-            });
         });
     });
 </script>

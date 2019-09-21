@@ -27,4 +27,12 @@ class MobileRelation extends Model
 
         return $mobiles;
     }
+
+    public static function getLikeMobiles($mobile) {
+        $map = [];
+        $map[] = ['mobile', 'like', "%{$mobile}%"];
+        $data = self::where($map)->column('mobile');
+
+        return $data;
+    }
 }

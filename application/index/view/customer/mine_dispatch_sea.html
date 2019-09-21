@@ -78,8 +78,6 @@
                             {:button(["event"=>"addCustomer", "text"=>"添加客资"])}
                             {:button(["event"=>"assignFromDispatchSeaToStoreStaff", "text"=>"分配到门市销售"])}
                             {:button(["event"=>"assignFromDispatchSeaToDispatchStaff", "text"=>"分配到派单组客服"])}
-                            <a class="layui-btn layui-btn-sm" lay-event="assignFromDispatchSeaToStoreStaff">分配到门市销售</a>
-                            <a class="layui-btn layui-btn-sm" lay-event="assignFromDispatchSeaToDispatchStaff">分配到派单组客服</a>
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
@@ -123,7 +121,7 @@
                     "align": "center",
                     "event": "visitLogs",
                 }, {
-                    "field": "operator",
+                    "field": "dispatch_assign_status",
                     "title": "是否分配",
                     "width": 88,
                     "align": "center"

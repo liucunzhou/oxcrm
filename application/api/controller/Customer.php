@@ -219,8 +219,13 @@ class Customer extends Base
             $list = model('Member')->where($map)->whereOr($where1)->whereOr($where2)->order('create_time desc')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
             $map = [];
-            $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-            $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
+            $mobiles = MobileRelation::getLikeMobiles($get['keywords']);
+            if(!empty($mobiles)) {
+                $map[] = ['mobile', 'in', $mobiles];
+            }
+            $where[] = ['mobile', 'like', "%{$get['keywords']}%"];
+            $where1[] = ['mobile1', 'like', "%{$get['keywords']}%"];
+            $list = model('Member')->where($map)->whereOr($where)->whereOr($where1)->order('create_time desc')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
             $map = [];
             $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
@@ -528,7 +533,7 @@ class Customer extends Base
         ### 基本信息入库
         $Model->is_sea = 1;
         unset($post['token']);
-        $post['add_source'] = 1; // 代表来源登陆手机端
+        $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
         $Model->operate_id = $this->user['id'];
         $result1 = $Model->save($post);
 

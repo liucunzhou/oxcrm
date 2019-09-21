@@ -61,6 +61,7 @@ class Visit extends Base
         } else {
             if (!($this->auth['is_show_entire_mobile'] || !empty($allocate))) {
                 $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
+                $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
             }
         }
         if($customer['operate_id'] > 0) {
@@ -188,6 +189,7 @@ class Visit extends Base
         $customer = Member::get($get['member_id']);
         if (!$this->auth['is_show_entire_mobile']) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
+            if (!empty($customer['mobile1'])) $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
         }
         if($customer['operate_id'] > 0) {
             $users = User::getUsers();

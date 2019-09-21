@@ -114,11 +114,11 @@ class Visit extends Base
         ### 该客资的回放次数+1
         if(in_array($this->user['role_id'],[3,4,10,11])) {
             // 推荐组＆派单组修改信息的时候自动同步到到客资基本信息
-            $Member->realname = $post['realname'];
-            $Member->budget = $post['budget'];
-            $Member->banquet_size = $post['banquet_size'];
-            $Member->news_type = $post['news_type'];
-            $Member->zone = $post['zone'];
+            if (!empty($post['realname'])) $Member->realname = $post['realname'];
+            if (!empty($post['budget'])) $Member->budget = $post['budget'];
+            if (!empty($post['banquet_size'])) $Member->banquet_size = $post['banquet_size'];
+            if (!empty($post['zone'])) $Member->zone = $post['zone'];
+            if (isset($post['news_type'])) $Member->news_type = $post['news_type'];
             if (isset($post['active_status'])) {
                 $Member->status = $post['active_status'];
                 $Member->active_status = $post['active_status'];

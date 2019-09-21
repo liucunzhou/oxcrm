@@ -50,7 +50,7 @@
                                 </div>
 
                                 <div class="layui-inline">
-                                    <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
+                                    <input type="text" name="create_time" lay-verify="0" placeholder="客资获取时间区间" autocomplete="off" class="date_range layui-input">
                                 </div>
 
                                 <div class="layui-inline ">
@@ -66,21 +66,22 @@
                                         <li class="layui-this">
                                             <a href="{$val.url}">{$val.text}</a>
                                         </li>
-                                        <{else /}>
-                                            <li>
-                                                <a href="{$val.url}">{$val.text}</a>
-                                            </li>
-                                            <{/if}>
-                                                <{/foreach}>
+                                    <{else /}>
+                                        <li>
+                                            <a href="{$val.url}">{$val.text}</a>
+                                        </li>
+                                    <{/if}>
+                                <{/foreach}>
                             </ul>
                         </div>
                         <table class="layui-hide" id="table" lay-filter="table"></table>
                         <script type="text/html" id="table-toolbar">
                             <div class="layui-btn-container">
                                 {:button(["event"=>"addCustomer", "text"=>"添加客资"])}
-                                <a class="layui-btn layui-btn-sm" lay-event="assignToRecommendGroup">分配到推荐组</a>
-                                <a class="layui-btn layui-btn-sm" lay-event="assignToDispatchGroup">分配到派单组</a>
-                                <a class="layui-btn layui-btn-sm" lay-event="assignToStoreStaff">分配到门市客服</a> {:button(["event"=>"createOrder", "text"=>"申请成单"])}
+                                {:button(["event"=>"assignToRecommendGroup", "text"=>"分配到推荐组"])}
+                                {:button(["event"=>"assignToDispatchGroup", "text"=>"分配到派单组"])}
+                                {:button(["event"=>"assignToStoreStaff", "text"=>"分配到门市客服"])}
+                                {:button(["event"=>"createOrder", "text"=>"申请成单"])}
                             </div>
                         </script>
 
@@ -118,12 +119,6 @@
                         "type": "checkbox",
                         "width": 50,
                         "fixed": "left"
-                    }, {
-                        "type": "tool",
-                        "toolbar": "#table-tool",
-                        "title": "操作",
-                        "width": 88,
-                        "align": "center",
                     }, {
                         "field": "visit_amount",
                         "title": "回访",
@@ -205,6 +200,13 @@
                         "field": "member_create_time",
                         "title": "创建日期",
                         "width": 165
+                    },
+                    {
+                        "type": "tool",
+                        "toolbar": "#table-tool",
+                        "title": "操作",
+                        "width": 88,
+                        "align": "center",
                     }]
                 ],
                 page: true,

@@ -69,8 +69,8 @@ class Customer extends Base
     public function mine()
     {
         if (Request::isAjax()) {
-            // if($this->user['role_id'] == 10 || $this->user['role_id'] == 11) { // 派单组主管、客服
-            if ($this->user['role_id'] == 11) { // 派单组主管、客服
+            if($this->user['role_id'] == 10 || $this->user['role_id'] == 11) { // 派单组主管、客服
+            // if ($this->user['role_id'] == 11) { // 派单组主管、客服
                 $result = $this->getDispatchCustomerList();
             } else {
                 $result = $this->getCustomerList();
@@ -83,7 +83,7 @@ class Customer extends Base
             $get['create_time'] = str_replace('+', '', $get['create_time']);
             $this->assign('get', $get);
 
-            if ($this->user['role_id'] == 11) { // 派单组主管、客服
+            if ($this->user['role_id'] == 10 || $this->user['role_id'] == 11) { // 派单组主管、客服
                 $tabs = Tab::dispatchMine($this->user, $get);
                 $this->assign('tabs', $tabs);
                 if (isset($get['sea'])) {
@@ -137,6 +137,7 @@ class Customer extends Base
                     $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                    $value['dispatch_assign_status'] = $value['dispatch_assign_status'] ? "已分配" : "未分配";
 
                     if ($this->auth['is_show_alias'] == '1') {
                         $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
@@ -642,6 +643,44 @@ class Customer extends Base
         }
     }
 
+    public function doSaveCustomer()
+    {
+        $post = Request::post();
+        if (empty($post['id'])) {
+            return json([
+                'code'  => '500',
+                'msg'   => '参数错误'
+            ]);
+        }
+
+        $action = '编辑客资';
+        $Model = \app\common\model\Member::get($post['id']);
+        ### 同步来源名称
+        if ($post['source_id'] != $Model->source_id) {
+            $Model->source_text = $this->sources[$post['source_id']]['title'];
+            ### 同步用户来源到已经分配出去的用户里
+            $map = [];
+            $map[] = ['member_id', '=', $post['id']];
+            $allocate = new MemberAllocate();
+            $data['source_id'] = $post['id'];
+            $data['source_text'] = $this->sources[$post['source_id']]['title'];
+            $allocate->save($data, $map);
+        }
+
+        ### 基本信息入库
+        $Model->is_sea = 1;
+        $result1 = $Model->save($post);
+
+        if ($result1) {
+            ### 添加操作记录
+            OperateLog::appendTo($Model);
+            if (isset($Allocate)) OperateLog::appendTo($Allocate);
+            return json(['code' => '200', 'msg' => $action . '成功']);
+        } else {
+            return json(['code' => '500', 'msg' => $action . '失败, 请重试']);
+        }
+    }
+
     ### 绑定客户信息
     public function bindCustomer()
     {
@@ -1049,6 +1088,7 @@ class Customer extends Base
         $member = Member::get($get['id']);
         if ($member) {
             $data = $member->getData();
+            $data['active_status'] = 1;
             $result = MemberAllocate::insertAllocateData($this->user['id'], $get['id'], $data);
         }
 
