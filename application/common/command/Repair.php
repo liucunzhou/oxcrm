@@ -41,23 +41,39 @@ class Repair extends Command
 
         switch ($action) {
             case 'dealMemberDump':
-                $this->dealMemberDump();
+                $this->mergeMemberDump();
                 break;
         }
     }
 
-    public function dealMemberDump()
+    public function mergeMemberDump()
     {
         $MemberModel = new Member();
         $map = [];
-        // $map[] = ['active_status', '=', 5];
         $list = $MemberModel->field('mobile,count(mobile) as amount')->where($map)->group('mobile')->having('amount > 1')->select();
         foreach($list as $row) {
-            print_r($row);
-            // $where = [];
-            // $where[] = ['mobie', '=', $row];
-            echo $row->mobile;
-            echo "\n";
+            $MemberObj = new Member();
+            $mobile = $row->mobile;
+            $where = [];
+            $where[] = ['mobile', '=', $mobile];
+            $members = $MemberObj->where($where)->order('create_time desc')->select();
+            $ids = [];
+            $targetId = 0;
+            foreach($members as $key=>$member) {
+                if($key == 0) {
+                    $targetId = $member->id;
+                } else {
+                    $ids[] = $member->id;
+                    $member->delete(true);
+                }
+                $MemberAllocate = new MemberAllocate();
+                $MemberAllocate->save(['member_id'=>$targetId], ['member_id', 'in', $ids]);
+                echo $MemberAllocate->getLastSql();
+                echo "\n";
+                $MemberVisit = new MemberVisit();
+                $MemberVisit->save(['member_id'=>$targetId], ['member_id', 'in', $ids]);
+                echo $MemberAllocate->getLastSql();
+            }
         }
     }
 }
