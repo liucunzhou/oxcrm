@@ -66,12 +66,17 @@ class Repair extends Command
                     $ids[] = $member->id;
                     $member->delete(true);
                 }
+
+                $where1 = [];
+                $where1[] = ['member_id', 'in', $ids];
                 $MemberAllocate = new MemberAllocate();
-                $MemberAllocate->save(['member_id'=>$targetId], ['member_id', 'in', $ids]);
+                $MemberAllocate->save(['member_id'=>$targetId], $where1);
                 echo $MemberAllocate->getLastSql();
                 echo "\n";
+                $where2 = [];
+                $where2[] = ['member_id', 'in', $ids];
                 $MemberVisit = new MemberVisit();
-                $MemberVisit->save(['member_id'=>$targetId], ['member_id', 'in', $ids]);
+                $MemberVisit->save(['member_id'=>$targetId], $where2);
                 echo $MemberAllocate->getLastSql();
             }
         }
