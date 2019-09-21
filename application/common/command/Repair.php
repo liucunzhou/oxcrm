@@ -49,8 +49,14 @@ class Repair extends Command
     public function dealMemberDump()
     {
         $MemberModel = new Member();
-        $list = $MemberModel->field('mobile,count(mobile) as amount')->group('mobile')->having('amount > 1')->select();
-        print_r($list);
-
+        $map = [];
+        $map[] = ['active_status', '=', 5];
+        $list = $MemberModel->field('mobile,count(mobile) as amount')->where($map)->group('mobile')->having('amount > 1')->select();
+        foreach($list as $row) {
+            $where = [];
+            // $where[] = ['mobie', '=', $row];
+            echo $row->mobile;
+            echo "\n";
+        }
     }
 }
