@@ -50,9 +50,10 @@ class Repair extends Command
     {
         $MemberModel = new Member();
         $map = [];
-        $map[] = ['active_status', '=', 5];
+        // $map[] = ['active_status', '=', 5];
         $list = $MemberModel->field('mobile,count(mobile) as amount')->where($map)->group('mobile')->having('amount > 1')->select();
         foreach($list as $row) {
+            print_r($row);
             $where = [];
             // $where[] = ['mobie', '=', $row];
             echo $row->mobile;
