@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>回访用户</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <style>
+        .padding-15 {
+            padding: 15px;
+        }
+
+        td.field5em{
+            width: 5em;;
+        }
+        td.field4em{
+            width: 4em;;
+        }
+        td.field200{
+            width: 200px;;
+        }
+        td.field160{
+            width: 160px;;
+        }
+        td.field140{
+            width: 140px;;
+        }
+        td.field60{
+            width: 60px;;
+        }
+        td.field80{
+            width: 80px;
+        }
+        i.layui-icon {
+            /*color: #00;*/
+        }
+        td.bg {
+            background-color: #f2f2f2;
+
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <form class="layui-form" action="{:url('Visit/doVisitCustomer')}" lay-filter="component-form-group">
+            <div class="layui-card-body padding-15">
+                <table class="layui-table">
+                    <tr>
+                        <td class="field5em bg">信息类型</td>
+                        <td class="field140">{$newsTypes[$customer['news_type']]}</td>
+                        <td class="field5em bg">客资渠道</td>
+                        <td class="field140">{$customer['source_text']}</td>
+                        <td class="field140 bg">
+                            重复来源
+                            <{if $user['role_id']!='9'}>
+                            <a class="layui-btn layui-btn-primary layui-btn-sm append-source" data-href="{:url('Customer/appendSource', ['id'=>$customer['id']])}">
+                                <i class="layui-icon">&#xe608;</i> 增加
+                            </a>
+                            <{/if}>
+                        </td>
+                        <td class="field200">{$customer['repeat_log']}</td>
+                        <td class="field5em bg">联系人</td>
+                        <td class="field160">{$customer['realname']}</td>
+                        <td class="field140 bg">
+                            联系电话
+                            <{if $user['role_id']!='9'}>
+                            <a class="layui-btn layui-btn-primary layui-btn-sm bind-mobile" data-href="{:url('Customer/bindCustomer', ['mobile'=>$customer['mobile']])}">
+                                <i class="layui-icon">&#xe608;</i> 绑定
+                            </a>
+                            <{/if}>
+                        </td>
+                        <td class="field140">{$customer['mobile']}</td>
+                        <td class="field140">
+                            <{if $user['role_id']!='9'}>
+                            <a class="layui-btn layui-btn-primary layui-btn-sm edit-customer" data-href="{:url('Visit/editCustomer', ['member_id'=>$customer['id']])}">
+                                <i class="layui-icon"></i>
+                                修改客户资料
+                            </a>
+                            <{/if}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg">区域</td>
+                        <td>{$customer['zone']}</td>
+                        <td class="bg">桌数</td>
+                        <td>{$customer['banquet_size']}</td>
+                        <td class="bg">预算</td>
+                        <td>{$customer['budget']}</td>
+                        <td class="bg">婚期</td>
+                        <td>{$customer['wedding_date']}</td>
+                        <td class="bg">其他手机号</td>
+                        <td colspan="2">
+                            {$customer['mobile1']}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg">预定酒店</td>
+                        <td colspan="10">{$customer['hotel_text']}</td>
+                    </tr>
+                    <tr>
+                        <td class="bg">发布人</td>
+                        <td>{$customer['operate_id']}</td>
+                        <td class="bg">创建时间</td>
+                        <td>{$customer['create_time']}</td>
+                        <td class="bg">备注</td>
+                        <td colspan="6">{$customer['remark']}</td>
+                    </tr>
+                </table>
+                <div class="layui-card layui-bg-gray">
+                    <div class="layui-card-header">添加跟进记录</div>
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">跟进状态</label>
+
+                                <div class="layui-input-inline">
+                                    <select name="active_status" id="active_status">
+                                        <option value=""></option>
+                                        <{foreach item="val" name="intentions"}>
+                                        <option value="{$key}">{$val['title']}</option>
+                                        <{/foreach}>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">下次跟进</label>
+
+                                <div class="layui-input-inline">
+                                    <input type="text" name="next_visit_time" id="next_visit_time"
+                                           value="{$data['next_visit_time']}" class="layui-input date"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">标记颜色</label>
+
+                                <div class="layui-input-inline">
+                                    <select name="color" id="color" lay-filter="color" lay-search>
+                                        <{foreach name="colors" item="val"}>
+                                        <{if $allocate['color']==$val['color']}>
+                                        <option value="{$val['id']}" selected>{$val['title']}</option>
+                                        <{else /}>
+                                        <option value="{$val['id']}">{$val['title']}</option>
+                                        <{/if}>
+                                        <{/foreach}>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <label class="layui-form-label">是否进店</label>
+
+                                <div class="layui-input-inline">
+                                    <{if !empty($allocate) && $allocate->is_into_store == 1}>
+                                    <input type="checkbox" name="is_into_store" value="1" class="is_into_store"
+                                           lay-filter="is_into_store" lay-skin="switch" checked disabled
+                                           lay-text="开启|关闭">
+                                    <{else /}>
+                                    <input type="checkbox" name="is_into_store" value="0" class="is_into_store"
+                                           lay-filter="is_into_store" lay-skin="switch" lay-text="开启|关闭">
+                                    <{/if}>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">回访</label>
+
+                            <div class="layui-input-block">
+                                <textarea id="content" name="content" class="layui-input"
+                                          style="height: 100px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <{if $user['role_id']!='9'}>
+                <div class="layui-card">
+                    <div class="layui-card-header">跟进人(共{:count($visits.count)}人)</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <tr class="table-header">
+                                <td class="bg">回访者</td>
+                                <td>获取时间</td>
+                                <td>下次回访时间</td>
+                                <td class="bg">回访次数</td>
+                            </tr>
+                            <{foreach item="val" name="visits.count"}>
+                            <tr>
+                                <td class="bg">{$val['user_id']}</td>
+                                <td>{$val['allocate_create_time']}</td>
+                                <td>{$val['next_visit_time']}</td>
+                                <td class="bg">{$val['visit_times']}</td>
+                            </tr>
+                            <{/foreach}>
+                        </table>
+                    </div>
+                </div>
+                <{/if}>
+
+                <div class="layui-card layui-bg-gray">
+                    <div class="layui-card-header">回访历史(已回访{:count($visits.log)}次)</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="120">
+                                <col width="150">
+                                <col width="100">
+                                <col>
+                            </colgroup>
+                            <tr class="table-header">
+                                <td class="bg">回访者</td>
+                                <td>回访时间</td>
+                                <td>回访状态</td>
+                                <td class="bg">跟踪记录</td>
+                            </tr>
+                            <{foreach item="val" name="visits.log"}>
+                            <tr>
+                                <td class="bg">{$val['user_id']}</td>
+                                <td>{$val['create_time']}</td>
+                                <td>{$val['status']}</td>
+                                <td class="bg">{$val['content']}</td>
+                            </tr>
+                            <{/foreach}>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <input type="hidden" name="member_allocate_id" id="member_allocate_id"
+                               value="{$Request.param.allocate_id}">
+                        <input type="hidden" name="member_id" id="member_id" value="{$Request.param.member_id}">
+
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate', 'laytpl'], function () {
+        var $ = layui.jquery
+                , layer = layui.layer
+                , laydate = layui.laydate
+                , form = layui.form
+                , laytpl = layui.laytpl;
+
+        form.render(null, 'component-form-group');
+        laydate.render({
+            elem: '#next_visit_time',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#wedding_date',
+            type: 'date'
+        });
+
+        form.on("select(province_id)", function (data) {
+            var url = '{:url("Region/getCityList")}';
+            $.post(url, {id: data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function (html) {
+                    $("#city_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(city_id)", function (data) {
+            var url = '{:url("Region/getAreaList")}';
+            $.post(url, {id: data.value}, function (result) {
+                var getTpl = optionsTpl.innerHTML;
+                laytpl(getTpl).render(result, function (html) {
+                    $("#area_id").html(html);
+                    form.render("select");
+                });
+
+            })
+        });
+
+        form.on("select(area_id)", function (data) {
+            let text = $("#area_id").find("option:selected").text();
+            let target = "#zone";
+            let str = $(target).val();
+            if (str == '') {
+                str = text;
+            } else {
+                let arr = str.split(',');
+                if (arr.indexOf(text) == -1) {
+                    arr.push(text);
+                }
+                str = arr.join();
+            }
+            $(target).val(str);
+        });
+
+        form.on("select(hotel_id)", function (data) {
+            console.log(data);
+            let text = $("#hotel_id").find("option:selected").text();
+            let target = "#hotel_text";
+            let str = $(target).val();
+            if (str == '') {
+                str = text;
+            } else {
+                let arr = str.split(',');
+                if (arr.indexOf(text) == -1) {
+                    arr.push(text);
+                }
+                str = arr.join();
+            }
+            $(target).val(str);
+        });
+
+        form.on('switch(is_into_store)', function (data) {
+            console.log(data.elem); //得到checkbox原始DOM对象
+            console.log(data.elem.checked); //开关是否开启，true或者false
+            console.log(data.value); //开关value值，也可以通过data.elem.value得到
+            console.log(data.othis); //得到美化后的DOM对象
+            if (data.elem.checked) {
+                $(".is_into_store").val(1);
+            } else {
+                $(".is_into_store").val(0);
+            }
+        });
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        // 绑定手机号
+        $(".bind-mobile").click(function(res){
+            var url = $(this).attr("data-href");
+            layer.open({
+                type: 2,
+                title: '绑定手机号',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 编辑用户
+        $(".edit-customer").click(function(){
+            var url = $(this).attr("data-href");
+            layer.open({
+                type: 2,
+                title: '编辑客户信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        $(".append-source").click(function(){
+            var url = $(this).attr("data-href");
+            layer.open({
+                type: 2,
+                title: '追加来源',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        /* 监听提交 */
+        form.on('submit(form-submit)', function (data) {
+            let activeStatus = $("#active_status").val();
+            let nextVisitTime = $("#next_visit_time").val();
+            let content = $("#content").val();
+
+            if (activeStatus == 0) {
+                layer.msg('请选择跟进状态');
+                return false;
+            }
+
+            if ((activeStatus != 3 && activeStatus != 4) && nextVisitTime == '') {
+                layer.msg('请选择下次回访时间');
+                return false;
+            }
+
+            console.log('content is', content);
+            if ((activeStatus != 3 && activeStatus != 4) && content == '') {
+                layer.msg('请填写备注');
+                return false;
+            }
+
+            let url = data.form.action;
+            let params = data.field;
+            $.post(url, params, function (res) {
+                if (res.code == '200') {
+                    parent.layui.table.reload("table");
+                    parent.layer.closeAll();
+                } else {
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+<script id="optionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.shortname }}</option>
+    {{#  }); }}
+</script>
+<script id="storeOptionsTpl" type="text/html">
+    <option></option>
+    {{#  layui.each(d, function(index, item){ }}
+    <option value="{{ index }}">{{ item.title }}</option>
+    {{#  }); }}
+</script>
+</body>
+</html>
