@@ -205,6 +205,7 @@ class Allocate extends Base
         if (empty($fileData['file'])) {
             return json(['code' => '500', 'msg' => '没有要分配的客资']);
         }
+        $redis->hMset($hashKey, ['download_repeat'=>1]);
 
         // Csv::readCsv($fileData['file'])
         $file = $fileData['file'];
@@ -243,8 +244,68 @@ class Allocate extends Base
         return $this->fetch();
     }
 
+    /**
+     * 推荐组分配到派单组
+     * @return mixed
+     */
+    public function assignRecommendToDispatchGroup()
+    {
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if (!in_array($value['role_id'], [10, 11])) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
+        return $this->fetch();
+    }
+
+    /**
+     * 分配到洗单组逻辑
+     * @return \think\response\Json
+     */
+    public function doAssignRecommendToDispatchGroup()
+    {
+        $post = Request::post();
+        $ids = explode(',', $post['ids']);
+        if (empty($ids)) {
+            return json([
+                'code' => '500',
+                'msg' => '请选择要分配的客资'
+            ]);
+        }
+
+        $status = 1;
+        $totals = count($ids);
+        $success = 0;
+        foreach ($ids as $id) {
+            if (empty($id)) continue;
+            $result = $this->executeAllocateToStaff($id, $post['staff'], $status);
+            if($result) $success = $success + 1;
+        }
+
+        $fail = $totals - $success;
+        return json([
+            'code' => '200',
+            'msg' => "分配到洗单组:成功{$success}个,失败{$fail}个"
+        ]);
+    }
+
+    ###
+    public function assignToMerchantGroup()
+    {
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if ($value['role_id'] !=9 ) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
+        return $this->fetch();
+    }
+
     /***
-     * 分配到派单组视图
+     * 派单组分配到派单组视图
      * @return mixed
      */
     public function assignToDispatchGroup()
@@ -344,6 +405,18 @@ class Allocate extends Base
         return $this->fetch();
     }
 
+    public function assignToWeddingGroup()
+    {
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if (!in_array($value['role_id'], [27, 28])) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
+        return $this->fetch();
+    }
+
     /**
      * 分配到门店客服视图
      * @return mixed
@@ -388,13 +461,60 @@ class Allocate extends Base
         ]);
     }
 
-    /**
-     * 分配到非派单组
-     * @param $id
-     * @param $staff
-     * @return bool
-     */
-    private function executeAllocateToStaff($id, $staff)
+    public function getMobileCustomer()
+    {
+        $request = Request::param();
+        if(empty($request['ids'])) {
+            $response = [
+                'code' => 500,
+                'msg' => '请选择客资'
+            ];
+
+            return json($response);
+        }
+
+        $allocate = MemberAllocate::getAllocate($this->user['id'], $request['ids']);
+        if($allocate) {
+            $response = [
+                'code' => 501,
+                'msg' => '您已拥有此客资，请勿重复领取'
+            ];
+            return $response;
+        }
+
+        $member = Member::get($request['ids']);
+        if (!empty($member)) {
+            $data = $member->getData();
+            if($this->user['role_id'] == 10 || $this->user['role_id'] == 11) {
+                $data['acitve_status'] = 1;
+            } else {
+                $data['acitve_status'] = 0;
+            }
+            $data['allocate_type'] = 1;
+            $result = MemberAllocate::searchAllocateData($this->user['id'], $member->id, $data);
+            $memberId = $member->id;
+        }
+
+        if ($result) {
+            $response = [
+                'code' => 200,
+                'msg' => '获取成功',
+                'count' => 0,
+                'data' => $memberId
+            ];
+        } else {
+            $response = [
+                'code' => -1,
+                'msg' => '获取客资失败',
+                'count' => 0,
+                'data' => []
+            ];
+        }
+
+        return json($response);
+    }
+
+    private function executeAllocateToStaff($id, $staff, $status=0)
     {
         $allocate = MemberAllocate::get($id);
         if (!$allocate) false;
@@ -410,11 +530,12 @@ class Allocate extends Base
         $data['update_time'] = 0;
         $data['create_time'] = time();
         ### 分配后重新回访
-        $data['active_status'] = 0;
+        $data['active_status'] = $status;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->insert($data);
+
         // 更新分配状态
         $data = [];
         if($allocate->active_status == 5) {

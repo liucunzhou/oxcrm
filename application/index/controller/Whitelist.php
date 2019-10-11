@@ -3,7 +3,7 @@ namespace app\index\controller;
 
 use think\facade\Request;
 
-class Brand extends Base
+class Whitelist extends Base
 {
     public function index()
     {
@@ -13,7 +13,7 @@ class Brand extends Base
             $config = [
                 'page' => $get['page']
             ];
-            $list = model('brand')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $list = model('whitelist')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value){
                 $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
@@ -31,38 +31,38 @@ class Brand extends Base
         }
     }
 
-    public function addBrand()
+    public function addWhitelist()
     {
         $this->view->engine->layout(false);
-        return $this->fetch('edit_brand');
+        return $this->fetch('edit_whitelist');
     }
 
-    public function editBrand()
+    public function editWhitelist()
     {
         $get = Request::param();
-        $brand = \app\common\model\Brand::get($get['id']);
-        $this->assign('data', $brand);
+        $Whitelist = \app\common\model\Whitelist::get($get['id']);
+        $this->assign('data', $Whitelist);
 
         $this->view->engine->layout(false);
         return $this->fetch();
     }
 
-    public function doEditBrand()
+    public function doEditWhitelist()
     {
         $post = Request::post();
         if($post['id']) {
-            $action = '更新品牌';
-            $Model = \app\common\model\Brand::get($post['id']);
+            $action = '更新白名单';
+            $Model = \app\common\model\Whitelist::get($post['id']);
         } else {
-            $action = '添加品牌';
-            $Model = new \app\common\model\Brand();
+            $action = '添加白名单';
+            $Model = new \app\common\model\Whitelist();
         }
 
         // $Model::create($post);
         $result = $Model->save($post);
         if($result) {
             ### 更新缓存
-            \app\common\model\Brand::updateCache();
+            \app\common\model\Whitelist::updateCache();
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);
@@ -72,15 +72,15 @@ class Brand extends Base
         }
     }
 
-    public function deleteBrand()
+    public function deleteWhitelist()
     {
         $post = Request::post();
-        $Model = \app\common\model\Brand::get($post['id']);
+        $Model = \app\common\model\Whitelist::get($post['id']);
         $result = $Model->delete();
 
         if($result) {
             // 更新缓存
-            \app\common\model\Brand::updateCache();
+            \app\common\model\Whitelist::updateCache();
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);

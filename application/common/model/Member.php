@@ -22,11 +22,38 @@ class Member extends Model
      * @param $mobile
      * @return mixed
      */
-    public static function checkMobile($mobile)
+    public static function checkMobile($mobile, $mobile1='')
     {
+
+        if (empty($mobile1)) {
+            $where = [];
+            $where[] = ['mobile', '=', $mobile];
+            $where1 = [];
+            $where1[] = ['mobile1', '=', $mobile];
+            $member = self::where($where)->whereOr($where1)->find();
+
+        } else {
+            ### 验证mobile
+            $where = [];
+            $where[] = ['mobile', '=', $mobile];
+            $where1 = [];
+            $where1[] = ['mobile1', '=', $mobile];
+            ### 验证mobile1
+            $where2 = [];
+            $where2[] = ['mobile', '=', $mobile1];
+            $where3 = [];
+            $where3[] = ['mobile1', '=', $mobile1];
+            $member = self::where($where)->whereOr($where1)->whereOr($where2)->whereOr($where3)->find();
+        }
+
+        return $member;
+    }
+
+    public static function checkPatchMobile($mobile) {
+
         $where = [];
         $where[] = ['mobile', '=', $mobile];
-        $member = self::where($where)->find();
+        $member = self::where($where)->whereOr($where)->find();
 
         return $member;
     }

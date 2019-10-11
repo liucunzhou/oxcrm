@@ -108,7 +108,14 @@ class Visit extends Base
         $this->assign('sources', $this->sources);
         $this->assign("hotels", $this->hotels);
         $this->assign('newsTypes', $this->newsTypes);
-        return $this->fetch();
+
+        if ($this->user['role_id'] == 9) {
+            $view = 'merchant_visit_customer';
+        } else {
+            $view = 'visit_customer';
+        }
+
+        return $this->fetch($view);
     }
 
 
@@ -218,7 +225,6 @@ class Visit extends Base
         $this->assign('sources', $this->sources);
         $this->assign('hotels', $this->hotels);
         $this->assign('newsTypes', $this->newsTypes);
-
         return $this->fetch();
     }
 
@@ -234,7 +240,7 @@ class Visit extends Base
         $this->assign('sources', $sources);
 
         ### 获取推荐人列表
-        $recommenders = \app\common\model\Recommender::column('id,title', id);
+        $recommenders = \app\common\model\Recommender::column('id,title', 'id');
         $this->assign('recommenders', $recommenders);
 
         ### 酒店列表

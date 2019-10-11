@@ -4,7 +4,7 @@ namespace app\common\model;
 use think\Model;
 use think\model\concern\SoftDelete;
 
-class Brand extends Model
+class Whitelist extends Model
 {
     protected $pk = 'id';
     protected $autoWriteTimestamp = true;
@@ -15,9 +15,9 @@ class Brand extends Model
     protected $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
 
-    public static function getBrands($update=false)
+    public static function getWhitelists($update=false)
     {
-        $cacheKey = 'brands';
+        $cacheKey = 'Whitelists';
         $data = redis()->get($cacheKey);
         if(empty($data) || $update) {
             $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
@@ -33,6 +33,6 @@ class Brand extends Model
 
     public static function updateCache()
     {
-        self::getBrands(true);
+        self::getWhitelists(true);
     }
 }

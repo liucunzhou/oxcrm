@@ -124,7 +124,57 @@ class Tab
         return $tabs;
     }
 
-    public static function customerMine(&$user, &$get)
+    public static function customerWedding(&$user, &$get, $router='Customer/mine')
+    {
+        $status = Intention::getIntentions();
+
+        $tabs = [];
+        foreach ($status as $key => $val) {
+            $vars['status'] = $val['id'];
+            $url = url($router, $vars);
+
+            $checked = isset($get['status']) && $get['status'] == $val['id'] ? 1 : 0;
+            $item = [
+                'text' => $val['title'],
+                'url' => $url,
+                'checked' => $checked
+            ];
+            $tabs[] = $item;
+        }
+
+        $vars = [];
+        $vars['is_into_store'] = 1;
+        $url = url($router, $vars);
+        if (isset($get['is_into_store']) && $get['is_into_store'] == 1) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+        $tabs[] = [
+            'text' => '已进店',
+            'url' => $url,
+            'checked' => $checked
+        ];
+
+        $vars = [];
+        $url = url($router);
+        if (!isset($get['status']) && !isset($get['is_into_store'])) {
+            $checked = 1;
+        } else {
+            $checked = 0;
+        }
+
+        $all = [
+            'text' => '所有客资',
+            'url' => $url,
+            'checked' => $checked
+        ];
+        array_unshift($tabs, $all);
+
+        return $tabs;
+    }
+
+    public static function customerMine(&$user, &$get, $router='Customer/mine')
     {
         $status = Intention::getIntentions();
         switch ($user['role_id']) {
@@ -145,7 +195,7 @@ class Tab
                             $vars['status'] = 5;
                             // 有效已分配选中转台
                             $vars['active_assign_status'] = 1;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = $get['active_assign_status'] == 1 ? 1 : 0;
                             $item = [
                                 'text' => '有效已分配',
@@ -156,7 +206,7 @@ class Tab
 
                             // 有效未分配未选状态
                             $vars['active_assign_status'] = 0;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = $get['active_assign_status'] == 0 ? 1 : 0;
                             $item = [
                                 'text' => '有效未分配',
@@ -167,7 +217,7 @@ class Tab
                             // 有效已分配未选状态
                             $vars['status'] = 5;
                             $vars['active_assign_status'] = 1;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = 0;
                             $item = [
                                 'text' => '有效已分配',
@@ -178,7 +228,7 @@ class Tab
 
                             // 有效未分配未选状态
                             $vars['active_assign_status'] = 0;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = 0;
                             $item = [
                                 'text' => '有效未分配',
@@ -191,7 +241,7 @@ class Tab
                             $vars['status'] = 6;
                             // 有效已分配选中转台
                             $vars['possible_assign_status'] = 1;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = $get['possible_assign_status'] == 1 ? 1 : 0;
                             $item = [
                                 'text' => '意向已分配',
@@ -202,7 +252,7 @@ class Tab
 
                             // 有效未分配未选状态
                             $vars['possible_assign_status'] = 0;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = $get['possible_assign_status'] == 0 ? 1 : 0;
                             $item = [
                                 'text' => '意向未分配',
@@ -213,7 +263,7 @@ class Tab
                             $vars['status'] = 6;
                             // 有效已分配未选状态
                             $vars['possible_assign_status'] = 1;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = 0;
                             $item = [
                                 'text' => '意向已分配',
@@ -224,7 +274,7 @@ class Tab
 
                             // 有效未分配未选状态
                             $vars['possible_assign_status'] = 0;
-                            $url = url('customer/mine', $vars);
+                            $url = url($router, $vars);
                             $checked = 0;
                             $item = [
                                 'text' => '意向未分配',
@@ -234,7 +284,7 @@ class Tab
                         }
                     } else {
                         $vars['status'] = $val['id'];
-                        $url = url('customer/mine', $vars);
+                        $url = url($router, $vars);
                         $checked = isset($get['status']) && $get['status'] == $val['id'] ? 1 : 0;
                         $item = [
                             'text' => $val['title'],
@@ -251,7 +301,7 @@ class Tab
                 $tabs = [];
                 foreach ($status as $key => $val) {
                     $vars['status'] = $val['id'];
-                    $url = url('customer/mine', $vars);
+                    $url = url($router, $vars);
 
                     $checked = isset($get['status']) && $get['status'] == $val['id'] ? 1 : 0;
                     $item = [
@@ -264,7 +314,7 @@ class Tab
         }
         $vars = [];
         $vars['is_into_store'] = 1;
-        $url = url('customer/mine', $vars);
+        $url = url($router, $vars);
         if (isset($get['is_into_store']) && $get['is_into_store'] == 1) {
             $checked = 1;
         } else {
@@ -277,7 +327,7 @@ class Tab
         ];
 
         $vars = [];
-        $url = url('customer/mine');
+        $url = url($router);
         if (!isset($get['status']) && !isset($get['is_into_store'])) {
             $checked = 1;
         } else {

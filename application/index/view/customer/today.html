@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="layui-inline">
-                                <select name="source" lay-verify="">
+                                <select name="source" lay-verify="" lay-search>
                                     <option value="">平台来源</option>
                                     <{foreach name="sources" item="val"}>
                                         <option value="{$val['id']}">{$val['title']}</option>

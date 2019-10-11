@@ -53,17 +53,10 @@
                     <tr>
                         <td class="field5em bg">信息类型</td>
                         <td class="field140">{$newsTypes[$customer['news_type']]}</td>
-                        <td class="field5em bg">客资渠道</td>
-                        <td class="field140">{$customer['source_text']}</td>
-                        <td class="field140 bg">
-                            重复来源
-                            <{if $user['role_id']!='9'}>
-                            <a class="layui-btn layui-btn-primary layui-btn-sm append-source" data-href="{:url('Customer/appendSource', ['id'=>$customer['id']])}">
-                                <i class="layui-icon">&#xe608;</i> 增加
-                            </a>
-                            <{/if}>
-                        </td>
-                        <td class="field200">{$customer['repeat_log']}</td>
+                        <td class="field5em bg"></td>
+                        <td class="field140"></td>
+                        <td class="field140 bg"></td>
+                        <td class="field200"></td>
                         <td class="field5em bg">联系人</td>
                         <td class="field160">{$customer['realname']}</td>
                         <td class="field140 bg">
@@ -101,14 +94,6 @@
                     <tr>
                         <td class="bg">预定酒店</td>
                         <td colspan="10">{$customer['hotel_text']}</td>
-                    </tr>
-                    <tr>
-                        <td class="bg">发布人</td>
-                        <td>{$customer['operate_id']}</td>
-                        <td class="bg">创建时间</td>
-                        <td>{$customer['create_time']}</td>
-                        <td class="bg">备注</td>
-                        <td colspan="6">{$customer['remark']}</td>
                     </tr>
                 </table>
                 <div class="layui-card layui-bg-gray">
@@ -180,36 +165,6 @@
                         </div>
                     </div>
                 </div>
-
-                <{if $user['role_id']!='9'}>
-                <div class="layui-card">
-                    <div class="layui-card-header">跟进人(共{:count($visits.count)}人)</div>
-                    <div class="layui-card-body">
-                        <table class="layui-table">
-                            <colgroup>
-                                <col>
-                                <col>
-                                <col>
-                                <col>
-                            </colgroup>
-                            <tr class="table-header">
-                                <td class="bg">回访者</td>
-                                <td>获取时间</td>
-                                <td>下次回访时间</td>
-                                <td class="bg">回访次数</td>
-                            </tr>
-                            <{foreach item="val" name="visits.count"}>
-                            <tr>
-                                <td class="bg">{$val['user_id']}</td>
-                                <td>{$val['allocate_create_time']}</td>
-                                <td>{$val['next_visit_time']}</td>
-                                <td class="bg">{$val['visit_times']}</td>
-                            </tr>
-                            <{/foreach}>
-                        </table>
-                    </div>
-                </div>
-                <{/if}>
 
                 <div class="layui-card layui-bg-gray">
                     <div class="layui-card-header">回访历史(已回访{:count($visits.log)}次)</div>

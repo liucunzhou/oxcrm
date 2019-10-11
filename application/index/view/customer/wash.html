@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="layui-inline">
-                                    <select name="source" lay-verify="">
+                                    <select name="source" lay-verify="" lay-search>
                                     <option value="">平台来源</option>
                                     <{foreach name="sources" item="val"}>
                                         <{if $get['source'] == $val['id']}>
@@ -70,7 +70,7 @@
                         <div class="layui-tab">
                             <ul class="layui-tab-title">
                                 <{foreach name="tabs" item="val" }>
-                                    <{if $val[ 'checked']=='1' }>
+                                    <{if $val['checked']=='1' }>
                                         <li class="layui-this">
                                             <a href="{$val.url}">{$val.text}</a>
                                         </li>
@@ -88,11 +88,13 @@
                                 <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a> {:button(["event"=>"addCustomer", "text"=>"添加客资"])} {:button(["event"=>"assignToWashGroup", "text"=>"分配到清洗组"])}
                                 <{if isset($get[ 'active_assign_status']) || isset($get[ 'possible_assign_status'])}>
                                     {:button(["event"=>"assignToRecommendGroup", "text"=>"分配到推荐组"])}
-                                    <{/if}>
-                                        <{if isset($get[ 'active_assign_status']) || isset($get[ 'possible_assign_status'])}>
-                                            {:button(["event"=>"assignToStoreStaff", "text"=>"分配到门市客服"])}
-                                            <{/if}>
-                                                {:button(["event"=>"createOrder", "text"=>"申请成单"])}
+                                <{/if}>
+                                <{if isset($get[ 'active_assign_status']) || isset($get[ 'possible_assign_status'])}>
+                                    {:button(["event"=>"assignToStoreStaff", "text"=>"分配到门市客服"])}
+                                <{/if}>
+                                {:button(["event"=>"assignToWeddingGroup", "text"=>"分配到婚庆部"])}
+                                {:button(["event"=>"assignToMerchantGroup", "text"=>"分配到商务部"])}
+                                {:button(["event"=>"createOrder", "text"=>"申请成单"])}
                             </div>
                         </script>
                         <{if $user[ 'nickname']=='admin' }>
@@ -325,6 +327,41 @@
                                         offset: 'rb'
                                     });
                                     break;
+
+                                case 'assignToWeddingGroup':
+                                    if (checkedboxes.length < 1) {
+                                        layer.msg("请先选择要分配的客资");
+                                        return false;
+                                    }
+
+                                    ids = getSelectedIds(checkedboxes);
+                                    url = '/index/allocate/assigntoweddinggroup.html?ids=' + ids;
+                                    layer.open({
+                                        type: 2,
+                                        title: '分发到婚庆部',
+                                        content: url,
+                                        area: [width + 'px', height + 'px'],
+                                        offset: 'rb'
+                                    });
+                                    break;
+
+                                case 'assignToMerchantGroup':
+                                    if (checkedboxes.length < 1) {
+                                        layer.msg("请先选择要分配的客资");
+                                        return false;
+                                    }
+
+                                    ids = getSelectedIds(checkedboxes);
+                                    url = '/index/allocate/assigntomerchantgroup.html?ids=' + ids;
+                                    layer.open({
+                                        type: 2,
+                                        title: '分发到商务部',
+                                        content: url,
+                                        area: [width + 'px', height + 'px'],
+                                        offset: 'rb'
+                                    });
+                                    break;
+
                                 case 'assignToStoreStaff':
                                     if (checkedboxes.length < 1) {
                                         layer.msg("请先选择要分配的客资");
@@ -340,6 +377,7 @@
                                         offset: 'rb'
                                     });
                                     break;
+
                                 case 'createOrder':
                                     if (checkedboxes.length < 1) {
                                         layer.msg("请先选择要分配的客资");

@@ -48,14 +48,14 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">联系电话</label>
                     <div class="layui-input-block">
-                        <input type="text" name="mobile" value="{$data['mobile']}" id="mobile" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="number" name="mobile" value="{$data['mobile']}" id="mobile" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">其他联系</label>
                     <div class="layui-input-block">
-                        <input type="text" name="mobile1" value="{$data['mobile1']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="number" name="mobile1" value="{$data['mobile1']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -206,6 +206,17 @@
             }
 
             if(mobile.length > 11) {
+                layer.msg("手机号不能超过11位");
+                return false;
+            }
+
+            var mobile1 = e.delegateTarget.value;
+            if (mobile1 != '' && isNaN(mobile1)) {
+                layer.msg("请输入正确的手机号码");
+                return false;
+            }
+
+            if(mobile1 != '' && mobile1.length > 11) {
                 layer.msg("手机号不能超过11位");
                 return false;
             }

@@ -53,6 +53,9 @@ class Notice extends Command
 
     public function noticeStoretNovist()
     {
+        $hour = date('H');
+        if($hour < 9 || $hour > 21) return false;
+
         $map = [];
         // $map[] = ['id', '=', 553];
         $map[] = ['role_id', 'in', [5,8]];
@@ -69,10 +72,9 @@ class Notice extends Command
         $allocates = MemberAllocate::where($map)->select();
         $DingModel = new \app\api\model\DingTalk();
         foreach ($allocates as $allocate) {
+            $users = [];
             // 后台用户信息
             $user = User::get($allocate->user_id);
-            print_r($user);
-            continue;
             // 获取部门信息
             $department = Department::get($user['department_id']);
             $pathArr = explode("-", $department['path']);
@@ -80,7 +82,7 @@ class Notice extends Command
             array_pop($pathArr);
 
             // 客户信息
-            $mobileLast = substr($allocate->mobile, 0, -5);
+            $mobileLast = substr($allocate->mobile, -5);
 
             // 推送时间计算
             $createTime = strtotime($allocate->create_time);
@@ -99,7 +101,6 @@ class Notice extends Command
                 }
                 $allocate->notice_time = ['inc', 1];
                 $allocate->save();
-
             } else if($diff > 0 && $allocate->notice_time == 1) {
                 $map = [];
                 $map[] = ['role_id', '=', 5];
@@ -157,6 +158,7 @@ class Notice extends Command
                 $map[] = ['role_id', 'in', [5, 6, 26]];
                 $map[] = ['department_id', 'in', $pathArr];
                 $ids = User::where($map)->column('dingding');
+                /**
                 if(!empty($ids)) {
                     // 第二次提醒，主管
                     $content = $user['realname'] . '有一条手机尾号为' . $mobileLast . "的客资未跟进\n";
@@ -176,6 +178,7 @@ class Notice extends Command
                 }
                 $allocate->notice_time = ['inc', 1];
                 $allocate->save();
+                **/
             } else if($diff > 0 && $allocate->notice_time == 4) {
 
                 // 刘总账号

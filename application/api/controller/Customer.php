@@ -515,10 +515,24 @@ class Customer extends Base
             ]);
         }
 
+        $post['mobile1'] = trim($post['mobile1']);
+        $len = strlen($post['mobile1']);
+        if (!empty($post['mobile1']) && $len != 11) {
+            return xjson([
+                'code' => '400',
+                'msg' => '请输入正确的其他手机号',
+            ]);
+        }
+
         $Model = new Member();
         $Model->member_no = date('YmdHis') . rand(100, 999);
         ### 验证手机号唯一性
-        $originMember = $Model::checkMobile($post['mobile']);
+        if(empty($post['mobile1'])) {
+            $originMember = $Model::checkMobile($post['mobile']);
+        } else {
+            $originMember = $Model::checkMobile($post['mobile'], $post['mobile1']);
+        }
+
         if ($originMember) {
             return xjson([
                 'code' => '400',
@@ -528,6 +542,7 @@ class Customer extends Base
 
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
+            $post['source_text'] = $this->sources[$post['source_id']]['title'];
             $Model->source_text = $this->sources[$post['source_id']]['title'];
         }
         ### 基本信息入库

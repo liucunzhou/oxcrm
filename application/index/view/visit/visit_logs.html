@@ -49,6 +49,7 @@
                 <td colspan="5">{$customer['remark']}</td>
             </tr>
         </table>
+        <{if $user['role_id']!='9'}>
         <div class="vist-list">
             <h4 class="blue">
                 <span>&nbsp;&nbsp;跟进人</span>
@@ -77,6 +78,7 @@
                 <{/foreach}>
             </table>
         </div>
+        <{/if}>
 
         <div class="vist-list">
             <div class="blue">
@@ -93,17 +95,17 @@
                     <col>
                 </colgroup>
                 <tr class="table-header">
-                    <th>回访者</th>
-                    <th>回访时间</th>
-                    <th>回访状态</th>
-                    <th>跟踪记录</th>
+                    <td class="bg">回访者</td>
+                    <td>回访时间</td>
+                    <td>回访状态</td>
+                    <td class="bg">跟踪记录</td>
                 </tr>
                 <{foreach item="val" name="visits.log"}>
                 <tr>
-                    <td>{$val['user_id']}</td>
+                    <td class="bg">{$val['user_id']}</td>
                     <td>{$val['create_time']}</td>
                     <td>{$val['status']}</td>
-                    <td>{$val['content']}</td>
+                    <td class="bg">{$val['content']}</td>
                 </tr>
                 <{/foreach}>
             </table>

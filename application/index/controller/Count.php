@@ -341,135 +341,55 @@ class Count extends Base
         }
 
         if ($request['department_id']) {
-
             $userIds = User::getUsersByDepartmentId($request['department_id']);
+
             if (!empty($userIds) && !empty($request['create_time'])) {
                 $range = $this->getDateRange($request['create_time']);
-
-                ### 客资总数
-                $map = [];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                // print_r($map);
-                $total[0] = MemberAllocate::where($map)->count();
-
-                ### 未跟进统计
-                $map = [];
-                $map[] = ['active_status', '=', 0];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[1] = MemberAllocate::where($map)->count();
-
-                ### 跟进中
-                $map = [];
-                $map[] = ['active_status', '=', 1];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[2] = MemberAllocate::where($map)->count();
-
-                ### 有效客资
-                $map = [];
-                $map[] = ['active_status', '=', 5];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[3] = MemberAllocate::where($map)->count();
-
-                ### 有效客资
-                $map = [];
-                $map[] = ['active_status', '=', 5];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[3] = MemberAllocate::where($map)->count();
-
-                ### 意向客户
-                $map = [];
-                $map[] = ['active_status', '=', 6];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[4] = MemberAllocate::where($map)->count();
-
-                ### 无效客户
-                $map = [];
-                $map[] = ['active_status', '=', 4];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[5] = MemberAllocate::where($map)->count();
-
-                ### 失效客户
-                $map = [];
-                $map[] = ['active_status', '=', 3];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[6] = MemberAllocate::where($map)->count();
-
-                ### 重单
-                // $map = [];
-                // $map[] = ['repeat_log', '<>', ''];
-                // $map[] = ['user_id', 'in', $userIds];
-                // $total[7] = MemberAllocate::where($map)->count();
-
-                $this->assign('total', $total);
-
-
-                $map = [];
-                $map[] = ['source_text', '<>', ''];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
                 if ($dimension == 'source') {
-                    $this->groupBySource($request['department_id'], $range);
-                    /**
-                     * $result = MemberAllocate::where($map)->field('source_text,active_status,count(*) as amount')->group('source_text,active_status')->select();
-                     * if (!empty($result)) {
-                     * $groupSource = [];
-                     * $groupData = $result->toArray();
-                     * foreach ($groupData as $key => $value) {
-                     * $k = $value['source_text'];
-                     * $activeStatus = $value['active_status'];
-                     * $groupSource[$k][$activeStatus] = $value['amount'];
-                     * $groupSource[$k]['text'] = $value['source_text'];
-                     * }
-                     *
-                     * $totalsArr = [];
-                     * foreach ($groupSource as &$group) {
-                     * $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                     * $group[100] = $total;
-                     * $totalsArr[] = $total;
-                     * }
-                     *
-                     * $totalSum = array_sum($totalsArr);
-                     * $groupSource['总计'][100] = $totalSum;
-                     * $this->assign('groupSource', $groupSource);
-                     * }
-                     **/
+                    $group = $this->groupBySource($userIds, $range);
                 } else {
+                    $group = $this->groupByStaff($userIds, $range);
                     $users = User::getUsers();
-                    $result = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
-                    if (!empty($result)) {
-                        $groupSource = [];
-                        $groupData = $result->toArray();
-                        foreach ($groupData as $key => $value) {
-                            $userId = $value['user_id'];
-                            $activeStatus = $value['active_status'];
-                            $groupSource[$userId][$activeStatus] = $value['amount'];
-                            $groupSource[$userId]['text'] = $users[$value['user_id']]['realname'];
-                        }
 
-                        $totalsArr = [];
-                        foreach ($groupSource as &$group) {
-                            $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                            $group[100] = $total;
-                            $totalsArr[] = $total;
-                        }
-
-                        $totalSum = array_sum($totalsArr);
-                        $groupSource['总计'][100] = $totalSum;
-                        $this->assign('groupSource', $groupSource);
-                    }
+                    $this->assign('users', $users);
                 }
+
+                $this->assign('group', $group);
+
+                $totals = [];
+                // 总数
+                $totalsArr = array_column($group, 'total');
+                $totals['total'] = array_sum($totalsArr);
+                // 总未跟进
+                $novisitArr = array_column($group, 'novisit');
+                $totals['novisit'] = array_sum($novisitArr);
+                // 总跟进中
+                $visitingArr = array_column($group, 'visiting');
+                $totals['visiting'] = array_sum($visitingArr);
+                // 总有效
+                $effectiveArr = array_column($group, 'effective');
+                $totals['effective'] = array_sum($effectiveArr);
+                // 总意向
+                $possibleArr = array_column($group, 'possible');
+                $totals['possible'] = array_sum($possibleArr);
+                // 总无效
+                $invalidArr = array_column($group, 'invalid');
+                $totals['invalid'] = array_sum($invalidArr);
+                // 总失效
+                $loseArr = array_column($group, 'lose');
+                $totals['lose'] = array_sum($loseArr);
+                // 总进店
+                $intoStoreArr = array_column($group, 'into_store');
+                $totals['into_store'] = array_sum($intoStoreArr);
+                // 总订单
+                $orderArr = array_column($group, 'order');
+                $totals['order'] = array_sum($orderArr);
+                $this->assign('totals', $totals);
             }
 
         }
 
+        $request['create_time'] = str_replace('+', '', $request['create_time']);
         $this->assign('request', $request);
         return $this->fetch();
     }
@@ -508,63 +428,233 @@ class Count extends Base
         return $this->fetch();
     }
 
-    private function groupBySource($departmentId, $dateRange)
+    private function groupByStaff($userIds, $dateRange)
     {
-        $userIds = User::getUsersByDepartmentId($departmentId);
-        $map[] = ['source_text', '<>', ''];
+        $map = [];
+        // $map[] = ['source_text', '<>', ''];
         $map[] = ['user_id', 'in', $userIds];
-        $map[] = ['create_time', 'between', $$dateRange];
-        ### 获取所有去除重复的客资
-        $mobiles = MemberAllocate::where($map)->field('mobile')->group('mobile')->select();
-        echo MemberAllocate::getLastSql();
-        var_dump($mobiles);
+        $map[] = ['create_time', 'between', $dateRange];
+        $group = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
+        // echo MemberAllocate::getLastSql();
         $data = [];
-        $totals = count($mobiles);
-        foreach ($mobiles as $row) {
+        foreach ($group as $key => $value) {
+            $userId = $value['user_id'];
+            $activeStatus = $value['active_status'];
+            $amount = $value['amount'];
+            // 设置未跟进
+            if($activeStatus == 0) {
+                if(!isset($data[$userId]['novisit'])) {
+                    $data[$userId]['novisit'] = $amount;
+                } else {
+                    $data[$userId]['novisit'] = $data[$userId]['novisit'] + $amount;
+                }
+            }
+
+            // 设置跟进中
+            if($activeStatus == 1) {
+                if(!isset($data[$userId]['visiting'])) {
+                    $data[$userId]['visiting'] = $amount;
+                } else {
+                    $data[$userId]['visiting'] = $data[$userId]['visiting'] + $amount;
+                }
+            }
+
+            // 有效
+            if($activeStatus == 5) {
+                if(!isset($data[$userId]['effective'])) {
+                    $data[$userId]['effective'] = $amount;
+                } else {
+                    $data[$userId]['effective'] = $data[$userId]['effective'] + $amount;
+                }
+            }
+
+            // 可能有效
+            if($activeStatus == 6) {
+                if(!isset($data[$userId]['possible'])) {
+                    $data[$userId]['possible'] = $amount;
+                } else {
+                    $data[$userId]['possible'] = $data[$userId]['possible'] + $amount;
+                }
+            }
+
+            // 无效
+            if($activeStatus == 4) {
+                if(!isset($data[$userId]['invalid'])) {
+                    $data[$userId]['invalid'] = $amount;
+                } else {
+                    $data[$userId]['invalid'] = $data[$userId]['invalid'] + $amount;
+                }
+            }
+
+            // 失效
+            if($activeStatus == 3) {
+                if(!isset($data[$userId]['lose'])) {
+                    $data[$userId]['lose'] = $amount;
+                } else {
+                    $data[$userId]['lose'] = $data[$userId]['lose'] + $amount;
+                }
+            }
+
+        }
+
+        $map = [];
+        // $map[] = ['source_text', '<>', ''];
+        $map[] = ['is_into_store', '=', 1];
+        $map[] = ['create_time', 'between', $dateRange];
+        $group = MemberAllocate::where($map)->where('mobile', 'in', function ($query) use ($userIds, $dateRange) {
+            $map = [];
+            // $map[] = ['source_text', '<>', ''];
+            $map[] = ['user_id', 'in', $userIds];
+            $map[] = ['create_time', 'between', $dateRange];
+            $query->table('tk_member_allocate')->where($map)->field('mobile')->group('mobile');
+        })->field('operate_id,count(*) as amount')->group('operate_id')->select();
+        foreach ($group as $key => $value) {
+            $userId = $value['operate_id'];
+            if(!in_array($userId, $userIds)) continue;
+            $amount = $value['amount'];
+            // 设置未跟进
+            if(!isset($data[$userId]['into_store'])) {
+                $data[$userId]['into_store'] = $amount;
+            } else {
+                $data[$userId]['into_store'] = $data[$userId]['into_store'] + $amount;
+            }
+        }
+
+        $map = [];
+        // $map[] = ['source_text', '<>', ''];
+        $map[] = ['active_status', '=', 2];
+        $map[] = ['create_time', 'between', $dateRange];
+        $group = MemberAllocate::where($map)->where('mobile', 'in', function ($query) use ($userIds, $dateRange) {
+            $map = [];
+            // $map[] = ['source_text', '<>', ''];
+            $map[] = ['user_id', 'in', $userIds];
+            $map[] = ['create_time', 'between', $dateRange];
+            $query->table('tk_member_allocate')->where($map)->field('mobile')->group('mobile');
+        })->field('operate_id,count(*) as amount')->group('operate_id')->select();
+
+        foreach ($group as $key => $value) {
+            $userId = $value['operate_id'];
+            if(!in_array($userId, $userIds)) continue;
+
+            $amount = $value['amount'];
+            // 设置未跟进
+            if(!isset($data[$userId]['order'])) {
+                $data[$userId]['order'] = $amount;
+            } else {
+                $data[$userId]['order'] = $data[$userId]['order'] + $amount;
+            }
+        }
+
+        foreach ($data as $key=>$value) {
+            $data[$key]['total'] = $value['effective'] + $value['possible'] + $value['visiting'] + $value['novisit'] + $value['invalid'] + $value['lose'];
+        }
+        return $data;
+    }
+
+    private function groupBySource($userIds, $dateRange)
+    {
+        // $map[] = ['source_text', '<>', ''];
+        $map[] = ['user_id', 'in', $userIds];
+        $map[] = ['create_time', 'between', $dateRange];
+        ### 获取所有去除重复的客资
+        $result = MemberAllocate::field('source_text,mobile,user_id,active_status,is_into_store')->where('mobile', 'in', function ($query) use ($map) {
+            $query->table('tk_member_allocate')->where($map)->field('mobile')->group('mobile');
+        })->select();
+
+        $group = [];
+        foreach ($result as $row) {
+            $source = $row->source_text;
             $mobile = $row->mobile;
-            $allocateObj = new MemberAllocate();
-            $where = [];
-            $where[] = ['mobile', '=', $mobile];
-            $where[] = ['user_id', 'in', $userIds];
-            $allocates = $allocateObj->where($where)->select();
-            foreach ($allocates as $allocate) {
-                $activeStatus = $allocate->active_status;
-                // 成单客户
-                if ($activeStatus == 2) {
-                    continue;
+            $activeStatus = $row->active_status;
+            $isIntoStore = $row->is_into_store;
+            $userId = $row->user_id;
+            if($isIntoStore > 0) {
+                $group[$source][$mobile]['is_into_store'] = 1;
+            }
+
+            if($activeStatus == 2) {
+                $group[$source][$mobile]['is_order'] = 1;
+            }
+
+            if(in_array($userId, $userIds)) {
+                $group[$source][$mobile]['active_status'][] = $activeStatus;
+            }
+        }
+
+        $data = [];
+        foreach ($group as $key=>$mobiles) {
+            foreach ($mobiles as $value) {
+
+                // 统计进店
+                if (isset($value['is_into_store'])) {
+                    if (isset($data[$key]['into_store'])) {
+                        $data[$key]['into_store'] = $data[$key]['into_store'] + 1;
+                    } else {
+                        $data[$key]['into_store'] = 1;
+                    }
                 }
 
-                // 有效客户
-                if ($activeStatus == 5) {
-                    continue;
+                // 统计成单
+                if (isset($value['is_order'])) {
+                    if (isset($data[$key]['order'])) {
+                        $data[$key]['order'] = $data[$key]['order'] + 1;
+                    } else {
+                        $data[$key]['order'] = 1;
+                    }
                 }
 
-                // 意向客户
-                if ($activeStatus == 6) {
-                    continue;
-                }
+                // 统计状态
+                if(isset($value['active_status'])) {
+                    $activeStatusArr = $value['active_status'];
+                    if (in_array(5, $activeStatusArr)) { // 统计有效
+                        if (isset($data[$key]['effective'])) {
+                            $data[$key]['effective'] = $data[$key]['effective'] + 1;
+                        } else {
+                            $data[$key]['effective'] = 1;
+                        }
+                    } else if (in_array(6, $activeStatusArr)) { // 统计可能有效
+                        if (isset($data[$key]['possible'])) {
+                            $data[$key]['possible'] = $data[$key]['possible'] + 1;
+                        } else {
+                            $data[$key]['possible'] = 1;
+                        }
+                    } else if (in_array(1, $activeStatusArr)) { // 统计跟进中
+                        if (isset($data[$key]['visiting'])) {
+                            $data[$key]['visiting'] = $data[$key]['visiting'] + 1;
+                        } else {
+                            $data[$key]['visiting'] = 1;
+                        }
+                    } else if (in_array(0, $activeStatusArr)) { // 统计未跟进
+                        if (isset($data[$key]['novisit'])) {
+                            $data[$key]['novisit'] = $data[$key]['novisit'] + 1;
+                        } else {
+                            $data[$key]['novisit'] = 1;
+                        }
+                    } else if (in_array(2, $activeStatusArr)) { // 统计无效
 
-                // 跟进中
-                if ($activeStatus == 1) {
-                    continue;
-                }
+                        continue;
 
-                // 未跟进
-                if ($activeStatus == 0) {
-                    continue;
-                }
-
-                // 无效客户
-                if ($activeStatus == 4) {
-                    continue;
-                }
-
-                // 失效客户
-                if ($activeStatus == 3) {
-                    continue;
+                    } else if (in_array(4, $activeStatusArr)) { // 统计无效
+                        if (isset($data[$key]['invalid'])) {
+                            $data[$key]['invalid'] = $data[$key]['invalid'] + 1;
+                        } else {
+                            $data[$key]['invalid'] = 1;
+                        }
+                    } else if (in_array(3, $activeStatusArr)) { // 统计失效
+                        if (isset($data[$key]['lose'])) {
+                            $data[$key]['lose'] = $data[$key]['lose'] + 1;
+                        } else {
+                            $data[$key]['lose'] = 1;
+                        }
+                    }
                 }
             }
         }
+
+        foreach ($data as $key=>$value) {
+            $data[$key]['total'] = $value['effective'] + $value['possible'] + $value['visiting'] + $value['novisit'] + $value['invalid'] + $value['lose'];
+        }
+        return $data;
     }
 
     private function getDateRange($dateRange)

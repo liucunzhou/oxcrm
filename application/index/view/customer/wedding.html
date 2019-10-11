@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div class="layui-inline">
-                                    <select name="source" lay-verify="">
+                                    <select name="source" lay-verify="" lay-search>
                                     <option value="">平台来源</option>
                                     <{foreach name="sources" item="val"}>
                                         <{if $get['source'] == $val['id']}>
@@ -70,15 +70,15 @@
                         <div class="layui-tab">
                             <ul class="layui-tab-title">
                                 <{foreach name="tabs" item="val" }>
-                                    <{if $val[ 'checked']=='1' }>
+                                    <{if $val['checked']=='1' }>
                                         <li class="layui-this">
                                             <a href="{$val.url}">{$val.text}</a>
                                         </li>
-                                        <{else /}>
-                                            <li>
-                                                <a href="{$val.url}">{$val.text}</a>
-                                            </li>
-                                        <{/if}>
+                                    <{else /}>
+                                        <li>
+                                            <a href="{$val.url}">{$val.text}</a>
+                                        </li>
+                                    <{/if}>
                                 <{/foreach}>
                             </ul>
                         </div>
@@ -88,17 +88,20 @@
                                 <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a> {:button(["event"=>"addCustomer", "text"=>"添加客资"])} {:button(["event"=>"assignToWashGroup", "text"=>"分配到清洗组"])}
                                 <{if isset($get[ 'active_assign_status']) || isset($get[ 'possible_assign_status'])}>
                                     {:button(["event"=>"assignToRecommendGroup", "text"=>"分配到推荐组"])}
-                                    <{/if}>
-                                        <{if isset($get[ 'active_assign_status']) || isset($get[ 'possible_assign_status'])}>
-                                            {:button(["event"=>"assignToStoreStaff", "text"=>"分配到门市客服"])}
-                                            <{/if}>
-                                                {:button(["event"=>"createOrder", "text"=>"申请成单"])}
+                                <{/if}>
+                                <{if isset($get[ 'active_assign_status']) || isset($get[ 'possible_assign_status'])}>
+                                    {:button(["event"=>"assignToStoreStaff", "text"=>"分配到门市客服"])}
+                                <{/if}>
+                                {:button(["event"=>"assignToWeddingGroup", "text"=>"分配到婚庆部"])}
+                                {:button(["event"=>"assignToMerchantGroup", "text"=>"分配到商务部"])}
+                                {:button(["event"=>"createOrder", "text"=>"申请成单"])}
                             </div>
                         </script>
                         <{if $user[ 'nickname']=='admin' }>
                             <script type="text/html" id="table-tool">
                                 <div class="layui-btn-container">
-                                    {:button(["event"=>"editCustomer", "text"=>"编辑"])} {:button(["event"=>"deleteCustomer", "text"=>"删除"])}
+                                    {:button(["event"=>"editCustomer", "text"=>"编辑"])}
+                                    {:button(["event"=>"deleteCustomer", "text"=>"删除"])}
                                 </div>
                             </script>
                             <{/if}>
@@ -126,98 +129,89 @@
                             defaultToolbar: ['filter'],
                             toolbar: '#table-toolbar',
                             title: '我的客资',
-                            cols: [
-                                [{
-                                    "type": "checkbox",
-                                    "width": 50,
-                                    "fixed": "left"
-                                }, {
-                                    "field": "visit_amount",
-                                    "title": "回访",
-                                    "width": 60,
-                                    "align": "center",
-                                    "event": "visitCustomer",
-                                }, {
-                                    "field": "user_realname",
-                                    "title": "跟单人",
-                                    "width": 88,
-                                    "align": "center"
-                                }, {
-                                    "field": "realname",
-                                    "title": "客户姓名",
-                                    "width": 88,
-                                    "align": "center"
-                                }, {
-                                    "field": "mobile",
-                                    "title": "手机号",
-                                    "width": 108,
-                                    "align": "center"
-                                }, {
-                                    "field": "banquet_size",
-                                    "title": "桌数",
-                                    "width": 60,
-                                    "align": "center"
-                                }, {
-                                    "field": "budget",
-                                    "title": "预算",
-                                    "width": 90,
-                                    "align": "center"
-                                }, {
-                                    "field": "wedding_date",
-                                    "title": "订婚日期",
-                                    "width": 106,
-                                    "align": "center"
-                                }, {
-                                    "field": "zone",
-                                    "title": "区域",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "hotel_text",
-                                    "title": "酒店",
-                                    "width": 200,
-                                    "align": "center"
-                                }, {
-                                    "field": "source_text",
-                                    "title": "客资渠道",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "active_status",
-                                    "title": "回访状态",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "news_type",
-                                    "title": "信息类型",
-                                    "width": 100,
-                                    "align": "center"
-                                }, {
-                                    "field": "remark",
-                                    "title": "备注"
-                                }, {
-                                    "field": "allocate_type",
-                                    "title": "获取方式",
-                                    "width": 88
-                                }, {
-                                    "field": "allocate_time",
-                                    "title": "分配时间",
-                                    "width": 165
-                                }, {
-                                    "field": "member_create_time",
-                                    "title": "创建日期",
-                                    "width": 165
-                                },
-                                <{if $user['nickname'] == 'admin'}>
-                                {
-                                    "type": "tool",
-                                    "title": "操作",
-                                    "toolbar": "#table-tool",
-                                    "width": 226,
-                                    "fixed": "right"
-                                }
-                                <{/if}>
-                                ]], page: true, limit: 20, limits: [20, 30]
+                            cols: [[{
+                                        "type": "checkbox",
+                                        "width": 50,
+                                        "fixed": "left"
+                                    }, {
+                                        "field": "visit_amount",
+                                        "title": "回访",
+                                        "width": 60,
+                                        "align": "center",
+                                        "event": "visitCustomer",
+                                    }, {
+                                        "field": "user_realname",
+                                        "title": "跟单人",
+                                        "width": 88,
+                                        "align": "center"
+                                    }, {
+                                        "field": "realname",
+                                        "title": "客户姓名",
+                                        "width": 88,
+                                        "align": "center"
+                                    }, {
+                                        "field": "mobile",
+                                        "title": "手机号",
+                                        "width": 108,
+                                        "align": "center"
+                                    }, {
+                                        "field": "banquet_size",
+                                        "title": "桌数",
+                                        "width": 60,
+                                        "align": "center"
+                                    }, {
+                                        "field": "budget",
+                                        "title": "预算",
+                                        "width": 90,
+                                        "align": "center"
+                                    }, {
+                                        "field": "wedding_date",
+                                        "title": "订婚日期",
+                                        "width": 106,
+                                        "align": "center"
+                                    }, {
+                                        "field": "zone",
+                                        "title": "区域",
+                                        "width": 100,
+                                        "align": "center"
+                                    }, {
+                                        "field": "hotel_text",
+                                        "title": "酒店",
+                                        "width": 200,
+                                        "align": "center"
+                                    }, {
+                                        "field": "source_text",
+                                        "title": "客资渠道",
+                                        "width": 100,
+                                        "align": "center"
+                                    }, {
+                                        "field": "active_status",
+                                        "title": "回访状态",
+                                        "width": 100,
+                                        "align": "center"
+                                    }, {
+                                        "field": "news_type",
+                                        "title": "信息类型",
+                                        "width": 100,
+                                        "align": "center"
+                                    }, {
+                                        "field": "remark",
+                                        "title": "备注"
+                                    }, {
+                                        "field": "allocate_type",
+                                        "title": "获取方式",
+                                        "width": 88
+                                    }, {
+                                        "field": "allocate_time",
+                                        "title": "分配时间",
+                                        "width": 165
+                                    }, {
+                                        "field": "member_create_time",
+                                        "title": "创建日期",
+                                        "width": 165
+                                    }
+                                ]],
+                                page: true, limit: 20, limits: [20, 30]
                             });
 
                         laydate.render({
@@ -325,6 +319,40 @@
                                         offset: 'rb'
                                     });
                                     break;
+
+                                case 'assignToWeddingGroup':
+                                    if (checkedboxes.length < 1) {
+                                        layer.msg("请先选择要分配的客资");
+                                        return false;
+                                    }
+
+                                    ids = getSelectedIds(checkedboxes);
+                                    url = '/index/allocate/assigntoweddinggroup.html?ids=' + ids;
+                                    layer.open({
+                                        type: 2,
+                                        title: '分发到婚庆部',
+                                        content: url,
+                                        area: [width + 'px', height + 'px'],
+                                        offset: 'rb'
+                                    });
+                                    break;
+                                case 'assignToMerchantGroup':
+                                    if (checkedboxes.length < 1) {
+                                        layer.msg("请先选择要分配的客资");
+                                        return false;
+                                    }
+
+                                    ids = getSelectedIds(checkedboxes);
+                                    url = '/index/allocate/assigntomerchantgroup.html?ids=' + ids;
+                                    layer.open({
+                                        type: 2,
+                                        title: '分发到商务部',
+                                        content: url,
+                                        area: [width + 'px', height + 'px'],
+                                        offset: 'rb'
+                                    });
+                                    break;
+
                                 case 'assignToStoreStaff':
                                     if (checkedboxes.length < 1) {
                                         layer.msg("请先选择要分配的客资");
@@ -365,7 +393,6 @@
                                         offset: 'rb'
                                     });
                                     break;
-
                             };
                         });
 

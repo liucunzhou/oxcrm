@@ -127,10 +127,13 @@ class User extends Base
         $result = $Model->save($post);
 
         if($result) {
-            empty($post['id']) && $post['id'] = $Model->id;
+            if(empty($post['id'])) {
+                $post['id'] = $Model->id;
+            }  else {
+                UserAuth::updateCache($post['id']);
+            }
             ### 更新用户信息缓存
             $Model::updateCache($post['id']);
-            UserAuth::updateCache($post['id']);
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);

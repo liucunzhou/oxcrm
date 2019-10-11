@@ -27,7 +27,7 @@ class Csv
             $row[1] = preg_replace("/[\n\r\t]/", ' ', $row[1]);
 
             // $row[1] = intval($row[1]);
-            $originMember = Member::checkMobile($row[1]);
+            $originMember = Member::checkPatchMobile($row[1]);
             if(!empty($originMember)) {
                 $repetitive[] = $originMember->toArray();
             } else {

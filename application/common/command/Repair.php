@@ -5,6 +5,7 @@ use app\common\model\Member;
 use app\common\model\BanquetHall;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberVisit;
+use app\common\model\Source;
 use app\common\model\Store;
 use app\common\model\User;
 use app\common\model\UserAuth;
@@ -43,6 +44,55 @@ class Repair extends Command
             case 'dealMemberDump':
                 $this->mergeMemberDump();
                 break;
+            case 'dealMemberSourceText':
+                $this->dealMemberSourceText();
+                break;
+            case 'separateOriginSourceText';
+                $this->separateOriginSourceText($page);
+                break;
+        }
+    }
+
+    public function dealMemberSourceText()
+    {
+        $sources = Source::getSources();
+        $map = [];
+        $map[] = ['member_create_time', '>', '1567440000'];
+        $map[] = ['source_id', '<>', 0];
+        // $map[] = ['source_text', '=', ''];
+
+        $members = MemberAllocate::where($map)->whereExp('source_text', 'is null')->select();
+        // $members = MemberAllocate::where($map)->select();
+        foreach ($members as $member) {
+
+            $sourceId = $member->source_id;
+
+            echo $sourceId."\n";
+            $sourceText = $sources[$sourceId]['title'];
+            echo $sourceText;
+            echo "\n";
+            $member->save(['source_text'=>$sourceText]);
+            echo $member->getLastSql();
+            echo "\n";
+        }
+
+    }
+
+    public function separateOriginSourceText($page)
+    {
+        $config = [
+            'page' => $page
+        ];
+        $where = "locate('/', source_text)";
+        $members = MemberAllocate::withTrashed(true)->whereRaw($where)->paginate(5000, false, $config);
+        foreach ($members as $member) {
+            $sourceText = $member->source_text;
+            $arr = explode('/', $sourceText);
+            $first = array_shift($arr);
+            $repeat = implode(',', $arr);
+            $member->save(['source_text'=>$first]);
+            echo $member->getLastSql();
+            echo "\n";
         }
     }
 
@@ -51,6 +101,7 @@ class Repair extends Command
         $MemberModel = new Member();
         $map = [];
         $list = $MemberModel->field('mobile,count(mobile) as amount')->where($map)->group('mobile')->having('amount > 1')->select();
+        print_r($list);
         foreach($list as $row) {
             $MemberObj = new Member();
             $mobile = $row->mobile;

@@ -49,6 +49,11 @@ class Index extends Base
         return $this->fetch();
     }
 
+    public function requestReply()
+    {
+        return $this->fetch();
+    }
+
     public function hello($name = 'ThinkPHP5')
     {
         return 'hello,' . $name;

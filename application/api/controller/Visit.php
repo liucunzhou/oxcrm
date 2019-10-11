@@ -129,9 +129,9 @@ class Visit extends Base
         }
         $Member->visit_amount = ['inc', 1];
         $result2 = $Member->save($post);
+
+        MemberAllocate::updateAllocateData($this->user['id'], $post['member_id'], $post);
         if ($result1 && $result2) {
-            ### 同步分配信息
-            MemberAllocate::updateAllocateData($this->user['id'], $post['member_id'], $post);
             ### 添加下次回访提醒
             if($post['next_visit_time'] > 0) {
                 $Notice = new Notice();

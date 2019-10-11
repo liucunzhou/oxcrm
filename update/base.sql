@@ -103,3 +103,12 @@ create table if not exists tk_image_group(
  create_time datetime
 );
 
+create table tk_whitelist(
+  id int not null auto_increment primary key,
+  title varchar(64) not null default '',
+  is_valid int not null default 0,
+  sort int not null default 0,
+  delete_time int not null default 0,
+  update_time int not null default 0,
+  create_time int not null default 0
+)

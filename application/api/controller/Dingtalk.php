@@ -48,4 +48,15 @@ class Dingtalk extends Base
         $message = $DingModel->linkMessage("新增客资", "新增客资消息", "http://h5.hongsizg.com/pages/customer/today");
         $DingModel->sendJobMessage($users, $message);
     }
+
+    public function getDingSign()
+    {
+        $DingModel = new \app\api\model\DingTalk();
+        $config = $DingModel->isvConfig();
+        return xjson([
+            'code'  => '200',
+            'msg'   => '获取鉴权成功',
+            'result' => $config
+        ]);
+    }
 }

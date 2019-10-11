@@ -38,6 +38,10 @@
         i.layui-icon {
             /*color: #00;*/
         }
+        td.bg {
+            background-color: #f2f2f2;
+
+        }
     </style>
 </head>
 <body>
@@ -47,57 +51,63 @@
             <div class="layui-card-body padding-15">
                 <table class="layui-table">
                     <tr>
-                        <td class="field5em">信息类型</td>
+                        <td class="field5em bg">信息类型</td>
                         <td class="field140">{$newsTypes[$customer['news_type']]}</td>
-                        <td class="field5em">客资渠道</td>
+                        <td class="field5em bg">客资渠道</td>
                         <td class="field140">{$customer['source_text']}</td>
-                        <td class="field140">
+                        <td class="field140 bg">
                             重复来源
+                            <{if $user['role_id']!='9'}>
                             <a class="layui-btn layui-btn-primary layui-btn-sm append-source" data-href="{:url('Customer/appendSource', ['id'=>$customer['id']])}">
                                 <i class="layui-icon">&#xe608;</i> 增加
                             </a>
+                            <{/if}>
                         </td>
                         <td class="field200">{$customer['repeat_log']}</td>
-                        <td class="field5em">联系人</td>
+                        <td class="field5em bg">联系人</td>
                         <td class="field160">{$customer['realname']}</td>
-                        <td class="field140">
+                        <td class="field140 bg">
                             联系电话
+                            <{if $user['role_id']!='9'}>
                             <a class="layui-btn layui-btn-primary layui-btn-sm bind-mobile" data-href="{:url('Customer/bindCustomer', ['mobile'=>$customer['mobile']])}">
                                 <i class="layui-icon">&#xe608;</i> 绑定
                             </a>
+                            <{/if}>
                         </td>
                         <td class="field140">{$customer['mobile']}</td>
                         <td class="field140">
+                            <{if $user['role_id']!='9'}>
                             <a class="layui-btn layui-btn-primary layui-btn-sm edit-customer" data-href="{:url('Visit/editCustomer', ['member_id'=>$customer['id']])}">
                                 <i class="layui-icon"></i>
                                 修改客户资料
                             </a>
+                            <{/if}>
                         </td>
                     </tr>
                     <tr>
-                        <td>区域</td>
+                        <td class="bg">区域</td>
                         <td>{$customer['zone']}</td>
-                        <td>桌数</td>
+                        <td class="bg">桌数</td>
                         <td>{$customer['banquet_size']}</td>
-                        <td>预算</td>
+                        <td class="bg">预算</td>
                         <td>{$customer['budget']}</td>
-                        <td>婚期</td>
+                        <td class="bg">婚期</td>
                         <td>{$customer['wedding_date']}</td>
-                        <td>其他手机号</td>
+                        <td class="bg">其他手机号</td>
                         <td colspan="2">
                             {$customer['mobile1']}
                         </td>
                     </tr>
                     <tr>
-                        <td>预定酒店</td>
+                        <td class="bg">预定酒店</td>
                         <td colspan="10">{$customer['hotel_text']}</td>
                     </tr>
                     <tr>
-                        <td>发布人</td>
+                        <td class="bg">发布人</td>
                         <td>{$customer['operate_id']}</td>
-                        <td>创建时间</td>
+                        <td class="bg">创建时间</td>
                         <td>{$customer['create_time']}</td>
-                        <td>备注</td>
+                        <td class="bg">备注</td>
                         <td colspan="6">{$customer['remark']}</td>
                     </tr>
                 </table>
@@ -171,6 +181,7 @@
                     </div>
                 </div>
 
+                <{if $user['role_id']!='9'}>
                 <div class="layui-card">
                     <div class="layui-card-header">跟进人(共{:count($visits.count)}人)</div>
                     <div class="layui-card-body">
@@ -182,22 +193,23 @@
                                 <col>
                             </colgroup>
                             <tr class="table-header">
-                                <th>回访者</th>
-                                <th>获取时间</th>
-                                <th>下次回访时间</th>
-                                <th>回访次数</th>
+                                <td class="bg">回访者</td>
+                                <td>获取时间</td>
+                                <td>下次回访时间</td>
+                                <td class="bg">回访次数</td>
                             </tr>
                             <{foreach item="val" name="visits.count"}>
                             <tr>
-                                <td>{$val['user_id']}</td>
+                                <td class="bg">{$val['user_id']}</td>
                                 <td>{$val['allocate_create_time']}</td>
                                 <td>{$val['next_visit_time']}</td>
-                                <td>{$val['visit_times']}</td>
+                                <td class="bg">{$val['visit_times']}</td>
                             </tr>
                             <{/foreach}>
                         </table>
                     </div>
                 </div>
+                <{/if}>
 
                 <div class="layui-card layui-bg-gray">
                     <div class="layui-card-header">回访历史(已回访{:count($visits.log)}次)</div>
@@ -210,17 +222,17 @@
                                 <col>
                             </colgroup>
                             <tr class="table-header">
-                                <th>回访者</th>
-                                <th>回访时间</th>
-                                <th>回访状态</th>
-                                <th>跟踪记录</th>
+                                <td class="bg">回访者</td>
+                                <td>回访时间</td>
+                                <td>回访状态</td>
+                                <td class="bg">跟踪记录</td>
                             </tr>
                             <{foreach item="val" name="visits.log"}>
                             <tr>
-                                <td>{$val['user_id']}</td>
+                                <td class="bg">{$val['user_id']}</td>
                                 <td>{$val['create_time']}</td>
                                 <td>{$val['status']}</td>
-                                <td>{$val['content']}</td>
+                                <td class="bg">{$val['content']}</td>
                             </tr>
                             <{/foreach}>
                         </table>

@@ -8,6 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <style>
+        .tips {
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,6 +30,12 @@
             <div class="layui-card">
                 <!--<div class="layui-card-header">酒店管理</div>-->
                 <div class="layui-card-body">
+                    <div class="lay-box tips layui-bg-red">
+                        <div class="lay-text">
+                        重要提醒: 全号搜索,"自动获取"功能已关闭。请通过点击"确认获取",获取客资
+                        </div>
+                    </div>
+
                     <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
                         <div class="layui-form-item">
                             <div class="layui-inline">
@@ -40,7 +52,7 @@
                             </div>
 
                             <div class="layui-inline">
-                                <select name="source" lay-verify="">
+                                <select name="source" lay-verify="" lay-search>
                                     <option value="">平台来源</option>
                                     <{foreach name="sources" item="val"}>
                                     <option value="{$val['id']}">{$val['title']}</option>
@@ -64,6 +76,9 @@
                         <div class="layui-btn-container">
                             <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a>
                             <a class="layui-btn layui-btn-sm" lay-event="doApply">申请回访</a>
+                            <{if $showGetEntireBtn==1}>
+                                <a class="layui-btn layui-btn-sm" lay-event="getMobileCustomer">确认获取</a>
+                            <{/if}>
                         </div>
                     </script>
 
@@ -185,7 +200,6 @@
             jsonArr.forEach(function (value, key) {
                 ids.push(value.id)
             });
-
             return ids.join(',');
         }
 
@@ -225,6 +239,27 @@
                     });
                     break;
 
+                case 'getMobileCustomer':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+
+                    if(!confirm("确认获取客资?")) {
+                        return false;
+                    }
+
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/allocate/getMobileCustomer.html';
+                    $.post(url,{ids:ids}, function(res){
+                        if(res.code == '200') {
+                            layer.msg(res.msg);
+                            // table.reload("table")
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
+                    break;
             };
         });
 
