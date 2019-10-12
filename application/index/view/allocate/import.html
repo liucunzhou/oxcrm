@@ -33,9 +33,9 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
+                            {:button(["event"=>"uploadAllocate", "text"=>"查看上传"])}
                             {:button(["event"=>"export", "text"=>"导出重复"])}
                             {:button(["event"=>"uploadAllocate", "text"=>"分配客资"])}
-                            {:button(["event"=>"uploadAllocate", "text"=>"查看客资"])}
                         </div>
                     </script>
                 </div>
@@ -102,7 +102,7 @@
                     "type": "tool",
                     "title": "操作",
                     "toolbar": "#table-tool",
-                    "width": 226
+                    "width": 260
                 }
             ]],
             page: true,
