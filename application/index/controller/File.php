@@ -54,7 +54,7 @@ class File extends Base
                     $data['city_text'] = csv_convert_encoding($value[3]);
                     $data['create_time'] = $time;
                     $data['type'] = 1;
-                    $UploadCustomerLog = new UploadCustomerLog();
+                    // $UploadCustomerLog = new UploadCustomerLog();
                     $UploadCustomerLog->insert($data);
                 }
 
@@ -70,7 +70,7 @@ class File extends Base
                     $data['duplicate'] = $value[4];
                     $data['create_time'] = $time;
                     $data['type'] = 0;
-                    $UploadCustomerLog = new UploadCustomerLog();
+                    // $UploadCustomerLog = new UploadCustomerLog();
                     $UploadCustomerLog->insert($data);
                     echo $UploadCustomerLog->getLastSql();
                     echo "\n<br>";
