@@ -29,6 +29,7 @@ class File extends Base
             $UploadCustomerFile = new UploadCustomerFile();
             $UploadCustomerFile->startTrans();
             $uploadId = $UploadCustomerFile->insert($data);
+            var_dump($uploadId);
             if($uploadId) {
                 /**
                 | upload_id   | int(11)      | NO   |     | NULL    |                |
