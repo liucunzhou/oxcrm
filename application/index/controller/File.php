@@ -48,10 +48,10 @@ class File extends Base
                 foreach ($fileData[0] as $value) {
                     $data = [];
                     $data['upload_id'] = $uploadId;
-                    $data['realname'] = $value[0];
+                    $data['realname'] = csv_convert_encoding($value[0]);
                     $data['mobile'] = $value[1];
-                    $data['source_text'] = $value[2];
-                    $data['city_text'] = $value[3];
+                    $data['source_text'] = csv_convert_encoding($value[2]);
+                    $data['city_text'] = csv_convert_encoding($value[3]);
                     $data['create_time'] = $time;
                     $data['type'] = 1;
                     $UploadCustomerLog = new UploadCustomerLog();
@@ -63,11 +63,11 @@ class File extends Base
                 foreach ($fileData[1] as $value) {
                     $data = [];
                     $data['upload_id'] = $uploadId;
-                    $data['realname'] = $value[0];
+                    $data['realname'] = csv_convert_encoding($value[0]);
                     $data['mobile'] = $value[1];
-                    $data['source_text'] = $value[2];
-                    $data['city_text'] = $value[3];
-                    $data['duplicate'] = $value[4];
+                    $data['source_text'] = csv_convert_encoding($value[2]);
+                    $data['city_text'] = csv_convert_encoding($value[3]);
+                    $data['duplicate'] = csv_convert_encoding($value[4]);
                     $data['create_time'] = $time;
                     $data['type'] = 0;
                     $UploadCustomerLog = new UploadCustomerLog();

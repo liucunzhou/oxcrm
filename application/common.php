@@ -21,3 +21,13 @@ if (!function_exists('clear_both_blank')) {
         return $data;
     }
 }
+
+### csv转码
+if(!function_exists('csv_convert_encoding')) {
+    function csv_convert_encoding($data)
+    {
+        $data = mb_convert_encoding($data, 'UTF-8', ['Unicode', 'ASCII', 'GB2312', 'GBK', 'UTF-8', 'ISO-8859-1']);
+
+        return $data;
+    }
+}
