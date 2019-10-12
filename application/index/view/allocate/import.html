@@ -117,20 +117,20 @@
             var member_id = obj.data.member_id;
             switch (obj.event) {
                 case 'showUploadActive':
-                    url = '/index/customer/editcustomer.html?member_id=' + member_id;
+                    url = '/index/allocate/showuploadactive.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '编辑客资信息',
+                        title: '查看有效',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'
                     });
                     break;
                 case 'showUploadDumplicate':
-                    url = '/index/visit/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
+                    url = '/index/allocate/showuploaddumplicate.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '回访客户',
+                        title: '查看重复',
                         content: url,
                         area: [window.innerWidth + 'px', window.innerHeight + 'px'],
                         offset: 'rb'
