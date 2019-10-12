@@ -56,9 +56,9 @@ class Csv
 
             if ($n==0) {
                 $n = $n + 1;
-                $row[3] = mb_convert_encoding($row[3], 'UTF-8');
-                $row[2] = mb_convert_encoding($row[2], 'UTF-8');
-                $row[1] = mb_convert_encoding($row[1], 'UTF-8');
+                // $row[3] = mb_convert_encoding($row[3], 'UTF-8');
+                // $row[2] = mb_convert_encoding($row[2], 'UTF-8');
+                // $row[1] = mb_convert_encoding($row[1], 'UTF-8');
                 // $row[0] = mb_convert_encoding($row[0], 'UTF-8');
                 fputcsv($nfp, $row);
             } else {
@@ -69,7 +69,8 @@ class Csv
                 $originMember = Member::checkPatchMobile($row[1]);
                 //print_r($originMember);
                 if ($originMember) {
-                    $sourceText = mb_convert_encoding($row[2], 'UTF-8', 'GBK');
+                    // $sourceText = mb_convert_encoding($row[2], 'UTF-8', 'GBK');
+                    $sourceText = $row[2];
                     $sourceId = $sources[$sourceText];
                     // Member::updateRepeatLog($originMember, $sourceId, $user, $sourcesIndexOfId);
                     $originSourceText = mb_convert_encoding($originMember->source_text, 'GBK');
@@ -77,10 +78,10 @@ class Csv
                     $repeatLog = str_replace(',',":::", $repeatLog);
                     $row[4] = $originSourceText.':::'.$repeatLog;
                     // $row[4] = $originMember->source_text.':::'.str_replace(",",":::", $originMember->repeat_log);
-                    $row[3] = mb_convert_encoding($row[3], 'UTF-8');
-                    $row[2] = mb_convert_encoding($row[2], 'UTF-8');
-                    $row[1] = mb_convert_encoding($row[1], 'UTF-8');
-                    $row[0] = mb_convert_encoding($row[0], 'UTF-8');
+                    // $row[3] = mb_convert_encoding($row[3], 'UTF-8');
+                    // $row[2] = mb_convert_encoding($row[2], 'UTF-8');
+                    // $row[1] = mb_convert_encoding($row[1], 'UTF-8');
+                    // $row[0] = mb_convert_encoding($row[0], 'UTF-8');
                     fputcsv($nfp, $row);
                 }
             }
