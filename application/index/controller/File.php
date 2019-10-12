@@ -11,6 +11,7 @@ class File extends Base
     {
         $file = request()->file("file");
         $info = $file->move("../uploads");
+        print_r($info);
         if ($info) {
             $time = time();
             $origin = $info->getInfo();
