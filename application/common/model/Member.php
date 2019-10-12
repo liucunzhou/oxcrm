@@ -53,7 +53,7 @@ class Member extends Model
 
         $where = [];
         $where[] = ['mobile', '=', $mobile];
-        $member = self::where($where)->whereOr($where)->find();
+        $member = self::where($where)->find();
 
         return $member;
     }
