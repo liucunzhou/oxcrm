@@ -383,7 +383,7 @@ class Allocate extends Base
         if (!is_dir($dir)) {
             mkdir($dir);
         }
-        $filename = "dump_" . date('YmdHis').'csv';
+        $filename = "dump_" . date('YmdHis').'.csv';
         $file = $dir . $filename;
 
         $where = [];
