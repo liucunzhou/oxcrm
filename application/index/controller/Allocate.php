@@ -6,6 +6,7 @@ use app\common\model\Member;
 use app\common\model\MemberAllocate;
 use app\common\model\OperateLog;
 use app\common\model\Region;
+use app\common\model\UploadCustomerFile;
 use app\common\model\User;
 use app\common\model\UserAuth;
 use app\common\model\Source;
@@ -107,6 +108,12 @@ class Allocate extends Base
 
     public function uploadAllocate()
     {
+        $request = Request::param();
+        ### 获取要分配客资信息
+        $uploadFile = UploadCustomerFile::get($request['id']);
+        $this->assign('uploadFile', $uploadFile);
+
+        ### 显示要分配的用户
         $users = User::getUsers(false);
         foreach ($users as $key => $value) {
             $auth = UserAuth::getUserLogicAuth($value["id"]);

@@ -22,32 +22,30 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">
-                    <div class="layui-btn-group">
-                        <button class="layui-btn layui-btn-sm" id="upload">上传客资</button>
-                        <a class="layui-btn layui-btn-sm" href="{:url('Allocate/export')}" target="_blank">导出重复</a>
-                        <a class="layui-btn layui-btn-sm" href="/tpl.csv" target="_blank">下载模版</a>
-                    </div>
-                </div>
                 <div class="layui-card-body">
                     <table class="layui-table">
                         <colgroup>
                             <col width="120">
                             <col>
                         </colgroup>
-                        <{if !empty($fileData['file'])}>
+                        <{if !empty($uploadFile['allocated'])}>
                         <tr>
                             <td>友情提示:</td>
                             <td>上次的客资尚未分配</td>
                         </tr>
+                        <{else /}>
+                        <tr>
+                            <td>友情提示:</td>
+                            <td>客资已分配,请勿重复分配</td>
+                        </tr>
                         <{/if}>
                         <tr>
                             <td>有效客资:</td>
-                            <td><span id="amount">{$fileData.amount}</span></td>
+                            <td><span id="amount">{$uploadFile.active}</span></td>
                         </tr>
                         <tr>
                             <td>重复客资:</td>
-                            <td><span id="repeat">{$fileData.repeat}</span></td>
+                            <td><span id="repeat">{$uploadFile.dumplicate}</span></td>
                         </tr>
 
                     </table>
@@ -55,7 +53,7 @@
                     <form class="layui-form" method="post" action="{:url('Allocate/doUploadAllocate')}" lay-filter="component-form-group">
                         <p>
                             已经分配<span class="assigned_amount">0</span>条,
-                            还剩<span class="unassigned_amount">{$fileData['amount']}</span>条未分配
+                            还剩<span class="unassigned_amount">{$uploadFile['active']}</span>条未分配
                         </p>
                         <table class="layui-table">
                             <colgroup>
@@ -71,7 +69,7 @@
                             </tr>
                             <{/foreach}>
                         </table>
-
+                        <{if $uploadFile['allocated']==0 || $uploadFile['active'] > 0 }>
                         <div class="layui-form-item layui-layout-admin">
                             <div class="layui-input-block">
                                 <div class="layui-footer" style="left: 0;">
@@ -79,6 +77,7 @@
                                 </div>
                             </div>
                         </div>
+                        <{/if}>
                     </form>
 
                 </div>
