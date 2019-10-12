@@ -114,7 +114,7 @@ class Allocate extends Base
                 'page' => $request['page']
             ];
             $map = [];
-            $map[] = ['upload_id', '=', $request];
+            $map[] = ['upload_id', '=', $request['id']];
             $list = model('UploadCustomerLog')->where($map)->paginate($request['limit'], false, $config);
             $data = $list->getCollection();
             $result = [

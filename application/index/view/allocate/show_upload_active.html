@@ -22,31 +22,12 @@
     <div class="layui-fluid">
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
-                <div class="layui-card">
-                    <div class="layui-card-body">
-                        <div class="layui-tab">
-                            <ul class="layui-tab-title">
-                                <{foreach name="tabs" item="val" }>
-                                    <{if $val['checked']=='1' }>
-                                        <li class="layui-this">
-                                            <a href="{$val.url}">{$val.text}</a>
-                                        </li>
-                                    <{else /}>
-                                        <li>
-                                            <a href="{$val.url}">{$val.text}</a>
-                                        </li>
-                                    <{/if}>
-                                <{/foreach}>
-                            </ul>
-                        </div>
-                        <table class="layui-hide" id="table" lay-filter="table"></table>
-                        <script type="text/html" id="table-toolbar">
-                            <div class="layui-btn-container">
-                                <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a> {:button(["event"=>"addCustomer", "text"=>"添加客资"])} {:button(["event"=>"assignToWashGroup", "text"=>"分配到清洗组"])}
-                            </div>
-                        </script>
+                <table class="layui-hide" id="table" lay-filter="table"></table>
+                <script type="text/html" id="table-toolbar">
+                    <div class="layui-btn-container">
+                        <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a> {:button(["event"=>"addCustomer", "text"=>"添加客资"])} {:button(["event"=>"assignToWashGroup", "text"=>"分配到清洗组"])}
                     </div>
-                </div>
+                </script>
             </div>
         </div>
     </div>
