@@ -115,6 +115,33 @@ class Allocate extends Base
             ];
             $map = [];
             $map[] = ['upload_id', '=', $request['id']];
+            $map[] = ['type', '=', 1];
+            $list = model('UploadCustomerLog')->where($map)->paginate($request['limit'], false, $config);
+            $data = $list->getCollection();
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'pages' => $list->lastPage(),
+                'count' => $list->total(),
+                'data' => $data
+            ];
+
+            return json($result);
+        } else {
+            return $this->fetch();
+        }
+    }
+
+    public function showUploadDuplicate()
+    {
+        if(Request::isAjax()) {
+            $request = Request::param();
+            $config = [
+                'page' => $request['page']
+            ];
+            $map = [];
+            $map[] = ['upload_id', '=', $request['id']];
+            $map[] = ['type', '=', 0];
             $list = model('UploadCustomerLog')->where($map)->paginate($request['limit'], false, $config);
             $data = $list->getCollection();
             $result = [
