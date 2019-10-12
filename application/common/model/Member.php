@@ -61,7 +61,12 @@ class Member extends Model
     public static function checkFromMobileSet($mobile) {
         $where = [];
         $where[] = ['mobile', '=', $mobile];
-        $member = Mobile::where($where)->find();
+        $mobile = Mobile::where($where)->find();
+        $member = null;
+        if(!empty($mobile)) {
+            $member = self::get($mobile->member_id);
+        }
+
         return $member;
     }
 
