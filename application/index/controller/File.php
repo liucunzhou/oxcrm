@@ -47,11 +47,11 @@ class File extends Base
         while (!feof($fp)) {
             ### 读取文件的路径
             $position = ftell($fp);
+            $row = fgetcsv($fp);
             var_dump($position);
             if($position === 0) continue;
-
             ### 读取CSV的行
-            $row = fgetcsv($fp);
+
             if(!$row) break;
             ### 手机号
             $row[1] = clear_both_blank($row[1]);
