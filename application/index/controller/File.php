@@ -28,7 +28,8 @@ class File extends Base
             $data['create_time'] = $time;
             $UploadCustomerFile = new UploadCustomerFile();
             $UploadCustomerFile->startTrans();
-            $uploadId = $UploadCustomerFile->insert($data);
+            $UploadCustomerFile->insert($data);
+            $uploadId = $UploadCustomerFile->getLastInsID();
             var_dump($uploadId);
             if($uploadId) {
                 /**
