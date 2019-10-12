@@ -140,7 +140,7 @@ class File extends Base
             $row[1] = clear_both_blank($row[1]);
             $originMember = Member::checkFromMobileSet($row[1], true);
             if (!empty($originMember)) {
-                $row[4] = $originMember->source_text . ',' . $originMember->repeat_log;
+                $row[4] = $originMember->repeat_log;
                 $repetitive[] = $row;
                 if(strpos($row[4], $source) === false) {
                     $duplicate = $row[4].','.$source;
