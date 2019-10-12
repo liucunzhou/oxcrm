@@ -134,12 +134,12 @@ class Allocate extends Base
         foreach ($result[0] as $key => $row) {
             if (empty($row)) continue;
             $realname = trim($row[0]);
-            $realname = mb_convert_encoding($realname, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
+            $realname = mb_convert_encoding($realname, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8','ISO-8859-1']);
             $sourceText = trim($row[2]);
-            $sourceText = mb_convert_encoding($sourceText, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
+            $sourceText = mb_convert_encoding($sourceText, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8','ISO-8859-1']);
             echo $sourceText;
             $cityName = trim($row[3]);
-            $cityName = mb_convert_encoding($cityName, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
+            $cityName = mb_convert_encoding($cityName, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8','ISO-8859-1']);
 
             $row[1] = trim($row[1]);
             $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
