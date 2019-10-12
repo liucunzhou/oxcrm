@@ -121,6 +121,9 @@
                     layer.msg(res.msg);
                 }
             }
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
             ,accept: 'file' //允许上传的文件类型
             ,exts: 'csv'
             ,error: function (res) {
