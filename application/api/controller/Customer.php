@@ -566,7 +566,7 @@ class Customer extends Base
         $post['operate_id'] = $this->user['id'];
         MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
         if ($result1) {
-            $memberId = $Model->getLastInsID();
+            $memberId = $Model->id;
             $mobileModel = new Mobile();
             $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
 

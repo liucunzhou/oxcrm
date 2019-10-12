@@ -1013,7 +1013,7 @@ class Customer extends Base
         if ($result1) {
             ### 将手机号添加到手机号库
             if(empty($post['id'])) {
-                $memberId = $Model->getLastInsID();
+                $memberId = $Model->id;
             } else {
                 $memberId = $post['id'];
             }
