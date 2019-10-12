@@ -137,6 +137,7 @@ class Allocate extends Base
             $realname = mb_convert_encoding($realname, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
             $sourceText = trim($row[2]);
             $sourceText = mb_convert_encoding($sourceText, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
+            echo $sourceText;
             $cityName = trim($row[3]);
             $cityName = mb_convert_encoding($cityName, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8']);
 
