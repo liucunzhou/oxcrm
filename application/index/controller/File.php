@@ -13,6 +13,7 @@ class File extends Base
         if ($info) {
             $origin = $info->getInfo();
             $data = [];
+            $data['user_id'] = $this->user['id'];
             $data['origin_file_name'] = $origin['name'];
             $data['new_file_name'] = $info->getFileName();
             $data['new_file_path'] = $info->getPathname();
