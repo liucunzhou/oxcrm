@@ -135,7 +135,7 @@ class Allocate extends Base
             if (empty($row)) continue;
             $realname = trim($row[0]);
             $realname = mb_convert_encoding($realname, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8','ISO-8859-1']);
-            $sourceText = trim($row[2]);
+            echo $sourceText = trim($row[2]);
             $sourceText = mb_convert_encoding($sourceText, 'UTF-8', ['Unicode','ASCII','GB2312','GBK','UTF-8','ISO-8859-1']);
             echo $sourceText;
             $cityName = trim($row[3]);
