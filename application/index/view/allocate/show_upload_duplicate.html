@@ -25,7 +25,7 @@
                 <table class="layui-hide" id="table" lay-filter="table"></table>
                 <script type="text/html" id="table-toolbar">
                     <div class="layui-btn-container">
-                        <a class="layui-btn layui-btn-sm" lay-event="exportDuplicateCustomer">导出重复客资</a>
+                        <a class="layui-btn layui-btn-sm" href="{:url('Allocate/exportDuplicateCustomer', ['id'=>$request['id']])}" target="_blank">导出重复客资</a>
                     </div>
                 </script>
             </div>

@@ -89,7 +89,8 @@
                 },{
                     "field": "download",
                     "title": "是否导出",
-                    "width": 88
+                    "width": 88,
+                    "event": "exportDuplicateCustomer"
                 }, {
                     "field": "create_time",
                     "title": "上传时间",
@@ -136,6 +137,10 @@
                         area: [window.innerWidth + 'px', window.innerHeight + 'px'],
                         offset: 'rb'
                     });
+                    break;
+                case 'exportDuplicateCustomer':
+                    url = '/index/allocate/exportduplicatecustomer.html?id=' + id;
+                    window.open(url);
                     break;
             };
         });

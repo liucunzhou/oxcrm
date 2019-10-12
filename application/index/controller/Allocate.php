@@ -135,8 +135,8 @@ class Allocate extends Base
 
     public function showUploadDuplicate()
     {
+        $request = Request::param();
         if(Request::isAjax()) {
-            $request = Request::param();
             $config = [
                 'page' => $request['page']
             ];
@@ -155,6 +155,7 @@ class Allocate extends Base
 
             return json($result);
         } else {
+            $this->assign('request', $request);
             return $this->fetch();
         }
     }
@@ -219,6 +220,7 @@ class Allocate extends Base
 
         $map = [];
         $map[] = ['upload_id', '=', $request['id']];
+        $map[] = ['type', '=', 1];
         $uploadCustomers = UploadCustomerLog::where($map)->select();
         $MemberModel = new Member();
         foreach ($uploadCustomers as $key => $customer) {
@@ -367,6 +369,48 @@ class Allocate extends Base
             'code' => '200',
             'msg' => '录入数据成功'
         ]);
+    }
+
+    public function exportDuplicateCustomer()
+    {
+        $request = Request::param();
+        if(!$request['id']) {
+            return json(['code'=>'400', 'msg'=>'请选择要导出的重复客资']);
+        }
+
+        $uploadFile = UploadCustomerFile::get($request[1]);
+        $dir = "../uploads/" . date('Ymd') . "/";
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $filename = "dump_" . date('YmdHis').'csv';
+        $file = $dir . $filename;
+
+        $where = [];
+        $where[] = ['upload_id', '=', $request['id']];
+        $where[] = ['type', '=', 0];
+        $customers = UploadCustomerLog::where($where)->select();
+        $fp = fopen($file, 'w+');
+        $header = ['联系人','联系电话','渠道来源','城市','重复渠道'];
+        fputcsv($fp, $header);
+        foreach ($customers as $customer) {
+            $row = [
+                $customer->realname,
+                $customer->mobile,
+                $customer->source_text,
+                $customer->city_text,
+                $customer->duplicate
+            ];
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+
+        $uploadFile->save(['download'=>1]);
+
+        $download = new Download($file);
+        $download->mimeType('csv');
+        $download->expire(1);
+        return $download->name($filename);
     }
 
     /**
