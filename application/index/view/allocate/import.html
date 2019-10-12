@@ -31,13 +31,6 @@
                 </div>
                 <div class="layui-card-body">
                     <table class="layui-hide" id="table" lay-filter="table"></table>
-                    <script type="text/html" id="table-tool">
-                        <div class="layui-btn-container">
-                            {:button(["event"=>"showUploadActive", "text"=>"查看有效"])}
-                            {:button(["event"=>"showUploadDuplicate", "text"=>"查看重复"])}
-                            {:button(["event"=>"uploadAllocate", "text"=>"分配客资"])}
-                        </div>
-                    </script>
                 </div>
             </div>
         </div>
@@ -80,16 +73,19 @@
                     "field": "active_amount",
                     "title": "非重复数",
                     "width": 100,
-                    "align": "center"
+                    "align": "center",
+                    "event": "showUploadActive"
                 }, {
                     "field": "duplicate_amount",
                     "title": "重复数",
                     "width": 100,
-                    "align": "left"
+                    "align": "left",
+                    "event": "showUploadDuplicate"
                 }, {
                     "field": "allocated",
                     "title": "是否分配",
-                    "width": 88
+                    "width": 88,
+                    "event": "uploadAllocate"
                 },{
                     "field": "download",
                     "title": "是否导出",
@@ -98,11 +94,6 @@
                     "field": "create_time",
                     "title": "上传时间",
                     "width": 165
-                }, {
-                    "type": "tool",
-                    "title": "操作",
-                    "toolbar": "#table-tool",
-                    "width": 260
                 }
             ]],
             page: true,
