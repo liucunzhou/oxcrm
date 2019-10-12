@@ -69,7 +69,7 @@
                             </tr>
                             <{/foreach}>
                         </table>
-                        <{if $uploadFile['allocated']==0 || $uploadFile['active_amount'] > 0 }>
+                        <{if $uploadFile['allocated']==0 && $uploadFile['active_amount'] > 0 }>
                         <div class="layui-form-item layui-layout-admin">
                             <div class="layui-input-block">
                                 <div class="layui-footer" style="left: 0;">
