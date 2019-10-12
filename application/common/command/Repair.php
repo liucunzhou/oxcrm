@@ -63,7 +63,7 @@ class Repair extends Command
         $config = [
             'page' => $page
         ];
-        $members = MemberAllocate::withTrashed(true)->field('mobile,mobile1')->paginate(10000, false, $config);
+        $members = Member::withTrashed(true)->field('mobile,mobile1')->paginate(10000, false, $config);
         $mobileModel = new Mobile();
         foreach ($members as $member) {
             if(!empty($member->mobile))$mobileModel->insert(['mobile'=>$member->mobile]);
