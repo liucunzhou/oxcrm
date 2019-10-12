@@ -26,7 +26,7 @@ class File extends Base
             $data['active_amount'] = $activeAmount;
             $data['duplicate_amount'] = $duplicateAmount;
             $data['create_time'] = $time;
-            $data['hash'] = md5($data['new_file_path']);
+            $data['hash'] = $info->hash();
             $UploadCustomerFile = new UploadCustomerFile();
             $where = [];
             $where[] = ['hash', '=', $data['hash']];
