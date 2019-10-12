@@ -951,16 +951,16 @@ abstract class Connection
         $options = $query->getOptions();
 
         // 生成SQL语句
-        $sql = $this->builder->insert($query, $replace);
-
-        $bind = $query->getBind();
-
-        if (!empty($options['fetch_sql'])) {
-            // 获取实际执行的SQL语句
-            return $this->getRealSql($sql, $bind);
-        }
 
         try {
+            $sql = $this->builder->insert($query, $replace);
+
+            $bind = $query->getBind();
+
+            if (!empty($options['fetch_sql'])) {
+                // 获取实际执行的SQL语句
+                return $this->getRealSql($sql, $bind);
+            }
 
             // 执行操作
             $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
@@ -987,7 +987,7 @@ abstract class Connection
                     return $lastInsId;
                 }
             }
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             return false;
         }
 

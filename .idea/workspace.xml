@@ -87,8 +87,8 @@
       <file leaf-file-name="Connection.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/thinkphp/library/think/db/Connection.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
-              <caret line="990" column="25" selection-start-line="990" selection-start-column="25" selection-end-line="990" selection-end-column="25" />
+            <state relative-caret-position="514">
+              <caret line="989" column="17" selection-start-line="989" selection-start-column="17" selection-end-line="989" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -710,7 +710,7 @@
       <workItem from="1570589624594" duration="22163000" />
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
-      <workItem from="1570849848559" duration="2197000" />
+      <workItem from="1570849848559" duration="2490000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -744,7 +744,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="681668000" />
+    <option name="totallyTimeSpent" value="681961000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1165,8 +1165,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/thinkphp/library/think/db/Connection.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="990" column="25" selection-start-line="990" selection-start-column="25" selection-end-line="990" selection-end-column="25" />
+        <state relative-caret-position="514">
+          <caret line="989" column="17" selection-start-line="989" selection-start-column="17" selection-end-line="989" selection-end-column="17" />
           <folding />
         </state>
       </provider>
