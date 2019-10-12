@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html" afterPath="$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -80,8 +79,8 @@
       <file leaf-file-name="upload_allocate.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
+            <state relative-caret-position="198">
+              <caret line="47" column="80" selection-start-line="47" selection-start-column="63" selection-end-line="47" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -751,7 +750,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="5660000" />
+      <workItem from="1570871461488" duration="5767000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -785,7 +784,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="700946000" />
+    <option name="totallyTimeSpent" value="701053000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1246,8 +1245,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
+        <state relative-caret-position="198">
+          <caret line="47" column="80" selection-start-line="47" selection-start-column="63" selection-end-line="47" selection-end-column="80" />
           <folding />
         </state>
       </provider>
