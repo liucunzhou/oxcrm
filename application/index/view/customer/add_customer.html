@@ -73,7 +73,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">所在城市</label>
                     <div class="layui-input-block" id="cities">
-                        <select name="city_id" id="city_id" lay-filter="city_id">
+                        <select name="city_id" id="city_id" lay-filter="city_id" lay-verify="required">
                             <option value="0"></option>
                             <{foreach item="val" name="cities"}>
                             <{if empty($data['city_id'])}>

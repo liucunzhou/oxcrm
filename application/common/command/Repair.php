@@ -53,6 +53,11 @@ class Repair extends Command
         }
     }
 
+    public function syncMobileSet()
+    {
+
+    }
+
     public function dealMemberSourceText()
     {
         $sources = Source::getSources();
