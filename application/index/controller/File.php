@@ -109,6 +109,7 @@ class File extends Base
             if(!empty($originMember)) {
                 $row[4] = $originMember->source_text.','.$originMember->repeat_log;
                 $repetitive[] = $row;
+                print_r($row);
             } else {
                 $customer[] = $row;
             }

@@ -117,6 +117,7 @@
             ,url: url
             ,done: function(res, index, upload){ //上传后的回调
                 if(res.code == 200) {
+                    table.reload();
                     layer.msg(res.msg);
                 }
             }
