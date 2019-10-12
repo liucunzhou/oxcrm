@@ -960,29 +960,35 @@ abstract class Connection
             return $this->getRealSql($sql, $bind);
         }
 
-        // 执行操作
-        $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
+        try {
 
-        if ($result) {
-            $sequence  = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
-            $lastInsId = $this->getLastInsID($sequence);
+            // 执行操作
+            $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
 
-            $data = $options['data'];
 
-            if ($lastInsId) {
-                $pk = $query->getPk($options);
-                if (is_string($pk)) {
-                    $data[$pk] = $lastInsId;
+            if ($result) {
+                $sequence = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
+                $lastInsId = $this->getLastInsID($sequence);
+
+                $data = $options['data'];
+
+                if ($lastInsId) {
+                    $pk = $query->getPk($options);
+                    if (is_string($pk)) {
+                        $data[$pk] = $lastInsId;
+                    }
+                }
+
+                $query->setOption('data', $data);
+
+                $query->trigger('after_insert');
+
+                if ($getLastInsID) {
+                    return $lastInsId;
                 }
             }
-
-            $query->setOption('data', $data);
-
-            $query->trigger('after_insert');
-
-            if ($getLastInsID) {
-                return $lastInsId;
-            }
+        } catch (\PDOException $e) {
+            return false;
         }
 
         return $result;
