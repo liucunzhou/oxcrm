@@ -557,14 +557,14 @@ class Customer extends Base
         ### 新添加客资要加入到分配列表中
         $post['operate_id'] = $this->user['id'];
         MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
-
         if ($result1) {
-            ### 将手机号添加到手机号库
+            $memberId = $Model->getLastInsID();
             $mobileModel = new Mobile();
-            $mobileModel->insert(['mobile'=>$post['mobile']]);
+            $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
+
             ### 将手机号1添加到手机号库
             if(!empty($post['mobile1'])) {
-                $mobileModel->insert($post['mobile1']);
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$memberId]);
             }
 
             ### 添加操作记录

@@ -58,6 +58,13 @@ class Member extends Model
         return $member;
     }
 
+    public static function checkFromMobileSet($mobile) {
+        $where = [];
+        $where[] = ['mobile', '=', $mobile];
+        $member = Mobile::where($where)->find();
+        return $member;
+    }
+
     public static function updateRepeatLog($member, $sourceId, &$user, &$sources)
     {
         $isWriteDuplicate =false;

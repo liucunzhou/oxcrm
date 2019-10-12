@@ -1000,17 +1000,20 @@ class Customer extends Base
             $post['allocate_type'] = 3;
             $post['operate_id'] = $this->user['id'];
             MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
+
+            ### 将手机号添加到手机号库
+            $memberId = $Model->getLastInsID();
+            $mobileModel = new Mobile();
+            $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
+
+             ### 将手机号1添加到手机号库
+            if(!empty($post['mobile1'])) {
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$memberId]);
+            }
+
         }
 
         if ($result1) {
-            ### 将手机号添加到手机号库
-            $mobileModel = new Mobile();
-            $mobileModel->insert(['mobile'=>$post['mobile']]);
-            ### 将手机号1添加到手机号库
-            if(!empty($post['mobile1'])) {
-                $mobileModel->insert($post['mobile1']);
-            }
-
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);

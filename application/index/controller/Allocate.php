@@ -53,31 +53,6 @@ class Allocate extends Base
      */
     public function import()
     {
-        /**
-         * $hashKey = "batch_upload:" . $this->user['id'];
-         * if (!empty($_FILES)) {
-         * $file = request()->file("file");
-         * $info = $file->move("../uploads");
-         * if ($info) {
-         * $fileName = $info->getPathname();
-         * $data = Csv::readCsv($fileName);
-         * $this->assign('data', $data[0]);
-         * $cacheData = [
-         * 'file' => $fileName,
-         * 'amount' => count($data[0]),
-         * 'repeat' => count($data[1]),
-         * 'download_repeat' => 0
-         * ];
-         * redis()->hMset($hashKey, $cacheData);
-         * return json(['code' => '200', 'msg' => '上传成功,请继续分配', 'data' => $cacheData]);
-         * } else {
-         * return json(['code' => '500', 'msg' => '上传失败']);
-         * }
-         * }
-         * $fileData = redis()->hMget($hashKey, ['file', 'amount', 'repeat']);
-         * $this->assign('fileData', $fileData);
-         **/
-
         if (Request::isAjax()) {
             $get = Request::param();
             $config = [
@@ -90,7 +65,6 @@ class Allocate extends Base
             foreach ($data as &$value) {
                 $value->allocated = $value->allocated == 1? '已分配' : '未分配';
                 $value->download = $value->download == 1? '已导出': '未导出';
-                // $value->create_time = date('Y-m-d H:i', $value->create_time);
             }
 
             $result = [
