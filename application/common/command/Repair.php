@@ -5,11 +5,13 @@ use app\common\model\Member;
 use app\common\model\BanquetHall;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\Source;
 use app\common\model\Store;
 use app\common\model\User;
 use app\common\model\UserAuth;
 use think\console\Command;
+use think\console\command\make\Model;
 use think\console\Input;
 use think\console\input\Argument;
 use think\console\input\Option;
@@ -50,12 +52,23 @@ class Repair extends Command
             case 'separateOriginSourceText';
                 $this->separateOriginSourceText($page);
                 break;
+            case 'syncMobileSet':
+                $this->syncMobileSet($page);
+                break;
         }
     }
 
-    public function syncMobileSet()
+    public function syncMobileSet($page)
     {
-
+        $config = [
+            'page' => $page
+        ];
+        $members = MemberAllocate::withTrashed(true)->field('mobile,mobile1')->paginate(10000, false, $config);
+        $mobileModel = new Mobile();
+        foreach ($members as $member) {
+            if(!empty($member->mobile))$mobileModel->insert(['mobile'=>$member->mobile]);
+            if(!empty($member->mobile1))$mobileModel->insert(['mobile'=>$member->mobile1]);
+        }
     }
 
     public function dealMemberSourceText()
