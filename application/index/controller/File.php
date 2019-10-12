@@ -27,10 +27,9 @@ class File extends Base
             $data['duplicate_amount'] = $duplicateAmount;
             $data['create_time'] = $time;
             $UploadCustomerFile = new UploadCustomerFile();
-            $UploadCustomerFile->startTrans();
+            // $UploadCustomerFile->startTrans();
             $UploadCustomerFile->insert($data);
             $uploadId = $UploadCustomerFile->getLastInsID();
-            var_dump($uploadId);
             if($uploadId) {
                 /**
                 | upload_id   | int(11)      | NO   |     | NULL    |                |
@@ -55,7 +54,7 @@ class File extends Base
                     $data['city_text'] = $value[3];
                     $data['create_time'] = $time;
                     $data['type'] = 1;
-                    // $UploadCustomerLog = new UploadCustomerLog();
+                    $UploadCustomerLog = new UploadCustomerLog();
                     $UploadCustomerLog->insert($data);
                 }
 
@@ -71,15 +70,16 @@ class File extends Base
                     $data['duplicate'] = $value[4];
                     $data['create_time'] = $time;
                     $data['type'] = 0;
+                    $UploadCustomerLog = new UploadCustomerLog();
                     $UploadCustomerLog->insert($data);
                     echo $UploadCustomerLog->getLastSql();
-                    echo "<br>";
+                    echo "\n<br>";
                 }
 
-                $UploadCustomerFile->commit();
+                // $UploadCustomerFile->commit();
                 return json(['code' => '200', 'msg' => '上传成功,请继续分配']);
             } else {
-                $UploadCustomerFile->rollback();
+                // $UploadCustomerFile->rollback();
                 return json(['code' => '500', 'msg' => '上传失败']);
             }
         } else {
