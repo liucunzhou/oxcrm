@@ -1,12 +1,12 @@
 <?php
 namespace app\index\controller;
 
+use app\common\model\UploadCustomerLog;
+
 class File extends Base
 {
     public function upload()
     {
-        $files = get_included_files();
-        print_r($files);
         $file = request()->file("file");
         $info = $file->move("../uploads");
         if ($info) {
@@ -15,6 +15,14 @@ class File extends Base
             $data['origin_file_name'] = $origin['name'];
             $data['new_file_name'] = $info->getFileName();
             $data['new_file_path'] = $info->getPathname();
+            $fileData = $this->readCsv($data['new_file_path']);
+            $activeAmount = count($fileData[0]);
+            $duplicateAmount = count($fileData[1]);
+            $data['amount'] = $activeAmount + $duplicateAmount;
+            $data['active_amount'] = $activeAmount;
+            $data['duplicate_amount'] = $duplicateAmount;
+            $UploadCustomerLog = new UploadCustomerLog();
+            $UploadCustomerLog->insert($data);
 
             return json(['code' => '200', 'msg' => '上传成功,请继续分配']);
         } else {
@@ -22,6 +30,12 @@ class File extends Base
         }
     }
 
+    /**
+     * Csv中的数据依次是
+     * 客户姓名、联系电话、渠道来源、城市
+     * @param $file
+     * @return array|bool
+     */
     private function readCsv($file)
     {
         if (!$fp = fopen($file, 'r')) {
@@ -30,21 +44,16 @@ class File extends Base
 
         $repetitive = [];
         $customer = [];
-        $n = 0;
         while (!feof($fp)) {
+            ### 读取文件的路径
+            $position = ftell($fp);
+            if($position === 0) continue;
+
+            ### 读取CSV的行
             $row = fgetcsv($fp);
-            if ($n==0) {
-                $n = $n + 1;
-                continue;
-            }
             if(!$row) break;
-
-            $row[1] = trim($row[1]);
-            $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
-            $row[1] = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $row[1]);
-            $row[1] = preg_replace("/[\n\r\t]/", ' ', $row[1]);
-
-            // $row[1] = intval($row[1]);
+            ### 手机号
+            $row[1] = clear_both_blank($row[1]);
             $originMember = Member::checkPatchMobile($row[1]);
             if(!empty($originMember)) {
                 $repetitive[] = $originMember->toArray();
@@ -56,4 +65,5 @@ class File extends Base
 
         return [$customer, $repetitive];
     }
+
 }
