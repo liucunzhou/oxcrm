@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\model\Csv;
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
+use app\common\model\Mobile;
 use app\common\model\OperateLog;
 use app\common\model\Region;
 use app\common\model\UploadCustomerFile;
@@ -196,6 +197,7 @@ class Allocate extends Base
         $map[] = ['upload_id', '=', $request['id']];
         $map[] = ['type', '=', 1];
         $uploadCustomers = UploadCustomerLog::where($map)->select();
+        $Mobile = new Mobile();
         $MemberModel = new Member();
         foreach ($uploadCustomers as $key => $customer) {
             $sourceText = $customer->source_text;
@@ -214,6 +216,7 @@ class Allocate extends Base
             if ($result) {
                 $data['member_id'] = $MemberModel->getLastInsID();
                 $member[] = $data;
+                $Mobile->insert(['mobile'=>$customer->mobile, 'member_id'=>$data['member_id']]);
             }
         }
 
