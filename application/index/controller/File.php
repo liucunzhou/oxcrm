@@ -2,7 +2,7 @@
 namespace app\index\controller;
 
 use app\common\model\Member;
-use app\common\model\UploadCustomerLog;
+use app\common\model\UploadCustomerFile;
 
 class File extends Base
 {
@@ -24,7 +24,7 @@ class File extends Base
             $data['active_amount'] = $activeAmount;
             $data['duplicate_amount'] = $duplicateAmount;
             $data['create_time'] = time();
-            $UploadCustomerLog = new UploadCustomerLog();
+            $UploadCustomerLog = new UploadCustomerFile();
             $UploadCustomerLog->insert($data);
             echo $UploadCustomerLog->getLastSql();
 
