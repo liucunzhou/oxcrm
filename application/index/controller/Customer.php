@@ -972,9 +972,8 @@ class Customer extends Base
             $Model = new \app\common\model\Member();
             $Model->member_no = date('YmdHis') . rand(100, 999);
             ### 验证手机号唯一性
-            ### 验证手机号唯一性
             if(empty($post['mobile1'])) {
-                $originMember = $Model::checkMobile($post['mobile']);
+                $originMember = $Model::checkFromMobileSet($post['mobile'], false);
                 if ($originMember) {
                     return xjson([
                         'code' => '400',
@@ -1009,20 +1008,23 @@ class Customer extends Base
             $post['allocate_type'] = 3;
             $post['operate_id'] = $this->user['id'];
             MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
+        }
 
+        if ($result1) {
             ### 将手机号添加到手机号库
-            $memberId = $Model->getLastInsID();
+            if(empty($post['id'])) {
+                $memberId = $Model->getLastInsID();
+            } else {
+                $memberId = $post['id'];
+            }
             $mobileModel = new Mobile();
             $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
 
-             ### 将手机号1添加到手机号库
+            ### 将手机号1添加到手机号库
             if(!empty($post['mobile1'])) {
                 $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$memberId]);
             }
 
-        }
-
-        if ($result1) {
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);

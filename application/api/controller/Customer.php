@@ -528,7 +528,7 @@ class Customer extends Base
         $Model->member_no = date('YmdHis') . rand(100, 999);
         ### 验证手机号唯一性
         if(empty($post['mobile1'])) {
-            $originMember = $Model::checkMobile($post['mobile']);
+            $originMember = $Model::checkFromMobileSet($post['mobile'], false);
             if ($originMember) {
                 return xjson([
                     'code' => '400',
@@ -538,7 +538,6 @@ class Customer extends Base
         } else {
             $originMember1 = $Model::checkFromMobileSet($post['mobile'], false);
             $originMember2 = $Model::checkFromMobileSet($post['mobile1'], false);
-
             if ($originMember1 || $originMember2) {
                 return xjson([
                     'code' => '400',
