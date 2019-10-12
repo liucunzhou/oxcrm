@@ -144,7 +144,7 @@ class Allocate extends Base
             $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
             $row[1] = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $row[1]);
             $row[1] = preg_replace("/[\n\r\t]/", ' ', $row[1]);
-            $originMember = Member::checkMobile($row[1]);
+            $originMember = Member::checkPatchMobile($row[1]);
             if(!empty($originMember)) continue;
             $sourceId = $sources[$sourceText];
             if (empty($sourceId)) {
