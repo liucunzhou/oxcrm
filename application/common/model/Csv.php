@@ -56,10 +56,10 @@ class Csv
 
             if ($n==0) {
                 $n = $n + 1;
-                $row[3] = mb_convert_encoding($row[3], 'GBK');
-                $row[2] = mb_convert_encoding($row[2], 'GBK');
-                $row[1] = mb_convert_encoding($row[1], 'GBK');
-                $row[0] = mb_convert_encoding($row[0], 'GBK');
+                $row[3] = mb_convert_encoding($row[3], 'UTF-8');
+                $row[2] = mb_convert_encoding($row[2], 'UTF-8');
+                $row[1] = mb_convert_encoding($row[1], 'UTF-8');
+                $row[0] = mb_convert_encoding($row[0], 'UTF-8');
                 fputcsv($nfp, $row);
             } else {
                 $row[1] = trim($row[1]);
@@ -77,10 +77,10 @@ class Csv
                     $repeatLog = str_replace(',',":::", $repeatLog);
                     $row[4] = $originSourceText.':::'.$repeatLog;
                     // $row[4] = $originMember->source_text.':::'.str_replace(",",":::", $originMember->repeat_log);
-                    $row[3] = mb_convert_encoding($row[3], 'GBK');
-                    $row[2] = mb_convert_encoding($row[2], 'GBK');
-                    $row[1] = mb_convert_encoding($row[1], 'GBK');
-                    $row[0] = mb_convert_encoding($row[0], 'GBK');
+                    $row[3] = mb_convert_encoding($row[3], 'UTF-8');
+                    $row[2] = mb_convert_encoding($row[2], 'UTF-8');
+                    $row[1] = mb_convert_encoding($row[1], 'UTF-8');
+                    $row[0] = mb_convert_encoding($row[0], 'UTF-8');
                     fputcsv($nfp, $row);
                 }
             }
