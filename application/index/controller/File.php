@@ -2,6 +2,8 @@
 namespace app\index\controller;
 
 use app\common\model\Member;
+use app\common\model\Region;
+use app\common\model\Source;
 use app\common\model\UploadCustomerFile;
 use app\common\model\UploadCustomerLog;
 
