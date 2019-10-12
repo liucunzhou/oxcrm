@@ -378,7 +378,7 @@ class Allocate extends Base
             return json(['code'=>'400', 'msg'=>'请选择要导出的重复客资']);
         }
 
-        $uploadFile = UploadCustomerFile::get($request[1]);
+        $uploadFile = UploadCustomerFile::get($request['id']);
         $dir = "../uploads/" . date('Ymd') . "/";
         if (!is_dir($dir)) {
             mkdir($dir);
