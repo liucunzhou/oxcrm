@@ -23,6 +23,7 @@ class File extends Base
             $data['amount'] = $activeAmount + $duplicateAmount;
             $data['active_amount'] = $activeAmount;
             $data['duplicate_amount'] = $duplicateAmount;
+            $data['create_time'] = time();
             $UploadCustomerLog = new UploadCustomerLog();
             $UploadCustomerLog->insert($data);
             echo $UploadCustomerLog->getLastSql();

@@ -51,6 +51,7 @@ class Allocate extends Base
      */
     public function import()
     {
+        /**
         $hashKey = "batch_upload:" . $this->user['id'];
         if (!empty($_FILES)) {
             $file = request()->file("file");
@@ -73,18 +74,41 @@ class Allocate extends Base
         }
         $fileData = redis()->hMget($hashKey, ['file', 'amount', 'repeat']);
         $this->assign('fileData', $fileData);
+        **/
 
-        $users = User::getUsers(false);
-        foreach ($users as $key => $value) {
-            $auth = UserAuth::getUserLogicAuth($value["id"]);
-            $roleIds = explode(',', $auth['role_ids']);
-            if (!in_array(7, $roleIds) && !in_array(2, $roleIds)) {
-                unset($users[$key]);
-            }
-        }
-        $this->assign('users', $users);
 
         return $this->fetch();
+    }
+
+    public function uploadAllocate()
+    {
+        if(Request::isAjax()) {
+            $get = Request::param();
+            $config = [
+                'page' => $get['page']
+            ];
+            $list = model('UploadCustomerLog')->order('create_time desc')->paginate($get['limit'], false, $config);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'pages' => $list->lastPage(),
+                'count' => $list->total(),
+                'data' => $list->getCollection()
+            ];
+
+            return json($result);
+        } else {
+            $users = User::getUsers(false);
+            foreach ($users as $key => $value) {
+                $auth = UserAuth::getUserLogicAuth($value["id"]);
+                $roleIds = explode(',', $auth['role_ids']);
+                if (!in_array(7, $roleIds) && !in_array(2, $roleIds)) {
+                    unset($users[$key]);
+                }
+            }
+            $this->assign('users', $users);
+            return $this->fetch();
+        }
     }
 
     /**
