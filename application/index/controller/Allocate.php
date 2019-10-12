@@ -85,6 +85,7 @@ class Allocate extends Base
             $data = $list->getCollection();
             foreach ($data as &$value) {
                 $value->allocated = $value->allocated == 1? '已分配' : '未分配';
+                $value->download = $value->download == 1? '已导出': '未导出';
                 $value->create_time = date('Y-m-d H:i', $value->create_time);
             }
 
