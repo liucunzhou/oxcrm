@@ -11,7 +11,6 @@ class File extends Base
     {
         $file = request()->file("file");
         $info = $file->move("../uploads");
-        print_r($info);
         if ($info) {
             $time = time();
             $origin = $info->getInfo();
@@ -79,7 +78,7 @@ class File extends Base
                 return json(['code' => '200', 'msg' => '上传成功,请继续分配']);
             } else {
                 // $UploadCustomerFile->rollback();
-                return json(['code' => '500', 'msg' => '上传失败']);
+                return json(['code' => '500', 'msg' => '上传错误']);
             }
         } else {
             return json(['code' => '500', 'msg' => '上传失败']);
