@@ -7,6 +7,7 @@ use app\common\model\MemberAllocate;
 use app\common\model\OperateLog;
 use app\common\model\Region;
 use app\common\model\UploadCustomerFile;
+use app\common\model\UploadCustomerLog;
 use app\common\model\User;
 use app\common\model\UserAuth;
 use app\common\model\Source;
@@ -176,6 +177,90 @@ class Allocate extends Base
         }
         $this->assign('users', $users);
         return $this->fetch();
+    }
+
+    /**
+     * 分配上传的客资
+     */
+    public function doUploadAllocateCustomer()
+    {
+        $request = Request::param();
+        if(empty($request['id'])) return json(['code'=>'400', '请选择要分配的文件']);
+        ### 获取分配文件中的数据信息
+        $uploadFile = UploadCustomerFile::get($request['id']);
+        $activeAmount = $uploadFile->active_amount;
+
+        ### 获取分配信息
+        $manager = [];
+        foreach ($request as $key => $value) {
+            if (strpos($key, 'user_') === 0 && $value > 0) {
+                $id = substr($key, 5);
+                $manager[$id] = $value;
+            }
+        }
+
+        ### 检验分配数量
+        $sum = array_sum($manager);
+        if ($sum < $activeAmount) {
+            return json(['code' => '500', 'msg' => '分配数量小于上传数量']);
+        }
+
+        if ($sum > $activeAmount) {
+            return json(['code' => '500', 'msg' => '分配数量大于上传数量']);
+        }
+
+        ### 获取渠道来源索引
+        $sources = Source::getSourcesIndexOfTitle();
+        $cities = Region::getCityListIndexOfShortname();
+
+        ### 开始分配
+        $time = time();
+        $member = [];
+
+        $map = [];
+        $map[] = ['upload_id', '=', $request['id']];
+        $uploadCustomers = UploadCustomerLog::where($map)->select();
+        $MemberModel = new Member();
+        foreach ($uploadCustomers as $key => $customer) {
+            $sourceText = $customer->source_text;
+            $cityText = $customer->city_text;
+            $data = [];
+            $data['member_no'] = date('YmdHis') . rand(100, 999);
+            $data['realname'] = $customer->realname;
+            $data['mobile'] = $customer->mobile;
+            $data['source_id'] = $sources[$sourceText];
+            $data['source_text'] = $sourceText;
+            $data['city_id'] = $cities[$cityText];
+            $data['operate_id'] = $this->user['id'];
+            $data['create_time'] = $time;
+            $result = $MemberModel->insert($data);
+            if ($result) {
+                $data['member_id'] = $MemberModel->getLastInsID();
+                $member[] = $data;
+            }
+        }
+
+        $startArr = [];
+        foreach ($manager as $k => $v) {
+            $start = array_sum($startArr);
+            $end = $start + $v;
+            for ($start; $start < $end; $start++) {
+                if (!isset($member[$start])) continue;
+                $AllocateModel = new MemberAllocate();
+                $data = $member[$start];
+                $data['user_id'] = $k;
+                $data['member_create_time'] = $member[$start]['create_time'];
+                $AllocateModel->insert($data);
+            }
+            $startArr[] = $v;
+        }
+
+        $uploadFile->save(['allocated'=>1]);
+
+        return json([
+            'code' => '200',
+            'msg' => '录入数据成功'
+        ]);
     }
 
     /**

@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/allocate/import.html" afterPath="$PROJECT_DIR$/application/index/view/allocate/import.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Allocate.php" afterPath="$PROJECT_DIR$/application/index/controller/Allocate.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html" afterPath="$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,14 +33,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Allocate.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Allocate.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Allocate.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="137" column="40" selection-start-line="137" selection-start-column="40" selection-end-line="137" selection-end-column="40" />
+            <state relative-caret-position="335">
+              <caret line="264" column="0" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
               <folding>
                 <element signature="e#39#64#0#PHP" expanded="true" />
-                <marker date="1570879636976" expanded="true" signature="10294:10478" ph="..." />
+                <marker date="1570882348150" expanded="true" signature="13093:13277" ph="..." />
               </folding>
             </state>
           </provider>
@@ -70,8 +71,8 @@
       <file leaf-file-name="upload_allocate.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="33" column="46" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="46" />
+            <state relative-caret-position="245">
+              <caret line="52" column="107" selection-start-line="52" selection-start-column="83" selection-end-line="52" selection-end-column="107" />
               <folding />
             </state>
           </provider>
@@ -97,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="import.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="import.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/allocate/import.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="96" column="17" selection-start-line="96" selection-start-column="17" selection-end-line="96" selection-end-column="17" />
+            <state relative-caret-position="525">
+              <caret line="116" column="36" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -205,11 +206,11 @@
         <option value="$PROJECT_DIR$/application/common/model/UploadCustomerFile.php" />
         <option value="$PROJECT_DIR$/application/common.php" />
         <option value="$PROJECT_DIR$/application/index/controller/File.php" />
-        <option value="$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html" />
         <option value="$PROJECT_DIR$/application/index/view/allocate/show_upload_active.html" />
         <option value="$PROJECT_DIR$/application/index/view/allocate/show_upload_duplicate.html" />
-        <option value="$PROJECT_DIR$/application/index/controller/Allocate.php" />
         <option value="$PROJECT_DIR$/application/index/view/allocate/import.html" />
+        <option value="$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html" />
+        <option value="$PROJECT_DIR$/application/index/controller/Allocate.php" />
       </list>
     </option>
   </component>
@@ -751,7 +752,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="8085000" />
+      <workItem from="1570871461488" duration="9237000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -785,7 +786,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="703371000" />
+    <option name="totallyTimeSpent" value="704523000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1177,14 +1178,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/customer/edit_customer.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1815">
-          <caret line="20" column="47" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/allocate/assign_to_wedding_group.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -1209,29 +1202,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/common/model/UploadCustomerFile.php">
+    <entry file="file://$PROJECT_DIR$/application/index/view/allocate/import.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
+        <state relative-caret-position="525">
+          <caret line="116" column="36" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Allocate.php">
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/edit_customer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="137" column="40" selection-start-line="137" selection-start-column="40" selection-end-line="137" selection-end-column="40" />
-          <folding>
-            <element signature="e#39#64#0#PHP" expanded="true" />
-            <marker date="1570879636976" expanded="true" signature="10294:10478" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="33" column="46" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="46" />
+        <state relative-caret-position="-1815">
+          <caret line="20" column="47" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="47" />
           <folding />
         </state>
       </provider>
@@ -1246,11 +1228,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/allocate/import.html">
+    <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="96" column="17" selection-start-line="96" selection-start-column="17" selection-end-line="96" selection-end-column="17" />
+        <state relative-caret-position="245">
+          <caret line="52" column="107" selection-start-line="52" selection-start-column="83" selection-end-line="52" selection-end-column="107" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/common/model/UploadCustomerFile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Allocate.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="264" column="0" selection-start-line="264" selection-start-column="0" selection-end-line="264" selection-end-column="0" />
+          <folding>
+            <element signature="e#39#64#0#PHP" expanded="true" />
+            <marker date="1570882348150" expanded="true" signature="13093:13277" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
