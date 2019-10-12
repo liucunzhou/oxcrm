@@ -19,7 +19,15 @@ class File extends Base
             $data['origin_file_name'] = $origin['name'];
             $data['new_file_name'] = $info->getFileName();
             $data['new_file_path'] = $info->getPathname();
-            $fileData = $this->readCsv($data['new_file_path']);
+            $readRs = $this->readCsv($data['new_file_path']);
+            if(!$readRs['result']) {
+                return json([
+                    'code'  => '200',
+                    'msg'   => $readRs['msg']
+                ]);
+            } else {
+                $fileData = $readRs['data'];
+            }
             $activeAmount = count($fileData[0]);
             $duplicateAmount = count($fileData[1]);
             $data['amount'] = $activeAmount + $duplicateAmount;
@@ -32,7 +40,7 @@ class File extends Base
             $where[] = ['hash', '=', $data['hash']];
             $UploadCustomerFileHashed = new UploadCustomerFile();
             $hashed = $UploadCustomerFileHashed->where($where)->find();
-            if($hashed) {
+            if ($hashed) {
                 return json(['code' => '200', 'msg' => '文件已经存在,请勿重复上传']);
             }
 
@@ -40,7 +48,7 @@ class File extends Base
             // $UploadCustomerFile->startTrans();
             $UploadCustomerFile->insert($data);
             $uploadId = $UploadCustomerFile->getLastInsID();
-            if($uploadId) {
+            if ($uploadId) {
                 ### 记录有效日志
                 $UploadCustomerLog = new UploadCustomerLog();
                 foreach ($fileData[0] as $value) {
@@ -93,6 +101,8 @@ class File extends Base
      */
     private function readCsv($file)
     {
+        $sources = Source::getSourcesIndexOfTitle();
+        $cities = Region::getCityListIndexOfShortname();
         if (!$fp = fopen($file, 'r')) {
             return false;
         }
@@ -104,14 +114,31 @@ class File extends Base
             $position = ftell($fp);
             ### 读取CSV的行
             $row = fgetcsv($fp);
-            if($position === 0) continue;;
+            if ($position === 0) continue;;
+            if (!$row) break;
+            ### 检验来源
+            $source = csv_convert_encoding($row[2]);
+            if(!isset($sources[$source])) {
+                return [
+                    'result'    => false,
+                    'msg'       => '来源'.$source.'不存在'
+                ];
+            }
 
-            if(!$row) break;
+            ### 检验城市
+            $city = csv_convert_encoding($row[3]);
+            if (!isset($cities[$city])) {
+                return [
+                    'result'    => false,
+                    'msg'       => '城市'.$city.'不存在'
+                ];
+            }
+
             ### 手机号
             $row[1] = clear_both_blank($row[1]);
             $originMember = Member::checkPatchMobile($row[1]);
-            if(!empty($originMember)) {
-                $row[4] = $originMember->source_text.','.$originMember->repeat_log;
+            if (!empty($originMember)) {
+                $row[4] = $originMember->source_text . ',' . $originMember->repeat_log;
                 $repetitive[] = $row;
             } else {
                 $customer[] = $row;
@@ -119,7 +146,10 @@ class File extends Base
         }
         fclose($fp);
 
-        return [$customer, $repetitive];
+        return [
+            'result' => true,
+            'data' => [$customer, $repetitive]
+        ];
     }
 
 }
