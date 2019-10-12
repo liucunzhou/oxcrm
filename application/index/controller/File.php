@@ -47,6 +47,7 @@ class File extends Base
         while (!feof($fp)) {
             ### 读取文件的路径
             $position = ftell($fp);
+            var_dump($position);
             if($position === 0) continue;
 
             ### 读取CSV的行
