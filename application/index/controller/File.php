@@ -26,7 +26,15 @@ class File extends Base
             $data['active_amount'] = $activeAmount;
             $data['duplicate_amount'] = $duplicateAmount;
             $data['create_time'] = $time;
+            $data['hash'] = md5($data['new_file_path']);
             $UploadCustomerFile = new UploadCustomerFile();
+            $where = [];
+            $where[] = ['hash', '=', $data['hash']];
+            $hashed = $UploadCustomerFile->where($where)->find();
+            if($hashed) {
+                return json(['code' => '500', 'msg' => '文件已经存在,请勿重复上传']);
+            }
+
             // $UploadCustomerFile->startTrans();
             $UploadCustomerFile->insert($data);
             $uploadId = $UploadCustomerFile->getLastInsID();
