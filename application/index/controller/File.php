@@ -31,18 +31,6 @@ class File extends Base
             $UploadCustomerFile->insert($data);
             $uploadId = $UploadCustomerFile->getLastInsID();
             if($uploadId) {
-                /**
-                | upload_id   | int(11)      | NO   |     | NULL    |                |
-                | realname    | varchar(100) | YES  |     | NULL    |                |
-                | mobile      | char(20)     | NO   |     | NULL    |                |
-                | source_text | char(32)     | NO   |     | NULL    |                |
-                | city_text   | char(32)     | NO   |     | NULL    |                |
-                | create_time | int(11)      | NO   |     | 0       |                |
-                | update_time | int(11)      | NO   |     | NULL    |                |
-                | delete_time | int(11)      | NO   |     | NULL    |                |
-                | type        | int(11)      | NO   |     | 0       |                |
-                | duplicate
-                 */
                 ### 记录有效日志
                 $UploadCustomerLog = new UploadCustomerLog();
                 foreach ($fileData[0] as $value) {
@@ -72,8 +60,8 @@ class File extends Base
                     $data['type'] = 0;
                     // $UploadCustomerLog = new UploadCustomerLog();
                     $UploadCustomerLog->insert($data);
-                    echo $UploadCustomerLog->getLastSql();
-                    echo "\n<br>";
+                    // echo $UploadCustomerLog->getLastSql();
+                    // echo "\n<br>";
                 }
 
                 // $UploadCustomerFile->commit();
