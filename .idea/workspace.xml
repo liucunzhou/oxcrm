@@ -80,7 +80,7 @@
       <file leaf-file-name="upload_allocate.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="-85">
               <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
               <folding />
             </state>
@@ -90,8 +90,18 @@
       <file leaf-file-name="import.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/view/allocate/import.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="118" column="24" selection-start-line="118" selection-start-column="24" selection-end-line="118" selection-end-column="24" />
+            <state relative-caret-position="410">
+              <caret line="142" column="36" selection-start-line="142" selection-start-column="36" selection-end-line="142" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mine.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/view/customer/mine.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="569">
+              <caret line="446" column="27" selection-start-line="408" selection-start-column="24" selection-end-line="446" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -695,7 +705,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="4134000" />
+      <workItem from="1570871461488" duration="4740000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -729,7 +739,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="699420000" />
+    <option name="totallyTimeSpent" value="700026000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1133,14 +1143,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/common.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1168,6 +1170,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/customer/mine.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="569">
+          <caret line="446" column="27" selection-start-line="408" selection-start-column="24" selection-end-line="446" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-85">
+          <caret line="71" column="40" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/File.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
@@ -1178,18 +1196,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/customer/mine.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2060">
-          <caret line="249" column="37" selection-start-line="249" selection-start-column="37" selection-end-line="249" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/allocate/import.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="118" column="24" selection-start-line="118" selection-start-column="24" selection-end-line="118" selection-end-column="24" />
+        <state relative-caret-position="410">
+          <caret line="142" column="36" selection-start-line="142" selection-start-column="36" selection-end-line="142" selection-end-column="36" />
           <folding />
         </state>
       </provider>
