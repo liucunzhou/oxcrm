@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller;
 
-use app\api\model\Member;
+use app\common\model\Member;
 use app\common\model\UploadCustomerLog;
 
 class File extends Base
