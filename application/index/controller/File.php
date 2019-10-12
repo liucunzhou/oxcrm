@@ -8,7 +8,8 @@ class File extends Base
         $file = request()->file("file");
         $info = $file->move("../uploads");
         if ($info) {
-            echo $info->name;
+            $origin = $info->getInfo();
+            print_r($origin);
             print_r($info);
             $fileName = $info->getPathname();
 
