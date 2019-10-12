@@ -117,8 +117,6 @@
             ,url: url
             ,done: function(res, index, upload){ //上传后的回调
                 if(res.code == 200) {
-                    $("#amount").html(res.data.amount);
-                    $("#repeat").html(res.data.repeat);
                     layer.msg(res.msg);
                 }
             }
