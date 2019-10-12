@@ -167,6 +167,11 @@ class Visit extends Base
         if ($result1 && $result2) {
             ### 同步分配信息
             MemberAllocate::updateAllocateData($this->user['id'], $post['member_id'], $post);
+            ### 将手机号1添加到手机号库
+            if(!empty($post['mobile1'])) {
+                $mobileModel = new Mobile();
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$post['member_id']]);
+            }
 
             ### 添加下次回访提醒
             if ($post['next_visit_time'] > 0) {
