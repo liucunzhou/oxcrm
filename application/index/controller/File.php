@@ -24,6 +24,7 @@ class File extends Base
             $data['duplicate_amount'] = $duplicateAmount;
             $UploadCustomerLog = new UploadCustomerLog();
             $UploadCustomerLog->insert($data);
+            echo $UploadCustomerLog->getLastSql();
 
             return json(['code' => '200', 'msg' => '上传成功,请继续分配']);
         } else {
