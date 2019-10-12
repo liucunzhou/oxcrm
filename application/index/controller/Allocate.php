@@ -82,12 +82,18 @@ class Allocate extends Base
                 'page' => $get['page']
             ];
             $list = model('UploadCustomerLog')->order('create_time desc')->paginate($get['limit'], false, $config);
+            $data = $list->getCollection();
+            foreach ($data as &$value) {
+                $value->allocated = $value->allocated == 1? '已分配' : '未分配';
+                $value->create_time = date('Y-m-d H:i', $value->create_time);
+            }
+
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
                 'pages' => $list->lastPage(),
                 'count' => $list->total(),
-                'data' => $list->getCollection()
+                'data' => $data
             ];
 
             return json($result);
