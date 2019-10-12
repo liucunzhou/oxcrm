@@ -75,7 +75,7 @@ class File extends Base
                     $data['mobile'] = $value[1];
                     $data['source_text'] = csv_convert_encoding($value[2]);
                     $data['city_text'] = csv_convert_encoding($value[3]);
-                    $data['duplicate'] = $value[4];
+                    if(!empty($value[4])) $data['duplicate'] = $value[4];
                     $data['create_time'] = $time;
                     $data['type'] = 0;
                     // $UploadCustomerLog = new UploadCustomerLog();

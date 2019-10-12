@@ -98,8 +98,8 @@
       <file leaf-file-name="File.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/File.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="144" column="56" selection-start-line="144" selection-start-column="56" selection-end-line="144" selection-end-column="56" />
+            <state relative-caret-position="420">
+              <caret line="77" column="42" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
               <folding>
                 <element signature="e#39#67#0#PHP" expanded="true" />
               </folding>
@@ -110,8 +110,8 @@
       <file leaf-file-name="13.log" pinned="true" current-in-tab="false">
         <entry file="remoteDeploymentFS://&lt;98394d48-51bf-405e-a681-c848cb7d8a01&gt;/runtime/log/201910/13.log">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="6209" column="54" selection-start-line="6209" selection-start-column="31" selection-end-line="6209" selection-end-column="54" />
+            <state relative-caret-position="228">
+              <caret line="6207" column="57" selection-start-line="6207" selection-start-column="0" selection-end-line="6208" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -813,7 +813,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="23748000" />
+      <workItem from="1570871461488" duration="24002000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -847,7 +847,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="719034000" />
+    <option name="totallyTimeSpent" value="719288000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1313,8 +1313,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/File.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="144" column="56" selection-start-line="144" selection-start-column="56" selection-end-line="144" selection-end-column="56" />
+        <state relative-caret-position="420">
+          <caret line="77" column="42" selection-start-line="77" selection-start-column="42" selection-end-line="77" selection-end-column="42" />
           <folding>
             <element signature="e#39#67#0#PHP" expanded="true" />
           </folding>
