@@ -57,7 +57,7 @@ class File extends Base
                 }
 
                 ### 记录重复日志
-                foreach ($fileData[0] as $value) {
+                foreach ($fileData[1] as $value) {
                     $data = [];
                     $data['upload_id'] = $uploadId;
                     $data['realname'] = $value[0];
