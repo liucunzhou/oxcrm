@@ -142,6 +142,10 @@ class File extends Base
             if (!empty($originMember)) {
                 $row[4] = $originMember->source_text . ',' . $originMember->repeat_log;
                 $repetitive[] = $row;
+                if(strpos($row[4], $source) === false) {
+                    $duplicate = $row[4].','.$source;
+                    $originMember->save(['repeat_log'=>$duplicate]);
+                }
             } else {
                 $customer[] = $row;
             }
