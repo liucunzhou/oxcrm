@@ -4,7 +4,7 @@ namespace app\common\model;
 use think\Model;
 use think\model\concern\SoftDelete;
 
-class UploadCustomerLog extends Model
+class UploadCustomerFile extends Model
 {
     protected $pk = 'id';
     protected $autoWriteTimestamp = true;
