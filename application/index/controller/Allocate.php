@@ -81,7 +81,9 @@ class Allocate extends Base
             $config = [
                 'page' => $get['page']
             ];
-            $list = model('UploadCustomerFile')->order('create_time desc')->paginate($get['limit'], false, $config);
+            $map = [];
+            $map[] = ['user_id', '=', $this->user['id']];
+            $list = model('UploadCustomerFile')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
                 $value->allocated = $value->allocated == 1? '已分配' : '未分配';
