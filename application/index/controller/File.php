@@ -143,7 +143,11 @@ class File extends Base
                 $row[4] = $originMember->repeat_log;
                 $repetitive[] = $row;
                 if(strpos($row[4], $source) === false) {
-                    $duplicate = $row[4].','.$source;
+                    if(empty($row)) {
+                        $duplicate = $source;
+                    } else {
+                        $duplicate = $row[4].','.$source;
+                    }
                     $originMember->save(['repeat_log'=>$duplicate]);
                 }
             } else {
