@@ -45,6 +45,7 @@ class File extends Base
                 | duplicate
                  */
                 ### 记录有效日志
+                $UploadCustomerLog = new UploadCustomerLog();
                 foreach ($fileData[0] as $value) {
                     $data = [];
                     $data['upload_id'] = $uploadId;
@@ -54,11 +55,12 @@ class File extends Base
                     $data['city_text'] = $value[3];
                     $data['create_time'] = $time;
                     $data['type'] = 1;
-                    $UploadCustomerLog = new UploadCustomerLog();
+                    // $UploadCustomerLog = new UploadCustomerLog();
                     $UploadCustomerLog->insert($data);
                 }
 
                 ### 记录重复日志
+                // $UploadCustomerLog = new UploadCustomerLog();
                 foreach ($fileData[1] as $value) {
                     $data = [];
                     $data['upload_id'] = $uploadId;
@@ -69,9 +71,9 @@ class File extends Base
                     $data['duplicate'] = $value[4];
                     $data['create_time'] = $time;
                     $data['type'] = 0;
-                    $UploadCustomerLog = new UploadCustomerLog();
-                    print_r($data);
                     $UploadCustomerLog->insert($data);
+                    echo $UploadCustomerLog->getLastSql();
+                    echo "<br>";
                 }
 
                 $UploadCustomerFile->commit();
