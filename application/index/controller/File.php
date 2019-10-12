@@ -70,6 +70,7 @@ class File extends Base
                     $data['create_time'] = $time;
                     $data['type'] = 0;
                     $UploadCustomerLog = new UploadCustomerLog();
+                    print_r($data);
                     $UploadCustomerLog->insert($data);
                 }
 
@@ -112,7 +113,6 @@ class File extends Base
             if(!empty($originMember)) {
                 $row[4] = $originMember->source_text.','.$originMember->repeat_log;
                 $repetitive[] = $row;
-                print_r($row);
             } else {
                 $customer[] = $row;
             }
