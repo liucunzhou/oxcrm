@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/api/controller/Customer.php" afterPath="$PROJECT_DIR$/application/api/controller/Customer.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Visit.php" afterPath="$PROJECT_DIR$/application/index/controller/Visit.php" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -32,21 +33,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Customer.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Customer.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="1019" column="9" selection-start-line="1019" selection-start-column="9" selection-end-line="1019" selection-end-column="40" />
+            <state relative-caret-position="107">
+              <caret line="997" column="9" selection-start-line="997" selection-start-column="9" selection-end-line="997" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Visit.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Visit.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Visit.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="277" column="88" selection-start-line="277" selection-start-column="88" selection-end-line="277" selection-end-column="88" />
+            <state relative-caret-position="380">
+              <caret line="277" column="27" selection-start-line="277" selection-start-column="27" selection-end-line="277" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -55,8 +56,8 @@
       <file leaf-file-name="Customer.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/api/controller/Customer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="569" column="31" selection-start-line="569" selection-start-column="31" selection-end-line="569" selection-end-column="31" />
+            <state relative-caret-position="362">
+              <caret line="569" column="34" selection-start-line="569" selection-start-column="34" selection-end-line="569" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -122,16 +123,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
               <caret line="60" column="40" selection-start-line="60" selection-start-column="40" selection-end-line="60" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="show_upload_active.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/index/view/allocate/show_upload_active.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -207,9 +198,9 @@
         <option value="$PROJECT_DIR$/application/common/command/Repair.php" />
         <option value="$PROJECT_DIR$/application/common/model/Member.php" />
         <option value="$PROJECT_DIR$/application/index/controller/File.php" />
-        <option value="$PROJECT_DIR$/application/api/controller/Customer.php" />
         <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
         <option value="$PROJECT_DIR$/application/index/controller/Visit.php" />
+        <option value="$PROJECT_DIR$/application/api/controller/Customer.php" />
       </list>
     </option>
   </component>
@@ -813,7 +804,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="21911000" />
+      <workItem from="1570871461488" duration="22041000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -847,7 +838,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="717197000" />
+    <option name="totallyTimeSpent" value="717327000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -914,13 +905,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/runtime/log/201909/1568471435-14.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="5381" column="67" selection-start-line="5381" selection-start-column="56" selection-end-line="5381" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/runtime/log/201909/04.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1296,26 +1280,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Visit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="277" column="27" selection-start-line="277" selection-start-column="27" selection-end-line="277" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/application/api/controller/Customer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="569" column="31" selection-start-line="569" selection-start-column="31" selection-end-line="569" selection-end-column="31" />
+        <state relative-caret-position="362">
+          <caret line="569" column="34" selection-start-line="569" selection-start-column="34" selection-end-line="569" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/common/model/Mobile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="1019" column="9" selection-start-line="1019" selection-start-column="9" selection-end-line="1019" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Visit.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="277" column="88" selection-start-line="277" selection-start-column="88" selection-end-line="277" selection-end-column="88" />
+        <state relative-caret-position="107">
+          <caret line="997" column="9" selection-start-line="997" selection-start-column="9" selection-end-line="997" selection-end-column="9" />
           <folding />
         </state>
       </provider>

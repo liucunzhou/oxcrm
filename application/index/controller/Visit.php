@@ -5,6 +5,7 @@ namespace app\index\controller;
 use app\common\model\DuplicateLog;
 use app\common\model\Member;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\Notice;
 use app\common\model\OperateLog;
 use app\common\model\Recommender;

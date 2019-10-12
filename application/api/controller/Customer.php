@@ -9,6 +9,7 @@ use app\common\model\Member;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberApply;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\MobileRelation;
 use app\common\model\OperateLog;
 use app\common\model\Region;
