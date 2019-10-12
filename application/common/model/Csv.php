@@ -59,7 +59,7 @@ class Csv
                 $row[3] = mb_convert_encoding($row[3], 'UTF-8');
                 $row[2] = mb_convert_encoding($row[2], 'UTF-8');
                 $row[1] = mb_convert_encoding($row[1], 'UTF-8');
-                $row[0] = mb_convert_encoding($row[0], 'UTF-8');
+                // $row[0] = mb_convert_encoding($row[0], 'UTF-8');
                 fputcsv($nfp, $row);
             } else {
                 $row[1] = trim($row[1]);
