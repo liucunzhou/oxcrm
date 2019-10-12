@@ -31,7 +31,7 @@ class File extends Base
             $UploadCustomerFile = new UploadCustomerFile();
             $where = [];
             $where[] = ['hash', '=', $data['hash']];
-            $hashed = $UploadCustomerFile->where($where)->find();
+            $hashed = UploadCustomerFile::where($where)->find();
             if($hashed) {
                 return json(['code' => '500', 'msg' => '文件已经存在,请勿重复上传']);
             }
