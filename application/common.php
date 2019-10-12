@@ -10,3 +10,14 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+### 清除两端的空格
+if (!function_exists('clear_both_blank')) {
+    function clear_both_blank($data)
+    {
+        $data = trim($data);
+        $data = preg_replace("/\s(?=\s)/", "", $data);
+        $data = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $data);
+        $data = preg_replace("/[\n\r\t]/", ' ', $data);
+        return $data;
+    }
+}
