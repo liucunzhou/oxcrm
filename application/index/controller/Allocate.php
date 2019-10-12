@@ -235,12 +235,16 @@ class Allocate extends Base
             $data['city_id'] = $cities[$cityText];
             $data['operate_id'] = $this->user['id'];
             $data['create_time'] = $time;
+            $data['upload_file_id'] = $request['id'];
             $result = $MemberModel->insert($data);
             if ($result) {
                 $data['member_id'] = $MemberModel->getLastInsID();
                 $member[] = $data;
             }
         }
+
+        ### 对数组进行随机排序
+        shuffle($member);
 
         $startArr = [];
         foreach ($manager as $k => $v) {
