@@ -529,16 +529,24 @@ class Customer extends Base
         ### 验证手机号唯一性
         if(empty($post['mobile1'])) {
             $originMember = $Model::checkMobile($post['mobile']);
+            if ($originMember) {
+                return xjson([
+                    'code' => '400',
+                    'msg' => $post['mobile'] . '手机号已经存在',
+                ]);
+            }
         } else {
-            $originMember = $Model::checkMobile($post['mobile'], $post['mobile1']);
+            $originMember1 = $Model::checkFromMobileSet($post['mobile'], false);
+            $originMember2 = $Model::checkFromMobileSet($post['mobile1'], false);
+
+            if ($originMember1 || $originMember2) {
+                return xjson([
+                    'code' => '400',
+                    'msg' => $post['mobile'] . '手机号已经存在',
+                ]);
+            }
         }
 
-        if ($originMember) {
-            return xjson([
-                'code' => '400',
-                'msg' => $post['mobile'] . '手机号已经存在',
-            ]);
-        }
 
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
