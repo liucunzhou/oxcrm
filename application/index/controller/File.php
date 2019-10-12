@@ -28,14 +28,16 @@ class File extends Base
             $data['duplicate_amount'] = $duplicateAmount;
             $data['create_time'] = $time;
             $data['hash'] = $info->hash();
-            $UploadCustomerFile = new UploadCustomerFile();
+
             $where = [];
             $where[] = ['hash', '=', $data['hash']];
-            $hashed = UploadCustomerFile::where($where)->find();
+            $UploadCustomerFileHashed = new UploadCustomerFile();
+            $hashed = $UploadCustomerFileHashed->where($where)->find();
             if($hashed) {
                 return json(['code' => '500', 'msg' => '文件已经存在,请勿重复上传']);
             }
 
+            $UploadCustomerFile = new UploadCustomerFile();
             // $UploadCustomerFile->startTrans();
             $UploadCustomerFile->insert($data);
             $uploadId = $UploadCustomerFile->getLastInsID();
