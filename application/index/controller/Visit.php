@@ -167,11 +167,6 @@ class Visit extends Base
         if ($result1 && $result2) {
             ### 同步分配信息
             MemberAllocate::updateAllocateData($this->user['id'], $post['member_id'], $post);
-            ### 将手机号1添加到手机号库
-            if(!empty($post['mobile1'])) {
-                $mobileModel = new Mobile();
-                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$post['member_id']]);
-            }
 
             ### 添加下次回访提醒
             if ($post['next_visit_time'] > 0) {
@@ -277,6 +272,11 @@ class Visit extends Base
         $Model = \app\common\model\Member::get($post['id']);
         $result1 = $Model->save($post);
         if ($result1) {
+            ### 将手机号1添加到手机号库
+            if(!empty($post['mobile1'])) {
+                $mobileModel = new Mobile();
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$post['id']]);
+            }
             MemberAllocate::updateAllocateData($this->user['id'], $Model->id, $post);
             ### 添加操作记录
             OperateLog::appendTo($Model);

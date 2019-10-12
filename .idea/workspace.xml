@@ -45,8 +45,8 @@
       <file leaf-file-name="Visit.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Visit.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="172" column="95" selection-start-line="172" selection-start-column="95" selection-end-line="172" selection-end-column="95" />
+            <state relative-caret-position="470">
+              <caret line="277" column="88" selection-start-line="277" selection-start-column="88" selection-end-line="277" selection-end-column="88" />
               <folding />
             </state>
           </provider>
@@ -813,7 +813,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="21804000" />
+      <workItem from="1570871461488" duration="21911000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -847,7 +847,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="717090000" />
+    <option name="totallyTimeSpent" value="717197000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1314,8 +1314,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/Visit.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="172" column="95" selection-start-line="172" selection-start-column="95" selection-end-line="172" selection-end-column="95" />
+        <state relative-caret-position="470">
+          <caret line="277" column="88" selection-start-line="277" selection-start-column="88" selection-end-line="277" selection-end-column="88" />
           <folding />
         </state>
       </provider>
