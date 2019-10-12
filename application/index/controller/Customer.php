@@ -11,6 +11,7 @@ use app\common\model\Member;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberApply;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\MobileRelation;
 use app\common\model\Notice;
 use app\common\model\OperateLog;
@@ -735,6 +736,7 @@ class Customer extends Base
                 'msg' => '获取数据成功',
                 'pages' => $list->lastPage(),
                 'count' => $list->total(),
+                'map'   => $map,
                 'data' => $data
             ];
 
@@ -982,12 +984,10 @@ class Customer extends Base
                 ]);
             }
             $Model->operate_id = $this->user['id'];
-
             if(in_array($this->user['role_id'], [5,6,8,26])) {
                 $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
             }
         }
-
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
             $Model->source_text = $this->sources[$post['source_id']]['title'];
@@ -995,7 +995,6 @@ class Customer extends Base
         ### 基本信息入库
         $Model->is_sea = 1;
         $result1 = $Model->save($post);
-
         ### 新添加客资要加入到分配列表中
         if (empty($post['id'])) {
             $post['allocate_type'] = 3;
@@ -1004,6 +1003,14 @@ class Customer extends Base
         }
 
         if ($result1) {
+            ### 将手机号添加到手机号库
+            $mobileModel = new Mobile();
+            $mobileModel->insert(['mobile'=>$post['mobile']]);
+            ### 将手机号1添加到手机号库
+            if(!empty($post['mobile1'])) {
+                $mobileModel->insert($post['mobile1']);
+            }
+
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);

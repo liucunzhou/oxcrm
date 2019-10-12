@@ -66,7 +66,7 @@ class Csv
                 $row[1] = preg_replace("/\s(?=\s)/", "", $row[1]);
                 $row[1] = preg_replace("/^[(\xc2\xa0)|\s]+/", "", $row[1]);
                 $row[1] = preg_replace("/[\n\r\t]/", " ", $row[1]);
-                $originMember = Member::checkMobile($row[1]);
+                $originMember = Member::checkPatchMobile($row[1]);
                 //print_r($originMember);
                 if ($originMember) {
                     $sourceText = mb_convert_encoding($row[2], 'UTF-8', 'GBK');
