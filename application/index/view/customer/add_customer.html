@@ -324,6 +324,12 @@
 
         /* 监听提交 */
         form.on('submit(form-submit)', function (data) {
+            var city_id = $("#city_id").val();
+            if(city_id == 0) {
+                layer.msg('请选择城市');
+                return false;
+            }
+
             if($("#submit").hasClass("layui-btn-disabled")){
                 return  false;
             }
