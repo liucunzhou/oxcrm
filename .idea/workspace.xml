@@ -80,8 +80,8 @@
       <file leaf-file-name="upload_allocate.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="75" column="92" selection-start-line="75" selection-start-column="92" selection-end-line="75" selection-end-column="92" />
+            <state relative-caret-position="380">
+              <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -751,7 +751,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="15815000" />
-      <workItem from="1570871461488" duration="5552000" />
+      <workItem from="1570871461488" duration="5660000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -785,7 +785,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="700838000" />
+    <option name="totallyTimeSpent" value="700946000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1246,8 +1246,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/allocate/upload_allocate.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="75" column="92" selection-start-line="75" selection-start-column="92" selection-end-line="75" selection-end-column="92" />
+        <state relative-caret-position="380">
+          <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
           <folding />
         </state>
       </provider>

@@ -41,11 +41,11 @@
                         <{/if}>
                         <tr>
                             <td>有效客资:</td>
-                            <td><span id="amount">{$uploadFile.active}</span></td>
+                            <td><span id="amount">{$uploadFile.active_amount}</span></td>
                         </tr>
                         <tr>
                             <td>重复客资:</td>
-                            <td><span id="repeat">{$uploadFile.dumplicate}</span></td>
+                            <td><span id="repeat">{$uploadFile.dumplicate_amount}</span></td>
                         </tr>
 
                     </table>
@@ -53,7 +53,7 @@
                     <form class="layui-form" method="post" action="{:url('Allocate/doUploadAllocate')}" lay-filter="component-form-group">
                         <p>
                             已经分配<span class="assigned_amount">0</span>条,
-                            还剩<span class="unassigned_amount">{$uploadFile['active']}</span>条未分配
+                            还剩<span class="unassigned_amount">{$uploadFile['active_amount']}</span>条未分配
                         </p>
                         <table class="layui-table">
                             <colgroup>
@@ -69,7 +69,7 @@
                             </tr>
                             <{/foreach}>
                         </table>
-                        <{if $uploadFile['allocated']==0 || $uploadFile['active'] > 0 }>
+                        <{if $uploadFile['allocated']==0 || $uploadFile['active_amount'] > 0 }>
                         <div class="layui-form-item layui-layout-admin">
                             <div class="layui-input-block">
                                 <div class="layui-footer" style="left: 0;">
