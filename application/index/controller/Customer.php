@@ -670,6 +670,11 @@ class Customer extends Base
             if (isset($get['staff']) && $get['staff'] > 0) {
                 $map[] = ['operate_id', '=', $get['staff']];
             }
+
+            if (isset($get['city_id']) && $get['city_id'] > 0) {
+                $map[] = ['city_id', '=', $get['city_id']];
+            }
+
             ###  默认隐藏失效、无效客资
             $map[] = ['active_status', 'not in', [3, 4]];
             if (isset($get['date_range']) && !empty($get['date_range'])) {

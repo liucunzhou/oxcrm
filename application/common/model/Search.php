@@ -46,6 +46,10 @@ class Search
             $map[] = ['user_id', '=', $get['staff']];
         }
 
+        if (isset($get['city_id']) && $get['city_id'] > 0) {
+            $map[] = ['city_id', '=', $get['city_id']];
+        }
+
         switch ($user['role_id']) {
             case 27: // 婚庆部主管
                 if(!empty($get['staff']) && $get['staff'] = 'all') {
@@ -116,6 +120,10 @@ class Search
             $map[] = ['source_id', '=', $get['source']];
         }
 
+        if (isset($get['city_id']) && $get['city_id'] > 0) {
+            $map[] = ['city_id', '=', $get['city_id']];
+        }
+
         switch ($user['role_id']) {
             case 10: // 派单组主管
                 if(!isset($get['sea']) && !empty($get['staff']) && $get['staff'] = 'all') {
@@ -177,6 +185,10 @@ class Search
 
         if (isset($get['source']) && $get['source'] > 0) {
             $map[] = ['source_id', '=', $get['source']];
+        }
+
+        if (isset($get['city_id']) && $get['city_id'] > 0) {
+            $map[] = ['city_id', '=', $get['city_id']];
         }
 
         /**
