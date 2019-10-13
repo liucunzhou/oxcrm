@@ -147,7 +147,9 @@ class File extends Base
                     $duplicate = array_filter($duplicate);
                     $duplicate = array_unique($duplicate);
                 } else {
+                    $duplicate = [];
                     $duplicate[] = $source;
+                    $duplicate[] = $originMember->source_text;
                 }
                 $duplicateStr = implode(',', $duplicate);
                 $row[4] = $duplicateStr;
