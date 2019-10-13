@@ -143,8 +143,8 @@ class File extends Base
                 if (!empty($originMember->repeat_log)) {
                     $duplicate[] = explode(',', $originMember->repeat_log);
                     $duplicate[] = $source;
-                    $duplicate[] = array_filter($duplicate);
-                    $duplicate[] = array_unique($duplicate);
+                    $duplicate = array_filter($duplicate);
+                    $duplicate = array_unique($duplicate);
                 } else {
                     $duplicate[] = $source;
                 }
