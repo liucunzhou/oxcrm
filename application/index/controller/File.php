@@ -150,6 +150,7 @@ class File extends Base
                     $duplicate = [];
                     $duplicate[] = $source;
                     $duplicate[] = $originMember->source_text;
+                    print_r($duplicate);
                 }
                 $duplicateStr = implode(',', $duplicate);
                 $row[4] = $duplicateStr;

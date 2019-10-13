@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/File.php" afterPath="$PROJECT_DIR$/application/index/controller/File.php" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -54,8 +55,8 @@
       <file leaf-file-name="File.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/controller/File.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="151" column="62" selection-start-line="151" selection-start-column="62" selection-end-line="151" selection-end-column="62" />
+            <state relative-caret-position="420">
+              <caret line="152" column="38" selection-start-line="152" selection-start-column="38" selection-end-line="152" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -540,7 +541,7 @@
       <workItem from="1570680588738" duration="461000" />
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="5435000" />
-      <workItem from="1570939481683" duration="6101000" />
+      <workItem from="1570939481683" duration="6769000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -574,7 +575,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="693979000" />
+    <option name="totallyTimeSpent" value="694647000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1021,8 +1022,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/File.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="151" column="62" selection-start-line="151" selection-start-column="62" selection-end-line="151" selection-end-column="62" />
+        <state relative-caret-position="420">
+          <caret line="152" column="38" selection-start-line="152" selection-start-column="38" selection-end-line="152" selection-end-column="38" />
           <folding />
         </state>
       </provider>
