@@ -143,14 +143,19 @@ class File extends Base
                 if (!empty($originMember->repeat_log)) {
                     $duplicate = explode(',', $originMember->repeat_log);
                     $duplicate[] = $source;
+                    $duplicate[] = $originMember->source_text;
                     $duplicate = array_filter($duplicate);
                     $duplicate = array_unique($duplicate);
                 } else {
                     $duplicate[] = $source;
                 }
-                $row[4] = implode(',', $duplicate);
+                $duplicateStr = implode(',', $duplicate);
+                $row[4] = $duplicateStr;
                 $repetitive[] = $row;
-                $originMember->save(['repeat_log' => $row[4]]);
+
+                unset($duplicate[$originMember->source_text]);
+                $duplicateStr = implode(',', $duplicate);
+                $originMember->save(['repeat_log' => $duplicateStr]);
             } else {
                 $customer[] = $row;
             }
