@@ -58,7 +58,7 @@
 
                                 <div class="layui-inline">
                                     <select name="city_id" id="city_id" lay-filter="city_id">
-                                        <option value="0">请选择城市</option>
+                                        <option value="">请选择城市</option>
                                         <{foreach item="val" name="cities"}>
                                         <option value="{$val['id']}" <{eq name="$_GET['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
                                         <{/foreach}>
