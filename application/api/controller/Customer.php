@@ -9,6 +9,7 @@ use app\common\model\Member;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberApply;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\MobileRelation;
 use app\common\model\OperateLog;
 use app\common\model\Region;
@@ -528,17 +529,24 @@ class Customer extends Base
         $Model->member_no = date('YmdHis') . rand(100, 999);
         ### 验证手机号唯一性
         if(empty($post['mobile1'])) {
-            $originMember = $Model::checkMobile($post['mobile']);
+            $originMember = $Model::checkFromMobileSet($post['mobile'], false);
+            if ($originMember) {
+                return xjson([
+                    'code' => '400',
+                    'msg' => $post['mobile'] . '手机号已经存在',
+                ]);
+            }
         } else {
-            $originMember = $Model::checkMobile($post['mobile'], $post['mobile1']);
+            $originMember1 = $Model::checkFromMobileSet($post['mobile'], false);
+            $originMember2 = $Model::checkFromMobileSet($post['mobile1'], false);
+            if ($originMember1 || $originMember2) {
+                return xjson([
+                    'code' => '400',
+                    'msg' => $post['mobile'] . '手机号已经存在',
+                ]);
+            }
         }
 
-        if ($originMember) {
-            return xjson([
-                'code' => '400',
-                'msg' => $post['mobile'] . '手机号已经存在',
-            ]);
-        }
 
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
@@ -559,6 +567,15 @@ class Customer extends Base
         MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
 
         if ($result1) {
+            $memberId = $Model->id;
+            $mobileModel = new Mobile();
+            $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
+
+            ### 将手机号1添加到手机号库
+            if(!empty($post['mobile1'])) {
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$memberId]);
+            }
+
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);

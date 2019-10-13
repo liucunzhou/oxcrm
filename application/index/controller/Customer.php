@@ -974,16 +974,24 @@ class Customer extends Base
             $Model->member_no = date('YmdHis') . rand(100, 999);
             ### 验证手机号唯一性
             if(empty($post['mobile1'])) {
-                $originMember = $Model::checkMobile($post['mobile']);
+                $originMember = $Model::checkFromMobileSet($post['mobile'], false);
+                if ($originMember) {
+                    return xjson([
+                        'code' => '400',
+                        'msg' => $post['mobile'] . '手机号已经存在',
+                    ]);
+                }
             } else {
-                $originMember = $Model::checkMobile($post['mobile'], $post['mobile1']);
+                $originMember1 = $Model::checkFromMobileSet($post['mobile'], false);
+                $originMember2 = $Model::checkFromMobileSet($post['mobile1'], false);
+                if ($originMember1 || $originMember2) {
+                    return xjson([
+                        'code' => '400',
+                        'msg' => $post['mobile'] . '手机号已经存在',
+                    ]);
+                }
             }
-            if ($originMember) {
-                return json([
-                    'code' => '400',
-                    'msg' => $post['mobile'] . '手机号已经存在',
-                ]);
-            }
+
             $Model->operate_id = $this->user['id'];
             if(in_array($this->user['role_id'], [5,6,8,26])) {
                 $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
@@ -1005,11 +1013,17 @@ class Customer extends Base
 
         if ($result1) {
             ### 将手机号添加到手机号库
+            if(empty($post['id'])) {
+                $memberId = $Model->id;
+            } else {
+                $memberId = $post['id'];
+            }
             $mobileModel = new Mobile();
-            $mobileModel->insert(['mobile'=>$post['mobile']]);
+            $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
+
             ### 将手机号1添加到手机号库
             if(!empty($post['mobile1'])) {
-                $mobileModel->insert($post['mobile1']);
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$memberId]);
             }
 
             ### 添加操作记录

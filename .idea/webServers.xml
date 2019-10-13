@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="98394d48-51bf-405e-a681-c848cb7d8a01" name="测试机器" url="http://crm.reactphp.club">
-        <fileTransfer host="crm.reactphp.club" port="22" rootFolder="/data/oxcrm" accessType="SFTP" password="dfe6dfc9dfd0df9bdf93df92df9cdf9adf9bdf9adf93df81" username="root">
+        <fileTransfer host="crm.reactphp.club" port="22" rootFolder="/data/platform" accessType="SFTP" password="dfe6dfc9dfd0df9bdf93df92df9cdf9adf9bdf9adf93df81" username="root">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

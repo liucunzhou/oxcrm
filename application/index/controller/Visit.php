@@ -5,6 +5,7 @@ namespace app\index\controller;
 use app\common\model\DuplicateLog;
 use app\common\model\Member;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\Notice;
 use app\common\model\OperateLog;
 use app\common\model\Recommender;
@@ -272,6 +273,11 @@ class Visit extends Base
         $Model = \app\common\model\Member::get($post['id']);
         $result1 = $Model->save($post);
         if ($result1) {
+            ### 将手机号1添加到手机号库
+            if(!empty($post['mobile1'])) {
+                $mobileModel = new Mobile();
+                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$post['id']]);
+            }
             MemberAllocate::updateAllocateData($this->user['id'], $Model->id, $post);
             ### 添加操作记录
             OperateLog::appendTo($Model);

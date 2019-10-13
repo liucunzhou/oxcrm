@@ -25,62 +25,12 @@
                 <div class="layui-card-header">
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-sm" id="upload">上传客资</button>
-                        <a class="layui-btn layui-btn-sm" href="{:url('Allocate/export')}" target="_blank">导出重复</a>
+                        <!--<a class="layui-btn layui-btn-sm" href="{:url('Allocate/export')}" target="_blank">导出重复</a>-->
                         <a class="layui-btn layui-btn-sm" href="/tpl.csv" target="_blank">下载模版</a>
                     </div>
                 </div>
                 <div class="layui-card-body">
-                    <table class="layui-table">
-                        <colgroup>
-                            <col width="120">
-                            <col>
-                        </colgroup>
-                        <{if !empty($fileData['file'])}>
-                        <tr>
-                            <td>友情提示:</td>
-                            <td>上次的客资尚未分配</td>
-                        </tr>
-                        <{/if}>
-                        <tr>
-                            <td>有效客资:</td>
-                            <td><span id="amount">{$fileData.amount}</span></td>
-                        </tr>
-                        <tr>
-                            <td>重复客资:</td>
-                            <td><span id="repeat">{$fileData.repeat}</span></td>
-                        </tr>
-
-                    </table>
-
-                    <form class="layui-form" method="post" action="{:url('Allocate/doUploadAllocate')}" lay-filter="component-form-group">
-                        <p>
-                            已经分配<span class="assigned_amount">0</span>条,
-                            还剩<span class="unassigned_amount">{$fileData['amount']}</span>条未分配
-                        </p>
-                        <table class="layui-table">
-                            <colgroup>
-                                <col width="120">
-                                <col>
-                            </colgroup>
-                            <{foreach name="users" item="val"}>
-                            <tr>
-                                <td>{$val['realname']}</td>
-                                <td>
-                                    <input type="text" name="user_{$val['id']}" class="layui-input">
-                                </td>
-                            </tr>
-                            <{/foreach}>
-                        </table>
-
-                        <div class="layui-form-item layui-layout-admin">
-                            <div class="layui-input-block">
-                                <div class="layui-footer" style="left: 0;">
-                                    <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即分配</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
                 </div>
             </div>
         </div>
@@ -96,21 +46,122 @@
     }).use(['index', 'table', 'upload', 'form'], function () {
         var $ = layui.jquery
             ,upload = layui.upload
-            ,form = layui.form;
+            ,form = layui.form
+            ,table = layui.table
+            ,url = '';
 
-        url = '/index/allocate/import.html';
+        table.render({
+            elem: '#table',
+            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+            height: 'full-100',
+            defaultToolbar: ['filter'],
+            title: '上传记录',
+            cols: [
+                [{
+                    "field": "id",
+                    "title": "编号",
+                    "width": 60,
+                }, {
+                    "field": "origin_file_name",
+                    "title": "原始文件名"
+                }, {
+                    "field": "amount",
+                    "title": "客资总数",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "active_amount",
+                    "title": "非重复数",
+                    "width": 100,
+                    "align": "center",
+                    "event": "showUploadActive"
+                }, {
+                    "field": "duplicate_amount",
+                    "title": "重复数",
+                    "width": 100,
+                    "align": "left",
+                    "event": "showUploadDuplicate"
+                }, {
+                    "field": "allocated",
+                    "title": "是否分配",
+                    "width": 88,
+                    "event": "uploadAllocate"
+                },{
+                    "field": "download",
+                    "title": "是否导出",
+                    "width": 88,
+                    "event": "exportDuplicateCustomer"
+                }, {
+                    "field": "create_time",
+                    "title": "上传时间",
+                    "width": 165
+                }]
+            ],
+            page: true,
+            limit: 20,
+            limits: [20, 30]
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function(obj) {
+            console.log(obj.data);
+            var id = obj.data.id;
+            var member_id = obj.data.member_id;
+            switch (obj.event) {
+                case 'showUploadActive':
+                    url = '/index/allocate/showuploadactive.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '查看有效',
+                        content: url,
+                        area: [window.innerWidth  + 'px', window.innerHeight + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'showUploadDuplicate':
+                    url = '/index/allocate/showuploadduplicate.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '查看重复',
+                        content: url,
+                        area: [window.innerWidth + 'px', window.innerHeight + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'uploadAllocate':
+                    url = '/index/allocate/uploadAllocate.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '分配客资',
+                        content: url,
+                        area: [window.innerWidth + 'px', window.innerHeight + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+                case 'exportDuplicateCustomer':
+                    url = '/index/allocate/exportduplicatecustomer.html?id=' + id;
+                    window.open(url);
+                    break;
+            };
+        });
+
+
+        url = '/index/file/upload.html';
         upload.render({
             elem: '#upload'
             ,url: url
+            ,accept: 'file' //允许上传的文件类型
+            ,exts: 'csv'
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
             ,done: function(res, index, upload){ //上传后的回调
                 if(res.code == 200) {
-                    $("#amount").html(res.data.amount);
-                    $("#repeat").html(res.data.repeat);
+                    table.reload("table");
+                    layer.closeAll('loading');
                     layer.msg(res.msg);
                 }
             }
-            ,accept: 'file' //允许上传的文件类型
-            ,exts: 'csv'
             ,error: function (res) {
                 console.log('err:', res);
             }
