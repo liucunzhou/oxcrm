@@ -141,7 +141,7 @@ class File extends Base
             $originMember = Member::checkFromMobileSet($row[1], true);
             if (!empty($originMember)) {
                 if (!empty($originMember->repeat_log)) {
-                    $duplicate[] = explode(',', $originMember->repeat_log);
+                    $duplicate = explode(',', $originMember->repeat_log);
                     $duplicate[] = $source;
                     $duplicate = array_filter($duplicate);
                     $duplicate = array_unique($duplicate);
