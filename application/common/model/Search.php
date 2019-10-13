@@ -236,7 +236,13 @@ class Search
                 $map[] = ['user_id', '=', $user['id']];
                 break;
             case 3: // 推荐组主管
-                $map[] = self::getUserStaffs($user);
+                if (!empty($get['staff']) && $get['staff'] == 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['user_id', '=', $get['staff']];
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
             case 4: // 推荐组客服
                 if(!isset($get['staff']) || empty($get['staff']))  $map[] = ['user_id', '=', $user['id']];
