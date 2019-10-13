@@ -140,16 +140,17 @@ class File extends Base
             $row[1] = clear_both_blank($row[1]);
             $originMember = Member::checkFromMobileSet($row[1], true);
             if (!empty($originMember)) {
-                $row[4] = $originMember->repeat_log;
-                $repetitive[] = $row;
-                if(strpos($row[4], $source) === false) {
-                    if(empty($row)) {
-                        $duplicate = $source;
-                    } else {
-                        $duplicate = $row[4].','.$source;
-                    }
-                    $originMember->save(['repeat_log'=>$duplicate]);
+                if (!empty($originMember->repeat_log)) {
+                    $duplicate[] = explode(',', $originMember->repeat_log);
+                    $duplicate[] = $row[2];
+                    $duplicate[] = array_filter($duplicate);
+                    $duplicate[] = array_unique($duplicate);
+                } else {
+                    $duplicate[] = $row[2];
                 }
+                $row[4] = implode(',', $duplicate);
+                $repetitive[] = $row;
+                $originMember->save(['repeat_log' => $row[4]]);
             } else {
                 $customer[] = $row;
             }
