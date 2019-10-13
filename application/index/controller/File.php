@@ -153,7 +153,8 @@ class File extends Base
                 $row[4] = $duplicateStr;
                 $repetitive[] = $row;
 
-                unset($duplicate[$originMember->source_text]);
+                $index = array_search($originMember->source_text, $duplicate);
+                unset($duplicate[$index]);
                 $duplicateStr = implode(',', $duplicate);
                 $originMember->save(['repeat_log' => $duplicateStr]);
             } else {
