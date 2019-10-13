@@ -52,7 +52,7 @@ class Search
 
         switch ($user['role_id']) {
             case 27: // 婚庆部主管
-                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if(!isset($get['sea'])){
                     $map[] = ['user_id', '=', $user['id']];
@@ -126,7 +126,7 @@ class Search
 
         switch ($user['role_id']) {
             case 10: // 派单组主管
-                if(!isset($get['sea']) && !empty($get['staff']) && $get['staff'] = 'all') {
+                if(!isset($get['sea']) && !empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if (!isset($get['sea']) && isset($get['staff']) && $get['staff'] > 0) {
                     $map[] = ['user_id', '=', $get['staff']];
@@ -258,7 +258,7 @@ class Search
                 if(!isset($get['staff']) || empty($get['staff']))  $map[] = ['user_id', '=', $user['id']];
                 break;
             case 10: // 派单组主管
-                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if(!empty($get['staff'])) {
                     $map[] = ['user_id', '=', $get['staff']];
@@ -270,7 +270,7 @@ class Search
                 $map[] = ['user_id', '=', $user['id']];
                 break;
             case 5: // 门店主管
-                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if (!empty($get['staff'])) {
                     $map[] = ['user_id', '=', $get['staff']];
@@ -279,7 +279,7 @@ class Search
                 }
                 break;
             case 6:
-                if(!empty($get['staff']) && $get['staff'] = 'all') {
+                if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if (!empty($get['staff'])) {
                     $map[] = ['user_id', '=', $get['staff']];

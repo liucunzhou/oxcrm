@@ -66,9 +66,8 @@ class Repair extends Command
         $config = [
             'page' => $page
         ];
-        $where = [];
-        $where[] = ['city_id', '=', 0];
-        $members = Member::withTrashed(true)->where($where)->paginate(10000, false, $config);
+
+        $members = Member::withTrashed(true)->field('id,mobile,mobile1')->paginate(10000, false, $config);
         $mobileModel = new Mobile();
         foreach ($members as $member) {
             if(!empty($member->mobile))$mobileModel->insert(['mobile'=>$member->mobile,'member_id'=>$member->id]);
@@ -81,6 +80,8 @@ class Repair extends Command
         $config = [
             'page' => $page
         ];
+        $where = [];
+        $where[] = ['city_id', '=', 0];
         $members = Member::withTrashed(true)->field('id,mobile,mobile1')->paginate(10000, false, $config);
         $mobileModel = new Mobile();
         foreach ($members as $member) {
