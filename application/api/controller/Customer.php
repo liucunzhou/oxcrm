@@ -559,14 +559,6 @@ class Customer extends Base
         MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
 
         if ($result1) {
-            ### 将手机号添加到手机号库
-            $mobileModel = new Mobile();
-            $mobileModel->insert(['mobile'=>$post['mobile']]);
-            ### 将手机号1添加到手机号库
-            if(!empty($post['mobile1'])) {
-                $mobileModel->insert($post['mobile1']);
-            }
-
             ### 添加操作记录
             OperateLog::appendTo($Model);
             if (isset($Allocate)) OperateLog::appendTo($Allocate);
