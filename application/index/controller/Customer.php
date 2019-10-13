@@ -999,7 +999,9 @@ class Customer extends Base
         }
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
-            $Model->source_text = $this->sources[$post['source_id']]['title'];
+            $sourceText = $this->sources[$post['source_id']]['title'];
+            $Model->source_text = $sourceText;
+            $post['source_text'] = $sourceText;
         }
         ### 基本信息入库
         $Model->is_sea = 1;
