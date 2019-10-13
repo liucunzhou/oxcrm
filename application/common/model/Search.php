@@ -116,14 +116,12 @@ class Search
             $map[] = ['source_id', '=', $get['source']];
         }
 
-        if (!isset($get['sea']) && isset($get['staff']) && $get['staff'] > 0) {
-            $map[] = ['user_id', '=', $get['staff']];
-        }
-
         switch ($user['role_id']) {
             case 10: // 派单组主管
                 if(!isset($get['sea']) && !empty($get['staff']) && $get['staff'] = 'all') {
                     $map[] = self::getUserStaffs($user);
+                } else if (!isset($get['sea']) && isset($get['staff']) && $get['staff'] > 0) {
+                    $map[] = ['user_id', '=', $get['staff']];
                 } else if(!isset($get['sea'])){
                     $map[] = ['user_id', '=', $user['id']];
                 }
