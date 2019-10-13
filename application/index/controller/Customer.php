@@ -60,6 +60,9 @@ class Customer extends Base
             array_unshift($staffes, $staff);
             $this->assign('staffes', $staffes);
             $this->assign('sources', $this->sources);
+
+            $cities = Region::getCityList(0);
+            $this->assign('cities', $cities);
         }
     }
 

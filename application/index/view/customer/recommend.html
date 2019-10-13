@@ -45,15 +45,24 @@
 
                                 <div class="layui-inline">
                                     <select name="source" lay-verify="" lay-search>
-                                    <option value="">平台来源</option>
-                                    <{foreach name="sources" item="val"}>
-                                        <{if $get['source'] == $val['id']}>
-                                            <option value="{$val['id']}" selected>{$val['title']}</option>
-                                        <{else /}>
-                                            <option value="{$val['id']}">{$val['title']}</option>
-                                        <{/if}>
-                                    <{/foreach}>
-                                </select>
+                                        <option value="">平台来源</option>
+                                        <{foreach name="sources" item="val"}>
+                                            <{if $get['source'] == $val['id']}>
+                                                <option value="{$val['id']}" selected>{$val['title']}</option>
+                                            <{else /}>
+                                                <option value="{$val['id']}">{$val['title']}</option>
+                                            <{/if}>
+                                        <{/foreach}>
+                                    </select>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <select name="city_id" id="city_id" lay-filter="city_id">
+                                        <option value="0"></option>
+                                        <{foreach item="val" name="cities"}>
+                                        <option value="{$val['id']}" <{eq name="$_GET['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                                        <{/foreach}>
+                                    </select>
                                 </div>
 
                                 <div class="layui-inline">

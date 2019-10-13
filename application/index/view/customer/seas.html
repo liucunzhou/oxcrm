@@ -61,6 +61,15 @@
                             </div>
 
                             <div class="layui-inline">
+                                <select name="city_id" id="city_id" lay-filter="city_id">
+                                    <option value="0"></option>
+                                    <{foreach item="val" name="cities"}>
+                                        <option value="{$val['id']}" <{eq name="$_GET['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
                                 <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
                             </div>
 

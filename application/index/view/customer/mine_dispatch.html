@@ -42,11 +42,20 @@
 
                                 <div class="layui-inline">
                                     <select name="source" lay-verify="">
-                                    <option value="">平台来源</option>
-                                    <{foreach name="sources" item="val"}>
-                                        <option value="{$val['id']}">{$val['title']}</option>
-                                    <{/foreach}>
-                                </select>
+                                        <option value="">平台来源</option>
+                                        <{foreach name="sources" item="val"}>
+                                            <option value="{$val['id']}">{$val['title']}</option>
+                                        <{/foreach}>
+                                    </select>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <select name="city_id" id="city_id" lay-filter="city_id">
+                                        <option value="0"></option>
+                                        <{foreach item="val" name="cities"}>
+                                        <option value="{$val['id']}" <{eq name="$_GET['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                                        <{/foreach}>
+                                    </select>
                                 </div>
 
                                 <div class="layui-inline">

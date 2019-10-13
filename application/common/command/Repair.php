@@ -55,10 +55,28 @@ class Repair extends Command
             case 'syncMobileSet':
                 $this->syncMobileSet($page);
                 break;
+            case 'syncCityId':
+                $this->syncCityId($page);
+                break;
         }
     }
 
     public function syncMobileSet($page)
+    {
+        $config = [
+            'page' => $page
+        ];
+        $where = [];
+        $where[] = ['city_id', '=', 0];
+        $members = Member::withTrashed(true)->where($where)->paginate(10000, false, $config);
+        $mobileModel = new Mobile();
+        foreach ($members as $member) {
+            if(!empty($member->mobile))$mobileModel->insert(['mobile'=>$member->mobile,'member_id'=>$member->id]);
+            if(!empty($member->mobile1))$mobileModel->insert(['mobile'=>$member->mobile1,'member_id'=>$member->id]);
+        }
+    }
+
+    public function syncCityId($page)
     {
         $config = [
             'page' => $page

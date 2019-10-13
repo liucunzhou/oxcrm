@@ -48,6 +48,15 @@
                             </div>
 
                             <div class="layui-inline">
+                                <select name="city_id" id="city_id" lay-filter="city_id">
+                                    <option value="0"></option>
+                                    <{foreach item="val" name="cities"}>
+                                    <option value="{$val['id']}" <{eq name="$_GET['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
                                 <input type="text" name="next_visit_time" lay-verify="0" placeholder="下次回访时间" autocomplete="off" class="date_range layui-input">
                             </div>
 
