@@ -830,7 +830,8 @@ class Customer extends Base
                     'code' => 0,
                     'msg' => '获取数据成功',
                     'count' => $list->total(),
-                    'data' => $data
+                    'data' => $data,
+                    'map'   => $map
                 ];
 
             } else {
