@@ -43,6 +43,11 @@ class User extends Base
                 $map[] = ['mobile', 'like', "%{$get['mobile']}%"];
             }
 
+            if (isset($get['department_id']) && $get['department_id'] > 0) {
+                $departments = Department::getTree($get['department_id']);
+                $map[] = ['department_id', 'in', $departments];
+            }
+
             $list = model('user')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
