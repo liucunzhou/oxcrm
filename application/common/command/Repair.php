@@ -114,6 +114,7 @@ class Repair extends Command
     public function dealDuplicateAllocate()
     {
         $duplicates = MemberAllocate::field('member_id,user_id,count(*) as amount')->group('member_id,user_id')->having('amount > 1')->select();
+        echo MemberAllocate::getLastSql();
         print_r($duplicates);
     }
 

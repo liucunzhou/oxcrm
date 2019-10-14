@@ -54,8 +54,8 @@
       <file leaf-file-name="Repair.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="113" column="20" selection-start-line="113" selection-start-column="20" selection-end-line="113" selection-end-column="20" />
+            <state relative-caret-position="165">
+              <caret line="116" column="42" selection-start-line="116" selection-start-column="42" selection-end-line="116" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -545,7 +545,7 @@
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="5435000" />
       <workItem from="1570939481683" duration="17722000" />
-      <workItem from="1571040159769" duration="8874000" />
+      <workItem from="1571040159769" duration="8958000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -579,7 +579,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="714474000" />
+    <option name="totallyTimeSpent" value="714558000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="0" />
@@ -1035,8 +1035,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="113" column="20" selection-start-line="113" selection-start-column="20" selection-end-line="113" selection-end-column="20" />
+        <state relative-caret-position="165">
+          <caret line="116" column="42" selection-start-line="116" selection-start-column="42" selection-end-line="116" selection-end-column="42" />
           <folding />
         </state>
       </provider>
