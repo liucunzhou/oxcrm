@@ -23,7 +23,7 @@ class User extends Base
             $config = [
                 'page' => $get['page']
             ];
-            if (isset($get['role_id']) && !empty($get['role_id'])) {
+            if (isset($get['role_id']) && $get['role_id'] > 0) {
                 $get['role_id'] = trim($get['role_id']);
                 $map[] = ['role_id', '=', $get['role_id']];
             }
@@ -41,6 +41,11 @@ class User extends Base
             if (isset($get['mobile']) && !empty($get['mobile'])) {
                 $get['mobile'] = trim($get['mobile']);
                 $map[] = ['mobile', 'like', "%{$get['mobile']}%"];
+            }
+
+            if (isset($get['department_id']) && $get['department_id'] > 0) {
+                $departments = Department::getTree($get['department_id']);
+                $map[] = ['department_id', 'in', $departments];
             }
 
             $list = model('user')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
