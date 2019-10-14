@@ -51,7 +51,7 @@ class User extends Base
             $list = model('user')->where($map)->order('is_valid desc,sort desc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
-                $value['department_id'] = $departments[$value['department_id']]['title'];
+                // $value['department_id'] = $departments[$value['department_id']]['title'];
                 $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
                 $value['role_id'] = $roles[$value['role_id']]['title'];
             }
