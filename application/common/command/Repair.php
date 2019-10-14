@@ -58,6 +58,9 @@ class Repair extends Command
             case 'syncCityId':
                 $this->syncCityId($page);
                 break;
+            case 'syncSourceText':
+                $this->syncSourceText($page);
+                break;
         }
     }
 
@@ -88,6 +91,20 @@ class Repair extends Command
             $member = Member::get($memberId);
             $cityId = $member->city_id;
             $allocate->save(['city_id'=>$cityId]);
+        }
+    }
+
+    public function syncSourceText($page)
+    {
+        $config = [
+            'page' => $page
+        ];
+        $allocates = MemberAllocate::withTrashed(true)->paginate(10000, false, $config);
+        foreach ($allocates as $key=>$allocate) {
+            $memberId = $allocate->member_id;
+            $member = Member::get($memberId);
+            $sourceText = $member->source_text;
+            $allocate->save(['source_text'=>$sourceText]);
         }
     }
 

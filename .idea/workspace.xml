@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/User.php" afterPath="$PROJECT_DIR$/application/index/controller/User.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shell/sync_source_text.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/command/Repair.php" afterPath="$PROJECT_DIR$/application/common/command/Repair.php" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="User.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/controller/User.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="32" column="70" selection-start-line="32" selection-start-column="70" selection-end-line="32" selection-end-column="70" />
+            <state relative-caret-position="300">
+              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -61,6 +62,26 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Repair.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="511">
+              <caret line="102" column="49" selection-start-line="102" selection-start-column="49" selection-end-line="102" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sync_source_text.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/shell/sync_source_text.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -78,7 +99,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/application/index/view/count/store_area_manager.html" />
         <option value="$PROJECT_DIR$/application/index/view/visit/visit_customer.html" />
         <option value="$PROJECT_DIR$/application/index/view/allocate/assign_recommend_to_dispatch_group.html" />
         <option value="&lt;13e72df9-d1e5-4717-aab5-aa91b7c456cf&gt;/runtime/log/201909/22_cli.log" />
@@ -126,9 +146,10 @@
         <option value="$PROJECT_DIR$/application/index/view/customer/seas.html" />
         <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
         <option value="$PROJECT_DIR$/application/common/model/Search.php" />
-        <option value="$PROJECT_DIR$/application/common/command/Repair.php" />
         <option value="$PROJECT_DIR$/shell/sync_city_id.sh" />
         <option value="$PROJECT_DIR$/application/index/controller/User.php" />
+        <option value="$PROJECT_DIR$/shell/sync_source_text.sh" />
+        <option value="$PROJECT_DIR$/application/common/command/Repair.php" />
       </list>
     </option>
   </component>
@@ -370,19 +391,19 @@
     <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/shell" />
-      <recent name="$PROJECT_DIR$/application/index/view/passport" />
-      <recent name="$PROJECT_DIR$/public/vue/hello-world/src/util" />
-      <recent name="$PROJECT_DIR$/application/index/model" />
-      <recent name="$PROJECT_DIR$/application/index" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/shell" />
       <recent name="$PROJECT_DIR$/application/index/view/customer" />
       <recent name="$PROJECT_DIR$/application/index/view/visit" />
       <recent name="$PROJECT_DIR$/application/index/view/allocate" />
       <recent name="$PROJECT_DIR$/application/common/model" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/shell" />
+      <recent name="$PROJECT_DIR$/application/index/view/passport" />
+      <recent name="$PROJECT_DIR$/public/vue/hello-world/src/util" />
+      <recent name="$PROJECT_DIR$/application/index/model" />
+      <recent name="$PROJECT_DIR$/application/index" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.Customer.php">
@@ -573,7 +594,7 @@
       <workItem from="1570690896785" duration="8197000" />
       <workItem from="1570849848559" duration="5435000" />
       <workItem from="1570939481683" duration="17722000" />
-      <workItem from="1571040159769" duration="955000" />
+      <workItem from="1571040159769" duration="1771000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -607,7 +628,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="706555000" />
+    <option name="totallyTimeSpent" value="707371000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="0" />
@@ -695,13 +716,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/runtime/log/201909/1568256641-12.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="21921" column="845" selection-start-line="21921" selection-start-column="16" selection-end-line="21921" selection-end-column="845" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/thinkphp/library/think/Model.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="489">
@@ -849,6 +863,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-457">
           <caret line="31" column="27" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1013,14 +1028,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="77" column="20" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shell/sync_city_id.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -1055,8 +1062,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/User.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/common/command/Repair.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="511">
+          <caret line="102" column="49" selection-start-line="102" selection-start-column="49" selection-end-line="102" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shell/sync_source_text.sh">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
-          <caret line="32" column="70" selection-start-line="32" selection-start-column="70" selection-end-line="32" selection-end-column="70" />
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
           <folding />
         </state>
       </provider>
