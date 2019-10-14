@@ -61,6 +61,9 @@ class Repair extends Command
             case 'syncSourceText':
                 $this->syncSourceText($page);
                 break;
+            case 'dealDuplicateAllocate':
+                $this->dealDuplicateAllocat();
+                break;
         }
     }
 
