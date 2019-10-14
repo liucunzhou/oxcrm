@@ -17,6 +17,7 @@ class User extends Base
             // 获取权限、部门列表
             $roles = AuthGroup::getRoles();
             $departments = Department::getDepartments();
+            print_r($departments);
 
             $get = Request::param();
             $map = [];
