@@ -71,20 +71,31 @@
             defaultToolbar: ['filter'],
             toolbar: '#table-toolbar',
             title: '门店管理',
-            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 50}, {
-                "field": "brand_id",
-                "title": "\u54c1\u724c\u540d\u79f0",
-                "width": 160
-            }, {"field": "title", "title": "\u95e8\u5e97\u540d\u79f0"}, {
-                "field": "sort",
-                "title": "\u6392\u5e8f",
-                "width": 60
-            }, {"field": "is_valid", "title": "\u72b6\u6001", "width": 60}, {
-                "field": "create_time",
-                "title": "\u521b\u5efa\u65f6\u95f4",
-                "width": 165
-            }, {"type": "tool", "title": "\u64cd\u4f5c", "toolbar": "#table-tool", "width": 120}]]
-            ,
+            cols: [[
+                {
+                    "field": "id",
+                    "title": "\u7f16\u53f7",
+                    "width": 50
+                }, {
+                    "field": "brand_id",
+                    "title": "\u54c1\u724c\u540d\u79f0",
+                    "width": 160
+                }, {"field": "title", "title": "\u95e8\u5e97\u540d\u79f0"}, {
+                    "field": "sort",
+                    "title": "\u6392\u5e8f",
+                    "width": 60
+                }, {
+                    "field": "is_valid", "title": "\u72b6\u6001", "width": 60}, {
+                    "field": "create_time",
+                    "title": "\u521b\u5efa\u65f6\u95f4",
+                    "width": 165
+                }, {
+                    "type": "tool",
+                    "title": "\u64cd\u4f5c",
+                    "toolbar": "#table-tool",
+                    "width": 120
+                }
+            ]],
             page: true
         });
 
