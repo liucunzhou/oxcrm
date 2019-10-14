@@ -82,11 +82,12 @@ class Repair extends Command
         ];
         $where = [];
         $where[] = ['city_id', '=', 0];
-        $members = Member::withTrashed(true)->field('id,mobile,mobile1')->paginate(10000, false, $config);
-        $mobileModel = new Mobile();
-        foreach ($members as $member) {
-            if(!empty($member->mobile))$mobileModel->insert(['mobile'=>$member->mobile,'member_id'=>$member->id]);
-            if(!empty($member->mobile1))$mobileModel->insert(['mobile'=>$member->mobile1,'member_id'=>$member->id]);
+        $allocates = MemberAllocate::withTrashed(true)->field('id,member_id')->paginate(10000, false, $config);
+        foreach ($allocates as $key=>$allocate) {
+            $memberId = $allocate->member_id;
+            $member = Member::get($memberId);
+            $cityId = $member->city_id;
+            $allocate->save(['city_id'=>$cityId]);
         }
     }
 
