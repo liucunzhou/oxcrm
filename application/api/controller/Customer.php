@@ -633,7 +633,7 @@ class Customer extends Base
         $map[] = ['active_status', 'not in', [3,4]];
 
         if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-            $map = [];
+            // $map = [];
             $mobiles = MobileRelation::getMobiles($get['keywords']);
             if (!empty($mobiles)) {
                 $map[] = ['mobile', 'in', $mobiles];
@@ -642,11 +642,11 @@ class Customer extends Base
             }
             $list = model('MemberAllocate')::hasWhere('member', $map, "Member.*")->order('id desc')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-            $map = [];
+            // $map = [];
             $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
             $list = model('MemberAllocate')::hasWhere('member', $map, 'Member.*')->order('id desc')->with('member')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-            $map = [];
+            // $map = [];
             $map[] = ['mobile', '=', $get['keywords']];
         } else {
             $list = model('MemberAllocate')->where($map)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
