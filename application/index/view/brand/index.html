@@ -49,8 +49,8 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
         var admin = layui.admin
-                , table = layui.table
-                , $ = layui.jquery;
+            ,table = layui.table
+            ,$ = layui.jquery;
 
         table.render({
             elem: '#table'
@@ -65,7 +65,7 @@
             ,
             title: '品牌管理'
             ,
-            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 50}, {
+            cols: [[{"field": "id", "title": "\u7f16\u53f7", "width": 80}, {
                 "field": "title",
                 "title": "\u54c1\u724c\u540d\u79f0"
             }, {"field": "sort", "title": "\u6392\u5e8f", "width": 80}, {
@@ -76,7 +76,7 @@
                 "type": "tool",
                 "title": "\u64cd\u4f5c",
                 "toolbar": "#table-tool",
-                "width": 116
+                "width": 130
             }]]
             ,
             page: true
