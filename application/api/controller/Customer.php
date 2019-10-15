@@ -295,7 +295,6 @@ class Customer extends Base
         } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
             $map[] = ['mobile', '=', $get['keywords']];
         }
-
         $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
         if(!empty($list)) {
             $users = User::getUsers();
@@ -632,25 +631,20 @@ class Customer extends Base
 
         $map[] = ['active_status', 'not in', [3,4]];
 
+        isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
         if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-            // $map = [];
             $mobiles = MobileRelation::getMobiles($get['keywords']);
-            if (!empty($mobiles)) {
+            if(!empty($mobiles)) {
                 $map[] = ['mobile', 'in', $mobiles];
             } else {
                 $map[] = ['mobile', '=', $get['keywords']];
             }
-            $list = model('MemberAllocate')::where($map)->order('id desc')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-            // $map = [];
             $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-            $list = model('MemberAllocate')::where($map)->order('id desc')->paginate($get['limit'], false, $config);
         } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-            // $map = [];
             $map[] = ['mobile', '=', $get['keywords']];
-        } else {
-            $list = model('MemberAllocate')->where($map)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
         }
+        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
 
         if (!empty($list)) {
             $users = User::getUsers();
@@ -666,9 +660,6 @@ class Customer extends Base
                 $value['next_visit_time'] = date('Y-m-d H:i', $value['next_visit_time']);
                 $value['allocate_time'] = $value['create_time'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];
-                if (!empty($get['keywords'])) {
-                    $value['member_id'] = $value['id'];
-                }
                 if (empty($value['member'])) {
                     $memberObj = Member::get($value['member_id']);
                     if ($memberObj) {
