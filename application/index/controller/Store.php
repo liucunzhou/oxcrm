@@ -26,6 +26,14 @@ class Store extends Base
                 'page' => $get['page']
             ];
 
+            if (isset($get['id']) && $get['id'] > 0) {
+                $map[] = ['id', '=', $get['id']];
+            }
+
+            if (isset($get['brand_id']) && $get['brand_id'] > 0) {
+                $map[] = ['id', '=', $get['brand_id']];
+            }
+
             if (isset($get['title'])) {
                 $map[] = ['title', 'like', "%{$get['title']}%"];
             }
