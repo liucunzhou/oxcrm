@@ -23,6 +23,12 @@ class User extends Base
             $config = [
                 'page' => $get['page']
             ];
+
+            if (isset($get['id']) && !empty($get['id'])) {
+                $get['id'] = trim($get['id']);
+                $map[] = ['id', '=', $get['id']];
+            }
+
             if (isset($get['role_id']) && !empty($get['role_id'])) {
                 $get['role_id'] = trim($get['role_id']);
                 $map[] = ['role_id', '=', $get['role_id']];

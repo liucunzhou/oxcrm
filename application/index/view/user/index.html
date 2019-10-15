@@ -27,6 +27,10 @@
                         <div class="layui-form-item">
 
                             <div class="layui-inline">
+                                <input type="text" name="id" lay-verify="0" placeholder="编号" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
                                 <select name="role_id" id="role_id" lay-filter="role_id">
                                     <option value="0">请选择角色</option>
                                     <{foreach name="roles" item="val"}>
