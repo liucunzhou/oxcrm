@@ -26,6 +26,19 @@
                     <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
                         <div class="layui-form-item">
                             <div class="layui-inline">
+                                <input type="text" name="id" lay-verify="0" placeholder="门店编号" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="brand_id" id="brand_id" lay-filter="brand_id">
+                                    <option value="0">请选择品牌</option>
+                                    <{foreach name="brands" item="val"}>
+                                        <option value="{$val.id}">{$val.title}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
                                 <input type="text" name="title" lay-verify="0" placeholder="门店名称" autocomplete="off" class="layui-input">
                             </div>
 

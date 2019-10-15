@@ -15,10 +15,11 @@ use think\facade\Request;
 
 class Store extends Base
 {
+
     public function index()
     {
+        $brands = Brand::getBrands();
         if(Request::isAjax()) {
-            $brands = Brand::getBrands();
             $get = Request::param();
             $map = [];
             $config = [
@@ -44,7 +45,7 @@ class Store extends Base
             ];
             return json($result);
         } else {
-            $this->view->engine->layout(false);
+            $this->assign('brands', $brands);
             return $this->fetch();
         }
     }
