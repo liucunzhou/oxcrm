@@ -116,21 +116,20 @@
                 
             } else {
                 avg = Math.floor(totals/staffAmmount);
-                $(".staff").val(avg);
                 console.log($(".choose:checked"), $(".choose:checked").length);
                 $(".choose:checked").each(function(i, n) {
                     console.log($(n));
                     $(n).parents("tr").find(".staff").val(avg);
                 });
-                /**
+                
                 left = totals%staffAmmount;
                 $(".choose:checked").each(function(i, n){
                     var staff = $(n).parents("tr").find(".staff");
-                    if(left == 0) return false;
                     left = left - 1;
                     staff.val(avg + 1);
+                    if(left == 0) return false;
                 });
-                **/
+                
             }
         });
     });
