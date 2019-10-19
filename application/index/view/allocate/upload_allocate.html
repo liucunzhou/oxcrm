@@ -46,15 +46,11 @@
                         </p>
                         <table class="layui-table">
                             <colgroup>
-                                <col width="100">
                                 <col width="120">
                                 <col>
                             </colgroup>
                             <{foreach name="users" item="val"}>
                             <tr>
-                                <td>
-                                    <input type="checkbox" />
-                                </td>
                                 <td>{$val['realname']}</td>
                                 <td>
                                     <input type="text" name="user_{$val['id']}" class="layui-input staff">
