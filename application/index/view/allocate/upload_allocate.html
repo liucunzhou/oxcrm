@@ -120,7 +120,7 @@
                 $(".choose:checked").each(function(i, n) {
                     $(n).parents("tr").find(".staff").val(avg);
                 });
-                
+                /**
                 left = totals%staffAmmount;
                 $(".choose:checked").each(function(i, n){
                     var staff = $(n).parents("tr").find(".staff");
@@ -128,6 +128,7 @@
                     left = left - 1;
                     staff.val(avg + 1);
                 });
+                **/
             }
         });    
 
