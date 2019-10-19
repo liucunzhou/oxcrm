@@ -136,8 +136,8 @@
             }
         });
 
-        $(".staff").input(function(){
-            console.log($(this).val());
+        $(".staff").bind("input propertychange",function(event){
+            console.log($(this).val())
         });
     });
 </script>
