@@ -117,6 +117,7 @@
             } else {
                 avg = Math.floor(totals/staffAmmount);
                 $(".staff").val(avg);
+                console.log($(".choose:checked"), $(".choose:checked").length);
                 $(".choose:checked").each(function(i, n) {
                     $(n).parent("tr").find(".staff").val(avg);
                 });
