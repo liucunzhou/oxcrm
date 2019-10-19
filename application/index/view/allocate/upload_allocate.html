@@ -124,9 +124,9 @@
                 left = totals%staffAmmount;
                 $(".choose:checked").each(function(i, n){
                     var staff = $(n).parents("tr").find(".staff");
-                    staff.val(avg + 1);
-                    left = left - 1;
                     if(left == 0) return false;
+                    left = left - 1;
+                    staff.val(avg + 1);
                 });
             }
         });    
