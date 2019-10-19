@@ -105,17 +105,26 @@
 
         $(".choose").change(function(){
             var totals = parseInt($("#amount").text());
-            var staffAmmount = $(".staff:checked").length;
+            var staffAmmount = $(".choose:checked").length;
+            if(staffAmmount < 1) return false;
             var avg = 0;
             if(totals%staffAmmount == 0) {
                 avg = Math.floor(totals/staffAmmount);
-                $(".staff").val(avg);
+                $(".choose:checked").each(function(i, n) {
+                    $(n).parents("tr").find(".staff").val(avg);
+                });
+                
             } else {
                 avg = Math.floor(totals/staffAmmount);
                 $(".staff").val(avg);
+                $(".choose:checked").each(function(i, n) {
+                    $(n).parents("tr").find(".staff").val(avg);
+                });
+                
                 left = totals%staffAmmount;
-                $(".staff").each(function(i, n){
-                    $(n).val(avg + 1);
+                $(".choose:checked").each(function(i, n){
+                    var staff = $(n).parents("tr").find(".staff");
+                    staff.val(avg + 1);
                     left = left - 1;
                     if(left == 0) return false;
                 });
