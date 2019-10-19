@@ -118,7 +118,7 @@
                 avg = Math.floor(totals/staffAmmount);
                 $(".staff").val(avg);
                 $(".choose:checked").each(function(i, n) {
-                    $(n).parents("tr").find(".staff").val(avg);
+                    $(n).parent("tr").find(".staff").val(avg);
                 });
                 /**
                 left = totals%staffAmmount;
