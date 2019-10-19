@@ -107,6 +107,7 @@
             $(".staff").val(avg);
         } else {
             avg = Math.floor(totals/staffAmmount);
+            $(".staff").val(avg);
             left = totals%staffAmmount;
             $(".staff").each(function(i, n){
                 $(n).val(avg + 1);
