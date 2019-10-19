@@ -53,7 +53,7 @@
                             <{foreach name="users" item="val"}>
                             <tr>
                                 <td>
-                                    <input type="checkbox" lay-ignore>
+                                    <input type="checkbox" class=".choose" lay-ignore>
                                 </td>
                                 <td>{$val['realname']}</td>
                                 <td>
@@ -103,22 +103,24 @@
             return false;
         });
 
-        var totals = parseInt($("#amount").text());
-        var staffAmmount = $(".staff").length;
-        var avg = 0;
-        if(totals%staffAmmount == 0) {
-            avg = Math.floor(totals/staffAmmount);
-            $(".staff").val(avg);
-        } else {
-            avg = Math.floor(totals/staffAmmount);
-            $(".staff").val(avg);
-            left = totals%staffAmmount;
-            $(".staff").each(function(i, n){
-                $(n).val(avg + 1);
-                left = left - 1;
-                if(left == 0) return false;
-            });
-        }
+        $(".choose").change(function(){
+            var totals = parseInt($("#amount").text());
+            var staffAmmount = $(".staff:checked").length;
+            var avg = 0;
+            if(totals%staffAmmount == 0) {
+                avg = Math.floor(totals/staffAmmount);
+                $(".staff").val(avg);
+            } else {
+                avg = Math.floor(totals/staffAmmount);
+                $(".staff").val(avg);
+                left = totals%staffAmmount;
+                $(".staff").each(function(i, n){
+                    $(n).val(avg + 1);
+                    left = left - 1;
+                    if(left == 0) return false;
+                });
+            }
+        });    
 
         $(".staff").change(function(){
             console.log($(this).val());
