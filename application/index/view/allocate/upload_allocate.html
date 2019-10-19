@@ -133,8 +133,11 @@
                     staff.val(avg + 1);
                     if(left == 0) return false;
                 });
-                
             }
+        });
+
+        $(".staff").input(function(){
+            console.log($(this).val());
         });
     });
 </script>
