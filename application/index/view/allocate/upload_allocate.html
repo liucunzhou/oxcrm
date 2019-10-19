@@ -46,11 +46,15 @@
                         </p>
                         <table class="layui-table">
                             <colgroup>
+                                <col width="100">
                                 <col width="120">
                                 <col>
                             </colgroup>
                             <{foreach name="users" item="val"}>
                             <tr>
+                                <tr>
+                                    <input type="checkbox" />
+                                </tr>
                                 <td>{$val['realname']}</td>
                                 <td>
                                     <input type="text" name="user_{$val['id']}" class="layui-input staff">
@@ -99,8 +103,12 @@
             return false;
         });
 
-        var totals = $("#amount").text();
-        console.log(typeof(totals));
+        var totals = parseInt($("#amount").text());
+        var staffAmmount = $(".staff").length();
+        var avg = 0;
+        if(totals%staffAmmount == 0) {
+            $
+        }
     });
 </script>
 </body>
