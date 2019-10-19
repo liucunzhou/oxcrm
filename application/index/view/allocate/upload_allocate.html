@@ -103,7 +103,16 @@
         var staffAmmount = $(".staff").length();
         var avg = 0;
         if(totals%staffAmmount == 0) {
-            $
+            avg = Math.floor(totals/staffAmmount);
+            $(".staff").val(avg);
+        } else {
+            avg = Math.floor(totals/staffAmmount);
+            left = totals(totals%staffAmmount);
+            $(".staff").each(function(i, n){
+                $(n).val(avg + 1);
+                left = left - 1;
+                if(left == 0) return false;
+            });
         }
     });
 </script>
