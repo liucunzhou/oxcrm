@@ -106,7 +106,6 @@
         $(".choose").change(function(){
             if(!$(this).prop("checked")) {
                 $(this).parents("tr").find(".staff").val(avg);
-                return false;
             }
 
             var totals = parseInt($("#amount").text());
