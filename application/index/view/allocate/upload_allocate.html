@@ -104,7 +104,7 @@
         });
 
         $(".choose").change(function(){
-            if(!(this).prop("checked")) {
+            if(!$(this).prop("checked")) {
                 $(this).parents("tr").find(".staff").val(avg);
                 return false;
             }
