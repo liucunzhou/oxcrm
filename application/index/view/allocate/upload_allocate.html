@@ -53,7 +53,7 @@
                             <tr>
                                 <td>{$val['realname']}</td>
                                 <td>
-                                    <input type="text" name="user_{$val['id']}" class="layui-input">
+                                    <input type="text" name="user_{$val['id']}" class="layui-input staff">
                                 </td>
                             </tr>
                             <{/foreach}>
@@ -98,6 +98,9 @@
             });
             return false;
         });
+
+        var totals = $("#amount").text();
+        console.log(typeof(totals));
     });
 </script>
 </body>
