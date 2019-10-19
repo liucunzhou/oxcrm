@@ -28,17 +28,6 @@
                             <col width="120">
                             <col>
                         </colgroup>
-                        <{if !empty($uploadFile['allocated'])}>
-                        <tr>
-                            <td>友情提示:</td>
-                            <td>上次的客资尚未分配</td>
-                        </tr>
-                        <{else /}>
-                        <tr>
-                            <td>友情提示:</td>
-                            <td>客资已分配,请勿重复分配</td>
-                        </tr>
-                        <{/if}>
                         <tr>
                             <td>有效客资:</td>
                             <td><span id="amount">{$uploadFile.active_amount}</span></td>
