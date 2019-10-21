@@ -100,7 +100,15 @@ class Department extends Base
     {
         $get = Request::param();
         $Model = \app\common\model\Department::get($get['id']);
-        $result = $Model->delete();
+
+        $where = [];
+        $where[] = ['parent_id', '=', $get['id']];
+        $children = \app\common\model\Department::where($where)->find();
+        if (!empty($children)) {
+            $result = $Model->delete();
+        } else {
+            return json(['code'=>'500', 'msg'=>'请先删除子部门']);
+        }
 
         if($result) {
             // 更新缓存
