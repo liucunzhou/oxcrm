@@ -343,18 +343,21 @@ class Count extends Base
             $userIds = User::getUsersByDepartmentId($request['department_id']);
             if(!empty($request['member_create_time'])) {
                 $range = $this->getDateRange($request['member_create_time']);
+                $dateType = 'member_create_time';
             } else if(!empty($request['create_time'])) {
                 $range = $this->getDateRange($request['create_time']);
+                $dateType = 'create_time';
             } else {
                 $today = date('Y-m-d');
                 $range = $this->getDateRange($today);
+                $dateType = 'member_create_time';
             }
 
             if (!empty($userIds)) {
                 if ($dimension == 'source') {
-                    $group = $this->groupBySource($userIds, $range);
+                    $group = $this->groupBySource($userIds, $range, $dateType);
                 } else {
-                    $group = $this->groupByStaff($userIds, $range);
+                    $group = $this->groupByStaff($userIds, $range, $dateType);
                     $users = User::getUsers();
 
                     $this->assign('users', $users);
@@ -435,12 +438,12 @@ class Count extends Base
         return $this->fetch();
     }
 
-    private function groupByStaff($userIds, $dateRange)
+    private function groupByStaff($userIds, $dateRange, $dateType='member_create_time')
     {
         $map = [];
         // $map[] = ['source_text', '<>', ''];
         $map[] = ['user_id', 'in', $userIds];
-        $map[] = ['create_time', 'between', $dateRange];
+        $map[] = [$dateType, 'between', $dateRange];
         $group = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
         // echo MemberAllocate::getLastSql();
         $data = [];
@@ -507,12 +510,12 @@ class Count extends Base
         $map = [];
         // $map[] = ['source_text', '<>', ''];
         $map[] = ['is_into_store', '=', 1];
-        $map[] = ['create_time', 'between', $dateRange];
-        $group = MemberAllocate::where($map)->where('mobile', 'in', function ($query) use ($userIds, $dateRange) {
+        $map[] = [$dateType, 'between', $dateRange];
+        $group = MemberAllocate::where($map)->where('mobile', 'in', function ($query) use ($userIds, $dateRange, $dateType) {
             $map = [];
             // $map[] = ['source_text', '<>', ''];
             $map[] = ['user_id', 'in', $userIds];
-            $map[] = ['create_time', 'between', $dateRange];
+            $map[] = [$dateType, 'between', $dateRange];
             $query->table('tk_member_allocate')->where($map)->field('mobile')->group('mobile');
         })->field('operate_id,count(*) as amount')->group('operate_id')->select();
         foreach ($group as $key => $value) {
@@ -530,12 +533,12 @@ class Count extends Base
         $map = [];
         // $map[] = ['source_text', '<>', ''];
         $map[] = ['active_status', '=', 2];
-        $map[] = ['create_time', 'between', $dateRange];
-        $group = MemberAllocate::where($map)->where('mobile', 'in', function ($query) use ($userIds, $dateRange) {
+        $map[] = [$dateType, 'between', $dateRange];
+        $group = MemberAllocate::where($map)->where('mobile', 'in', function ($query) use ($userIds, $dateRange, $dateType) {
             $map = [];
             // $map[] = ['source_text', '<>', ''];
             $map[] = ['user_id', 'in', $userIds];
-            $map[] = ['create_time', 'between', $dateRange];
+            $map[] = [$dateType, 'between', $dateRange];
             $query->table('tk_member_allocate')->where($map)->field('mobile')->group('mobile');
         })->field('operate_id,count(*) as amount')->group('operate_id')->select();
 
@@ -558,11 +561,11 @@ class Count extends Base
         return $data;
     }
 
-    private function groupBySource($userIds, $dateRange)
+    private function groupBySource($userIds, $dateRange, $dateType='member_create_time')
     {
         // $map[] = ['source_text', '<>', ''];
         $map[] = ['user_id', 'in', $userIds];
-        $map[] = ['create_time', 'between', $dateRange];
+        $map[] = [$dateType, 'between', $dateRange];
         ### 获取所有去除重复的客资
         $result = MemberAllocate::field('source_text,mobile,user_id,active_status,is_into_store')->where('mobile', 'in', function ($query) use ($map) {
             $query->table('tk_member_allocate')->where($map)->field('mobile')->group('mobile');
