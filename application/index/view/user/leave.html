@@ -17,7 +17,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">选择员工</label>
                     <div class="layui-input-block">
-                        <select name="staff" id="staff">
+                        <select name="staff" id="staff" lay-search>
                             <option value="0">--选择员工--</option>
                             <{foreach item="val" name="staffs"}>
                                 <option value="{$val['id']}">{$val['realname']}</option>
