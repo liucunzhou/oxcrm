@@ -39,11 +39,11 @@
                                     </div>
 
                                     <div class="layui-inline">
-                                        <input type="text" name="create_time" lay-verify="0" value="{$request['create_time']}" placeholder="分配时间区间" autocomplete="off" class="date_range layui-input">
+                                        <input type="text" name="create_time" id="create_time" lay-verify="0" value="{$request['create_time']}" placeholder="分配时间区间" autocomplete="off" class="date_range layui-input">
                                     </div>
 
                                     <div class="layui-inline">
-                                        <input type="text" name="member_create_time" lay-verify="0" value="{$request['member_create_time']}" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
+                                        <input type="text" name="member_create_time" id="member_create_time" lay-verify="0" value="{$request['member_create_time']}" placeholder="创建时间区间" autocomplete="off" class="date_range layui-input">
                                     </div>
 
                                     <div class="layui-inline ">
@@ -203,7 +203,13 @@
             ,laydate = layui.laydate;
 
         laydate.render({
-            elem: '.date_range',
+            elem: '#create_time',
+            type: 'date',
+            range: '~'
+        });
+
+        laydate.render({
+            elem: '#member_create_time',
             type: 'date',
             range: '~'
         });
