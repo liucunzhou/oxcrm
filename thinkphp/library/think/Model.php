@@ -622,10 +622,12 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         $db->startTrans();
 
         try {
-            $db->where($where)
+            $updateRs = $db->where($where)
                 ->strict(false)
                 ->field($allowFields)
                 ->update($data);
+
+            if(!$updateRs) $db->rollback();
 
             // 关联更新
             if (!empty($this->relationWrite)) {
@@ -642,6 +644,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             echo $e->getMessage();
             $db->rollback();
             return false;
+
         } catch (\Exception $e) {
             $db->rollback();
             throw $e;
