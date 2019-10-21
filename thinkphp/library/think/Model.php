@@ -638,8 +638,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $this->trigger('after_update');
 
             return true;
-        } catch (\PDOException $e) {
-            return false;
         } catch (\Exception $e) {
             $db->rollback();
             throw $e;

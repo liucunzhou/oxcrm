@@ -1140,27 +1140,31 @@ abstract class Connection
         // 更新数据
         $query->setOption('data', $data);
 
-        // 生成UPDATE SQL语句
-        $sql  = $this->builder->update($query);
-        $bind = $query->getBind();
+        try {
+            // 生成UPDATE SQL语句
+            $sql = $this->builder->update($query);
+            $bind = $query->getBind();
 
-        if (!empty($options['fetch_sql'])) {
-            // 获取实际执行的SQL语句
-            return $this->getRealSql($sql, $bind);
+            if (!empty($options['fetch_sql'])) {
+                // 获取实际执行的SQL语句
+                return $this->getRealSql($sql, $bind);
+            }
+
+            // 检测缓存
+            $cache = Container::get('cache');
+
+            if (isset($key) && $cache->get($key)) {
+                // 删除缓存
+                $cache->rm($key);
+            } elseif (!empty($options['cache']['tag'])) {
+                $cache->clear($options['cache']['tag']);
+            }
+
+            // 执行操作
+            $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
+        } catch (PDOException $e) {
+            return false;
         }
-
-        // 检测缓存
-        $cache = Container::get('cache');
-
-        if (isset($key) && $cache->get($key)) {
-            // 删除缓存
-            $cache->rm($key);
-        } elseif (!empty($options['cache']['tag'])) {
-            $cache->clear($options['cache']['tag']);
-        }
-
-        // 执行操作
-        $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
 
         if ($result) {
             if (is_string($pk) && isset($where[$pk])) {
