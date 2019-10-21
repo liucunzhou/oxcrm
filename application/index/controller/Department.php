@@ -99,7 +99,7 @@ class Department extends Base
     public function deleteDepartment()
     {
         $get = Request::param();
-        $Model = \app\common\model\Brand::get($get['id']);
+        $Model = \app\common\model\Department::get($get['id']);
         $result = $Model->delete();
 
         if($result) {

@@ -118,15 +118,18 @@
                         offset: 'rb'
                     });
                     break;
-                case 'del':
-
-                    // url = '/index/department/deldepartment.html';
-                    layer.open({
-                        type: 2,
-                        title: '删除',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
+                case 'delete':
+                    if(!confirm("确认删除该部门么?")) {
+                        return false;
+                    }
+                    url = '/index/department/deleteDepartment.html?id=' + id;
+                    $.get(url, function(res) {
+                        if (res.code == '200') {
+                            layer.msg("删除成功");
+                            table.reload("table");
+                        } else {
+                            layser.msg(res.msg);
+                        }
                     });
                     break;
             }
