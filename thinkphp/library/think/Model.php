@@ -638,7 +638,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $this->trigger('after_update');
 
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
             $db->rollback();
             return false;
