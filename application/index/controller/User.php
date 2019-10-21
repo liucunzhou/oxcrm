@@ -393,7 +393,7 @@ class User extends Base
         $where[] = ['user_id', '=', $request['id']];
 
         $allocate = new MemberAllocate();
-        $result = $allocate->save(['user_id'=>$request['staff']], $where);
+        $result = $allocate->save(['user_id'=>$request['staff'], 'delete_user_id'=>$request['id']], $where);
 
         if($result) {
             return json(['code'=>'200', 'msg'=>'离职员工客资分配成功']);
