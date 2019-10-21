@@ -50,7 +50,8 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function () {
         var admin = layui.admin
-            , table = layui.table;
+            , table = layui.table
+            , $ = layui.$;
 
         table.render({
             elem: '#table',
