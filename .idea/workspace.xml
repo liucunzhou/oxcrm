@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Department.php" afterPath="$PROJECT_DIR$/application/index/controller/Department.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/department/index.html" afterPath="$PROJECT_DIR$/application/index/view/department/index.html" />
     </list>
     <ignored path="OXCRM.iws" />
@@ -46,8 +44,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/view/department/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="123" column="21" selection-start-line="123" selection-start-column="21" selection-end-line="123" selection-end-column="21" />
+            <state relative-caret-position="420">
+              <caret line="120" column="38" selection-start-line="120" selection-start-column="38" selection-end-line="120" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -631,7 +629,7 @@
       <workItem from="1571209905624" duration="1065000" />
       <workItem from="1571369222464" duration="40000" />
       <workItem from="1571623277565" duration="8576000" />
-      <workItem from="1571635660013" duration="217000" />
+      <workItem from="1571635660013" duration="336000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -665,7 +663,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="731362000" />
+    <option name="totallyTimeSpent" value="731481000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1112,8 +1110,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/department/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="123" column="21" selection-start-line="123" selection-start-column="21" selection-end-line="123" selection-end-column="21" />
+        <state relative-caret-position="420">
+          <caret line="120" column="38" selection-start-line="120" selection-start-column="38" selection-end-line="120" selection-end-column="38" />
           <folding />
         </state>
       </provider>
