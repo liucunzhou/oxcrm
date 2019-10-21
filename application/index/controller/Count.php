@@ -331,7 +331,6 @@ class Count extends Base
         $this->assign('departments', $departments);
 
         $request = Request::param();
-
         if (empty($request['dimension']) || $request['dimension'] == 'source') {
             $dimension = 'source';
             $this->assign('dimension', '渠道');
@@ -342,9 +341,16 @@ class Count extends Base
 
         if ($request['department_id']) {
             $userIds = User::getUsersByDepartmentId($request['department_id']);
-
-            if (!empty($userIds) && !empty($request['create_time'])) {
+            if(!empty($request['member_create_time'])) {
+                $range = $this->getDateRange($request['member_create_time']);
+            } else if(!empty($request['create_time'])) {
                 $range = $this->getDateRange($request['create_time']);
+            } else {
+                $today = date('Y-m-d');
+                $range = $this->getDateRange($today);
+            }
+
+            if (!empty($userIds)) {
                 if ($dimension == 'source') {
                     $group = $this->groupBySource($userIds, $range);
                 } else {
@@ -390,6 +396,7 @@ class Count extends Base
         }
 
         $request['create_time'] = str_replace('+', '', $request['create_time']);
+        $request['member_create_time'] = str_replace('+', '', $request['member_create_time']);
         $this->assign('request', $request);
         return $this->fetch();
     }
