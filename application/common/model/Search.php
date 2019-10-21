@@ -52,8 +52,10 @@ class Search
 
         switch ($user['role_id']) {
             case 27: // 婚庆部主管
-                if(!empty($get['staff']) && $get['staff'] == 'all') {
+                if(!isset($get['sea']) && !empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
+                } else if (!isset($get['sea']) && isset($get['staff']) && $get['staff'] > 0) {
+                    $map[] = ['user_id', '=', $get['staff']];
                 } else if(!isset($get['sea'])){
                     $map[] = ['user_id', '=', $user['id']];
                 }
@@ -133,6 +135,7 @@ class Search
                 } else if(!isset($get['sea'])){
                     $map[] = ['user_id', '=', $user['id']];
                 }
+
                 break;
             case 11: // 派单组客服
                 if(!isset($get['sea']) && empty($get['staff'])) {

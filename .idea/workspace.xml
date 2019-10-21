@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Department.php" afterPath="$PROJECT_DIR$/application/index/controller/Department.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/model/Search.php" afterPath="$PROJECT_DIR$/application/common/model/Search.php" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,11 +32,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Department.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Department.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Department.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="106" column="12" selection-start-line="106" selection-start-column="12" selection-end-line="106" selection-end-column="12" />
+            <state relative-caret-position="879">
+              <caret line="122" column="1" selection-start-line="122" selection-start-column="1" selection-end-line="122" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Customer.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="325">
+              <caret line="310" column="42" selection-start-line="310" selection-start-column="42" selection-end-line="310" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Search.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/common/model/Search.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -44,7 +65,7 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/department/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="795">
               <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
               <folding />
             </state>
@@ -54,7 +75,7 @@
       <file leaf-file-name="mine.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/customer/mine.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5145">
+            <state relative-caret-position="6675">
               <caret line="445" column="7" selection-start-line="445" selection-start-column="7" selection-end-line="452" selection-end-column="39" />
               <folding />
             </state>
@@ -64,7 +85,7 @@
       <file leaf-file-name="Department.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/common/model/Department.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
+            <state relative-caret-position="540">
               <caret line="37" column="55" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
               <folding />
             </state>
@@ -120,7 +141,6 @@
         <option value="$PROJECT_DIR$/application/index/view/customer/today.html" />
         <option value="$PROJECT_DIR$/application/index/view/customer/seas.html" />
         <option value="$PROJECT_DIR$/application/index/controller/Customer.php" />
-        <option value="$PROJECT_DIR$/application/common/model/Search.php" />
         <option value="$PROJECT_DIR$/shell/sync_city_id.sh" />
         <option value="$PROJECT_DIR$/shell/sync_source_text.sh" />
         <option value="$PROJECT_DIR$/application/common/command/Repair.php" />
@@ -139,6 +159,7 @@
         <option value="$PROJECT_DIR$/application/index/controller/Count.php" />
         <option value="$PROJECT_DIR$/application/index/view/department/index.html" />
         <option value="$PROJECT_DIR$/application/index/controller/Department.php" />
+        <option value="$PROJECT_DIR$/application/common/model/Search.php" />
       </list>
     </option>
   </component>
@@ -182,6 +203,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -354,49 +376,8 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oxcrm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oxcrm" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oxcrm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="oxcrm" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -629,7 +610,8 @@
       <workItem from="1571209905624" duration="1065000" />
       <workItem from="1571369222464" duration="40000" />
       <workItem from="1571623277565" duration="8576000" />
-      <workItem from="1571635660013" duration="967000" />
+      <workItem from="1571635660013" duration="1426000" />
+      <workItem from="1571646121378" duration="92000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -663,14 +645,14 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="732112000" />
+    <option name="totallyTimeSpent" value="732663000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.04952077" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15495208" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19914803" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15654951" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.503231" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328541" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -872,13 +854,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/common/model/Search.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3240">
-          <caret line="216" column="70" selection-start-line="216" selection-start-column="67" selection-end-line="216" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shell/sync_city_id.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -963,13 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3270">
-          <caret line="242" column="13" selection-start-line="242" selection-start-column="13" selection-end-line="242" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/Visit.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -1024,9 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1044,7 +1009,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="63" selection-start-line="20" selection-start-column="63" selection-end-line="20" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1052,9 +1016,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5850">
           <caret line="397" column="80" selection-start-line="397" selection-start-column="66" selection-end-line="397" selection-end-column="80" />
-          <folding>
-            <element signature="e#39#75#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1062,9 +1023,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17205">
           <caret line="1164" column="35" selection-start-line="1164" selection-start-column="35" selection-end-line="1164" selection-end-column="35" />
-          <folding>
-            <element signature="e#616#645#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1086,7 +1044,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/customer/mine.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5145">
+        <state relative-caret-position="6675">
           <caret line="445" column="7" selection-start-line="445" selection-start-column="7" selection-end-line="452" selection-end-column="39" />
           <folding />
         </state>
@@ -1094,7 +1052,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/department/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="795">
           <caret line="53" column="25" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
           <folding />
         </state>
@@ -1102,7 +1060,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/common/model/Department.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
+        <state relative-caret-position="540">
           <caret line="37" column="55" selection-start-line="37" selection-start-column="55" selection-end-line="37" selection-end-column="55" />
           <folding />
         </state>
@@ -1110,8 +1068,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/Department.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="106" column="12" selection-start-line="106" selection-start-column="12" selection-end-line="106" selection-end-column="12" />
+        <state relative-caret-position="879">
+          <caret line="122" column="1" selection-start-line="122" selection-start-column="1" selection-end-line="122" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Customer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="310" column="42" selection-start-line="310" selection-start-column="42" selection-end-line="310" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/common/model/Search.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
           <folding />
         </state>
       </provider>
