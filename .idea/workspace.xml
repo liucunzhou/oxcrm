@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/thinkphp/library/think/db/Connection.php" afterPath="$PROJECT_DIR$/thinkphp/library/think/db/Connection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/thinkphp/library/think/Model.php" afterPath="$PROJECT_DIR$/thinkphp/library/think/Model.php" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,21 +75,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Model.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Model.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/thinkphp/library/think/Model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="640" column="9" selection-start-line="640" selection-start-column="9" selection-end-line="640" selection-end-column="9" />
+            <state relative-caret-position="434">
+              <caret line="642" column="28" selection-start-line="642" selection-start-column="28" selection-end-line="642" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Connection.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Connection.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/thinkphp/library/think/db/Connection.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="1145" column="30" selection-start-line="1145" selection-start-column="30" selection-end-line="1145" selection-end-column="30" />
+            <state relative-caret-position="349">
+              <caret line="1159" column="52" selection-start-line="1159" selection-start-column="52" selection-end-line="1159" selection-end-column="52" />
               <folding>
                 <element signature="e#616#645#0#PHP" expanded="true" />
               </folding>
@@ -174,9 +174,9 @@
         <option value="$PROJECT_DIR$/application/index/view/user/index.html" />
         <option value="$PROJECT_DIR$/application/index/view/user/leave.html" />
         <option value="$PROJECT_DIR$/application/index/controller/User.php" />
-        <option value="$PROJECT_DIR$/thinkphp/library/think/Model.php" />
         <option value="$PROJECT_DIR$/thinkphp/library/think/db/Query.php" />
         <option value="$PROJECT_DIR$/thinkphp/library/think/db/Connection.php" />
+        <option value="$PROJECT_DIR$/thinkphp/library/think/Model.php" />
       </list>
     </option>
   </component>
@@ -578,7 +578,7 @@
       <workItem from="1571108685839" duration="4712000" />
       <workItem from="1571209905624" duration="1065000" />
       <workItem from="1571369222464" duration="40000" />
-      <workItem from="1571623277565" duration="4105000" />
+      <workItem from="1571623277565" duration="4242000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -612,7 +612,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="726674000" />
+    <option name="totallyTimeSpent" value="726811000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="991" extended-state="6" />
@@ -1040,21 +1040,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/thinkphp/library/think/Model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="640" column="9" selection-start-line="640" selection-start-column="9" selection-end-line="640" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/thinkphp/library/think/db/Connection.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="1145" column="30" selection-start-line="1145" selection-start-column="30" selection-end-line="1145" selection-end-column="30" />
+        <state relative-caret-position="349">
+          <caret line="1159" column="52" selection-start-line="1159" selection-start-column="52" selection-end-line="1159" selection-end-column="52" />
           <folding>
             <element signature="e#616#645#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/thinkphp/library/think/Model.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="642" column="28" selection-start-line="642" selection-start-column="28" selection-end-line="642" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
