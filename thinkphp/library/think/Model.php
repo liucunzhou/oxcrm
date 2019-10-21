@@ -627,19 +627,26 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
                 ->field($allowFields)
                 ->update($data);
 
-            if(!$updateRs) $db->rollback();
+            if(!$updateRs) {
 
-            // 关联更新
-            if (!empty($this->relationWrite)) {
-                $this->autoRelationUpdate();
+                $db->rollback();
+                return false;
+
+            } else {
+
+                // 关联更新
+                if (!empty($this->relationWrite)) {
+                    $this->autoRelationUpdate();
+                }
+
+                $db->commit();
+
+                // 更新回调
+                $this->trigger('after_update');
+
+                return true;
+
             }
-
-            $db->commit();
-
-            // 更新回调
-            $this->trigger('after_update');
-
-            return true;
         } catch (\PDOException $e) {
             echo $e->getMessage();
             $db->rollback();
