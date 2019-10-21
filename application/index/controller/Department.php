@@ -104,7 +104,7 @@ class Department extends Base
         $where = [];
         $where[] = ['parent_id', '=', $get['id']];
         $children = \app\common\model\Department::where($where)->find();
-        if (!empty($children)) {
+        if (empty($children)) {
             $result = $Model->delete();
         } else {
             return json(['code'=>'500', 'msg'=>'请先删除子部门']);
