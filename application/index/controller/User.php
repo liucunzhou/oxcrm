@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use app\common\model\MemberAllocate;
 use app\http\Swoole;
 use app\common\model\AuthGroup;
 use app\common\model\Department;
@@ -366,6 +367,38 @@ class User extends Base
             return json(['code'=>'200', 'msg'=>'合并成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'合并失败']);
+        }
+    }
+
+    public function leave()
+    {
+        $staffs = \app\common\model\User::getUsers();
+        $this->assign('staffs', $staffs);
+
+        return $this->fetch();
+    }
+
+    public function doLeave()
+    {
+        $request = Request::param();
+        if($request['id'] < 1) {
+            return json(['code'=>'500', 'msg'=>'请选择要分配的员工']);
+        }
+
+        if($request['staff'] < 1) {
+            return json(['code'=>'500', 'msg'=>'请选择要分配给的员工']);
+        }
+
+        $where = [];
+        $where[] = ['user_id', '=', $request['id']];
+
+        $allocate = new MemberAllocate();
+        $result = $allocate->save(['user_id'=>$request['staff']], $where);
+
+        if($result) {
+            return json(['code'=>'200', 'msg'=>'离职员工客资分配成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=>'离职员工客资分配失败']);
         }
     }
 }

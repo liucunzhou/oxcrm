@@ -257,6 +257,16 @@
                         }
                     });
                     break;
+                case 'leave':
+                    url = '/index/user/leave.html?id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '员工离职',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
             }
         });
 
