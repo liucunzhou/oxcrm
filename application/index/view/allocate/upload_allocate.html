@@ -41,8 +41,7 @@
 
                     <form class="layui-form" method="post" action="{:url('Allocate/doUploadAllocateCustomer')}" lay-filter="component-form-group">
                         <p>
-                            已经分配<span class="assigned_amount">10000</span>条,
-                            还剩<span class="unassigned_amount">{$uploadFile['active_amount']}</span>条未分配
+                            点击复选框进行平均分配,余数不等于0的,从上到下依次分配
                         </p>
                         <table class="layui-table">
                             <colgroup>
