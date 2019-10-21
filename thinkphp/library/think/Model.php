@@ -648,7 +648,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
             }
         } catch (\PDOException $e) {
-            echo $e->getMessage();
             $db->rollback();
             return false;
 

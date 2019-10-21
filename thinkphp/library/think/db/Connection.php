@@ -1163,7 +1163,6 @@ abstract class Connection
             // 执行操作
             $result = '' == $sql ? 0 : $this->execute($sql, $bind, $query);
         } catch (PDOException $e) {
-            echo $e->getMessage();
             return false;
         }
 
