@@ -391,12 +391,24 @@ class User extends Base
 
         $where = [];
         $where[] = ['user_id', '=', $request['id']];
+        $allocates = MemberAllocate::where($where)->select();
+        // $result = $allocate->save(['user_id'=>$request['staff'], 'delete_user_id'=>$request['id']], $where);
+        $totals = 0;
+        foreach ($allocates as $allocate) {
+            $rs = $allocate->save(['user_id'=>$request['staff'], 'delete_user_id'=>$request['id']]);
+            if ($rs) {
+                $totals = $totals + 1;
+            }
+        }
 
-        $allocate = new MemberAllocate();
-        $result = $allocate->save(['user_id'=>$request['staff'], 'delete_user_id'=>$request['id']], $where);
+        if ($totals > 0) {
+            $result = true;
+        } else {
+            $result = false;
+        }
 
         if($result) {
-            return json(['code'=>'200', 'msg'=>'离职员工客资分配成功']);
+            return json(['code'=>'200', 'msg'=>"离职员工客资分配成功,{$totals}个"]);
         } else {
             return json(['code'=>'500', 'msg'=>'离职员工客资分配失败']);
         }
