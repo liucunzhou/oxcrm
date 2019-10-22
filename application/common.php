@@ -27,6 +27,7 @@ if(!function_exists('csv_convert_encoding')) {
     function csv_convert_encoding($data)
     {
         $encoding = mb_detect_encoding($data);
+        echo $encoding;
         if(strtolower($encoding) != 'utf-8') {
             $data = mb_convert_encoding($data, 'UTF-8', ['Unicode', 'ASCII', 'GB2312', 'GBK', 'UTF-8', 'ISO-8859-1']);
         }
