@@ -21,7 +21,10 @@ class File extends Base
             $data['origin_file_name'] = $origin['name'];
             $data['new_file_name'] = $info->getFileName();
             $data['new_file_path'] = $info->getPathname();
+
+            print_r($info);
             $readRs = $this->readCsv($data['new_file_path']);
+            var_dump($readRs);
             if(!$readRs['result']) {
                 return json([
                     'code'  => '200',
