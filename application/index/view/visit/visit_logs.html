@@ -20,6 +20,7 @@
                 <td>{$newsTypes[$customer['news_type']]}</td>
                 <td>客资渠道</td>
                 <td>{$customer['source_text']}</td>
+
             </tr>
             <tr>
                 <td>联系人</td>
@@ -46,7 +47,9 @@
             </tr>
             <tr>
                 <td>备注</td>
-                <td colspan="5">{$customer['remark']}</td>
+                <td colspan="3">{$customer['remark']}</td>
+                <td>重复渠道</td>
+                <td>{$customer['repeat_log']}</td>
             </tr>
         </table>
         <{if $user['role_id']!='9'}>
