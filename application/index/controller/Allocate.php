@@ -198,7 +198,7 @@ class Allocate extends Base
         $map[] = ['type', '=', 1];
         $uploadCustomers = UploadCustomerLog::where($map)->select();
         $Mobile = new Mobile();
-        $MemberModel = new Member();
+
         foreach ($uploadCustomers as $key => $customer) {
             $sourceText = $customer->source_text;
             $cityText = $customer->city_text;
@@ -212,9 +212,10 @@ class Allocate extends Base
             $data['operate_id'] = $this->user['id'];
             $data['create_time'] = $time;
             $data['upload_file_id'] = $request['id'];
+            $MemberModel = new Member();
             $result = $MemberModel->insert($data);
             if ($result) {
-                $data['member_id'] = $MemberModel->getLastInsID();
+                $data['member_id'] = $MemberModel->id;
                 $member[] = $data;
                 $Mobile->insert(['mobile'=>$customer->mobile, 'member_id'=>$data['member_id']]);
             }
