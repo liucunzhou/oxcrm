@@ -215,7 +215,7 @@ class Allocate extends Base
             $MemberModel = new Member();
             $result = $MemberModel->insert($data);
             if ($result) {
-                $data['member_id'] = $result->id;
+                $data['member_id'] = $MemberModel->getLastInsID();
                 $member[] = $data;
                 $Mobile->insert(['mobile'=>$customer->mobile, 'member_id'=>$data['member_id']]);
             }
