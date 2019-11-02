@@ -27,29 +27,16 @@
                         <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
                             <div class="layui-form-item">
                                 <div class="layui-inline">
-                                    <select name="operate_id" lay-verify="" lay-search>
-                                        <option value="">发布人</option>
+                                    <select name="staff" lay-verify="" lay-search>
+                                        <option value="">员工列表</option>
                                         <{foreach name="staffes" item="val"}>
-                                            <{if $get['operate_id'] == $val['id']}>
+                                            <{if $get['staff'] == $val['id']}>
                                                 <option value="{$val['id']}" selected="selected">{$val['realname']}</option>
                                             <{else /}>
                                                 <option value="{$val['id']}">{$val['realname']}</option>
                                             <{/if}>
                                         <{/foreach}>
                                     </select>
-                                </div>
-                                    
-                                <div class="layui-inline">
-                                    <select name="staff" lay-verify="" lay-search>
-                                    <option value="">员工列表</option>
-                                    <{foreach name="staffes" item="val"}>
-                                        <{if $get['staff'] == $val['id']}>
-                                            <option value="{$val['id']}" selected="selected">{$val['realname']}</option>
-                                        <{else /}>
-                                            <option value="{$val['id']}">{$val['realname']}</option>
-                                        <{/if}>
-                                    <{/foreach}>
-                                </select>
                                 </div>
 
                                 <div class="layui-inline">
@@ -71,7 +58,7 @@
 
                                 <div class="layui-inline">
                                     <select name="allocate_type" lay-verify="" lay-search>
-                                        <option value="-1">分配方式</option>
+                                        <option value="-1">所有方式</option>
                                         <{foreach name="allocateTypes" item="val"}>
                                             <{if $get['allocate_type'] == $key}>
                                                 <option value="{$key}" selected>{$val}</option>
