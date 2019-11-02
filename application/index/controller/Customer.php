@@ -63,6 +63,7 @@ class Customer extends Base
 
             $cities = Region::getCityList(0);
             $this->assign('cities', $cities);
+            $this->assign('allocateTypes', $this->allocateTypes);
         }
     }
 

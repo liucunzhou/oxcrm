@@ -190,6 +190,10 @@ class Search
             $map[] = ['source_id', '=', $get['source']];
         }
 
+        if (isset($get['allocate_type']) && $get['allocate_type'] > 0) {
+            $map[] = ['allocate_type', '=', $get['allocate_type']];
+        }
+
         if (isset($get['city_id']) && $get['city_id'] > 0) {
             $map[] = ['city_id', '=', $get['city_id']];
         }
@@ -205,6 +209,14 @@ class Search
 
             case 15: // 客服经理
                 if ($action == 'wash') {
+                    if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                        $staffs = User::getUsersByDepartmentId(14);
+                        $map[] = ['operate_id', 'in', $staffs];
+                    } else if (!empty($get['staff'])) {
+                        $map[] = ['operate_id', '=', $get['operate_id']];
+                    } else {
+                        $map[] = ['operate_id', '=', $user['id']];
+                    }
 
                     if (!empty($get['staff']) && $get['staff'] == 'all') {
                         $staffs = User::getUsersByDepartmentId(14);
@@ -216,6 +228,14 @@ class Search
                     }
 
                 } else if ($action == 'recommend') {
+                    if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                        $staffs = User::getUsersByDepartmentId(14);
+                        $map[] = ['operate_id', 'in', $staffs];
+                    } else if (!empty($get['staff'])) {
+                        $map[] = ['operate_id', '=', $get['operate_id']];
+                    } else {
+                        $map[] = ['operate_id', '=', $user['id']];
+                    }
 
                     if (!empty($get['staff']) && $get['staff'] == 'all') {
                         $staffs = User::getUsersByDepartmentId(15);
@@ -237,6 +257,15 @@ class Search
                 }
                 break;
             case 7: // 洗单组主管
+                if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                    $staffs = User::getUsersByDepartmentId(14);
+                    $map[] = ['operate_id', 'in', $staffs];
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['operate_id', '=', $get['operate_id']];
+                } else {
+                    $map[] = ['operate_id', '=', $user['id']];
+                }
+
                 if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if(!empty($get['staff'])) {
@@ -249,6 +278,15 @@ class Search
                 $map[] = ['user_id', '=', $user['id']];
                 break;
             case 3: // 推荐组主管
+                if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                    $staffs = User::getUsersByDepartmentId(14);
+                    $map[] = ['operate_id', 'in', $staffs];
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['operate_id', '=', $get['operate_id']];
+                } else {
+                    $map[] = ['operate_id', '=', $user['id']];
+                }
+                
                 if (!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if (!empty($get['staff'])) {
@@ -261,6 +299,15 @@ class Search
                 if(!isset($get['staff']) || empty($get['staff']))  $map[] = ['user_id', '=', $user['id']];
                 break;
             case 10: // 派单组主管
+                if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                    $staffs = User::getUsersByDepartmentId(14);
+                    $map[] = ['operate_id', 'in', $staffs];
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['operate_id', '=', $get['operate_id']];
+                } else {
+                    $map[] = ['operate_id', '=', $user['id']];
+                }
+                
                 if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if(!empty($get['staff'])) {
@@ -273,6 +320,15 @@ class Search
                 $map[] = ['user_id', '=', $user['id']];
                 break;
             case 5: // 门店主管
+                if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                    $staffs = User::getUsersByDepartmentId(14);
+                    $map[] = ['operate_id', 'in', $staffs];
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['operate_id', '=', $get['operate_id']];
+                } else {
+                    $map[] = ['operate_id', '=', $user['id']];
+                }
+
                 if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if (!empty($get['staff'])) {
@@ -282,6 +338,15 @@ class Search
                 }
                 break;
             case 6:
+                if (!empty($get['operate_id']) && $get['operate_id'] == 'all') {
+                    $staffs = User::getUsersByDepartmentId(14);
+                    $map[] = ['operate_id', 'in', $staffs];
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['operate_id', '=', $get['operate_id']];
+                } else {
+                    $map[] = ['operate_id', '=', $user['id']];
+                }
+                
                 if(!empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
                 } else if (!empty($get['staff'])) {
