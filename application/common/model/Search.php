@@ -244,7 +244,7 @@ class Search
                     if (!empty($get['staff']) && $get['staff'] == 'all') {
                         $staffs = User::getUsersByDepartmentId(15);
                         $map[] = ['user_id', 'in', $staffs];
-                    } else if (!empty($get['operate_id'])) {
+                    } else if (!empty($get['staff'])) {
                         $map[] = ['user_id', '=', $get['staff']];
                     } else {
                         $map[] = ['user_id', '=', $user['id']];
@@ -263,7 +263,7 @@ class Search
 
                     if (!empty($get['staff']) && $get['staff'] == 'all') {
                         $map[] = self::getUserStaffs($user);
-                    } else if (!empty($get['operate_id'])) {
+                    } else if (!empty($get['staff'])) {
                         $map[] = ['user_id', '=', $get['staff']];
                     } else {
                         $map[] = ['user_id', '=', $user['id']];
