@@ -30,7 +30,7 @@
                                     <select name="operate_id" lay-verify="" lay-search>
                                         <option value="">发布人</option>
                                         <{foreach name="staffes" item="val"}>
-                                            <{if $get['staff'] == $val['id']}>
+                                            <{if $get['operate_id'] == $val['id']}>
                                                 <option value="{$val['id']}" selected="selected">{$val['realname']}</option>
                                             <{else /}>
                                                 <option value="{$val['id']}">{$val['realname']}</option>
