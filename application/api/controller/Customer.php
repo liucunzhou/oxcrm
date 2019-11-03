@@ -546,7 +546,6 @@ class Customer extends Base
             }
         }
 
-
         ### 同步来源名称
         if (isset($post['source_id']) && $post['source_id'] > 0) {
             $post['source_text'] = $this->sources[$post['source_id']]['title'];
@@ -563,6 +562,7 @@ class Customer extends Base
 
         ### 新添加客资要加入到分配列表中
         $post['operate_id'] = $this->user['id'];
+        $post['allocate_type'] = 3;
         MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
 
         if ($result1) {
