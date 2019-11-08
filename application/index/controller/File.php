@@ -139,7 +139,6 @@ class File extends Base
 
             ### 手机号
             $row[1] = clear_both_blank($row[1]);
-            var_dump($row[1]);
             $originMember = Member::checkFromMobileSet($row[1], true);
             if (!empty($originMember)) {
                 if (!empty($originMember->repeat_log)) {
