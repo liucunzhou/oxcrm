@@ -139,7 +139,7 @@ class Customer extends Base
                 foreach ($data as &$value) {
                     $value['get_customer_from_dispatch'] = '索取';
                     $value['operator'] = $users[$value['operate_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                     $value['dispatch_assign_status'] = $value['dispatch_assign_status'] ? "已分配" : "未分配";
@@ -175,12 +175,12 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                     $value['allocate_time'] = $value['create_time'];
-                    $value['assign_status'] = $value['assign_status'] ? '已分配': '未分配';
+                    $value['assign_status'] = $value['assign_status'] ? '已分配' : '未分配';
 
                     if ($value['member_id'] > 0) {
                         $memberObj = Member::get($value['member_id']);
@@ -229,9 +229,9 @@ class Customer extends Base
             'page' => $get['page']
         ];
         $map = Search::customerMine($this->user, $get);
-        if(isset($get['keywords']) && !empty($get['keywords'])){
+        if (isset($get['keywords']) && !empty($get['keywords'])) {
             $get['keywords'] = trim($get['keywords']);
-            preg_match_all('/\d+/',$get['keywords'],$arr);
+            preg_match_all('/\d+/', $get['keywords'], $arr);
 
         }
 
@@ -257,16 +257,16 @@ class Customer extends Base
                 $value['allocate_type'] = $this->allocateTypes[$allocateType];
                 $value['operator'] = $users[$value['operate_id']]['realname'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                 $value['allocate_time'] = $value['create_time'];
-                $value['assign_status'] = $value['assign_status'] ? '已分配': '未分配';
+                $value['assign_status'] = $value['assign_status'] ? '已分配' : '未分配';
 
                 if ($value['member_id'] > 0) {
                     $memberObj = Member::get($value['member_id']);
-                    $value['visit_amount'] = $this->user['role_id']!=9 ? $memberObj->visit_amount : '-';
+                    $value['visit_amount'] = $this->user['role_id'] != 9 ? $memberObj->visit_amount : '-';
                     $value['remark'] = $memberObj->remark;
                     if ($value['member_create_time'] > 0) {
                         $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
@@ -333,7 +333,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -385,7 +385,7 @@ class Customer extends Base
     public function wash()
     {
         $get = Request::param();
-        if(Request::isAjax()) {
+        if (Request::isAjax()) {
             $config = [
                 'page' => $get['page']
             ];
@@ -409,7 +409,7 @@ class Customer extends Base
                 $map[] = ['mobile', '=', $get['keywords']];
             }
 
-            if(isset($get['status']) && $get['status'] == 0) {
+            if (isset($get['status']) && $get['status'] == 0) {
                 $order = 'create_time asc';
             } else {
                 $order = 'create_time desc';
@@ -424,7 +424,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -514,7 +514,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    substr_replace($value['mobile'], '***', 3, 3);
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -730,7 +730,7 @@ class Customer extends Base
             $users = User::getUsers();
             foreach ($data as &$value) {
                 $value['operator'] = $users[$value['operate_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
@@ -745,7 +745,7 @@ class Customer extends Base
                 'msg' => '获取数据成功',
                 'pages' => $list->lastPage(),
                 'count' => $list->total(),
-                'map'   => $map,
+                'map' => $map,
                 'data' => $data
             ];
 
@@ -753,7 +753,7 @@ class Customer extends Base
 
         } else {
 
-            if(strlen($get['keywords']) == 11) {
+            if (strlen($get['keywords']) == 11) {
                 $this->assign('showGetEntireBtn', 1);
             } else {
                 $this->assign('showGetEntireBtn', 2);
@@ -818,7 +818,7 @@ class Customer extends Base
                     $value['next_visit_time'] = date('Y-m-d H:i', $value['next_visit_time']);
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -832,7 +832,7 @@ class Customer extends Base
 
                     if ($value['member_id'] > 0) {
                         $memberObj = Member::get($value['member_id']);
-                        $value['visit_amount'] = $this->user['role_id']!=9 ? $memberObj->visit_amount : '-';
+                        $value['visit_amount'] = $this->user['role_id'] != 9 ? $memberObj->visit_amount : '-';
                     }
                 }
                 $result = [
@@ -840,7 +840,7 @@ class Customer extends Base
                     'msg' => '获取数据成功',
                     'count' => $list->total(),
                     'data' => $data,
-                    'map'   => $map
+                    'map' => $map
                 ];
 
             } else {
@@ -855,7 +855,7 @@ class Customer extends Base
             return json($result);
 
         } else {
-            if($this->user['role_id'] == 9) {
+            if ($this->user['role_id'] == 9) {
                 $view = 'today_merchant';
             } else {
                 $view = 'today';
@@ -982,7 +982,7 @@ class Customer extends Base
             $Model = new \app\common\model\Member();
             $Model->member_no = date('YmdHis') . rand(100, 999);
             ### 验证手机号唯一性
-            if(empty($post['mobile1'])) {
+            if (empty($post['mobile1'])) {
                 $originMember = $Model::checkFromMobileSet($post['mobile'], false);
                 if ($originMember) {
                     return xjson([
@@ -1002,7 +1002,7 @@ class Customer extends Base
             }
 
             $Model->operate_id = $this->user['id'];
-            if(in_array($this->user['role_id'], [5,6,8,26])) {
+            if (in_array($this->user['role_id'], [5, 6, 8, 26])) {
                 $post['add_source'] = 1; // 代表来源登陆手机端，会进入派单组公海
             }
         }
@@ -1024,17 +1024,17 @@ class Customer extends Base
 
         if ($result1) {
             ### 将手机号添加到手机号库
-            if(empty($post['id'])) {
+            if (empty($post['id'])) {
                 $memberId = $Model->id;
             } else {
                 $memberId = $post['id'];
             }
             $mobileModel = new Mobile();
-            $mobileModel->insert(['mobile'=>$post['mobile'],'member_id'=>$memberId]);
+            $mobileModel->insert(['mobile' => $post['mobile'], 'member_id' => $memberId]);
 
             ### 将手机号1添加到手机号库
-            if(!empty($post['mobile1'])) {
-                $mobileModel->insert(['mobile'=>$post['mobile1'], 'member_id'=>$memberId]);
+            if (!empty($post['mobile1'])) {
+                $mobileModel->insert(['mobile' => $post['mobile1'], 'member_id' => $memberId]);
             }
 
             ### 添加操作记录
@@ -1052,8 +1052,8 @@ class Customer extends Base
         $post = Request::post();
         if (empty($post['id'])) {
             return json([
-                'code'  => '500',
-                'msg'   => '参数错误'
+                'code' => '500',
+                'msg' => '参数错误'
             ]);
         }
 
@@ -1191,7 +1191,7 @@ class Customer extends Base
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
-                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['hotel_id'] = $this->hotels[$value['hotel_id']]['title'];
                 if ($this->auth['is_show_alias'] == '1') {
