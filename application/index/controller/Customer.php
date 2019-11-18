@@ -514,7 +514,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);;
+                    substr_replace($value['mobile'], '***', 3, 3);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";

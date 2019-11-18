@@ -124,7 +124,7 @@ class Customer extends Base
         $users = User::getUsers();
         foreach ($data as &$value) {
             $value['operator'] = $users[$value['operate_id']]['realname'];
-            $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);
+            $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
             $value['news_type'] = $this->newsTypes[$value['news_type']];
             $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
