@@ -124,7 +124,7 @@ class Customer extends Base
         $users = User::getUsers();
         foreach ($data as &$value) {
             $value['operator'] = $users[$value['operate_id']]['realname'];
-            $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
+            $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);
             $value['news_type'] = $this->newsTypes[$value['news_type']];
             $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
@@ -251,7 +251,7 @@ class Customer extends Base
         $users = User::getUsers();
         foreach ($data as &$value) {
             $value['operator'] = $users[$value['operate_id']]['realname'];
-            $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
+            $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);
             $value['news_type'] = $this->newsTypes[$value['news_type']];
             $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
@@ -303,7 +303,7 @@ class Customer extends Base
             foreach ($data as &$value) {
                 $value['operator'] = $users[$value['operate_id']]['realname'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
+                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -366,7 +366,7 @@ class Customer extends Base
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
-                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
+                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['hotel_id'] = $this->hotels[$value['hotel_id']]['title'];
                 if ($this->auth['is_show_alias'] == '1') {
@@ -677,7 +677,7 @@ class Customer extends Base
                 $member['member_id'] = $member['id'];
                 unset($member['id']);
                 $value = array_merge($value, $member);
-                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
+                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 3);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['hotel_id'] = $this->hotels[$value['hotel_id']]['title'];
                 $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
