@@ -139,7 +139,7 @@ class Customer extends Base
                 foreach ($data as &$value) {
                     $value['get_customer_from_dispatch'] = '索取';
                     $value['operator'] = $users[$value['operate_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                     $value['dispatch_assign_status'] = $value['dispatch_assign_status'] ? "已分配" : "未分配";
@@ -175,7 +175,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -257,7 +257,7 @@ class Customer extends Base
                 $value['allocate_type'] = $this->allocateTypes[$allocateType];
                 $value['operator'] = $users[$value['operate_id']]['realname'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -333,7 +333,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -424,7 +424,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -514,7 +514,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -604,7 +604,7 @@ class Customer extends Base
                     $value['allocate_type'] = $this->allocateTypes[$allocateType];
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -730,7 +730,7 @@ class Customer extends Base
             $users = User::getUsers();
             foreach ($data as &$value) {
                 $value['operator'] = $users[$value['operate_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
@@ -818,7 +818,7 @@ class Customer extends Base
                     $value['next_visit_time'] = date('Y-m-d H:i', $value['next_visit_time']);
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                    $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                     $value['news_type'] = $this->newsTypes[$value['news_type']];
                     $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                     $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -1191,7 +1191,7 @@ class Customer extends Base
                 unset($member['id']);
                 unset($value['member']);
                 $value = array_merge($value, $member);
-                $value['mobile'] = substr_replace($value['mobile'], '****', 3, 4);
+                $value['mobile'] = substr_replace($value['mobile'], '****', 2, 4);
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['hotel_id'] = $this->hotels[$value['hotel_id']]['title'];
                 if ($this->auth['is_show_alias'] == '1') {
