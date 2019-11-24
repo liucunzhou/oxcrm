@@ -735,6 +735,7 @@ class Allocate extends Base
         $data['active_status'] = $status;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
+        $data['allocate_type'] = 0;
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->insert($data);
 
@@ -802,6 +803,7 @@ class Allocate extends Base
         $data['active_status'] = 1;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
+        $data['allocate_type'] = 0;
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->insert($data);
         // 更新分配状态
@@ -954,6 +956,7 @@ class Allocate extends Base
         $data['assign_status'] = 0;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
+        $data['allocate_type'] = 0;
         unset($data['id']);
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->allowField(true)->save($data);
@@ -1005,6 +1008,7 @@ class Allocate extends Base
         $data['assign_status'] = 0;
         $data['active_assign_status'] = 0;
         $data['possible_assign_status'] = 0;
+        $data['allocate_type'] = 0;
         unset($data['id']);
         $MemberAllocate = new MemberAllocate();
         $result1 = $MemberAllocate->allowField(true)->save($data);
