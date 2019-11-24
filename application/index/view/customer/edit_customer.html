@@ -287,6 +287,7 @@
         });
 
         form.on("select(hotel_id)", function (data) {
+            form.render("select");
             console.log(data);
             let text = $("#hotel_id").find("option:selected").text();
             let target = "#hotel_text";

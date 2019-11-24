@@ -250,6 +250,9 @@ class Visit extends Base
 
         $data = \app\common\model\Member::get($get['member_id']);
         if (!empty($data['area_id'])) $data['area_id'] = explode(',', $data['area_id']);
+        if(!strpos($data['wedding_date'], '~')) {
+            $data['wedding_date'] .= '~'.$data['wedding_date'];
+        }
         $this->assign('data', $data);
 
         $cities = Region::getCityList(0);

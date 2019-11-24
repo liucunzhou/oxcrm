@@ -221,6 +221,7 @@
             var url = '{:url("Region/getCityList")}';
             $.post(url, {id:data.value}, function (result) {
                 console.log(result);
+
                 var getTpl = optionsTpl.innerHTML;
                 laytpl(getTpl).render(result, function(html){
                     $("#city_id").html(html);
@@ -276,6 +277,7 @@
         });
 
         form.on("select(hotel_id)", function (data) {
+            form.render("select");
             console.log(data);
             let text = $("#hotel_id").find("option:selected").text();
             let target = "#hotel_text";
