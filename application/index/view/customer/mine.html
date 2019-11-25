@@ -84,6 +84,9 @@
 
                                 <div class="layui-inline ">
                                     <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                                    <{if $user[ 'nickname']=='admin' }>
+                                    <a class="layui-btn" target="_blank" href="{:url('Customer/exportMineCustomer', $get)}">导出</a>
+                                    <{/if}>
                                     <a class="layui-btn layui-btn-primary" href="{:url('Customer/mine')}">重置</a>
                                 </div>
                             </div>

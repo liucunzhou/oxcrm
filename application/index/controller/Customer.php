@@ -219,6 +219,14 @@ class Customer extends Base
         return $result;
     }
 
+    /***
+     * 导出派单组数据
+     */
+    public function exportDispatchCustomer()
+    {
+
+    }
+
     /**
      * 除派单组外我的客资列表
      */
@@ -300,6 +308,70 @@ class Customer extends Base
 
         return $result;
     }
+
+    public function exportMineCustomer()
+    {
+        $get = Request::param();
+        $config = [
+            'page' => $get['page']
+        ];
+        $map = Search::customerMine($this->user, $get);
+        if (isset($get['keywords']) && !empty($get['keywords'])) {
+            $get['keywords'] = trim($get['keywords']);
+            preg_match_all('/\d+/', $get['keywords'], $arr);
+
+        }
+
+        if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+            $mobiles = MobileRelation::getMobiles($get['keywords']);
+            if (!empty($mobiles)) {
+                $map[] = ['mobile', 'in', $mobiles];
+            } else {
+                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+            }
+        } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
+            $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+        } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+            $map[] = ['mobile', '=', $get['keywords']];
+        }
+
+        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->select();
+        if (!empty($list)) {
+            $users = User::getUsers();
+            $data = $list->toArray();
+            foreach ($data as &$value) {
+                $allocateType = $value['allocate_type'];
+                $value['allocate_type'] = $this->allocateTypes[$allocateType];
+                $value['operator'] = $users[$value['operate_id']]['realname'];
+                $value['user_realname'] = $users[$value['user_id']]['realname'];
+                $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
+                $value['news_type'] = $this->newsTypes[$value['news_type']];
+                $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
+                $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                $value['allocate_time'] = $value['create_time'];
+                $value['assign_status'] = $value['assign_status'] ? '已分配' : '未分配';
+
+                if ($value['member_id'] > 0) {
+                    $memberObj = Member::get($value['member_id']);
+                    $value['visit_amount'] = $this->user['role_id'] != 9 ? $memberObj->visit_amount : '-';
+                    $value['remark'] = $memberObj->remark;
+                    if ($value['member_create_time'] > 0) {
+                        $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
+                    } else {
+                        $value['member_create_time'] = $memberObj->create_time;
+                    }
+                    if ($this->auth['is_show_alias'] == '1') {
+                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                    } else {
+                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                    }
+                }
+            }
+        }
+
+        return $this->download($data);
+    }
+
 
     public function wedding()
     {
@@ -505,6 +577,7 @@ class Customer extends Base
                 $map[] = ['mobile', '=', $get['keywords']];
             }
 
+
             $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
             if (!empty($list)) {
                 $users = User::getUsers();
@@ -565,6 +638,7 @@ class Customer extends Base
             return $this->fetch();
         }
     }
+
 
 
     ###  商务组
@@ -1512,5 +1586,47 @@ class Customer extends Base
             ]);
         }
 
+    }
+
+    private function download(&$list)
+    {
+        $dir = "../uploads/" . date('Ymd') . "/";
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $filename = "dump_" . date('YmdHis').'.csv';
+        $file = $dir . $filename;
+
+        $fp = fopen($file, 'w+');
+        $header = ['回访数','跟单人','客户姓名','手机号','桌数', '预算', '订婚日期', '区域', '酒店', '渠道', '回访状态', '信息类型', '备注', '获取方式', '分配时间', '创建时间'];
+        fputcsv($fp, $header);
+        foreach ($list as $customer) {
+            $row = [
+                $customer['visit_amount'],
+                $customer['operator'],
+                $customer['realname'],
+                $customer['mobile'],
+                $customer['banquet_size'],
+                $customer['budget'],
+                $customer['wedding_date'],
+                $customer['zone'],
+                $customer['hotel_text'],
+                $customer['source_text'],
+                $customer['active_status'],
+                $customer['news_type'],
+                $customer['remark'],
+                $customer['create_time'],
+                $customer['member_create_time'],
+            ];
+
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+
+        $download = new Download($file);
+        $download->mimeType('csv');
+        $download->expire(1);
+
+        return $download->name($filename);
     }
 }
