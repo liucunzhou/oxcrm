@@ -182,9 +182,10 @@ class Count extends Base
         return $this->fetch();
     }
 
-    public function storeManager()
+    #　清洗组统计
+    public function wash()
     {
-        $departments = Department::getDepartments();
+        $departments = Department::getDepartmentTree(14);
         $this->assign('departments', $departments);
 
         $request = Request::param();
@@ -197,134 +198,83 @@ class Count extends Base
         }
 
         if ($request['department_id']) {
-
             $userIds = User::getUsersByDepartmentId($request['department_id']);
-            if (!empty($userIds) && !empty($request['create_time'])) {
+            if(!empty($request['member_create_time'])) {
+                $range = $this->getDateRange($request['member_create_time']);
+                $dateType = 'member_create_time';
+            } else if(!empty($request['create_time'])) {
                 $range = $this->getDateRange($request['create_time']);
-
-                ### 客资总数
-                $map = [];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[0] = MemberAllocate::where($map)->count();
-
-                ### 未跟进统计
-                $map = [];
-                $map[] = ['active_status', '=', 0];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[1] = MemberAllocate::where($map)->count();
-
-                ### 跟进中
-                $map = [];
-                $map[] = ['active_status', '=', 1];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[2] = MemberAllocate::where($map)->count();
-
-                ### 有效客资
-                $map = [];
-                $map[] = ['active_status', '=', 5];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[3] = MemberAllocate::where($map)->count();
-
-                ### 有效客资
-                $map = [];
-                $map[] = ['active_status', '=', 5];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[3] = MemberAllocate::where($map)->count();
-
-                ### 意向客户
-                $map = [];
-                $map[] = ['active_status', '=', 6];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[4] = MemberAllocate::where($map)->count();
-
-                ### 无效客户
-                $map = [];
-                $map[] = ['active_status', '=', 4];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[5] = MemberAllocate::where($map)->count();
-
-                ### 失效客户
-                $map = [];
-                $map[] = ['active_status', '=', 3];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                $total[6] = MemberAllocate::where($map)->count();
-
-                ### 重单
-                // $map = [];
-                // $map[] = ['repeat_log', '<>', ''];
-                // $map[] = ['user_id', 'in', $userIds];
-                // $total[7] = MemberAllocate::where($map)->count();
-
-                $this->assign('total', $total);
-
-                $map = [];
-                $map[] = ['source_text', '<>', ''];
-                $map[] = ['user_id', 'in', $userIds];
-                $map[] = ['create_time', 'between', $range];
-                if ($dimension == 'source') {
-                    $result = MemberAllocate::where($map)->field('source_text,active_status,count(*) as amount')->group('source_text,active_status')->select();
-                    if (!empty($result)) {
-                        $groupSource = [];
-                        $groupData = $result->toArray();
-                        foreach ($groupData as $key => $value) {
-                            $k = $value['source_text'];
-                            $activeStatus = $value['active_status'];
-                            $groupSource[$k][$activeStatus] = $value['amount'];
-                            $groupSource[$k]['text'] = $value['source_text'];
-                        }
-
-                        $totalsArr = [];
-                        foreach ($groupSource as &$group) {
-                            $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                            $group[100] = $total;
-                            $totalsArr[] = $total;
-                        }
-
-                        $totalSum = array_sum($totalsArr);
-                        $groupSource['总计'][100] = $totalSum;
-                        $this->assign('groupSource', $groupSource);
-                    }
-                } else {
-                    $users = User::getUsers();
-                    $result = MemberAllocate::where($map)->field('user_id,active_status,count(*) as amount')->group('user_id,active_status')->select();
-                    if (!empty($result)) {
-                        $groupSource = [];
-                        $groupData = $result->toArray();
-                        foreach ($groupData as $key => $value) {
-                            $userId = $value['user_id'];
-                            $activeStatus = $value['active_status'];
-                            $groupSource[$userId][$activeStatus] = $value['amount'];
-                            $groupSource[$userId]['text'] = $users[$value['user_id']]['realname'];
-                        }
-
-                        $totalsArr = [];
-                        foreach ($groupSource as &$group) {
-                            $total = (int)$group[0] + (int)$group[1] + (int)$group[5] + (int)$group[6] + (int)$group[3] + (int)$group[4];
-                            $group[100] = $total;
-                            $totalsArr[] = $total;
-                        }
-
-                        $totalSum = array_sum($totalsArr);
-                        $groupSource['总计'][100] = $totalSum;
-                        $this->assign('groupSource', $groupSource);
-                    }
-                }
+                $dateType = 'create_time';
+            } else {
+                $today = date('Y-m-d');
+                $range = $this->getDateRange($today);
+                $dateType = 'member_create_time';
             }
+
+            if (!empty($userIds)) {
+                if ($dimension == 'source') {
+                    $group = $this->groupBySource($userIds, $range, $dateType);
+                } else {
+                    $group = $this->groupByStaff($userIds, $range, $dateType);
+                    $users = User::getUsers();
+
+                    $this->assign('users', $users);
+                }
+
+                $this->assign('group', $group);
+
+                $totals = [];
+                // 总数
+                $totalsArr = array_column($group, 'total');
+                $totals['total'] = array_sum($totalsArr);
+                // 总未跟进
+                $novisitArr = array_column($group, 'novisit');
+                $totals['novisit'] = array_sum($novisitArr);
+                // 总跟进中
+                $visitingArr = array_column($group, 'visiting');
+                $totals['visiting'] = array_sum($visitingArr);
+                // 总有效
+                $effectiveArr = array_column($group, 'effective');
+                $totals['effective'] = array_sum($effectiveArr);
+                // 总意向
+                $possibleArr = array_column($group, 'possible');
+                $totals['possible'] = array_sum($possibleArr);
+                // 总无效
+                $invalidArr = array_column($group, 'invalid');
+                $totals['invalid'] = array_sum($invalidArr);
+                // 总失效
+                $loseArr = array_column($group, 'lose');
+                $totals['lose'] = array_sum($loseArr);
+                // 总进店
+                $intoStoreArr = array_column($group, 'into_store');
+                $totals['into_store'] = array_sum($intoStoreArr);
+                // 总订单
+                $orderArr = array_column($group, 'order');
+                $totals['order'] = array_sum($orderArr);
+                $this->assign('totals', $totals);
+            }
+
         }
 
+        $request['create_time'] = str_replace('+', '', $request['create_time']);
+        $request['member_create_time'] = str_replace('+', '', $request['member_create_time']);
         $this->assign('request', $request);
         return $this->fetch();
     }
 
+    # 推荐组统计
+    public function recommend()
+    {
+        return $this->fetch();
+    }
 
+    # 派单组
+    public function dispatch()
+    {
+        return $this->fetch();
+    }
+
+    ## 店长统计
     public function storeAreaManager()
     {
         $departments = Department::getDepartments();
@@ -404,6 +354,7 @@ class Count extends Base
         return $this->fetch();
     }
 
+    # 员工统计
     public function countStaffSource()
     {
         $request = Request::param();
@@ -561,6 +512,7 @@ class Count extends Base
         return $data;
     }
 
+    # 这个分类是一个总的统计，每个部门需要按照每个部门的来
     private function groupBySource($userIds, $dateRange, $dateType='member_create_time')
     {
         // $map[] = ['source_text', '<>', ''];

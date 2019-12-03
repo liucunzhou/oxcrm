@@ -392,10 +392,11 @@ class User extends Base
         $where = [];
         $where[] = ['user_id', '=', $request['id']];
         $allocates = MemberAllocate::where($where)->select();
-        // $result = $allocate->save(['user_id'=>$request['staff'], 'delete_user_id'=>$request['id']], $where);
+
         $totals = 0;
         foreach ($allocates as $allocate) {
-            $rs = $allocate->save(['user_id'=>$request['staff'], 'delete_user_id'=>$request['id']]);
+            $data = $allocate->getData();
+            $rs = MemberAllocate::updateAllocateData($request['staff'], $allocate->member_id, $data);
             if ($rs) {
                 $totals = $totals + 1;
             }

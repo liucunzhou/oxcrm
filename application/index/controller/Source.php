@@ -89,6 +89,7 @@ class Source extends Base
 
         // 缺少字段验证
         $result = $Model->save($post);
+        var_dump($result);
 
         if($result) {
             ### 更新缓存

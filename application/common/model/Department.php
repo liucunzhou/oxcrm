@@ -30,6 +30,16 @@ class Department extends Model
         return $data;
     }
 
+    public static function getDepartmentTree($departmentId)
+    {
+        $department = self::getDepartment($departmentId);
+        $map = [];
+        $map[] = ['path', 'like', "{$department['path']}%"];
+        $departments = self::where($map)->column('id,parent_id,title,depth', 'id');
+
+        return $departments;
+    }
+
     public static function getTree($departmentId)
     {
         $department = self::getDepartment($departmentId);
