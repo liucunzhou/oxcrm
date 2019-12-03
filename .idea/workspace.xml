@@ -2,42 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/count/dispatch.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/count/recommend.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/count/wash.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/backup" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/confirm_order_accounting.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/confirm_order_cashier.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/confirm_order_finance.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/confirm_order_score.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/confirm_order_source.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/create_order_banquet.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/create_order_wedding.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/order_entire_cashier.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/order_entire_finance.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/order_entire_score.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/order_entire_source.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/application/index/view/order/order_wedding.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/assets/fields/customer/admin.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/assets/fields/customer/other.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/assets/json/mine/admin.js" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/application/common/model/Department.php" afterPath="$PROJECT_DIR$/application/common/model/Department.php" />
-      <change beforePath="$PROJECT_DIR$/application/index/controller/Count.php" afterPath="$PROJECT_DIR$/application/index/controller/Count.php" />
-      <change beforePath="$PROJECT_DIR$/application/index/controller/Order.php" afterPath="$PROJECT_DIR$/application/index/controller/Order.php" />
-      <change beforePath="$PROJECT_DIR$/application/index/controller/Source.php" afterPath="$PROJECT_DIR$/application/index/controller/Source.php" />
-      <change beforePath="$PROJECT_DIR$/application/index/controller/User.php" afterPath="$PROJECT_DIR$/application/index/controller/User.php" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/customer/mine.html" afterPath="$PROJECT_DIR$/application/index/view/customer/mine.html" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/banquet.html" afterPath="$PROJECT_DIR$/application/index/view/order/order_banquet.html" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/edit_banquet_order.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/edit_entire_order.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/edit_finance_order.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/edit_full_order.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/edit_order.html" afterPath="$PROJECT_DIR$/application/index/view/order/create_order.html" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/edit_wedding_order.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/index.html" afterPath="$PROJECT_DIR$/application/index/view/order/order_entire_accounting.html" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/order_apply.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/application/index/view/order/wedding.html" afterPath="$PROJECT_DIR$/application/index/view/order/order_entire.html" />
+      <change beforePath="$PROJECT_DIR$/application/index/view/order/create_order.html" afterPath="$PROJECT_DIR$/application/index/view/order/create_order.html" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,11 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Order.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Order.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/controller/Order.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="44" column="14" lean-forward="true" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
+            <state relative-caret-position="479">
+              <caret line="62" column="40" lean-forward="true" selection-start-line="62" selection-start-column="40" selection-end-line="62" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -82,7 +48,7 @@
         <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="532">
-              <caret line="119" column="32" lean-forward="true" selection-start-line="119" selection-start-column="32" selection-end-line="119" selection-end-column="32" />
+              <caret line="119" column="32" lean-forward="false" selection-start-line="119" selection-start-column="32" selection-end-line="119" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -101,9 +67,28 @@
       <file leaf-file-name="order_entire_score.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire_score.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="378">
+              <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create_order.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/index/view/order/create_order.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="717">
+              <caret line="247" column="46" lean-forward="false" selection-start-line="247" selection-start-column="46" selection-end-line="247" selection-end-column="46" />
+              <folding>
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -143,16 +128,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="406">
               <caret line="316" column="46" lean-forward="false" selection-start-line="316" selection-start-column="46" selection-end-line="316" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="confirm_order_accounting.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/index/view/order/confirm_order_accounting.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="30" column="66" lean-forward="false" selection-start-line="30" selection-start-column="66" selection-end-line="30" selection-end-column="66" />
               <folding />
             </state>
           </provider>
@@ -246,9 +221,9 @@
         <option value="$PROJECT_DIR$/application/index/view/order/wedding.html" />
         <option value="$PROJECT_DIR$/application/index/view/order/index.html" />
         <option value="$PROJECT_DIR$/application/index/view/order/backup" />
-        <option value="$PROJECT_DIR$/application/index/view/order/create_order.html" />
         <option value="$PROJECT_DIR$/application/index/view/order/order_entire.html" />
         <option value="$PROJECT_DIR$/application/index/controller/Order.php" />
+        <option value="$PROJECT_DIR$/application/index/view/order/create_order.html" />
       </list>
     </option>
   </component>
@@ -614,7 +589,7 @@
       <workItem from="1574506551522" duration="8333000" />
       <workItem from="1574657171692" duration="3079000" />
       <workItem from="1575071488714" duration="6292000" />
-      <workItem from="1575193696254" duration="20112000" />
+      <workItem from="1575193696254" duration="21499000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -648,7 +623,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="795252000" />
+    <option name="totallyTimeSpent" value="796639000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1036,25 +1011,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/create_order.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="643" column="0" lean-forward="false" selection-start-line="643" selection-start-column="0" selection-end-line="643" selection-end-column="0" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/order/create_order_banquet.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="392">
@@ -1127,22 +1083,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire_source.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="34" column="34" lean-forward="false" selection-start-line="34" selection-start-column="34" selection-end-line="34" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire_score.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire_finance.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1167,19 +1107,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire.html">
+    <entry file="file://$PROJECT_DIR$/application/index/controller/Order.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="119" column="32" lean-forward="true" selection-start-line="119" selection-start-column="32" selection-end-line="119" selection-end-column="32" />
+        <state relative-caret-position="479">
+          <caret line="62" column="40" lean-forward="true" selection-start-line="62" selection-start-column="40" selection-end-line="62" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/controller/Order.php">
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="44" column="14" lean-forward="true" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
+        <state relative-caret-position="532">
+          <caret line="119" column="32" lean-forward="false" selection-start-line="119" selection-start-column="32" selection-end-line="119" selection-end-column="32" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire_source.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="34" column="34" lean-forward="false" selection-start-line="34" selection-start-column="34" selection-end-line="34" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/order_entire_score.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="48" column="0" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/create_order.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="717">
+          <caret line="247" column="46" lean-forward="false" selection-start-line="247" selection-start-column="46" selection-end-line="247" selection-end-column="46" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#2;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
