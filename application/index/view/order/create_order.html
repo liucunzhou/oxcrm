@@ -34,7 +34,8 @@
                             <div class="layui-card">
                                 <div class="layui-card-header">合同基本信息</div>
                                 <div class="layui-card-body">
-                                    <div class="layui-form-item" show-range="0_1_2">
+                                    <!--合同信息-->
+                                    <div class="layui-form-item">
                                         <div class="layui-inline">
                                             <label class="layui-form-label">公司</label>
                                             <div class="layui-input-inline">
@@ -69,8 +70,8 @@
                                         </div>
                                     </div>
 
-
-                                    <div class="layui-form-item" show-range="0_1_2">
+                                    <!--举办日期-->
+                                    <div class="layui-form-item">
                                         <div class="layui-inline">
                                             <label class="layui-form-label">举办日期</label>
                                             <div class="layui-input-inline">
@@ -101,7 +102,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="layui-form-item" show-range="0_1_2">
+                                    <!--新浪新娘信息-->
+                                    <div class="layui-form-item">
                                         <div class="layui-inline">
                                             <label class="layui-form-label">新郎姓名</label>
                                             <div class="layui-input-inline">
@@ -127,6 +129,23 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!--研发产品信息-->
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">是否研发产品</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="realname" value="{$member['realname']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">研发产品编号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="realname" value="{$member['realname']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -135,6 +154,12 @@
                                 <div class="layui-card-header">客资基本信息</div>
                                 <div class="layui-card-body">
                                     <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">是否引流销售</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="service_fee" value="{$data['service_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
                                         <div class="layui-inline">
                                             <label class="layui-form-label">引流销售</label>
                                             <div class="layui-input-inline">
@@ -297,6 +322,22 @@
                                             <label class="layui-form-label">婚宴总金额</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="income_fee" value="{$data['income_fee']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--研发产品信息-->
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">是否研发产品</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="realname" value="{$member['realname']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-inline">
+                                            <label class="layui-form-label">研发产品编号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="realname" value="{$member['realname']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                                             </div>
                                         </div>
                                     </div>

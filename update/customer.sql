@@ -207,3 +207,4 @@ create table tk_member_apply(
   delete_time int not null default 0
 );
 
+
