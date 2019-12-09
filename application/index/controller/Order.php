@@ -153,6 +153,7 @@ class Order extends Base
     }
 
 
+    # 创建订单
     public function createOrder()
     {
         $get = Request::param();
@@ -164,8 +165,18 @@ class Order extends Base
         $member = Member::get($get['member_id']);
         $this->assign('member', $member);
 
+        ## 酒店列表
+        $hotels = \app\common\model\Store::getStoreList();
+        $this->assign('hotels', $hotels);
+
+        ## 宴会厅列表
         $halls = BanquetHall::getBanquetHalls();
         $this->assign('halls', $halls);
+
+        ## 获取销售列表
+        $salesmans = User::getUsersByRole(8);
+        $this->assign('salesmans', $salesmans);
+
         return $this->fetch('create_order');
     }
 

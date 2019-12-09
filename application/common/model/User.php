@@ -81,6 +81,13 @@ class User extends Model
         return $data;
     }
 
+    public static function getUsersByRole($roleId)
+    {
+        $data = self::where(['role_id'=>$roleId])->column('user_no,id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'user_no');
+
+        return $data;
+    }
+
     public static function getUsersByDepartmentId($departmentId)
     {
         $departments = Department::getTree($departmentId);
