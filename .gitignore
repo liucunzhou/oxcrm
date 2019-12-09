@@ -2,5 +2,5 @@
 /uploads
 /runtime
 /update
-.idea
+.idea/*
 .idea/workspace.xml
