@@ -1,0 +1,59 @@
+<div class="layui-card">
+    <div class="layui-card-header">婚宴基本信息</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">桌数</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="table_amount" value="{$data['table_amount']}" lay-verify="required" placeholder="桌数" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">餐标</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="table_price" value="{$data['table_price']}" lay-verify="required" placeholder="餐标" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">服务费</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="service_fee" value="{$data['service_fee']}" lay-verify="required" placeholder="服务费" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">酒水费用</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="wine_fee" value="{$data['wine_fee']}" lay-verify="required" placeholder="酒水费用" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">加菜换菜</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="banquet_update_table" value="{$data['banquet_update_table']}" lay-verify="required" placeholder="加菜换菜" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">金额小计</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="banquet_total" value="{$data['banquet_total']}" lay-verify="required" placeholder="金额小计" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">优惠金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="banquet_discount" value="{$data['banquet_discount']}" lay-verify="required" placeholder="优惠金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">婚宴总金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="banquet_totals" value="{$data['banquet_totals']}" lay-verify="required" placeholder="婚宴总金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

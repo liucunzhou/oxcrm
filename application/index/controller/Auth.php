@@ -167,7 +167,7 @@ class Auth extends Base
         $result = $Model->save($post);
 
         if($result) {
-            empty($post['id']) && $post['id'] = $Model->getLastInsID();
+            empty($post['id']) && $post['id'] = $Model->id;
             ### 更新缓存
             \app\common\model\AuthGroup::updateCache($post['id']);
 

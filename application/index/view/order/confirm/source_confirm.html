@@ -19,66 +19,18 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Order/doEditOrderEntire')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('Order/doSourceConfirm')}" lay-filter="component-form-group">
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">合同基本信息</li>
-                        <li>婚宴合同信息</li>
-                        <li>婚宴收付款信息</li>
-                        <li>婚庆合同信息</li>
-                        <li>婚庆收付款信息</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
                             <!--合同基本信息-->
-                            <{include file="order/salesman_form/contract" /}>
+                            <{include file="order/confirm_form/contract" /}>
 
                             <!--客资基本信息-->
-                            <{include file="order/salesman_form/customer" /}>
-
-                            <!--收款信息-->
-                            <{include file="order/salesman_form/pay_steps" /}>
-                        </div>
-
-                        <!--婚宴合同信息-->
-                        <div class="layui-tab-item">
-                            <!--婚宴基本信息-->
-                            <{include file="order/salesman_form/banquet" /}>
-
-                            <!--婚宴追加信息-->
-                        </div>
-
-                        <!--婚宴收付款信息-->
-                        <div class="layui-tab-item">
-                            <!--合同基本信息-->
-                            <{include file="order/salesman_form/contract" /}>
-
-                            <!--婚宴收款单-->
-                            <{include file="order/salesman_form/banquet_receivables" /}>
-
-                            <!--婚宴付款单-->
-                            <{include file="order/salesman_form/banquet_payment"}>
-                        </div>
-
-                        <!--婚庆合同信息-->
-                        <div class="layui-tab-item">
-                            <!--婚庆基本信息-->
-                            <{include file="order/salesman_form/wedding" /}>
-
-                            <!--婚庆追加信息-->
-                            <{include file="order/salesman_form/wedding_suborder" /}>
-                        </div>
-
-                        <!--婚庆收付款信息-->
-                        <div class="layui-tab-item">
-                            <!--合同信息-->
-                            <{include file="order/salesman_form/contract" /}>
-
-                            <!--婚庆收款信息-->
-                            <{include file="order/salesman_form/wedding_receivables" /}>
-
-                            <!--婚庆付款信息-->
-                            <{include file="order/salesman_form/wedding_payment" /}>
+                            <{include file="order/confirm_form/customer" /}>
                         </div>
                     </div>
 
@@ -86,8 +38,6 @@
 
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
                     <div class="layui-input-inline">
-                        <input type="hidden" name="member_allocate_id" value="{$allocate['id']}"/>
-                        <input type="hidden" name="member_id" value="{$allocate['member_id']}"/>
                         <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
@@ -111,14 +61,13 @@
             ,form = layui.form;
 
         form.render(null, 'component-form-group');
-        laydate.render({
-            elem: '#sign_date',
-            type: 'date'
+        lay('.layui-date').each(function() {
+            laydate.render({
+                elem: this,
+                type: 'date'
+            });
         });
-        laydate.render({
-            elem: '#wedding_date',
-            type: 'date'
-        });
+
 
         form.on('select(news_type)', function(data){
             var newsType = data.value;
