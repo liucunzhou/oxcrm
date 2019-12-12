@@ -64,8 +64,7 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="edit">审核</button>
-                            <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="accountingPaymentConfirm">审核</button>
                         </div>
                     </script>
                 </div>
@@ -210,28 +209,11 @@
         table.on('tool(table)', function (obj) {
             let id = obj.data.id;
             switch (obj.event) {
-                case 'edit':
-                    url = '/index/order/editorder.html?id=' + id;
-                    layer.open({
-                        type: 2,
-                        title: '编辑订单',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
+                case 'accountingPaymentConfirm':
+                    url = '/index/order/accountingpaymentconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '积分审核');
                     break;
-                case 'del':
-                    url = '/index/order/delorder.html';
-                    layer.open({
-                        type: 2,
-                        title: '删除',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-            }
-            ;
+            };
         });
 
     });

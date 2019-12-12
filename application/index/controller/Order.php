@@ -400,11 +400,10 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $this->assign('data', $order);
 
-        $member = Member::get($get['member_id']);
+        $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
         ## 酒店列表
@@ -419,18 +418,17 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/confirm/score_confirm');
     }
 
     public function fianceConfirm()
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $this->assign('data', $order);
 
-        $member = Member::get($get['member_id']);
+        $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
         ## 酒店列表
@@ -445,7 +443,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/confirm/fiance_confirm');
     }
 
     # 出纳收款审核
@@ -453,11 +451,10 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $this->assign('data', $order);
 
-        $member = Member::get($get['member_id']);
+        $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
         ## 酒店列表
@@ -472,7 +469,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/confirm/cashier_receivables_confirm');
     }
 
     # 会计付款审核
@@ -480,11 +477,10 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $this->assign('data', $order);
 
-        $member = Member::get($get['member_id']);
+        $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
         ## 酒店列表
@@ -499,7 +495,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/confirm/accounting_payment_confirm');
     }
 
     # 会计付款审核
@@ -507,11 +503,10 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $this->assign('data', $order);
 
-        $member = Member::get($get['member_id']);
+        $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
         ## 酒店列表
@@ -526,7 +521,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/confirm/fiance_payment_confirm');
     }
 
     # 会计付款审核
@@ -534,11 +529,10 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $this->assign('data', $order);
 
-        $member = Member::get($get['member_id']);
+        $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
         ## 酒店列表
@@ -553,7 +547,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/confirm/cashier_payment_confirm');
     }
 
     public function doSourceConfirm()
