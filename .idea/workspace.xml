@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5ba754-e3c1-4858-8be8-abec02022321" name="Default" comment="打印sql">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/OXCRM.iml" afterPath="$PROJECT_DIR$/.idea/OXCRM.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/controller/Order.php" afterPath="$PROJECT_DIR$/application/index/controller/Order.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/application/index/view/order/confirm/finance_confirm.html" afterPath="$PROJECT_DIR$/application/index/view/order/confirm/fiance_confirm.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/fiance.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/fiance.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/score.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/score.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/index/view/order/entire/source.html" afterPath="$PROJECT_DIR$/application/index/view/order/entire/source.html" />
     </list>
     <ignored path="OXCRM.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,10 +40,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="score.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="score.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/score.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2640">
+            <state relative-caret-position="465">
               <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
               <folding />
             </state>
@@ -55,8 +53,18 @@
       <file leaf-file-name="fiance.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/fiance.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="212" column="53" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="53" />
+            <state relative-caret-position="300">
+              <caret line="195" column="32" selection-start-line="195" selection-start-column="32" selection-end-line="195" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="462">
+              <caret line="57" column="14" selection-start-line="57" selection-start-column="14" selection-end-line="64" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -65,8 +73,8 @@
       <file leaf-file-name="payment_accounting.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="190" column="0" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+            <state relative-caret-position="517">
+              <caret line="213" column="59" selection-start-line="213" selection-start-column="59" selection-end-line="213" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -75,8 +83,8 @@
       <file leaf-file-name="payment_cashier.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="212" column="61" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="61" />
+            <state relative-caret-position="517">
+              <caret line="213" column="59" selection-start-line="213" selection-start-column="59" selection-end-line="213" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -85,18 +93,28 @@
       <file leaf-file-name="payment_fiance.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="212" column="60" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="60" />
+            <state relative-caret-position="517">
+              <caret line="213" column="61" selection-start-line="213" selection-start-column="61" selection-end-line="213" selection-end-column="61" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="receviables_cashier.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="source.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/source.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="532">
+              <caret line="211" column="16" selection-start-line="211" selection-start-column="16" selection-end-line="214" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="receviables_cashier.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="66" column="116" selection-start-line="66" selection-start-column="116" selection-end-line="66" selection-end-column="116" />
+            <state relative-caret-position="502">
+              <caret line="223" column="59" selection-start-line="223" selection-start-column="59" selection-end-line="223" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -185,11 +203,11 @@
         <option value="$PROJECT_DIR$/application/index/view/order/entire/source.html" />
         <option value="$PROJECT_DIR$/application/index/controller/Order.php" />
         <option value="$PROJECT_DIR$/application/index/view/order/entire/score.html" />
-        <option value="$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html" />
-        <option value="$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html" />
-        <option value="$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html" />
-        <option value="$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html" />
         <option value="$PROJECT_DIR$/application/index/view/order/entire/fiance.html" />
+        <option value="$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html" />
+        <option value="$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html" />
+        <option value="$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html" />
+        <option value="$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html" />
       </list>
     </option>
   </component>
@@ -680,7 +698,7 @@
       <workItem from="1575874045339" duration="9276000" />
       <workItem from="1576028554810" duration="1376000" />
       <workItem from="1576076659617" duration="9216000" />
-      <workItem from="1576116352743" duration="1216000" />
+      <workItem from="1576116352743" duration="1540000" />
     </task>
     <task id="LOCAL-00001" summary="修改页面显示数量">
       <created>1558617395825</created>
@@ -714,7 +732,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="833617000" />
+    <option name="totallyTimeSpent" value="833941000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="960" extended-state="6" />
@@ -727,7 +745,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328541" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.73432153" sideWeight="0.49676898" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18864469" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30578512" sideWeight="0.49676898" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="top" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.08028335" sideWeight="0.49676898" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -902,13 +920,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="57" column="14" selection-start-line="57" selection-start-column="14" selection-end-line="64" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/finance.html" />
     <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_finance.html" />
     <entry file="file://$PROJECT_DIR$/application/common/model/Order.php">
@@ -922,6 +933,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
           <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1004,14 +1016,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/source.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="211" column="16" selection-start-line="211" selection-start-column="16" selection-end-line="214" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/index/controller/Order.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -1060,7 +1064,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/confirm/finance_confirm.html">
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/confirm/fiance_confirm.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1084,50 +1088,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html">
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/score.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="66" column="116" selection-start-line="66" selection-start-column="116" selection-end-line="66" selection-end-column="116" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="212" column="60" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="212" column="61" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="190" column="0" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+        <state relative-caret-position="465">
+          <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/fiance.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="212" column="53" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="53" />
+        <state relative-caret-position="300">
+          <caret line="195" column="32" selection-start-line="195" selection-start-column="32" selection-end-line="195" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/score.html">
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2640">
-          <caret line="206" column="0" selection-start-line="206" selection-start-column="0" selection-end-line="206" selection-end-column="0" />
+        <state relative-caret-position="462">
+          <caret line="57" column="14" selection-start-line="57" selection-start-column="14" selection-end-line="64" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_accounting.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="213" column="59" selection-start-line="213" selection-start-column="59" selection-end-line="213" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_cashier.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="213" column="59" selection-start-line="213" selection-start-column="59" selection-end-line="213" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/payment_fiance.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="213" column="61" selection-start-line="213" selection-start-column="61" selection-end-line="213" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/source.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="211" column="16" selection-start-line="211" selection-start-column="16" selection-end-line="214" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/index/view/order/entire/receviables_cashier.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="223" column="59" selection-start-line="223" selection-start-column="59" selection-end-line="223" selection-end-column="59" />
           <folding />
         </state>
       </provider>
