@@ -39,14 +39,14 @@ class Order extends Base
             case 35: // 来源审核角色ID
                 $entireTabs = [
                     'index'                     => '全部',
-                    'entireSource'              => '来源审核',
+                    'entireSource'              => '渠道审核',
                     'entireComplete'            => '完成的订单'
                 ];
                 break;
             case 51: // 积分审核角色ID
                 $entireTabs = [
                     'index'                     => '全部',
-                    'entireScore'               => '积分审核',
+                    'entireScore'               => '积点审核',
                     'entireComplete'            => '完成的订单'
                 ];
                 break;
@@ -76,8 +76,8 @@ class Order extends Base
             default :
                 $entireTabs = [
                     'index'                     => '全部',
-                    'entireSource'              => '来源审核',
-                    'entireScore'               => '积分审核',
+                    'entireSource'              => '渠道审核',
+                    'entireScore'               => '积点审核',
                     'entireFiance'              => '财务审核',
                     'entireReceviablesCashier'  => '出纳收款审核',
                     'entirePaymentAccounting'   => '会计付款审核',
