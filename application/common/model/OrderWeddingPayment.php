@@ -11,6 +11,7 @@ class OrderWeddingPayment extends Model
     protected $autoWriteTimestamp = true;
 
     protected $type = [
+        'wedding_apply_pay_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];

@@ -11,6 +11,7 @@ class OrderBanquetReceivables extends Model
     protected $autoWriteTimestamp = true;
 
     protected $type = [
+        'banquet_income_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];

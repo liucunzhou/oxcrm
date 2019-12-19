@@ -1,0 +1,7 @@
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <{foreach name="subtab" item="val"}>
+        <li <{if $val['current']==1}>class="layui-this"<{/if}>><a href="{$val['url']}">{$val['text']}</a></li>
+        <{/foreach}>
+    </ul>
+</div>

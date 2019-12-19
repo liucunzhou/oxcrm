@@ -35,60 +35,23 @@ class Order extends Base
             $this->assign('sources', $sources);
         }
 
-        switch ($this->user['role_id']) {
-            case 35: // 来源审核角色ID
-                $entireTabs = [
-                    'index'                     => '全部',
-                    'entireSource'              => '渠道审核',
-                    'entireComplete'            => '完成的订单'
-                ];
-                break;
-            case 51: // 积分审核角色ID
-                $entireTabs = [
-                    'index'                     => '全部',
-                    'entireScore'               => '积点审核',
-                    'entireComplete'            => '完成的订单'
-                ];
-                break;
-            case 29: // 财务角色ID
-                $entireTabs = [
-                    'index'                     => '全部',
-                    'entireFiance'              => '财务审核',
-                    'entirePaymentFiance'       => '财务主管付款审核',
-                    'entireComplete'            => '完成的订单'
-                ];
-                break;
-            case 33: // 出纳角色ID
-                $entireTabs = [
-                    'index'                     => '全部',
-                    'entireReceviablesCashier'  => '出纳收款审核',
-                    'entirePaymentCashier'      => '出纳付款审核',
-                    'entireComplete'            => '完成的订单'
-                ];
-                break;
-            case 34: // 会计角色Id
-                $entireTabs = [
-                    'index'                     => '全部',
-                    'entirePaymentAccounting'   => '会计付款审核',
-                    'entireComplete'            => '完成的订单'
-                ];
-                break;
-            default :
-                $entireTabs = [
-                    'index'                     => '全部',
-                    'entireSource'              => '渠道审核',
-                    'entireScore'               => '积点审核',
-                    'entireFiance'              => '财务审核',
-                    'entireReceviablesCashier'  => '出纳收款审核',
-                    'entirePaymentAccounting'   => '会计付款审核',
-                    'entirePaymentFiance'       => '财务主管付款审核',
-                    'entirePaymentCashier'      => '出纳付款审核',
-                    'entireComplete'            => '完成的订单'
-                ];
+        ## 获取所有品牌、公司
+        $brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $brands);
 
-        }
+        ## 酒店列表
+        $hotels = \app\common\model\Store::getStoreList();
+        $this->assign('hotels', $hotels);
+        $this->assign('hotelsJson', json_encode($hotels));
 
-        $this->assign('entireTabs', $entireTabs);
+        ## 宴会厅列表
+        $halls = BanquetHall::getBanquetHalls();
+        $this->assign('halls', $halls);
+
+        ## 供应商列表
+        $suppliers = \app\common\model\Supplier::getList();
+        $this->assign('suppliers', $suppliers);
+        $this->assign('suppliersJson', json_encode($suppliers));
     }
 
     public function index()
@@ -105,8 +68,10 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/index');
+            return $this->fetch('order/entire/list/index');
         }
     }
 
@@ -125,8 +90,15 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_source';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/source');
+            return $this->fetch('order/entire/list/contract_source');
         }
     }
 
@@ -145,8 +117,17 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'check_status_score';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/score');
+            return $this->fetch('order/entire/list/contract_score');
         }
     }
 
@@ -165,13 +146,22 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'check_status_contract_fiance';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/fiance');
+            return $this->fetch('order/entire/list/contract_fiance');
         }
     }
 
     # 一站式出纳收款审核
-    public function entireReceviablesCashier()
+    public function entireReceivablesCashier()
     {
         if (Request::isAjax()) {
             $get = Request::param();
@@ -185,8 +175,16 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'check_status_receivables_cashier';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/receviables_cashier');
+            return $this->fetch('order/entire/list/receivables_cashier');
         }
     }
 
@@ -205,8 +203,16 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'check_status_payment_account';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/payment_accounting');
+            return $this->fetch('order/entire/list/payment_accounting');
         }
     }
 
@@ -225,8 +231,17 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'check_status_payment_fiance';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/payment_fiance');
+            return $this->fetch('order/entire/list/payment_fiance');
         }
     }
 
@@ -245,10 +260,49 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'check_status_payment_cashier';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/payment_cashier');
+            return $this->fetch('order/entire/list/payment_cashier');
         }
     }
+
+    # 一站式付款————出纳审核
+    public function entireComplete()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 2;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+
+            $this->getTab('entire');
+            $request = Request::param();
+            $this->assign('request', $request);
+
+            $statusName = 'status';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/entire/list/payment_cashier');
+        }
+    }
+
 
     # 婚庆订单
     public function wedding()
@@ -265,8 +319,163 @@ class Order extends Base
             ];
             return json($result);
         } else {
+
+            $this->getTab('wedding');
             $this->view->engine->layout(false);
-            return $this->fetch('order/list/order_wedding');
+            return $this->fetch('order/wedding/list/index');
+        }
+    }
+
+    # 婚庆订单来源审核
+    public function weddingSource()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/contract_source');
+        }
+    }
+
+    # 婚庆订单积分审核
+    public function weddingScore()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/contract_score');
+        }
+    }
+
+    # 婚庆订单财务订单审核
+    public function weddingFiance()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/contract_fiance');
+        }
+    }
+
+    # 婚庆订单收款审核
+    public function weddingReceivablesCashier()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/receivables_cashier');
+        }
+    }
+
+    # 婚庆订单会计付款审核
+    public function weddingPaymentAccounting()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/payment_accounting');
+        }
+    }
+
+    # 婚庆订单会计付款审核
+    public function weddingPaymentFiance()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/payment_fiance');
+        }
+    }
+
+    # 婚庆订单会计付款审核
+    public function weddingPaymentCashier()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 1;
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('wedding');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/wedding/list/payment_cashier');
         }
     }
 
@@ -287,7 +496,193 @@ class Order extends Base
             ];
             return json($result);
         } else {
-            return $this->fetch('order/list/order_banquet');
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/index');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetSource()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/contract_source');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetScore()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/contract_score');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetFiance()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/contract_fiance');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetReceivablesCashier()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/receivables_cashier');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetPaymentAccounting()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/payment_accounting');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetPaymentFiance()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/payment_fiance');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetPaymentCashier()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/payment_cashier');
+        }
+    }
+
+    # 婚宴订单
+    public function banquetComplate()
+    {
+
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['news_type'] = 0;
+
+            $order = $this->_getOrderList($get);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getTab('banquet');
+
+            return $this->fetch('order/banquet/list/index');
         }
     }
 
@@ -324,19 +719,11 @@ class Order extends Base
         $member = Member::get($get['member_id']);
         $this->assign('member', $member);
 
-        ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
-
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
-
         ## 获取销售列表
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/create/create_order');
+        return $this->fetch('order/entire/create/create_order');
     }
 
     # 创建订单逻辑
@@ -392,7 +779,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/source_confirm');
+        return $this->fetch('order/entire/confirm/contract_source');
     }
 
     # 积分审核视图
@@ -400,27 +787,31 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
+
+        ## 获取订单信息
         $order = \app\common\model\Order::get($get['id'])->getData();
+
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
         $this->assign('data', $order);
 
+        ## 获取客资信息
         $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
-        ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
-
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
 
         ## 获取销售列表
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/score_confirm');
+        return $this->fetch('order/entire/confirm/contract_score');
     }
 
+    # 财务审核
     public function fianceConfirm()
     {
         $get = Request::param();
@@ -431,19 +822,38 @@ class Order extends Base
         $member = Member::getByMobile($order['mobile']);
         $this->assign('member', $member);
 
-        ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
 
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+
+        $this->assign('data', $order);
+
 
         ## 获取销售列表
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/fiance_confirm');
+        return $this->fetch('order/entire/confirm/contract_fiance');
     }
 
     # 出纳收款审核
@@ -469,7 +879,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/cashier_receivables_confirm');
+        return $this->fetch('order/entire/confirm/receivables_cashier');
     }
 
     # 会计付款审核
@@ -495,7 +905,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/accounting_payment_confirm');
+        return $this->fetch('order/entire/confirm/payment_accounting');
     }
 
     # 会计付款审核
@@ -521,7 +931,7 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/fiance_payment_confirm');
+        return $this->fetch('order/entire/confirm/payment_fiance');
     }
 
     # 会计付款审核
@@ -547,10 +957,11 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/confirm/cashier_payment_confirm');
+        return $this->fetch('order/entire/confirm/payment_cashier');
     }
 
-    public function doSourceConfirm()
+
+    public function doConfirmSource()
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
@@ -575,4 +986,96 @@ class Order extends Base
 
         return $this->fetch('order/create/create_order');
     }
+
+    # 一站式
+    private function getTab($prefix='entire')
+    {
+        if($prefix == 'entire') {
+            $home   = 'index';
+        } else  {
+            $home   = $prefix;
+        }
+
+        switch ($this->user['role_id']) {
+            case 35: // 来源审核角色ID
+                $tabs = [
+                    $home                         => '全部',
+                    $prefix.'Source'              => '渠道审核',
+                    $prefix.'Complete'            => '完成的订单'
+                ];
+                break;
+            case 51: // 积分审核角色ID
+                $tabs = [
+                    $home                         => '全部',
+                    $prefix.'Score'               => '积点审核',
+                    $prefix.'Complete'            => '完成的订单'
+                ];
+                break;
+            case 29: // 财务角色ID
+                $tabs = [
+                    $home                         => '全部',
+                    $prefix.'Fiance'              => '财务审核',
+                    $prefix.'PaymentFiance'       => '财务主管付款审核',
+                    $prefix.'Complete'            => '完成的订单'
+                ];
+                break;
+            case 33: // 出纳角色ID
+                $tabs = [
+                    $home                         => '全部',
+                    $prefix.'ReceivablesCashier'  => '出纳收款审核',
+                    $prefix.'PaymentCashier'      => '出纳付款审核',
+                    $prefix.'Complete'            => '完成的订单'
+                ];
+                break;
+            case 34: // 会计角色Id
+                $tabs = [
+                    $home                         => '全部',
+                    $prefix.'PaymentAccounting'   => '会计付款审核',
+                    $prefix.'Complete'            => '完成的订单'
+                ];
+                break;
+            default :
+                $tabs = [
+                    $home                         => '全部',
+                    $prefix.'Source'              => '渠道审核',
+                    $prefix.'Score'               => '积点审核',
+                    $prefix.'Fiance'              => '财务审核',
+                    $prefix.'ReceivablesCashier'  => '出纳收款审核',
+                    $prefix.'PaymentAccounting'   => '会计付款审核',
+                    $prefix.'PaymentFiance'       => '财务主管付款审核',
+                    $prefix.'PaymentCashier'      => '出纳付款审核',
+                    $prefix.'Complete'            => '完成的订单'
+                ];
+
+        }
+        $this->assign('tabs', $tabs);
+    }
+
+    private function getSubTab($request, $statusName, $action)
+    {
+        if(isset($request[$statusName])) {
+            $crr = $request[$statusName];
+        } else {
+            $crr = -1;
+        }
+
+        $subtab = [];
+        $current = $crr == -1 ? 1 : 0;
+        unset($request[$statusName]);
+        $subtab[] = ['current' => $current, 'url' => url($action, $request), 'text' => '全部'];
+
+        $current = $crr == 0 ? 1 : 0;
+        $request[$statusName] = 0;
+        $subtab[] = ['current' => $current, 'url' => url($action, $request), 'text' => '待审核'];
+
+        $current = $crr == 1 ? 1 : 0;
+        $request[$statusName] = 1;
+        $subtab[] = ['current' => $current, 'url' => url($action, $request), 'text' => '已通过'];
+
+        $current = $crr == 2 ? 1 : 0;
+        $request[$statusName] = 2;
+        $subtab[] = ['current' => $current, 'url' => url($action, $request), 'text' => '已驳回'];
+        $this->assign('subtab', $subtab);
+    }
+
 }

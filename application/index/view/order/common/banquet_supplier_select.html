@@ -1,0 +1,6 @@
+<select name="banquet_supplier" lay-verify="required" lay-filter="banquet_supplier" lay-search>
+    <option value="0">--请选择供应商--</option>
+    <{foreach name="suppliers" item="val"}>
+        <option value="{$val.id}">{$val.title}</option>
+    <{/foreach}>
+</select>

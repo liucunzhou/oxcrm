@@ -11,6 +11,7 @@ class OrderWeddingReceivables extends Model
     protected $autoWriteTimestamp = true;
 
     protected $type = [
+        'wedding_income_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];

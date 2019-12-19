@@ -1,0 +1,6 @@
+<select name="company_id" lay-verify="" lay-filter="news_type">
+    <option value="0">--请选择公司--</option>
+    <{foreach name="brands" item="val"}>
+        <option value="{$val.id}">{$val.title}</option>
+    <{/foreach}>
+</select>

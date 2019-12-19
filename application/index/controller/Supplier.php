@@ -87,7 +87,9 @@ class Supplier extends Base
 
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;
-            \app\common\model\Supplier::updateCache($post['id']);
+            $suppliers = \app\common\model\Supplier::getList(true);
+            $js = 'var suppliers = '.json_encode($suppliers, JSON_UNESCAPED_UNICODE);
+            file_put_contents('./assets/json/suppliers.js', $js);
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);

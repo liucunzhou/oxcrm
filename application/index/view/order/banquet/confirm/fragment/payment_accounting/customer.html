@@ -1,0 +1,71 @@
+<div class="layui-card">
+    <div class="layui-card-header">客资基本信息</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否引流销售</label>
+                <div class="layui-input-inline">
+                    <select name="is_recommend_salesman" lay-search>
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">引流销售</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="recommend_salesman" value="{$data['recommend_salesman']}" lay-verify="0" placeholder="引流销售" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">销售姓名</label>
+                <div class="layui-input-inline">
+                    <select name="salesman" lay-search>
+                        <option value="0">请选择销售</option>
+                        <{foreach name="salesmans" item="salesman"}>
+                        <option value="{$salesman.id}">{$salesman.realname}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">客户渠道</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="source_id" value="{$member['source_id']}">
+                    <input type="text" value="{$member['source_text']}" readonly lay-verify="0" placeholder="客户渠道" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">客户姓名</label>
+                <div class="layui-input-inline">
+                    <{if empty($member['realname'])}>
+                    <input type="text" name="realname" value="{$member['realname']}"  lay-verify="0" placeholder="客户姓名" autocomplete="off" class="layui-input">
+                    <{else /}>
+                    <input type="text" value="{$member['realname']}" readonly  lay-verify="0" placeholder="客户姓名" autocomplete="off" class="layui-input">
+                    <{/if}>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">客户手机号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" value="{$member['mobile']}" readonly placeholder="客户手机号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">积分</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="score" value="{$data['score']}" lay-verify="0" placeholder="积分" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="customer_remark" value="{$data['customer_remark']}" lay-verify="0" placeholder="备注" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,6 @@
+<select name="wedding_supplier" lay-verify="" lay-search>
+    <option value="0">--请选择供应商--</option>
+    <{foreach name="suppliers" item="val"}>
+        <option value="{$val.id}">{$val.title}</option>
+    <{/foreach}>
+</select>

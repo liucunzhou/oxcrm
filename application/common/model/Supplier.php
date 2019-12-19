@@ -20,7 +20,7 @@ class Supplier extends Model
         $cacheKey = 'Supplier';
         $data = redis()->get($cacheKey);
         if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid,bank_company,bank_account,bank_name', 'id');
             $json = json_encode($data);
             $result = redis()->set($cacheKey, $json);
         } else {

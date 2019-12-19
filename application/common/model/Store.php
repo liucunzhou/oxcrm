@@ -36,7 +36,7 @@ class Store extends Model
         $cacheKey = 'stores';
         $data = redis()->get($cacheKey);
         if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,brand_id,title', 'id');
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,brand_id,title,bank_company,bank_account,bank_name', 'id');
             $json = json_encode($data);
             $result = redis()->set($cacheKey, $json);
         } else {
