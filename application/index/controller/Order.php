@@ -92,11 +92,13 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
             $statusName = 'check_status_source';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/entire/list/contract_source');
         }
@@ -119,9 +121,9 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
-
             $statusName = 'check_status_score';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
@@ -148,9 +150,9 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
-
             $statusName = 'check_status_contract_fiance';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
@@ -177,12 +179,13 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
-
             $statusName = 'check_status_receivables_cashier';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/entire/list/receivables_cashier');
         }
@@ -205,12 +208,13 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
-
             $statusName = 'check_status_payment_account';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/entire/list/payment_accounting');
         }
@@ -233,9 +237,9 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
-
             $statusName = 'check_status_payment_fiance';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
@@ -260,11 +264,10 @@ class Order extends Base
             ];
             return json($result);
         } else {
-
             $this->getTab('entire');
+
             $request = Request::param();
             $this->assign('request', $request);
-
             $statusName = 'check_status_payment_cashier';
             $action = $this->request->action();
             $this->getSubTab($request, $statusName, $action);
@@ -343,6 +346,12 @@ class Order extends Base
         } else {
             $this->getTab('wedding');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_source';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/contract_source');
         }
@@ -364,6 +373,12 @@ class Order extends Base
             return json($result);
         } else {
             $this->getTab('wedding');
+
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_score';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
 
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/contract_score');
@@ -387,6 +402,12 @@ class Order extends Base
         } else {
             $this->getTab('wedding');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_contract_fiance';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/contract_fiance');
         }
@@ -408,6 +429,12 @@ class Order extends Base
             return json($result);
         } else {
             $this->getTab('wedding');
+
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_receivables_cashier';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
 
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/receivables_cashier');
@@ -431,6 +458,12 @@ class Order extends Base
         } else {
             $this->getTab('wedding');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_payment_account';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/payment_accounting');
         }
@@ -453,6 +486,12 @@ class Order extends Base
         } else {
             $this->getTab('wedding');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_payment_fiance';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/payment_fiance');
         }
@@ -474,6 +513,13 @@ class Order extends Base
             return json($result);
         } else {
             $this->getTab('wedding');
+
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_payment_cashier';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             $this->view->engine->layout(false);
             return $this->fetch('order/wedding/list/payment_cashier');
         }
@@ -498,6 +544,7 @@ class Order extends Base
         } else {
             $this->getTab('banquet');
 
+            $this->view->engine->layout(false);
             return $this->fetch('order/banquet/list/index');
         }
     }
@@ -520,6 +567,12 @@ class Order extends Base
             return json($result);
         } else {
             $this->getTab('banquet');
+
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_source';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
 
             return $this->fetch('order/banquet/list/contract_source');
         }
@@ -567,6 +620,12 @@ class Order extends Base
         } else {
             $this->getTab('banquet');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_score';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             return $this->fetch('order/banquet/list/contract_fiance');
         }
     }
@@ -589,6 +648,12 @@ class Order extends Base
             return json($result);
         } else {
             $this->getTab('banquet');
+
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_receivables_cashier';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
 
             return $this->fetch('order/banquet/list/receivables_cashier');
         }
@@ -613,6 +678,12 @@ class Order extends Base
         } else {
             $this->getTab('banquet');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_payment_account';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             return $this->fetch('order/banquet/list/payment_accounting');
         }
     }
@@ -636,6 +707,12 @@ class Order extends Base
         } else {
             $this->getTab('banquet');
 
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_payment_fiance';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
+
             return $this->fetch('order/banquet/list/payment_fiance');
         }
     }
@@ -658,6 +735,12 @@ class Order extends Base
             return json($result);
         } else {
             $this->getTab('banquet');
+
+            $request = Request::param();
+            $this->assign('request', $request);
+            $statusName = 'check_status_payment_cashier';
+            $action = $this->request->action();
+            $this->getSubTab($request, $statusName, $action);
 
             return $this->fetch('order/banquet/list/payment_cashier');
         }
@@ -713,7 +796,7 @@ class Order extends Base
         $get = Request::param();
         if (empty($get['id'])) return false;
         $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
+        $allocate = MemberAllocate::get($get['id']);
         $this->assign('allocate', $allocate);
 
         $member = Member::get($get['member_id']);
@@ -723,7 +806,14 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/entire/create/create_order');
+        if($allocate['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/create/create_order';
+        } else if ($allocate['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/create/create_order';
+        } else if ($allocate['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/create/create_order';
+        }
+        return $this->fetch($view);
     }
 
     # 创建订单逻辑

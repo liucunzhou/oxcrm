@@ -74,98 +74,30 @@ class Customer extends Base
     public function mine()
     {
         if (Request::isAjax()) {
-            if ($this->user['role_id'] == 10 || $this->user['role_id'] == 11) { // 派单组主管、客服
-                // if ($this->user['role_id'] == 11) { // 派单组主管、客服
-                $result = $this->getDispatchCustomerList();
-            } else {
-                $result = $this->getCustomerList();
-            }
-            return json($result);
-
-        } else {
-
             $get = Request::param();
-            $get['create_time'] = str_replace('+', '', $get['create_time']);
-            $this->assign('get', $get);
+            $config = [
+                'page' => $get['page']
+            ];
+            $map = Search::customerMine($this->user, $get);
+            if (isset($get['keywords']) && !empty($get['keywords'])) {
+                $get['keywords'] = trim($get['keywords']);
+                preg_match_all('/\d+/', $get['keywords'], $arr);
 
-            if ($this->user['role_id'] == 10 || $this->user['role_id'] == 11) { // 派单组主管、客服
-                $tabs = Tab::dispatchMine($this->user, $get);
-                $this->assign('tabs', $tabs);
-                if (isset($get['sea'])) {
-                    return $this->fetch('mine_dispatch_sea');
+            }
+
+            if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                $mobiles = MobileRelation::getMobiles($get['keywords']);
+                if (!empty($mobiles)) {
+                    $map[] = ['mobile', 'in', $mobiles];
                 } else {
-                    return $this->fetch('mine_dispatch');
+                    $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
                 }
-            } else {
-                $tabs = Tab::customerMine($this->user, $get);
-                $this->assign('tabs', $tabs);
-                return $this->fetch();
-            }
-        }
-    }
-
-    /**
-     * 派单组客资列表
-     */
-    private function getDispatchCustomerList()
-    {
-        $get = Request::param();
-        $config = [
-            'page' => $get['page']
-        ];
-
-        $map = Search::customerDispatchMine($this->user, $get);
-        isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
-        if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-            $mobiles = MobileRelation::getMobiles($get['keywords']);
-            if (!empty($mobiles)) {
-                $map[] = ['mobile', 'in', $mobiles];
-            } else {
+            } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
                 $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+                $map[] = ['mobile', '=', $get['keywords']];
             }
-        } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-            $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-        } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-            $map[] = ['mobile', '=', $get['keywords']];
-        }
 
-        if ($get['sea']) {
-            $users = User::getUsers();
-            $map[] = ['dispatch_id', '=', 0];
-            $map[] = ['add_source', '=', 1];
-            $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
-            if (!empty($list)) {
-                $data = $list->getCollection()->toArray();
-                foreach ($data as &$value) {
-                    $value['get_customer_from_dispatch'] = '索取';
-                    $value['operator'] = $users[$value['operate_id']]['realname'];
-                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
-                    $value['news_type'] = $this->newsTypes[$value['news_type']];
-                    $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
-                    $value['dispatch_assign_status'] = $value['dispatch_assign_status'] ? "已分配" : "未分配";
-
-                    if ($this->auth['is_show_alias'] == '1') {
-                        $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
-                    } else {
-                        $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
-                    }
-                }
-                $result = [
-                    'code' => 0,
-                    'msg' => '获取数据成功',
-                    'pages' => $list->lastPage(),
-                    'count' => $list->total(),
-                    'data' => $data
-                ];
-            } else {
-                $result = [
-                    'code' => 0,
-                    'msg' => '获取数据成功',
-                    'count' => 0,
-                    'data' => []
-                ];
-            }
-        } else {
             $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
             if (!empty($list)) {
                 $users = User::getUsers();
@@ -184,7 +116,7 @@ class Customer extends Base
 
                     if ($value['member_id'] > 0) {
                         $memberObj = Member::get($value['member_id']);
-                        $value['visit_amount'] = $memberObj->visit_amount;
+                        $value['visit_amount'] = $this->user['role_id'] != 9 ? $memberObj->visit_amount : '-';
                         $value['remark'] = $memberObj->remark;
                         if ($value['member_create_time'] > 0) {
                             $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
@@ -198,25 +130,167 @@ class Customer extends Base
                         }
                     }
                 }
-
                 $result = [
                     'code' => 0,
                     'msg' => '获取数据成功',
                     'count' => $list->total(),
                     'data' => $data,
-                    'map' => $map
+                    'map' => $map,
+                    'keywords' => strlen($get['keywords'])
                 ];
             } else {
                 $result = [
                     'code' => 0,
                     'msg' => '获取数据成功',
                     'count' => 0,
-                    'data' => []
+                    'data' => [],
+                    'keywords' => strlen($get['keywords'])
                 ];
             }
-        }
 
-        return $result;
+            return json($result);
+
+        } else {
+
+            $get = Request::param();
+            $get['create_time'] = str_replace('+', '', $get['create_time']);
+            $this->assign('get', $get);
+
+            $tabs = Tab::customerMine($this->user, $get);
+            $this->assign('tabs', $tabs);
+            return $this->fetch();
+
+        }
+    }
+
+    /**
+     * 派单组客资列表
+     */
+    public function dispatch()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $config = [
+                'page' => $get['page']
+            ];
+            $map = Search::customerDispatchMine($this->user, $get);
+            isset($get['keywords']) && $get['keywords'] = trim($get['keywords']);
+            if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                $mobiles = MobileRelation::getMobiles($get['keywords']);
+                if (!empty($mobiles)) {
+                    $map[] = ['mobile', 'in', $mobiles];
+                } else {
+                    $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+                }
+            } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
+                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+                $map[] = ['mobile', '=', $get['keywords']];
+            }
+
+            if ($get['sea']) {
+                $users = User::getUsers();
+                $map[] = ['dispatch_id', '=', 0];
+                $map[] = ['add_source', '=', 1];
+                $list = model('Member')->where($map)->order('create_time desc')->paginate($get['limit'], false, $config);
+                if (!empty($list)) {
+                    $data = $list->getCollection()->toArray();
+                    foreach ($data as &$value) {
+                        $value['get_customer_from_dispatch'] = '索取';
+                        $value['operator'] = $users[$value['operate_id']]['realname'];
+                        $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
+                        $value['news_type'] = $this->newsTypes[$value['news_type']];
+                        $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                        $value['dispatch_assign_status'] = $value['dispatch_assign_status'] ? "已分配" : "未分配";
+
+                        if ($this->auth['is_show_alias'] == '1') {
+                            $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                        } else {
+                            $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                        }
+                    }
+                    $result = [
+                        'code' => 0,
+                        'msg' => '获取数据成功',
+                        'pages' => $list->lastPage(),
+                        'count' => $list->total(),
+                        'data' => $data
+                    ];
+                } else {
+                    $result = [
+                        'code' => 0,
+                        'msg' => '获取数据成功',
+                        'count' => 0,
+                        'data' => []
+                    ];
+                }
+            } else {
+                $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+                if (!empty($list)) {
+                    $users = User::getUsers();
+                    $data = $list->getCollection()->toArray();
+                    foreach ($data as &$value) {
+                        $allocateType = $value['allocate_type'];
+                        $value['allocate_type'] = $this->allocateTypes[$allocateType];
+                        $value['operator'] = $users[$value['operate_id']]['realname'];
+                        $value['user_realname'] = $users[$value['user_id']]['realname'];
+                        $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
+                        $value['news_type'] = $this->newsTypes[$value['news_type']];
+                        $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
+                        $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                        $value['allocate_time'] = $value['create_time'];
+                        $value['assign_status'] = $value['assign_status'] ? '已分配' : '未分配';
+
+                        if ($value['member_id'] > 0) {
+                            $memberObj = Member::get($value['member_id']);
+                            $value['visit_amount'] = $memberObj->visit_amount;
+                            $value['remark'] = $memberObj->remark;
+                            if ($value['member_create_time'] > 0) {
+                                $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
+                            } else {
+                                $value['member_create_time'] = $memberObj->create_time;
+                            }
+                            if ($this->auth['is_show_alias'] == '1') {
+                                $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                            } else {
+                                $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
+                            }
+                        }
+                    }
+
+                    $result = [
+                        'code' => 0,
+                        'msg' => '获取数据成功',
+                        'count' => $list->total(),
+                        'data' => $data,
+                        'map' => $map
+                    ];
+                } else {
+                    $result = [
+                        'code' => 0,
+                        'msg' => '获取数据成功',
+                        'count' => 0,
+                        'data' => []
+                    ];
+                }
+            }
+
+            return json($result);
+
+        } else {
+
+            $get = Request::param();
+            $get['create_time'] = str_replace('+', '', $get['create_time']);
+            $this->assign('get', $get);
+
+            $tabs = Tab::dispatchMine($this->user, $get);
+            $this->assign('tabs', $tabs);
+            if (isset($get['sea'])) {
+                return $this->fetch('dispatch_sea');
+            } else {
+                return $this->fetch('dispatch');
+            }
+        }
     }
 
     /***
@@ -225,88 +299,6 @@ class Customer extends Base
     public function exportDispatchCustomer()
     {
 
-    }
-
-    /**
-     * 除派单组外我的客资列表
-     */
-    private function getCustomerList()
-    {
-        $get = Request::param();
-        $config = [
-            'page' => $get['page']
-        ];
-        $map = Search::customerMine($this->user, $get);
-        if (isset($get['keywords']) && !empty($get['keywords'])) {
-            $get['keywords'] = trim($get['keywords']);
-            preg_match_all('/\d+/', $get['keywords'], $arr);
-
-        }
-
-        if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-            $mobiles = MobileRelation::getMobiles($get['keywords']);
-            if (!empty($mobiles)) {
-                $map[] = ['mobile', 'in', $mobiles];
-            } else {
-                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-            }
-        } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-            $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-        } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-            $map[] = ['mobile', '=', $get['keywords']];
-        }
-
-        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
-        if (!empty($list)) {
-            $users = User::getUsers();
-            $data = $list->getCollection()->toArray();
-            foreach ($data as &$value) {
-                $allocateType = $value['allocate_type'];
-                $value['allocate_type'] = $this->allocateTypes[$allocateType];
-                $value['operator'] = $users[$value['operate_id']]['realname'];
-                $value['user_realname'] = $users[$value['user_id']]['realname'];
-                $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
-                $value['news_type'] = $this->newsTypes[$value['news_type']];
-                $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
-                $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
-                $value['allocate_time'] = $value['create_time'];
-                $value['assign_status'] = $value['assign_status'] ? '已分配' : '未分配';
-
-                if ($value['member_id'] > 0) {
-                    $memberObj = Member::get($value['member_id']);
-                    $value['visit_amount'] = $this->user['role_id'] != 9 ? $memberObj->visit_amount : '-';
-                    $value['remark'] = $memberObj->remark;
-                    if ($value['member_create_time'] > 0) {
-                        $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
-                    } else {
-                        $value['member_create_time'] = $memberObj->create_time;
-                    }
-                    if ($this->auth['is_show_alias'] == '1') {
-                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
-                    } else {
-                        $value['source_text'] = $this->sources[$memberObj->source_id] ? $this->sources[$memberObj->source_id]['title'] : $memberObj->source_text;
-                    }
-                }
-            }
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => $list->total(),
-                'data' => $data,
-                'map' => $map,
-                'keywords' => strlen($get['keywords'])
-            ];
-        } else {
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => 0,
-                'data' => [],
-                'keywords' => strlen($get['keywords'])
-            ];
-        }
-
-        return $result;
     }
 
     public function exportMineCustomer()
@@ -1097,6 +1089,9 @@ class Customer extends Base
             $post['allocate_type'] = 3;
             $post['operate_id'] = $this->user['id'];
             MemberAllocate::insertAllocateData($this->user['id'], $Model->id, $post);
+        } else {
+            unset($post['source_id']);
+            MemberAllocate::updateAllocateData($this->user['id'], $Model->id, $post);
         }
 
         if ($result1) {
@@ -1240,7 +1235,7 @@ class Customer extends Base
     public function deleteCustomer()
     {
         $get = Request::param();
-        $result = MemberAllocate::get($get['id'])->delete();
+        $result = MemberAllocate::get($get['id'])->delete(true);
         if ($result) {
             // 更新缓存
             return json(['code' => '200', 'msg' => '删除成功']);

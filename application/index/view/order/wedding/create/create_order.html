@@ -26,9 +26,8 @@
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">合同基本信息</li>
-                        <li>婚宴合同信息</li>
                         <li>婚庆合同信息</li>
-                        <li>一站式收付款信息</li>
+                        <li>婚庆付款信息</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
@@ -40,15 +39,6 @@
 
                             <!--收款信息-->
                             <{include file="order/wedding/create/fragment/pay_steps" /}>
-                        </div>
-
-                        <!--婚宴合同信息-->
-                        <div class="layui-tab-item">
-                            <!--婚宴基本信息-->
-                            <{include file="order/wedding/create/fragment/banquet" /}>
-
-                            <!--婚宴追加信息-->
-                            <{include file="order/wedding/create/fragment/banquet_suborder" /}>
                         </div>
 
                         <!--婚庆合同信息-->
@@ -64,10 +54,6 @@
                         <div class="layui-tab-item">
                             <!-- 一站式收款信息 -->
                             <{include file="order/wedding/create/fragment/wedding_receivables" /}>
-
-
-                            <!--婚宴付款单-->
-                            <{include file="order/wedding/create/fragment/banquet_payment"}>
 
                             <!--婚庆付款信息-->
                             <{include file="order/wedding/create/fragment/wedding_payment" /}>

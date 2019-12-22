@@ -84,6 +84,5 @@ var _fields = [{
         "title": "操作",
         "toolbar": "#table-tool",
         "width": 226,
-        "fixed": "right"
     }
 ];

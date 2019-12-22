@@ -39,7 +39,7 @@ class Tab
     public static function dispatchMine(&$user, &$get)
     {
         $vars = [];
-        $url = url('customer/mine');
+        $url = url('customer/dispatch');
         if (!isset($get['is_into_store']) && !isset($get['status']) && !isset($get['sea'])) {
             $checked = 1;
         } else {
@@ -53,7 +53,7 @@ class Tab
 
         $vars = [];
         $vars['sea'] = 1;
-        $url = url('customer/mine', $vars);
+        $url = url('customer/dispatch', $vars);
         if (isset($get['sea']) && $get['sea'] == 1) {
             $checked = 1;
         } else {
@@ -67,7 +67,7 @@ class Tab
 
         $vars = [];
         $vars['status'] = 1;
-        $url = url('customer/mine', $vars);
+        $url = url('customer/dispatch', $vars);
         if (isset($get['status']) && $get['status'] == 1) {
             $checked = 1;
         } else {
@@ -81,7 +81,7 @@ class Tab
 
         $vars = [];
         $vars['status'] = 3;
-        $url = url('customer/mine', $vars);
+        $url = url('customer/dispatch', $vars);
         if (isset($get['status']) && $get['status'] == 3) {
             $checked = 1;
         } else {
@@ -95,7 +95,7 @@ class Tab
 
         $vars = [];
         $vars['is_into_store'] = 1;
-        $url = url('customer/mine', $vars);
+        $url = url('customer/dispatch', $vars);
         if (isset($get['is_into_store']) && $get['is_into_store'] == 1) {
             $checked = 1;
         } else {
@@ -109,7 +109,7 @@ class Tab
         
         $vars = [];
         $vars['status'] = 2;
-        $url = url('customer/mine', $vars);
+        $url = url('customer/dispatch', $vars);
         if (isset($get['status']) && $get['status'] == 2) {
             $checked = 1;
         } else {
