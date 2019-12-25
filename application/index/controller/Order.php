@@ -23,26 +23,28 @@ use think\facade\Request;
 
 class Order extends Base
 {
+    protected $hotels = [];
+    protected $sources = [];
 
     protected function initialize()
     {
         parent::initialize();
         // 获取系统来源,酒店列表,意向状态
-        if (!Request::isAjax()) {
-            $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
-            $this->assign('staffes', $staffes);
-            $sources = \app\common\model\Source::getSources();
-            $this->assign('sources', $sources);
-        }
+
+        $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
+        $this->assign('staffes', $staffes);
+
+        $this->sources = \app\common\model\Source::getSources();
+        $this->assign('sources', $this->sources);
 
         ## 获取所有品牌、公司
         $brands = \app\common\model\Brand::getBrands();
         $this->assign('brands', $brands);
 
         ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
-        $this->assign('hotelsJson', json_encode($hotels));
+        $this->hotels = \app\common\model\Store::getStoreList();
+        $this->assign('hotels', $this->hotels);
+        $this->assign('hotelsJson', json_encode($this->hotels));
 
         ## 宴会厅列表
         $halls = BanquetHall::getBanquetHalls();
@@ -59,7 +61,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'index');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -70,6 +72,8 @@ class Order extends Base
         } else {
 
             $this->getTab('entire');
+
+            $this->getColsFile('index');
             $this->view->engine->layout(false);
             return $this->fetch('order/entire/list/index');
         }
@@ -81,7 +85,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_source');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -110,7 +114,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_score');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -120,7 +124,7 @@ class Order extends Base
             return json($result);
         } else {
 
-            $this->getTab('entire');
+            $this->getTab('entire', 'check_status_score');
 
             $request = Request::param();
             $this->assign('request', $request);
@@ -139,7 +143,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_contract_fiance');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -168,7 +172,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_receivables_cashier');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -197,7 +201,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_payment_account');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -226,7 +230,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_payment_fiance');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -255,7 +259,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'check_status_payment_cashier');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -283,7 +287,7 @@ class Order extends Base
         if (Request::isAjax()) {
             $get = Request::param();
             $get['news_type'] = 2;
-            $order = $this->_getOrderList($get);
+            $order = $this->_getOrderList($get, 'complete');
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -302,7 +306,7 @@ class Order extends Base
             $this->getSubTab($request, $statusName, $action);
 
             $this->view->engine->layout(false);
-            return $this->fetch('order/entire/list/payment_cashier');
+            return $this->fetch('order/entire/list/complete');
         }
     }
 
@@ -769,20 +773,73 @@ class Order extends Base
         }
     }
 
-    private function _getOrderList($get)
+    private function _getOrderList($get, $statusField='check_status_source')
     {
         $config = [
             'page' => $get['page']
         ];
         $map = Search::order($this->user, $get);
+        ## 关联审核状态
+        if($statusField == 'index') {
+
+        } else if ($statusField == 'complete') {
+
+        } else {
+            $statuses = [
+                'check_status_source',
+                'check_status_score',
+                'check_status_contract_fiance',
+                'check_status_receivables_cashier',
+                'check_status_payment_account',
+                'check_status_payment_fiance',
+                'check_status_payment_cashier'
+            ];
+
+            foreach ($statuses as $value) {
+                if (isset($get[$value])) {
+                    $map[] = [$value, '=', $get[$value]];
+                }
+            }
+        }
+
         $list = model('order')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection();
-        $sources = \app\common\model\Source::getSources();
+
         $users = \app\common\model\User::getUsers();
         $halls = BanquetHall::getBanquetHalls();
-        foreach ($data as $key => &$value) {
-            $value['source_id'] = isset($sources[$value['source_id']]) ? $sources[$value['source_id']]['title'] : '——';
-            $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '——';
+
+        if ($statusField == 'index') {
+            $statusTexts = ['待审核', '已通过', '已驳回'];
+            foreach ($data as $key => &$value) {
+                $value['check_status_source'] = $statusTexts[$value['check_status_source']];
+                $value['check_status_score'] = $statusTexts[$value['check_status_score']];
+                $value['check_status_contract_fiance'] = $statusTexts[$value['check_status_contract_fiance']];
+                $value['check_status_receivables_cashier'] = $statusTexts[$value['check_status_receivables_cashier']];
+                $value['check_status_payment_account'] = $statusTexts[$value['check_status_payment_account']];
+                $value['check_status_payment_fiance'] = $statusTexts[$value['check_status_payment_fiance']];
+                $value['check_status_payment_cashier'] = $statusTexts[$value['check_status_payment_cashier']];
+                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
+                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            }
+        } else if($statusField == 'complete') {
+            foreach ($data as $key => &$value) {
+                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
+                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            }
+        } else {
+            $statusTexts = ['待审核', '已通过', '已驳回'];
+            foreach ($data as $key => &$value) {
+                $statusIndex = $value[$statusField];
+                $value['confirm_status'] = $statusTexts[$statusIndex];
+                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
+                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            }
         }
         $count = $list->total();
 
@@ -807,11 +864,11 @@ class Order extends Base
         $this->assign('salesmans', $salesmans);
 
         if($allocate['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/create_order';
+            $view = 'order/banquet/create/main';
         } else if ($allocate['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/create_order';
+            $view = 'order/wedding/create/main';
         } else if ($allocate['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/create_order';
+            $view = 'order/entire/create/main';
         }
         return $this->fetch($view);
     }
@@ -844,6 +901,191 @@ class Order extends Base
 
         $WeddingReceivablesModel = new OrderWeddingReceivables();
         $WeddingReceivablesModel->allowField(true)->save($request);
+
+        return json(['code' => '200', 'msg' => '创建成功']);
+    }
+
+    # 编辑订单视图
+    public function editOrder()
+    {
+        $get = Request::param();
+        if (empty($get['id'])) return false;
+        $order = \app\common\model\Order::get($get['id'])->getData();
+
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
+
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+        $order = $this->formatOrderDate($order);
+        $this->assign('data', $order);
+
+        ##　获取客资分配信息
+        $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
+        $this->assign('allocate', $allocate);
+
+        ## 获取客户信息
+        $member = Member::get($order['member_id']);
+        $this->assign('member', $member);
+
+        ## 宴会厅列表
+        $halls = BanquetHall::getBanquetHalls();
+        $this->assign('halls', $halls);
+
+        ## 获取销售列表
+        $salesmans = User::getUsersByRole(8);
+        $this->assign('salesmans', $salesmans);
+
+        if($allocate->news_type == '0') { // 婚宴订单
+            $view = 'order/banquet/edit/main';
+        } else if ($allocate->news_type == 1) { // 婚庆客资
+            $view = 'order/wedding/edit/main';
+        } else if ($allocate->news_type == 2) { // 一站式客资
+            $view = 'order/entire/edit/main';
+        } else {
+            $view = 'order/entire/edit/main';
+        }
+        return $this->fetch($view);
+    }
+
+    # 来源审核视图
+    public function checkResult()
+    {
+        $get = Request::param();
+        if (empty($get['id'])) return false;
+        $order = \app\common\model\Order::get($get['id'])->getData();
+        $order = $this->formatOrderDate($order);
+        $this->assign('data', $order);
+
+        $member = Member::getByMobile($order['mobile']);
+        $this->assign('member', $member);
+
+        ## 酒店列表
+        $hotels = \app\common\model\Store::getStoreList();
+        $this->assign('hotels', $hotels);
+
+        ## 宴会厅列表
+        $halls = BanquetHall::getBanquetHalls();
+        $this->assign('halls', $halls);
+
+        ## 获取销售列表
+        $salesmans = User::getUsersByRole(8);
+        $this->assign('salesmans', $salesmans);
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/check_result';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/check_result';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/check_result';
+        } else {
+            $view = 'order/entire/confirm/check_result';
+        }
+        return $this->fetch($view);
+    }
+
+    # 编辑订单逻辑
+    public function doEditOrder()
+    {
+        $request = Request::param();
+        $order = \app\common\model\Order::get($request['id']);
+        $order->allowField(true)->save($request);
+
+        ## banquet message
+        $banquet = OrderBanquet::where('order_id', '=', $request['id'])->find();
+        $banquet->allowField(true)->save($request);
+
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $request['id'])->find();
+        $banquetPayment->allowField(true)->save($request);
+
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $request['id'])->find();
+        $banquetReceivables->allowField(true)->save($request);
+
+        ## wedding message
+        $wedding = OrderWedding::where('order_id', '=', $request['id'])->find();
+        $wedding->allowField(true)->save($request);
+
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $request['id'])->find();
+        $weddingPayment->allowField(true)->save($request);
+
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $request['id'])->find();
+        $weddingReceivables->allowField(true)->save($request);
+
+        return json(['code' => '200', 'msg' => '更新订单信息成功']);
+    }
+
+    public function showOrder()
+    {
+        $get = Request::param();
+        if (empty($get['id'])) return false;
+        $order = \app\common\model\Order::get($get['id'])->getData();
+
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
+
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+        $order = $this->formatOrderDate($order);
+        $this->assign('data', $order);
+
+        ##　获取客资分配信息
+        $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
+
+        ## 获取客户信息
+        $member = Member::get($order['member_id']);
+        $this->assign('member', $member);
+
+        ## 宴会厅列表
+        $halls = BanquetHall::getBanquetHalls();
+        $this->assign('halls', $halls);
+
+        ## 获取销售列表
+        $salesmans = User::getUsersByRole(8);
+        $this->assign('salesmans', $salesmans);
+
+        if($allocate->news_type == '0') { // 婚宴订单
+            $view = 'order/banquet/show/main';
+        } else if ($allocate->news_type == 1) { // 婚庆客资
+            $view = 'order/wedding/show/main';
+        } else if ($allocate->news_type == 2) { // 一站式客资
+            $view = 'order/entire/show/main';
+        }
+        return $this->fetch($view);
     }
 
     # 来源审核视图
@@ -852,6 +1094,7 @@ class Order extends Base
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id'])->getData();
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
         $member = Member::getByMobile($order['mobile']);
@@ -872,6 +1115,19 @@ class Order extends Base
         return $this->fetch('order/entire/confirm/contract_source');
     }
 
+    # 确认流程
+    public function doConfirm()
+    {
+        $params = Request::param();
+
+        ## 获取订单信息
+        $order = \app\common\model\Order::get($params['id']);
+
+        $result = $order->save($params);
+
+        return json(['code' => '200', 'msg' => '完成审核是否继续?']);
+    }
+
     # 积分审核视图
     public function scoreConfirm()
     {
@@ -887,6 +1143,8 @@ class Order extends Base
         ## 获取婚庆信息
         $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
         $order = array_merge($order, $wedding);
+
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
         ## 获取客资信息
@@ -935,7 +1193,7 @@ class Order extends Base
         $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
         $order = array_merge($order, $weddingReceivables);
 
-
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
 
@@ -952,6 +1210,30 @@ class Order extends Base
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id'])->getData();
+
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
+
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
         $member = Member::getByMobile($order['mobile']);
@@ -978,6 +1260,29 @@ class Order extends Base
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id'])->getData();
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
+
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
         $member = Member::getByMobile($order['mobile']);
@@ -1004,6 +1309,30 @@ class Order extends Base
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id'])->getData();
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
+
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
         $member = Member::getByMobile($order['mobile']);
@@ -1030,6 +1359,30 @@ class Order extends Base
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id'])->getData();
+        ## 获取婚宴信息
+        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquet);
+        ## 获取婚宴付款信息
+        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetPayment);
+
+        ## 获取婚宴付款信息
+        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $banquetReceivables);
+
+
+        ## 获取婚庆信息
+        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $wedding);
+        ## 获取婚庆付款信息
+        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingPayment);
+
+        ## 获取婚庆收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
+        $order = array_merge($order, $weddingReceivables);
+
+        $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
 
         $member = Member::getByMobile($order['mobile']);
@@ -1050,33 +1403,6 @@ class Order extends Base
         return $this->fetch('order/entire/confirm/payment_cashier');
     }
 
-
-    public function doConfirmSource()
-    {
-        $get = Request::param();
-        if (empty($get['id'])) return false;
-        $user = User::getUser($get['user_id']);
-        $allocate = MemberAllocate::getAllocate($user['id'], $get['member_id']);
-        $this->assign('allocate', $allocate);
-
-        $member = Member::get($get['member_id']);
-        $this->assign('member', $member);
-
-        ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
-
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
-
-        ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
-        $this->assign('salesmans', $salesmans);
-
-        return $this->fetch('order/create/create_order');
-    }
-
     # 一站式
     private function getTab($prefix='entire')
     {
@@ -1087,7 +1413,7 @@ class Order extends Base
         }
 
         switch ($this->user['role_id']) {
-            case 35: // 来源审核角色ID
+            case 10: // 来源审核角色ID
                 $tabs = [
                     $home                         => '全部',
                     $prefix.'Source'              => '渠道审核',
@@ -1168,4 +1494,36 @@ class Order extends Base
         $this->assign('subtab', $subtab);
     }
 
+
+    private function getColsFile($aciton='index') {
+        switch ($this->user['role_id']) {
+            case 10: // 来源审核角色ID
+            case 51: // 积分审核角色ID
+                $colsfile = 'cols_index_no_functions';
+                break;
+            case 1:
+            case 29: // 财务角色ID
+            case 33: // 出纳角色ID
+            case 34: // 会计角色Id
+                $colsfile = 'cols_index';
+                break;
+            default :
+                $colsfile = 'cols_index';
+        }
+        $this->assign('colsfile', $colsfile);
+    }
+
+    private function formatOrderDate($order) {
+        isset($order['sign_date']) && $order['sign_date'] = date('Y-m-d', $order['sign_date']);
+        isset($order['event_date']) && $order['event_date'] = date('Y-m-d', $order['event_date']);
+        isset($order['earnest_money_date']) && $order['earnest_money_date'] = date('Y-m-d', $order['earnest_money_date']);
+        isset($order['middle_money_date']) && $order['middle_money_date'] = date('Y-m-d', $order['middle_money_date']);
+        isset($order['tail_money_date']) && $order['tail_money_date'] = date('Y-m-d', $order['tail_money_date']);
+        isset($order['banquet_income_date']) && $order['banquet_income_date'] = date('Y-m-d', $order['banquet_income_date']);
+        isset($order['banquet_apply_pay_date']) && $order['banquet_apply_pay_date'] = date('Y-m-d', $order['banquet_apply_pay_date']);
+        isset($order['wedding_apply_pay_date']) && $order['wedding_apply_pay_date'] = date('Y-m-d', $order['wedding_apply_pay_date']);
+        isset($order['banquet_income_real_date']) && $order['banquet_income_real_date'] = date('Y-m-d', $order['banquet_income_real_date']);
+
+        return $order;
+    }
 }

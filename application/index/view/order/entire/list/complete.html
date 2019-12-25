@@ -25,12 +25,10 @@
                 <div class="layui-card-body">
                     <{include file="order/entire/list/search"}>
                     <{include file="order/entire/list/tab"}>
-                    <{include file="order/entire/list/subtab"}>
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"editOrder", "text"=>"编辑"])}
-                            {:button(["event"=>"fiancePaymentConfirm", "text"=>"审核"])}
+                            <button class="layui-btn layui-btn-sm" lay-event="showOrder">查看</button>
                         </div>
                     </script>
                 </div>
@@ -38,12 +36,13 @@
         </div>
     </div>
 </div>
+
 <script>
     var tableTitle = '一站式订单';
     var tableRequestUrl = "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}";
 </script>
 <script src="/assets/layui/layui.js"></script>
-<script src="/assets/fields/order/entire/cols_fiance_department.js?{:rand(1000,10000)}"></script>
+<script src="/assets/fields/order/entire/cols_complete.js?{:rand(1000,10000)}"></script>
 <script src="/assets/fields/order/entire/layui.js?{:rand(1000,10000)}"></script>
 </body>
 </html>

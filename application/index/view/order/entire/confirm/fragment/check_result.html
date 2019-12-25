@@ -1,0 +1,162 @@
+<div class="layui-card">
+    <div class="layui-card-header">来源审核结果</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_source" id="check_status_source">
+                    <option value="0" <{if $data['check_status_source']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_source']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_source']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_source" placeholder="备注" class="layui-textarea">{$data['check_remark_source']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<{if $order['score'] > 0}>
+<div class="layui-card">
+    <div class="layui-card-header">积分审核结果</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_score" id="check_status_score">
+                    <option value="0" <{if $data['check_status_score']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_score']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_score']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_score" placeholder="备注" class="layui-textarea">{$data['check_remark_score']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<{/if}>
+
+<div class="layui-card">
+    <div class="layui-card-header">合同--财务审核状态</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_contract_fiance" id="check_status_contract_fiance">
+                    <option value="0" <{if $data['check_status_contract_fiance']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_contract_fiance']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_contract_fiance']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_contract_fiance" placeholder="备注" class="layui-textarea">{$data['check_remark_contract_fiance']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">收款--出纳审核状态</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_receivables_cashier" id="check_status_receivables_cashier">
+                    <option value="0" <{if $data['check_status_receivables_cashier']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_receivables_cashier']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_receivables_cashier']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_receivables_cashier" placeholder="备注" class="layui-textarea">{$data['check_remark_receivables_cashier']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">付款--会计审核状态</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_payment_account" id="check_status_payment_account">
+                    <option value="0" <{if $data['check_status_payment_account']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_payment_account']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_payment_account']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_payment_account" placeholder="备注" class="layui-textarea">{$data['check_remark_payment_account']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">付款--财务主管审核状态</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_payment_fiance" id="check_status_payment_fiance">
+                    <option value="0" <{if $data['check_status_payment_fiance']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_payment_fiance']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_payment_fiance']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_payment_fiance" placeholder="备注" class="layui-textarea">{$data['check_remark_payment_fiance']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-card">
+    <div class="layui-card-header">付款--出纳审核状态</div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-label-normal">确认状态</label>
+            <div class="layui-input-block">
+                <select name="check_status_payment_cashier" id="check_status_payment_cashier">
+                    <option value="0" <{if $data['check_status_payment_cashier']=='0'}>selected<{/if}>>--待审核--</option>
+                    <option value="1" <{if $data['check_status_payment_cashier']=='1'}>selected<{/if}>>--通过--</option>
+                    <option value="2" <{if $data['check_status_payment_cashier']=='2'}>selected<{/if}>>--驳回--</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label layui-form-label-normal">备注</label>
+            <div class="layui-input-block">
+                <textarea name="check_remark_payment_cashier" placeholder="备注" class="layui-textarea">{$data['check_remark_payment_cashier']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>

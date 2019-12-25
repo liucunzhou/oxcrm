@@ -33,24 +33,11 @@
                             <!--合同基本信息-->
                             <{include file="order/entire/confirm/fragment/contract" /}>
 
-                            <!--客资基本信息-->
-                            <{include file="order/entire/confirm/fragment/customer" /}>
-
                             <!-- 来源审核结果 -->
-                            <{include file="order/entire/confirm/fragment/checkout" fieldStatus="check_status_source" fieldRemark="check_remark_source"/}>
+                            <{include file="order/entire/confirm/fragment/check_result" /}>
                         </div>
                     </div>
 
-                </div>
-
-                <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
-                    <div class="layui-input-inline">
-                        <input type="hidden" name="id" value="{$data['id']}"/>
-                        <div class="layui-footer" style="left: 0;">
-                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>
@@ -88,18 +75,6 @@
                     current.removeClass("layui-hide");
                 }
             })
-        });
-
-        /* 监听提交 */
-        form.on('submit(form-submit)', function (data) {
-            var url = data.form.action;
-            var params = data.field;
-            $.post(url, params, function (res) {
-                layer.confirm(res.msg + '点击确认关闭', {icon: 3, title:'提示'}, function(index){
-                    parent.layui.admin.events.closeThisTabs()
-                });
-            });
-            return false;
         });
     });
 </script>

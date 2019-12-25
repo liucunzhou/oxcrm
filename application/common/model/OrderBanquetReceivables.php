@@ -12,6 +12,7 @@ class OrderBanquetReceivables extends Model
 
     protected $type = [
         'banquet_income_date' => 'timestamp',
+        'banquet_income_real_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];

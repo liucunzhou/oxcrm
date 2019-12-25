@@ -1,6 +1,6 @@
 <select name="wedding_supplier" lay-verify="" lay-search>
     <option value="0">--请选择供应商--</option>
     <{foreach name="suppliers" item="val"}>
-        <option value="{$val.id}">{$val.title}</option>
+        <option value="{$val.id}" <{if $data['wedding_supplier'] == $val['id']}>selected<{/if}>>{$val.title}</option>
     <{/foreach}>
 </select>

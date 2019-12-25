@@ -23,7 +23,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Order/doConfirmReceivablesCashier')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('Order/doConfirm')}" lay-filter="component-form-group">
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">合同基本信息</li>
@@ -34,47 +34,47 @@
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
                             <!--合同基本信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/contract" /}>
+                            <{include file="order/entire/confirm/fragment/contract" /}>
 
                             <!--客资基本信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/customer" /}>
+                            <{include file="order/entire/confirm/fragment/customer" /}>
 
                             <!--收款信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/pay_steps" /}>
+                            <{include file="order/entire/confirm/fragment/pay_steps" /}>
 
                             <!--合同信息确认-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/checkout" /}>
+                            <{include file="order/entire/confirm/fragment/checkout" fieldStatus="check_status_receivables_cashier" fieldRemark="check_remark_receivables_cashier"/}>
                         </div>
 
                         <!--婚宴合同信息-->
                         <div class="layui-tab-item">
                             <!--婚宴基本信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/banquet" /}>
+                            <{include file="order/entire/confirm/fragment/banquet" /}>
 
                             <!--婚宴追加信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/banquet_suborder" /}>
+                            <{include file="order/entire/confirm/fragment/banquet_suborder" /}>
                         </div>
 
                         <!--婚庆合同信息-->
                         <div class="layui-tab-item">
                             <!--婚庆基本信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/wedding" /}>
+                            <{include file="order/entire/confirm/fragment/wedding" /}>
 
                             <!--婚庆追加信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/wedding_suborder" /}>
+                            <{include file="order/entire/confirm/fragment/wedding_suborder" /}>
                         </div>
 
                         <!- -一站式收付款信息-->
                         <div class="layui-tab-item">
                             <!-- 一站式收款信息 -->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/entire_receivables" /}>
+                            <{include file="order/entire/confirm/fragment/entire_receivables_cashier" /}>
 
 
                             <!--婚宴付款单-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/banquet_payment"}>
+                            <{include file="order/entire/confirm/fragment/banquet_payment"}>
 
                             <!--婚庆付款信息-->
-                            <{include file="order/entire/confirm/fragment/receivables_cashier/wedding_payment" /}>
+                            <{include file="order/entire/confirm/fragment/wedding_payment" /}>
                         </div>
                     </div>
 
@@ -133,12 +133,9 @@
             var url = data.form.action;
             var params = data.field;
             $.post(url, params, function (res) {
-                if (res.code == '200') {
-                    parent.layui.table.reload("table");
-                    parent.layer.closeAll();
-                } else {
-                    layer.msg(res.msg);
-                }
+                layer.confirm(res.msg + '点击确认关闭', {icon: 3, title:'提示'}, function(index){
+                    parent.layui.admin.events.closeThisTabs()
+                });
             });
             return false;
         });

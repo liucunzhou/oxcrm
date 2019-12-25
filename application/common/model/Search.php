@@ -335,17 +335,25 @@ class Search
     public static function order(&$user, &$get)
     {
         $map[] = ['news_type', '=', $get['news_type']];
-        if (isset($get['source'])) {
+        if (isset($get['source']) && !empty($get['source'])) {
             $map[] = ['source_id', '=', $get['source']];
         }
 
-        if (isset($get['staff'])) {
-            $map[] = ['user_id', '=' . $get['staff']];
+        if (isset($get['hotel_id']) && !empty($get['hotel_id'])) {
+            $map[] = ['hotel_id', '=' . $get['hotel_id']];
         }
 
-        if (isset($get['date_range']) && !empty($get['date_range'])) {
-            $range = self::getDateRange($get['next_visit_time']);
-            $map[] = ['create_time', 'between', $range];
+        if (isset($get['mobile']) && !empty($get['mobile_type'])) {
+            $map[] = [$get['mobile_type'], '=' . $get['staff']];
+        }
+
+        if (isset($get['staff']) && !empty($get['staff'])) {
+            $map[] = ['salesman', '=' . $get['staff']];
+        }
+
+        if (isset($get['date_range']) && !empty($get['date_range']) && !empty($get['date_range_type'])) {
+            $range = self::getDateRange($get['date_range']);
+            $map[] = [$get['date_range_type'], 'between', $range];
         }
 
         switch ($user['role_id']) {
@@ -356,34 +364,34 @@ class Search
                 $map[] = self::getUserStaffs($user);
                 break;
             case 2: // 洗单组客服
-                $map[] = ['user_id', '=', $user['id']];
+                $map[] = ['salesman', '=', $user['id']];
                 break;
             case 3: // 推荐组主管
                 if (!isset($get['staff'])) $map[] = self::getUserStaffs($user);
                 break;
             case 4: // 推荐组客服
-                $map[] = ['user_id', '=', $user['id']];
+                $map[] = ['salesman', '=', $user['id']];
                 break;
             case 10: // 派单组主管
-                if (!isset($get['staff'])) $map[] = self::getUserStaffs($user);
                 break;
             case 11: // 派单组客服
-                $map[] = ['user_id', '=', $user['id']];
+                $map[] = ['salesman', '=', $user['id']];
                 break;
             case 5: // 门店主管
                 if (!isset($get['staff'])) $map[] = self::getUserStaffs($user);
                 break;
 
             case 8: // 门店销售
-                $map[] = ['user_id', '=', $user['id']];
+                $map[] = ['salesman', '=', $user['id']];
                 break;
 
             case 9: // 商务会员
-                $map[] = ['user_id', '=', $user['id']];
+                $map[] = ['salesman', '=', $user['id']];
                 break;
-
+            case 16: // 拍单组
+                break;
             default:
-                $map[] = ['user_id', '=', $user['id']];
+                $map[] = ['salesman', '=', $user['id']];
                 break;
         }
 

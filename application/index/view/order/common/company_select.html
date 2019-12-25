@@ -1,6 +1,6 @@
-<select name="company_id" lay-verify="" lay-filter="news_type">
-    <option value="0">--请选择公司--</option>
+<select name="company_id" lay-verify="required">
+    <option value="">--请选择公司--</option>
     <{foreach name="brands" item="val"}>
-        <option value="{$val.id}">{$val.title}</option>
+        <option value="{$val.id}" <{if $data['company_id'] == $val['id']}>selected<{/if}>>{$val.title}</option>
     <{/foreach}>
 </select>

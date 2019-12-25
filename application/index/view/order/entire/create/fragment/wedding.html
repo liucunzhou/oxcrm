@@ -11,7 +11,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">仪式堂</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="wedding_ritual_hall" value="{$data['ritual_hall']}" lay-verify="required" placeholder="仪式堂" autocomplete="off" class="layui-input">
+                    <input type="text" name="wedding_ritual_hall" value="{$data['wedding_ritual_hall']}" lay-verify="" placeholder="仪式堂" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
@@ -23,7 +23,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">婚庆其他</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="wedding_orther" value="{$data['wedding_orther']}" lay-verify="required" placeholder="婚庆其他" autocomplete="off" class="layui-input">
+                    <input type="text" name="wedding_other" value="{$data['wedding_other']}" lay-verify="" placeholder="婚庆其他" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
@@ -38,9 +38,9 @@
                 <label class="layui-form-label">策划师</label>
                 <div class="layui-input-inline">
                     <select name="planner" lay-search>
-                        <option value="0">请选择策划</option>
+                        <option value="">请选择策划</option>
                         <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}">{$salesman.realname}</option>
+                        <option value="{$salesman.id}" <{if $data['planner'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
                         <{/foreach}>
                     </select>
                 </div>
@@ -49,9 +49,9 @@
                 <label class="layui-form-label">设计师</label>
                 <div class="layui-input-inline">
                     <select name="designer" lay-search>
-                        <option value="0">请选择设计师</option>
+                        <option value="">请选择设计师</option>
                         <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}">{$salesman.realname}</option>
+                        <option value="{$salesman.id}" <{if $data['designer'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
                         <{/foreach}>
                     </select>
                 </div>
@@ -60,9 +60,9 @@
                 <label class="layui-form-label">跟单人</label>
                 <div class="layui-input-inline">
                     <select name="waiter" lay-search>
-                        <option value="0">请选择跟单</option>
+                        <option value="">请选择跟单</option>
                         <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}">{$salesman.realname}</option>
+                        <option value="{$salesman.id}" <{if $data['waiter'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
                         <{/foreach}>
                     </select>
                 </div>
@@ -75,8 +75,8 @@
                 <label class="layui-form-label">是否研发产品</label>
                 <div class="layui-input-inline">
                     <select name="is_new_product" lay-search>
-                        <option value="0">否</option>
-                        <option value="1">是</option>
+                        <option value="0" <{if $data['is_new_product'] == '0'}>selected<{/if}>>否</option>
+                        <option value="1" <{if $data['is_new_product'] == '1'}>selected<{/if}>>是</option>
                     </select>
                 </div>
             </div>

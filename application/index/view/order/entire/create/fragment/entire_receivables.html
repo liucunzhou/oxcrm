@@ -15,11 +15,11 @@
                     <label class="layui-form-label">收款方式</label>
                     <div class="layui-input-inline">
                         <select name="banquet_income_payment" lay-search>
-                            <option value="0">请选择收款方式</option>
-                            <option value="1">现金</option>
-                            <option value="2">POS机</option>
-                            <option value="3">微信</option>
-                            <option value="4">支付宝</option>
+                            <option value="">请选择收款方式</option>
+                            <option value="1" <{if $data['banquet_income_payment'] == '1'}>selected<{/if}>>现金</option>
+                            <option value="2" <{if $data['banquet_income_payment'] == '2'}>selected<{/if}>>POS机</option>
+                            <option value="3" <{if $data['banquet_income_payment'] == '3'}>selected<{/if}>>微信</option>
+                            <option value="4" <{if $data['banquet_income_payment'] == '4'}>selected<{/if}>>支付宝</option>
                         </select>
                     </div>
                 </div>
@@ -29,10 +29,10 @@
                     <label class="layui-form-label">款项性质</label>
                     <div class="layui-input-inline">
                         <select name="banquet_income_type" lay-verify="required">
-                            <option value="0">请选择款项性质</option>
-                            <option value="1">定金</option>
-                            <option value="2">预付款</option>
-                            <option value="3">尾款</option>
+                            <option value="">请选择款项性质</option>
+                            <option value="1" <{if $data['banquet_income_type'] == '1'}>selected<{/if}>>定金</option>
+                            <option value="2" <{if $data['banquet_income_type'] == '2'}>selected<{/if}>>预付款</option>
+                            <option value="3" <{if $data['banquet_income_type'] == '3'}>selected<{/if}>>尾款</option>
                         </select>
                     </div>
                 </div>

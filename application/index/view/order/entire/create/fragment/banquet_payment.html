@@ -15,9 +15,10 @@
                     <label class="layui-form-label">款项性质</label>
                     <div class="layui-input-inline">
                         <select name="banquet_pay_type" lay-verify="required" lay-filter="news_type">
-                            <option value="1">定金</option>
-                            <option value="2">预付款</option>
-                            <option value="3">尾款</option>
+                            <option value="">款项性质</option>
+                            <option value="1" <{if $data['banquet_pay_type'] == '1'}>selected<{/if}>>定金</option>
+                            <option value="2" <{if $data['banquet_pay_type'] == '2'}>selected<{/if}>>预付款</option>
+                            <option value="3" <{if $data['banquet_pay_type'] == '3'}>selected<{/if}>>尾款</option>
                         </select>
                     </div>
                 </div>

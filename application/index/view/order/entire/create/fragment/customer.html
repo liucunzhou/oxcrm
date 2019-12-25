@@ -6,8 +6,8 @@
                 <label class="layui-form-label">是否引流销售</label>
                 <div class="layui-input-inline">
                     <select name="is_recommend_salesman" lay-search>
-                        <option value="0">否</option>
-                        <option value="1">是</option>
+                        <option value="0"  <{if $data['is_recommend_salesman'] == '0'}>selected<{/if}>>否</option>
+                        <option value="1"  <{if $data['is_recommend_salesman'] == '1'}>selected<{/if}>>是</option>
                     </select>
                 </div>
             </div>
@@ -18,12 +18,12 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">销售姓名</label>
+                <label class="layui-form-label">签单销售</label>
                 <div class="layui-input-inline">
                     <select name="salesman" lay-search>
                         <option value="0">请选择销售</option>
                         <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}">{$salesman.realname}</option>
+                        <option value="{$salesman.id}"  <{if $data['salesman'] == $salesman['id']}>selected<{/if}>>{$salesman.realname}</option>
                         <{/foreach}>
                     </select>
                 </div>

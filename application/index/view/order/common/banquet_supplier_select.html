@@ -1,6 +1,6 @@
-<select name="banquet_supplier" lay-verify="required" lay-filter="banquet_supplier" lay-search>
+<select name="banquet_supplier" lay-verify="required" lay-filter="banquet_supplier" readonly="">
     <option value="0">--请选择供应商--</option>
     <{foreach name="suppliers" item="val"}>
-        <option value="{$val.id}">{$val.title}</option>
+        <option value="{$val.id}" <{if $data['banquet_supplier'] == $val['id']}>selected<{/if}>>{$val.title}</option>
     <{/foreach}>
 </select>
