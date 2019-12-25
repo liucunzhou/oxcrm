@@ -1,0 +1,39 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        婚宴追加信息
+        <i class="layui-icon layui-icon-add-circle add_wedding_suborder" style="color: #1E9FFF;cursor: pointer;"></i>
+    </div>
+    <div class="layui-card-body wedding_suborder_card">
+        <div class="layui-form-item wedding_suborder_inline">
+            <div class="layui-inline">
+                <label class="layui-form-label">桌数</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="sub_table_amount[]" value="{$data['table_amount']}" lay-verify="0" placeholder="加桌" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">餐标</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="sub_table_price[]" value="{$data['table_price']}" lay-verify="0" placeholder="餐标" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="sub_income_fee[]" value="{$data['income_fee']}" lay-verify="0" placeholder="订单金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-inline">
+                    <label class="layui-form-label">其他</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="sub_table_amount[]" value="{$data['table_amount']}" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <i class="layui-icon">&#xe640;</i>
+            </div>
+        </div>
+    </div>
+</div>
