@@ -1078,11 +1078,13 @@ class Order extends Base
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        if($allocate->news_type == '0') { // 婚宴订单
+        if($order['news_type'] == '0') { // 婚宴订单
             $view = 'order/banquet/show/main';
-        } else if ($allocate->news_type == 1) { // 婚庆客资
+        } else if ($order['news_type'] == 1) { // 婚庆客资
             $view = 'order/wedding/show/main';
-        } else if ($allocate->news_type == 2) { // 一站式客资
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/show/main';
+        } else {
             $view = 'order/entire/show/main';
         }
         return $this->fetch($view);
