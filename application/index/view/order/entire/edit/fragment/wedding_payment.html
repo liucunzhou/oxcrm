@@ -34,8 +34,8 @@
                 <th>-</th>
                 <th>
                     <div class="layui-btn-group">
-                        <button type="button" class="layui-btn layui-btn-xs">编辑</button>
-                        <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editWeddingPayment', ['id'=>$row['id']])}">编辑</a>
+                        <a type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
                         <button type="button" class="layui-btn layui-btn-radius layui-btn-xs">审核</button>
                     </div>
                 </th>
