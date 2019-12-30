@@ -1108,6 +1108,11 @@ html{background-color: #f2f2f2; color: #666;}
   color: #00b0ff;
 }
 
+/* layui-color */
+.layui-color-red{
+  color: red;
+}
+
 /* mobile layui-card customer */
 .layui-line{
   margin-top: 8px;

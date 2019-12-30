@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css?1" media="all">
     <style>
-        .layui-form-label {
-            width: 6em;
-        }
         .layui-form-label-normal{
             width: 80px;
         }
@@ -22,47 +19,42 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Order/doCreateOrder')}" lay-filter="component-form-group">
-                <div class="layui-tab">
-                    <ul class="layui-tab-title">
-                        <li class="layui-this">合同基本信息</li>
-                        <li>一站式合同信息</li>
-                        <li>一站式收付款信息</li>
-                    </ul>
-                    <div class="layui-tab-content">
-                        <div class="layui-tab-item layui-show">
-                            <!--合同基本信息-->
-                            <{include file="order/entire/create/fragment/contract" /}>
-
-                            <!--客资基本信息-->
-                            <{include file="order/entire/create/fragment/customer" /}>
-
-                            <!--收款信息-->
-                            <{include file="order/entire/create/fragment/pay_steps" /}>
-                        </div>
-
-                        <!--婚宴合同信息-->
-                        <div class="layui-tab-item">
-                            <!--婚宴基本信息-->
-                            <{include file="order/entire/create/fragment/banquet" /}>
-
-                            <!--婚宴追加信息 banquet_suborder-->
-                            <{include file="order/entire/create/fragment/wedding" /}>
-                        </div>
-
-                        <!- -一站式收付款信息-->
-                        <div class="layui-tab-item">
-                            <!-- 一站式收款信息 -->
-                            <{include file="order/entire/create/fragment/entire_receivables" /}>
-                        </div>
+            <form class="layui-form" method="post" action="{:url('Order/doEditBanquetSuborder')}" lay-filter="component-form-group">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">订单号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="banquet_order_no" value="{$data['banquet_order_no']}" lay-verify="0" placeholder="订单号" autocomplete="off" class="layui-input">
                     </div>
-
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">桌数</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="table_amount" value="{$data['table_amount']}" lay-verify="0" placeholder="加桌" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">餐标</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="table_price" value="{$data['table_price']}" lay-verify="0" placeholder="餐标" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">订单金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="banquet_totals" value="{$data['banquet_totals']}" lay-verify="0" placeholder="订单金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" pane>
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="sub_banquet_remark" class="layui-textarea" placeholder="备注">{$data['sub_banquet_remark']}</textarea>
+                    </div>
                 </div>
 
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
-                    <div class="layui-input-inline">
-                        <input type="hidden" name="member_allocate_id" value="{$allocate['id']}" />
-                        <input type="hidden" name="member_id" value="{$allocate['member_id']}"/>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="order_id" value="{$Request.param.order_id}" />
+                        <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -122,9 +114,7 @@
             var url = data.form.action;
             var params = data.field;
             $.post(url, params, function (res) {
-                layer.confirm(res.msg + '点击确认关闭', {icon: 3, title:'提示'}, function(index){
-                    parent.layui.admin.events.closeThisTabs()
-                });
+                parent.location.reload();
             });
             return false;
         });

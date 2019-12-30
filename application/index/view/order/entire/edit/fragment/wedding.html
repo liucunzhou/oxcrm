@@ -1,91 +1,154 @@
 <div class="layui-card">
-    <div class="layui-card-header">婚庆基本信息</div>
+    <div class="layui-card-header">
+        婚庆基本信息
+        <a class="layui-icon layui-icon-add-circle add_wedding_suborder" style="color: #1E9FFF;" title="添加婚庆二销" href="javascript:void(0);" data-action="{:url('Order/createWeddingSuborder', ['order_id'=>$data['id']])}"></a>
+    </div>
     <div class="layui-card-body">
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">婚庆套餐价</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_package_price" value="{$data['wedding_package_price']}" lay-verify="required" placeholder="婚庆套餐价" autocomplete="off" class="layui-input">
+        <div class="layui-row">
+            <div class="layui-col-md9">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-color-red">婚庆金额小计</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="wedding_total" value="{$data['wedding_total']}" lay-verify="required" placeholder="婚庆金额小计" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">婚庆套餐价</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="wedding_package_price" value="{$data['wedding_package_price']}" lay-verify="required" placeholder="婚庆套餐价" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">仪式堂</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="wedding_ritual_hall" value="{$data['wedding_ritual_hall']}" lay-verify="" placeholder="仪式堂" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">仪式堂</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_ritual_hall" value="{$data['wedding_ritual_hall']}" lay-verify="" placeholder="仪式堂" autocomplete="off" class="layui-input">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-color-red">策划师</label>
+                        <div class="layui-input-inline">
+                            <select name="planner" lay-search>
+                                <option value="">请选择策划</option>
+                                <{foreach name="salesmans" item="salesman"}>
+                                <option value="{$salesman.id}" <{if $data['planner'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
+                                <{/foreach}>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-color-red">设计师</label>
+                        <div class="layui-input-inline">
+                            <select name="designer" lay-search>
+                                <option value="">请选择设计师</option>
+                                <{foreach name="salesmans" item="salesman"}>
+                                <option value="{$salesman.id}" <{if $data['designer'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
+                                <{/foreach}>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-color-red">跟单人</label>
+                        <div class="layui-input-inline">
+                            <select name="waiter" lay-search>
+                                <option value="">请选择跟单</option>
+                                <{foreach name="salesmans" item="salesman"}>
+                                <option value="{$salesman.id}" <{if $data['waiter'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
+                                <{/foreach}>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">设备套餐（不包含）</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_device" value="{$data['wedding_device']}" lay-verify="required" placeholder="设备套餐" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">婚庆其他</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_other" value="{$data['wedding_other']}" lay-verify="" placeholder="婚庆其他" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">婚庆金额小计</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_total" value="{$data['wedding_total']}" lay-verify="required" placeholder="婚庆金额小计" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">策划师</label>
-                <div class="layui-input-inline">
-                    <select name="planner" lay-search>
-                        <option value="">请选择策划</option>
-                        <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}" <{if $data['planner'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
-                        <{/foreach}>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">设计师</label>
-                <div class="layui-input-inline">
-                    <select name="designer" lay-search>
-                        <option value="">请选择设计师</option>
-                        <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}" <{if $data['designer'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
-                        <{/foreach}>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">跟单人</label>
-                <div class="layui-input-inline">
-                    <select name="waiter" lay-search>
-                        <option value="">请选择跟单</option>
-                        <{foreach name="salesmans" item="salesman"}>
-                        <option value="{$salesman.id}" <{if $data['waiter'] == $salesman.id}>selected<{/if}>>{$salesman.realname}</option>
-                        <{/foreach}>
-                    </select>
-                </div>
-            </div>
-        </div>
 
-        <!--研发产品信息-->
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">是否研发产品</label>
-                <div class="layui-input-inline">
-                    <select name="is_new_product" lay-search>
-                        <option value="0" <{if $data['is_new_product'] == '0'}>selected<{/if}>>否</option>
-                        <option value="1" <{if $data['is_new_product'] == '1'}>selected<{/if}>>是</option>
-                    </select>
+                <!--研发产品信息-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否研发产品</label>
+                        <div class="layui-input-inline">
+                            <select name="is_new_product" lay-search>
+                                <option value="0" <{if $data['is_new_product'] == '0'}>selected<{/if}>>否</option>
+                                <option value="1" <{if $data['is_new_product'] == '1'}>selected<{/if}>>是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">研发产品编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="new_product_no" value="{$data['new_product_no']}" placeholder="研发产品编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">设备不包含</label>
+                    <div class="layui-input-block">
+                        <{foreach name="weddingDevices" item="val"}>
+                        <input type="checkbox" name="weddingDevices" title="{$val.title}"  value="{$val.id}">
+                        <{/foreach}>
+                    </div>
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">研发产品编号</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="new_product_no" value="{$data['new_product_no']}" placeholder="研发产品编号" autocomplete="off" class="layui-input">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <label class="layui-card-header">备注</label>
+                    <div class="layui-card-body no-padding no-margin">
+                        <textarea name="wedding_remark" class="layui-textarea" placeholder="备注信息">{$data['wedding_remark']}</textarea>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<{if !empty($weddingOrders)}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        婚宴二销信息
+    </div>
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>订单金额</th>
+                <th>明细</th>
+                <th>-</th>
+                <th>审核状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="weddingOrders" item="row"}>
+            <tr>
+                <td>{$row['wedding_order_no']}</td>
+                <td>{$row['wedding_totals']}</td>
+                <td>
+                    <a class="show_wedding_details" href="javascript:void(0);" data-action="{:url('order/showWeddingDetails', ['id'=>$row['id']])}">查看</a>
+                </td>
+                <td>-</td>
+                <td>-</td>
+                <td>
+                    <div class="layui-btn-group">
+                        <button type="button" class="layui-btn layui-btn-xs">编辑</button>
+                        <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+                        <button type="button" class="layui-btn layui-btn-radius layui-btn-xs">审核</button>
+                    </div>
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>

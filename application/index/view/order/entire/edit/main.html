@@ -15,6 +15,14 @@
         .layui-form-label-normal{
             width: 80px;
         }
+
+        .no-padding{
+            padding: 0!important;
+        }
+
+        .no-margin{
+            margin: 0!important;
+        }
     </style>
 </head>
 <body>
@@ -26,8 +34,7 @@
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">合同基本信息</li>
-                        <li>婚宴合同信息</li>
-                        <li>婚庆合同信息</li>
+                        <li>一站式合同信息</li>
                         <li>一站式收付款信息</li>
                     </ul>
                     <div class="layui-tab-content">
@@ -47,17 +54,9 @@
                             <!--婚宴基本信息-->
                             <{include file="order/entire/edit/fragment/banquet" /}>
 
-                            <!--婚宴追加信息-->
-                            <{include file="order/entire/edit/fragment/banquet_suborder" /}>
-                        </div>
-
-                        <!--婚庆合同信息-->
-                        <div class="layui-tab-item">
                             <!--婚庆基本信息-->
                             <{include file="order/entire/edit/fragment/wedding" /}>
-
-                            <!--婚庆追加信息-->
-                            <{include file="order/entire/edit/fragment/wedding_suborder" /}>
+                            <div class="layui-space10" style="height: 20px;"></div>
                         </div>
 
                         <!- -一站式收付款信息-->
@@ -66,10 +65,31 @@
                             <{include file="order/entire/edit/fragment/entire_receivables" /}>
 
                             <!--婚宴付款单-->
-                            <{include file="order/entire/edit/fragment/banquet_payment"}>
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    婚宴付款单
+                                    <a class="layui-icon layui-icon-add-circle add_banquet_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetPayment', ['order_id'=>$data['id']])}">
+                                        添加婚宴二销
+                                    </a>
+                                </div>
+                                <div class="layui-card-body no-margin no-padding">
+                                    <{include file="order/entire/edit/fragment/banquet_payment"}>
+                                </div>
+                            </div>
 
                             <!--婚庆付款信息-->
-                            <{include file="order/entire/edit/fragment/wedding_payment" /}>
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    婚庆付款信息
+                                    <a class="layui-icon layui-icon-add-circle add_wedding_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createWeddingPayment', ['order_id'=>$data['id']])}">
+                                        添加婚庆二销
+                                    </a>
+                                </div>
+                                <div class="layui-card-body no-margin no-padding">
+                                    <{include file="order/entire/edit/fragment/wedding_payment" /}>
+                                </div>
+                            </div>
+                            <div class="layui-space10" style="height: 20px;"></div>
                         </div>
                     </div>
 
@@ -116,9 +136,9 @@
             var index = data.value;
             var hotel = hotels[index];
             console.log(hotel);
-            $("input[name='wedding_pay_to_company']").val(hotel.bank_company);
-            $("input[name='wedding_pay_to_account']").val(hotel.bank_account);
-            $("input[name='wedding_pay_to_bank']").val(hotel.bank_name);
+            $("input[name='banquet_pay_to_company']").val(hotel.bank_company);
+            $("input[name='banquet_pay_to_account']").val(hotel.bank_account);
+            $("input[name='banquet_pay_to_bank']").val(hotel.bank_name);
         })
 
         form.on('select(news_type)', function(data){
@@ -135,13 +155,13 @@
             })
         });
 
-        form.on('select(banquet_supplier)', function(data){
+        form.on('select(wedding_supplier)', function(data){
             var index = data.value;
             var supplier = suppliers[index];
             var parents = $(data.elem).parents(".layui-form-item");
-            parents.find("input[name='banquet_pay_to_company']").val(supplier.bank_company);
-            parents.find("input[name='banquet_pay_to_account']").val(supplier.bank_account);
-            parents.find("input[name='banquet_pay_to_bank']").val(supplier.bank_name);
+            parents.find("input[name='wedding_pay_to_company']").val(supplier.bank_company);
+            parents.find("input[name='wedding_pay_to_account']").val(supplier.bank_account);
+            parents.find("input[name='wedding_pay_to_bank']").val(supplier.bank_name);
         });
 
         /* 监听提交 */
@@ -160,10 +180,75 @@
             return false;
         });
         
-        // 添加婚宴子订单
+        // 添加婚庆子订单
         $(".add_wedding_suborder").click(function () {
-            var target = $(".wedding_suborder_inline").eq(0).clone();
-            $(".wedding_suborder_card").append(target);
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.6;
+            layer.open({
+                type: 2,
+                title: '添加婚庆子订单',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 添加婚宴子订单
+        $(".add_banquet_suborder").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚宴子订单',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 添加婚宴收款信息
+        $(".add_banquet_receivables").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚宴收款信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+
+        // 添加婚宴付款信息
+        $(".add_banquet_payment").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚宴付款信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 添加婚庆付款信息
+        $(".add_wedding_payment").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚庆付款信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
         });
     });
 </script>

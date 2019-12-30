@@ -3,6 +3,12 @@
     <div class="layui-card-body">
         <div class="layui-form-item">
             <div class="layui-inline">
+                <label class="layui-form-label layui-color-red">婚庆金额小计</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="wedding_total" value="{$data['wedding_total']}" lay-verify="required" placeholder="婚庆金额小计" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
                 <label class="layui-form-label">婚庆套餐价</label>
                 <div class="layui-input-inline">
                     <input type="text" name="wedding_package_price" value="{$data['wedding_package_price']}" lay-verify="required" placeholder="婚庆套餐价" autocomplete="off" class="layui-input">
@@ -15,12 +21,6 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">设备套餐（不包含）</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_device" value="{$data['wedding_device']}" lay-verify="required" placeholder="设备套餐" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
                 <label class="layui-form-label">婚庆其他</label>
                 <div class="layui-input-inline">
                     <input type="text" name="wedding_other" value="{$data['wedding_other']}" lay-verify="" placeholder="婚庆其他" autocomplete="off" class="layui-input">
@@ -29,13 +29,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">婚庆金额小计</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="wedding_total" value="{$data['wedding_total']}" lay-verify="required" placeholder="婚庆金额小计" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">策划师</label>
+                <label class="layui-form-label layui-color-red">策划师</label>
                 <div class="layui-input-inline">
                     <select name="planner" lay-search>
                         <option value="">请选择策划</option>
@@ -46,7 +40,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">设计师</label>
+                <label class="layui-form-label layui-color-red">设计师</label>
                 <div class="layui-input-inline">
                     <select name="designer" lay-search>
                         <option value="">请选择设计师</option>
@@ -57,7 +51,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">跟单人</label>
+                <label class="layui-form-label layui-color-red">跟单人</label>
                 <div class="layui-input-inline">
                     <select name="waiter" lay-search>
                         <option value="">请选择跟单</option>
@@ -85,6 +79,23 @@
                 <div class="layui-input-inline">
                     <input type="text" name="new_product_no" value="{$data['new_product_no']}" placeholder="研发产品编号" autocomplete="off" class="layui-input">
                 </div>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备不包含</label>
+            <div class="layui-input-block">
+                <{foreach name="weddingDevices" item="val"}>
+                    <input type="checkbox" name="weddingDevices" title="{$val.title}"  value="{$val.id}">
+                <{/foreach}>
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea name="wedding_remark" class="layui-textarea" placeholder="备注信息">{$data['wedding_remark']}</textarea>
             </div>
         </div>
     </div>
