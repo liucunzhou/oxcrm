@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">
         婚宴基本信息
-        <a class="layui-icon layui-icon-add-circle add_banquet_suborder" style="color: #1E9FFF;" title="添加婚宴二销"  href="javascript:void(0);" data-action="{:url('Order/createBanquetSuborder', ['order_id'=>$data['id']])}"></a>
+        <a class="layui-icon layui-icon-add-circle add_banquet_suborder" style="color: #1E9FFF;" title="添加婚宴二销"  href="javascript:void(0);" data-action="{:url('Order/createBanquetSuborder', ['order_id'=>$data['id']])}">添加婚宴二销</a>
     </div>
     <div class="layui-card-body">
         <div class="layui-row">
@@ -103,9 +103,9 @@
                 <td>-</td>
                 <td>
                     <div class="layui-btn-group">
-                        <button type="button" class="layui-btn layui-btn-xs">编辑</button>
-                        <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-                        <button type="button" class="layui-btn layui-btn-radius layui-btn-xs">审核</button>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetSuborder', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-danger layui-btn-xs lay-api">删除</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-radius layui-btn-xs lay-right">审核</a>
                     </div>
                 </td>
             </tr>

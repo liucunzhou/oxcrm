@@ -1181,7 +1181,10 @@ class Order extends Base
     public function editWeddingSuborder()
     {
         $get = Request::param();
-        $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $suborder = OrderWeddingSuborder::get($get['id']);
+        $this->assign('data', $suborder);
+
+        $order = \app\common\model\Order::get($suborder->order_id)->getData();
 
         ## 获取二销项目列表
         $items = \app\common\model\WeddingDevice::getList();
@@ -1241,14 +1244,17 @@ class Order extends Base
     public function editBanquetSuborder()
     {
         $get = Request::param();
-        $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $suborder = OrderBanquetSuborder::get($get['id']);
+        $this->assign('data', $suborder);
+
+        $order = \app\common\model\Order::get($suborder->order_id)->getData();
 
         if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/banquet_suborder';
+            $view = 'order/banquet/edit/banquet_suborder';
         } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/banquet_suborder';
+            $view = 'order/wedding/edit/banquet_suborder';
         } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/banquet_suborder';
+            $view = 'order/entire/edit/banquet_suborder';
         }
         return $this->fetch($view);
     }
