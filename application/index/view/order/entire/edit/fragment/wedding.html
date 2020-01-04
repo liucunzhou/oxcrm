@@ -124,7 +124,7 @@
                 <th>订单金额</th>
                 <th>明细</th>
                 <th>-</th>
-                <th>{$confirmStatusList[$row['check_wedding_suborder_status']]}</th>
+                <th>审核状态</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -137,7 +137,7 @@
                     <a class="lay-right" href="javascript:void(0);" data-title="查看二销明细" data-action="{:url('order/showWeddingDetails', ['id'=>$row['id']])}">查看</a>
                 </td>
                 <td>-</td>
-                <td>-</td>
+                <td>{$confirmStatusList[$row['check_wedding_suborder_status']]}</td>
                 <td>
                     <div class="layui-btn-group">
                         <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="编辑婚庆二销信息" data-action="{:url('order/editWeddingSuborder', ['id'=>$row['id']])}">编辑</a>
