@@ -81,10 +81,19 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
+    }).use(['index', 'form', 'laydate', 'element'], function () {
         var $ = layui.jquery
             ,laydate = layui.laydate
-            ,form = layui.form;
+            ,form = layui.form
+            ,element = layui.element;
+
+        var layid = location.hash.replace(/^#form-tab=/, '');
+        element.tabChange('form-tab', layid);
+        //监听Tab切换，以改变地址hash值
+        element.on('tab(form-tab)', function(){
+            location.hash = 'form-tab='+ this.getAttribute('lay-id');
+        });
+
 
         form.render(null, 'component-form-group');
         lay('.layui-date').each(function() {
