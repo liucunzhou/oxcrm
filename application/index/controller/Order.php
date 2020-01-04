@@ -1573,7 +1573,7 @@ class Order extends Base
     }
 
     # 婚宴付款信息--出纳审核
-    public function editBanquetPaymentCashier()
+    public function checkBanquetPaymentCashier()
     {
         $get = Request::param();
         $banquetPayment = OrderBanquetPayment::get($get['id']);
