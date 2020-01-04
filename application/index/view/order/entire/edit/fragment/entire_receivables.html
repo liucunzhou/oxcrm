@@ -12,8 +12,6 @@
                 <col width="150">
                 <col width="150">
                 <col width="150">
-                <col width="150">
-                <col width="150">
                 <col>
             </colgroup>
             <thead>
@@ -23,7 +21,6 @@
                 <th>收款方式</th>
                 <th>款项性质</th>
                 <th>收款金额</th>
-                <th>-</th>
                 <th>审核状态</th>
                 <th>操作</th>
             </tr>
@@ -36,7 +33,6 @@
                     <td>{$payments[$row['banquet_income_payment']]}</td>
                     <td>{$paymentTypes[$row['banquet_income_type']]}</td>
                     <td>{$row['banquet_income_item_price']}</td>
-                    <td>-</td>
                     <td>{$confirmStatusList[$row['check_banquet_receivable_status']]}</td>
                     <td>
                         <div class="layui-btn-group">
