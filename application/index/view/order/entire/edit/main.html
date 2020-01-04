@@ -149,7 +149,6 @@
         form.on('select(hotel_id)', function(data){
             var index = data.value;
             var hotel = hotels[index];
-            console.log(hotel);
             $("input[name='banquet_pay_to_company']").val(hotel.bank_company);
             $("input[name='banquet_pay_to_account']").val(hotel.bank_account);
             $("input[name='banquet_pay_to_bank']").val(hotel.bank_name);
