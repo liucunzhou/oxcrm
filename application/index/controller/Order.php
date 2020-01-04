@@ -1518,6 +1518,87 @@ class Order extends Base
         return $this->fetch($view);
     }
 
+    # 婚宴付款信息--会计审核
+    public function checkBanquetPaymentAccounting()
+    {
+        $get = Request::param();
+        $banquetPayment = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $banquetPayment);
+        $order = \app\common\model\Order::get($banquetPayment->order_id)->getData();
+
+        ## 获取酒店信息
+        $hotel = \app\common\model\Store::get($order['hotel_id']);
+        $this->assign('hotel', $hotel);
+
+        ## 获取婚宴付款信息
+        $data = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $data);
+
+        $this->assign('order', $order);
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/banquet_payment_accounting';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/banquet_payment_accounting';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/banquet_payment_accounting';
+        }
+        return $this->fetch($view);
+    }
+
+    # 获取婚宴付款信息--财务审核
+    public function checkBanquetPaymentFiance()
+    {
+        $get = Request::param();
+        $banquetPayment = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $banquetPayment);
+        $order = \app\common\model\Order::get($banquetPayment->order_id)->getData();
+
+        ## 获取酒店信息
+        $hotel = \app\common\model\Store::get($order['hotel_id']);
+        $this->assign('hotel', $hotel);
+
+        ## 获取婚宴付款信息
+        $data = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $data);
+
+        $this->assign('order', $order);
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/banquet_payment_fiance';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/banquet_payment_fiance';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/banquet_payment_fiance';
+        }
+        return $this->fetch($view);
+    }
+
+    # 婚宴付款信息--出纳审核
+    public function editBanquetPaymentCashier()
+    {
+        $get = Request::param();
+        $banquetPayment = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $banquetPayment);
+        $order = \app\common\model\Order::get($banquetPayment->order_id)->getData();
+
+        ## 获取酒店信息
+        $hotel = \app\common\model\Store::get($order['hotel_id']);
+        $this->assign('hotel', $hotel);
+
+        ## 获取婚宴付款信息
+        $data = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $data);
+
+        $this->assign('order', $order);
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/banquet_payment_cashier';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/banquet_payment_cashier';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/banquet_payment_cashier';
+        }
+        return $this->fetch($view);
+    }
+
     public function doEditBanquetPayment()
     {
         $request = Request::param();
