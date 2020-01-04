@@ -137,7 +137,6 @@
             var url = data.form.action;
             var params = data.field;
             $.post(url, params, function (res) {
-                parent.location.hash.replace(/^#form-tab=/, 'tab3');
                 parent.location.reload();
             });
             return false;
