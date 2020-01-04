@@ -1225,6 +1225,52 @@ class Order extends Base
         }
     }
 
+    # 编辑婚庆子合同
+    public function confirmWeddingSuborder()
+    {
+        $get = Request::param();
+        $suborder = OrderWeddingSuborder::get($get['id']);
+        $this->assign('data', $suborder);
+
+        $order = \app\common\model\Order::get($suborder->order_id)->getData();
+
+        ## 获取二销项目列表
+        $items = \app\common\model\WeddingDevice::getList();
+        $this->assign('items', $items);
+
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/wedding_suborder';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/wedding_suborder';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/wedding_suborder';
+        }
+        return $this->fetch($view);
+    }
+
+    # 添加/编辑婚庆子合同
+    public function doConfirmWeddingSuborder()
+    {
+        $request = Request::param();
+        if(!empty($request['id'])) {
+            $action = '审核';
+            $model = OrderWeddingSuborder::get($request['id']);
+        } else {
+            $action = '审核';
+            $model = new OrderWeddingSuborder();
+        }
+
+        $model->wedding_items = json_encode($request['items']);
+        $result = $model->save($request);
+        if($result) {
+            ### 添加操作日志
+            \app\common\model\OperateLog::appendTo($model);
+            return json(['code'=>'200', 'msg'=> $action.'成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=> $action.'失败']);
+        }
+    }
+
     # 创建婚宴子合同
     public function createBanquetSuborder()
     {

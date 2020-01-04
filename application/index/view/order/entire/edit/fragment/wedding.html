@@ -124,7 +124,7 @@
                 <th>订单金额</th>
                 <th>明细</th>
                 <th>-</th>
-                <th>审核状态</th>
+                <th>{$confirmStatusList[$row['check_wedding_suborder_status']]}</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -142,7 +142,7 @@
                     <div class="layui-btn-group">
                         <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="编辑婚庆二销信息" data-action="{:url('order/editWeddingSuborder', ['id'=>$row['id']])}">编辑</a>
                         <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-                        <button type="button" class="layui-btn layui-btn-radius layui-btn-xs">审核</button>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="审核婚庆二销信息" data-action="{:url('order/confirmWeddingSuborder', ['id'=>$row['id']])}">审核</a>
                     </div>
                 </td>
             </tr>
