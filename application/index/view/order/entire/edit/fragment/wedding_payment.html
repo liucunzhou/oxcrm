@@ -7,7 +7,6 @@
         <col width="150">
         <col width="150">
         <col width="150">
-        <col width="150">
         <col>
     </colgroup>
     <thead>
@@ -16,7 +15,6 @@
         <th>款项性质</th>
         <th>付款金额</th>
         <th>收款名称</th>
-        <th>开户行</th>
         <th>收款账号</th>
         <th>审核状态</th>
         <th>操作</th>
@@ -29,14 +27,21 @@
                 <th>{$paymentTypes[$row['wedding_pay_type']]}</th>
                 <th>{$row['wedding_pay_item_price']}</th>
                 <th>{$row['wedding_pay_to_company']}</th>
-                <th>{$row['wedding_pay_to_bank']}</th>
                 <th>{$row['wedding_pay_to_account']}</th>
-                <th>会计-财务-出纳</th>
+                <th>
+                    {$row['check_status_payment_account']}
+                    -
+                    {$row['check_status_payment_fiance']}
+                    -
+                    {$row['check_status_payment_cashier']}
+                </th>
                 <th>
                     <div class="layui-btn-group">
                         <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editWeddingPayment', ['id'=>$row['id']])}">编辑</a>
                         <a type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
-                        <button type="button" class="layui-btn layui-btn-radius layui-btn-xs">审核</button>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/checkWeddingPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/checkWeddingPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/checkWeddingPaymentCasher', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
                 </th>
             </tr>
