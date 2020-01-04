@@ -37,12 +37,12 @@
                     <td>{$paymentTypes[$row['banquet_income_type']]}</td>
                     <td>{$row['banquet_income_item_price']}</td>
                     <td>-</td>
-                    <td>-</td>
+                    <td>{$confirmStatusList[$row['confirm_banquet_receivable']]}</td>
                     <td>
                         <div class="layui-btn-group">
                             <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetReceivable', ['id'=>$row['id']])}">编辑</a>
                             <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-                            <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquet', ['id'=>$row['id']])}">编辑</a>
+                            <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/confirmBanquetReceivable', ['id'=>$row['id']])}">审核</a>
                         </div>
                     </td>
                 </tr>

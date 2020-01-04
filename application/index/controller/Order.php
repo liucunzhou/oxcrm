@@ -1425,6 +1425,51 @@ class Order extends Base
         }
     }
 
+    # 确认婚宴收款信息
+    public function confirmBanquetReceivable()
+    {
+        $get = Request::param();
+        $banquetReceivable = OrderBanquetReceivables::get($get['id']);
+        $this->assign('data', $banquetReceivable);
+        $order = \app\common\model\Order::get($banquetReceivable->order_id)->getData();
+
+        ## 获取付款信息
+        $data = OrderBanquetReceivables::get($get['id']);
+        $this->assign('data', $data);
+
+        $this->assign('order', $order);
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/banquet_receivable';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/banquet_receivable';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/banquet_receivable';
+        }
+        return $this->fetch($view);
+    }
+
+    # 确认婚宴收款逻辑
+    public function doConfirmBanquetReceivable()
+    {
+        $request = Request::param();
+        if(!empty($request['id'])) {
+            $action = '更新';
+            $model = OrderBanquetReceivables::get($request['id']);
+        } else {
+            $action = '添加';
+            $model = new OrderBanquetReceivables();
+        }
+
+        $result = $model->save($request);
+        if($result) {
+            ### 添加操作日志
+            \app\common\model\OperateLog::appendTo($model);
+            return json(['code'=>'200', 'msg'=> $action.'成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=> $action.'失败']);
+        }
+    }
+
     # 创建婚宴付款信息
     public function createBanquetPayment()
     {
