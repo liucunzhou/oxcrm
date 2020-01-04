@@ -37,11 +37,11 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Order/doEditOrder')}" lay-filter="component-form-group">
-                <div class="layui-tab">
+                <div class="layui-tab" lay-filter="form-tab">
                     <ul class="layui-tab-title">
-                        <li class="layui-this">合同基本信息</li>
-                        <li>一站式合同信息</li>
-                        <li>一站式收付款信息</li>
+                        <li class="layui-this" lay-id="tab1">合同基本信息</li>
+                        <li lay-id="tab2">一站式合同信息</li>
+                        <li lay-id="tab3">一站式收付款信息</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
@@ -124,10 +124,19 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
+    }).use(['index', 'form', 'laydate', 'element'], function () {
         var $ = layui.jquery
             ,laydate = layui.laydate
-            ,form = layui.form;
+            ,form = layui.form
+            ,element = layui.element;
+
+        var layid = location.hash.replace(/^#form-tab=/, '');
+        element.tabChange('test1', layid);
+
+        //监听Tab切换，以改变地址hash值
+        element.on('tab(form-tab)', function(){
+            location.hash = 'form-tab='+ this.getAttribute('lay-id');
+        });
 
         form.render(null, 'component-form-group');
         lay('.layui-date').each(function() {
