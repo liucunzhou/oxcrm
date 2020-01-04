@@ -38,9 +38,9 @@
                     <div class="layui-btn-group">
                         <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editWeddingPayment', ['id'=>$row['id']])}">编辑</a>
                         <a type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/checkWeddingPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/checkWeddingPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/checkWeddingPaymentCasher', ['id'=>$row['id']])}">出纳审核</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-会计审核" data-action="{:url('order/checkWeddingPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-财务审核" data-action="{:url('order/checkWeddingPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-出纳审核" data-action="{:url('order/checkWeddingPaymentCashier', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
                 </th>
             </tr>
