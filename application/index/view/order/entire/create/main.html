@@ -23,11 +23,11 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Order/doCreateOrder')}" lay-filter="component-form-group">
-                <div class="layui-tab">
+                <div class="layui-tab" lay-filter="form-tab">
                     <ul class="layui-tab-title">
-                        <li class="layui-this">合同基本信息</li>
-                        <li>一站式合同信息</li>
-                        <li>一站式收付款信息</li>
+                        <li class="layui-this" lay-id="tab1">合同基本信息</li>
+                        <li lay-id="tab2">一站式合同信息</li>
+                        <li lay-id="tab3">一站式收付款信息</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
