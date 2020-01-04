@@ -150,7 +150,11 @@
             var banquetTotals = 0;
 
             var serviceFee = $('input[name="service_fee"]').val();
-            if(serviceFee!='') banquetTotals = banquetTotals + serviceFee;
+            if(serviceFee!='') {
+                banquetTotals = banquetTotals + serviceFee;
+            } else {
+                banquetTotals = banquetTotals 
+            }
 
             var wineFee = $('input[name="wine_fee"]').val();
             if(wineFee!='') banquetTotals = banquetTotals + wineFee;
