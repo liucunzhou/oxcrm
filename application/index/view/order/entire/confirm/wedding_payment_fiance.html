@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>一站式订单收款确认</title>
+    <title>一站式婚庆付款财务审核</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -23,18 +23,18 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">审核</label>
                     <div class="layui-input-block">
-                        <select name="check_banquet_receivable_status">
+                        <select name="check_status_payment_fiance">
                             <option value="">--请选择--</option>
-                            <option value="0" <{if $data['check_banquet_receivable_status']=='0'}>selected<{/if}>>待审核</option>
-                            <option value="1" <{if $data['check_banquet_receivable_status']=='1'}>selected<{/if}>>通过</option>
-                            <option value="2" <{if $data['check_banquet_receivable_status']=='2'}>selected<{/if}>>驳回</option>
+                            <option value="0" <{if $data['check_status_payment_fiance']=='0'}>selected<{/if}>>待审核</option>
+                            <option value="1" <{if $data['check_status_payment_fiance']=='1'}>selected<{/if}>>通过</option>
+                            <option value="2" <{if $data['check_status_payment_fiance']=='2'}>selected<{/if}>>驳回</option>
                         </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <textarea name="check_banquet_receivable_remark" class="layui-textarea">{$data['check_banquet_receivable_remark']}</textarea>
+                        <textarea name="check_remark_payment_fiance" class="layui-textarea">{$data['check_remark_payment_fiance']}</textarea>
                     </div>
                 </div>
 

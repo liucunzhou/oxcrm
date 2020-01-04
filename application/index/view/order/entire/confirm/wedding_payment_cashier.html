@@ -19,22 +19,22 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('Order/doConfirmBanquetReceivable')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('Order/doEditWeddingPayment')}" lay-filter="component-form-group">
                 <div class="layui-form-item">
                     <label class="layui-form-label">审核</label>
                     <div class="layui-input-block">
-                        <select name="check_banquet_receivable_status">
+                        <select name="check_status_payment_cashier">
                             <option value="">--请选择--</option>
-                            <option value="0" <{if $data['check_banquet_receivable_status']=='0'}>selected<{/if}>>待审核</option>
-                            <option value="1" <{if $data['check_banquet_receivable_status']=='1'}>selected<{/if}>>通过</option>
-                            <option value="2" <{if $data['check_banquet_receivable_status']=='2'}>selected<{/if}>>驳回</option>
+                            <option value="0" <{if $data['check_status_payment_cashier']=='0'}>selected<{/if}>>待审核</option>
+                            <option value="1" <{if $data['check_status_payment_cashier']=='1'}>selected<{/if}>>通过</option>
+                            <option value="2" <{if $data['check_status_payment_cashier']=='2'}>selected<{/if}>>驳回</option>
                         </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <textarea name="check_banquet_receivable_remark" class="layui-textarea">{$data['check_banquet_receivable_remark']}</textarea>
+                        <textarea name="check_remark_payment_cashier" class="layui-textarea">{$data['check_remark_payment_cashier']}</textarea>
                     </div>
                 </div>
 
