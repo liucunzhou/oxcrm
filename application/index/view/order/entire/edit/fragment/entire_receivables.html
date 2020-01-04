@@ -37,7 +37,7 @@
                     <td>{$paymentTypes[$row['banquet_income_type']]}</td>
                     <td>{$row['banquet_income_item_price']}</td>
                     <td>-</td>
-                    <td>{$confirmStatusList[$row['confirm_banquet_receivable']]}</td>
+                    <td>{$confirmStatusList[$row['check_banquet_receivable_status']]}</td>
                     <td>
                         <div class="layui-btn-group">
                             <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetReceivable', ['id'=>$row['id']])}">编辑</a>
