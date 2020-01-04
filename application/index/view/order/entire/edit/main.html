@@ -68,7 +68,7 @@
                             <div class="layui-card">
                                 <div class="layui-card-header">
                                     婚宴付款单
-                                    <a class="layui-icon layui-icon-add-circle add_banquet_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetPayment', ['order_id'=>$data['id']])}">
+                                    <a data-title="添加婚宴付款" class="layui-icon layui-icon-add-circle add_banquet_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetPayment', ['order_id'=>$data['id']])}">
                                         添加婚宴付款
                                     </a>
                                 </div>
@@ -81,7 +81,7 @@
                             <div class="layui-card">
                                 <div class="layui-card-header">
                                     婚庆付款信息
-                                    <a class="layui-icon layui-icon-add-circle add_wedding_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createWeddingPayment', ['order_id'=>$data['id']])}">
+                                    <a data-title="添加婚庆付款" class="layui-icon layui-icon-add-circle add_wedding_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createWeddingPayment', ['order_id'=>$data['id']])}">
                                         添加婚庆付款
                                     </a>
                                 </div>
@@ -255,7 +255,7 @@
             var url = $(this).attr("data-action");
             var height = window.innerHeight;
             var width = window.innerWidth * 0.5;
-            var title = $(this).attr("data-action");
+            var title = $(this).attr("data-title");
             layer.open({
                 type: 2,
                 title: title,

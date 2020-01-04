@@ -32,6 +32,7 @@ class Order extends Base
     protected $weddingCategories = [];
     protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
     protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
+    protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
 
     protected function initialize()
     {
@@ -39,6 +40,7 @@ class Order extends Base
         // 获取系统来源,酒店列表,意向状态
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
+        $this->assign('confirmStatusList', $this->confirmStatusList);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
         $this->assign('staffes', $staffes);
@@ -1191,11 +1193,11 @@ class Order extends Base
         $this->assign('items', $items);
 
         if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/wedding_suborder';
+            $view = 'order/banquet/edit/wedding_suborder';
         } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/wedding_suborder';
+            $view = 'order/wedding/edit/wedding_suborder';
         } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/wedding_suborder';
+            $view = 'order/entire/edit/wedding_suborder';
         }
         return $this->fetch($view);
     }
@@ -1281,6 +1283,40 @@ class Order extends Base
         }
     }
 
+    public function confirmBanquetSuborder()
+    {
+        $get = Request::param();
+        $suborder = OrderBanquetSuborder::get($get['id']);
+        $this->assign('data', $suborder);
+
+        $order = \app\common\model\Order::get($suborder->order_id)->getData();
+
+        if($order['news_type'] == '0') { // 婚宴订单
+            $view = 'order/banquet/confirm/banquet_suborder';
+        } else if ($order['news_type'] == 1) { // 婚庆客资
+            $view = 'order/wedding/confirm/banquet_suborder';
+        } else if ($order['news_type'] == 2) { // 一站式客资
+            $view = 'order/entire/confirm/banquet_suborder';
+        }
+        return $this->fetch($view);
+    }
+
+    # 审核婚宴二销订单
+    public function doConfirmBanquetSuborder()
+    {
+        $request = Request::param();
+        $action = '确认';
+        $model = OrderBanquetSuborder::get($request['id']);
+        $result = $model->save($request);
+        if($result) {
+            ### 添加操作日志
+            \app\common\model\OperateLog::appendTo($model);
+            return json(['code'=>'200', 'msg'=> $action.'成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=> $action.'失败']);
+        }
+    }
+
     # 创建婚宴收款信息
     public function createBanquetReceivable()
     {
@@ -1302,7 +1338,9 @@ class Order extends Base
     public function editBanquetReceivable()
     {
         $get = Request::param();
-        $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $banquetReceivable = OrderBanquetReceivables::get($get['id']);
+        $this->assign('data', $banquetReceivable);
+        $order = \app\common\model\Order::get($banquetReceivable->order_id)->getData();
 
         ## 获取付款信息
         $data = OrderBanquetReceivables::get($get['id']);
@@ -1366,7 +1404,9 @@ class Order extends Base
     public function editBanquetPayment()
     {
         $get = Request::param();
-        $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $banquetPayment = OrderBanquetPayment::get($get['id']);
+        $this->assign('data', $banquetPayment);
+        $order = \app\common\model\Order::get($banquetPayment->order_id)->getData();
 
         ## 获取酒店信息
         $hotel = \app\common\model\Store::get($order['hotel_id']);
@@ -1429,15 +1469,17 @@ class Order extends Base
     public function editWeddingPayment()
     {
         $get = Request::param();
-        $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $weddingPayment = OrderWeddingPayment::get($get['id']);
+        $this->assign('data', $weddingPayment);
+        $order = \app\common\model\Order::get($weddingPayment->order_id)->getData();
 
         $this->assign('order', $order);
         if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/wedding_payment';
+            $view = 'order/banquet/edit/wedding_payment';
         } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/wedding_payment';
+            $view = 'order/wedding/edit/wedding_payment';
         } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/wedding_payment';
+            $view = 'order/entire/edit/wedding_payment';
         }
         return $this->fetch($view);
     }
@@ -1461,41 +1503,6 @@ class Order extends Base
         } else {
             return json(['code'=>'500', 'msg'=> $action.'失败']);
         }
-    }
-
-    # 查看审核结果
-    public function checkResult()
-    {
-        $get = Request::param();
-        if (empty($get['id'])) return false;
-        $order = \app\common\model\Order::get($get['id'])->getData();
-        $order = $this->formatOrderDate($order);
-        $this->assign('data', $order);
-
-        $member = Member::getByMobile($order['mobile']);
-        $this->assign('member', $member);
-
-        ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
-
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
-
-        ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
-        $this->assign('salesmans', $salesmans);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/confirm/check_result';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/confirm/check_result';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/confirm/check_result';
-        } else {
-            $view = 'order/entire/confirm/check_result';
-        }
-        return $this->fetch($view);
     }
 
     # 来源审核视图

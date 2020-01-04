@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">
         一站式收款信息
-        <a class="layui-icon layui-icon-add-circle add_banquet_receivables" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}">添加收款信息</a>
+        <a class="layui-icon layui-icon-add-circle add_banquet_receivables" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}" data-title="添加收款信息">添加收款信息</a>
     </div>
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
@@ -42,7 +42,7 @@
                         <div class="layui-btn-group">
                             <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetReceivable', ['id'=>$row['id']])}">编辑</a>
                             <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-                            <button type="button" class="layui-btn layui-btn-radius layui-btn-xs">审核</button>
+                            <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquet', ['id'=>$row['id']])}">编辑</a>
                         </div>
                     </td>
                 </tr>

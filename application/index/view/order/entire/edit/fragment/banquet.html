@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">
         婚宴基本信息
-        <a class="layui-icon layui-icon-add-circle add_banquet_suborder" style="color: #1E9FFF;" title="添加婚宴二销"  href="javascript:void(0);" data-action="{:url('Order/createBanquetSuborder', ['order_id'=>$data['id']])}">添加婚宴二销</a>
+        <a class="layui-icon layui-icon-add-circle add_banquet_suborder" style="color: #1E9FFF;" data-title="添加婚宴二销"  href="javascript:void(0);" data-action="{:url('Order/createBanquetSuborder', ['order_id'=>$data['id']])}">添加婚宴二销</a>
     </div>
     <div class="layui-card-body">
         <div class="layui-row">
@@ -100,12 +100,12 @@
                 <td>{$row['table_amount']}</td>
                 <td>{$row['table_price']}</td>
                 <td>{$row['banquet_totals']}</td>
-                <td>-</td>
+                <td>{$confirmStatusList[$row['check_banquet_suborder_status']]}</td>
                 <td>
                     <div class="layui-btn-group">
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetSuborder', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="编辑婚宴二销信息" data-action="{:url('order/editBanquetSuborder', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);" class="layui-btn layui-btn-danger layui-btn-xs lay-api">删除</a>
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-radius layui-btn-xs lay-right">审核</a>
+                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="审核婚宴二销信息" data-action="{:url('order/confirmBanquetSuborder', ['id'=>$row['id']])}">审核</a>
                     </div>
                 </td>
             </tr>
