@@ -131,7 +131,7 @@
             ,element = layui.element;
 
         var layid = location.hash.replace(/^#form-tab=/, '');
-        element.tabChange('test1', layid);
+        element.tabChange('form-tab', layid);
 
         //监听Tab切换，以改变地址hash值
         element.on('tab(form-tab)', function(){
