@@ -1,0 +1,49 @@
+<table class="layui-table no-padding no-margin">
+    <colgroup>
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="240">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>申请日期</th>
+        <th>款项性质</th>
+        <th>付款金额</th>
+        <th>收款名称</th>
+        <th>收款账号</th>
+        <th>审核状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        <{foreach name="weddingPayments" item="row"}>
+            <tr>
+                <th>{$row['wedding_apply_pay_date']}</th>
+                <th>{$paymentTypes[$row['wedding_pay_type']]}</th>
+                <th>{$row['wedding_pay_item_price']}</th>
+                <th>{$row['wedding_pay_to_company']}</th>
+                <th>{$row['wedding_pay_to_account']}</th>
+                <th>
+                    {$confirmStatusList[$row['check_status_payment_account']]}
+                    -
+                    {$confirmStatusList[$row['check_status_payment_fiance']]}
+                    -
+                    {$confirmStatusList[$row['check_status_payment_cashier']]}
+                </th>
+                <th>
+                    <div class="layui-btn-group">
+                        <a href="javascript:void(0);" class="{:auth('order/editWeddingPayment')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/editWeddingPayment', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="{:auth('order/deleteWeddingPayment')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api" data-action="{:url('order/deleteWeddingPayment', ['id'=>$row['id']])}">删除</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkWeddingPaymentAccounting')} layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-会计审核" data-action="{:url('order/checkWeddingPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkWeddingPaymentFiance')} layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-财务审核" data-action="{:url('order/checkWeddingPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkWeddingPaymentCashier')} layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-出纳审核" data-action="{:url('order/checkWeddingPaymentCashier', ['id'=>$row['id']])}">出纳审核</a>
+                    </div>
+                </th>
+            </tr>
+        <{/foreach}>
+    </tbody>
+</table>

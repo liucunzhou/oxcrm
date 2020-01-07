@@ -1,0 +1,49 @@
+<table class="layui-table no-padding no-margin">
+    <colgroup>
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="240">
+        <col>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>申请日期</th>
+            <th>款项性质</th>
+            <th>付款金额</th>
+            <th>收款名称</th>
+            <th>收款账号</th>
+            <th>[会计-财务-出纳]</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <{foreach name="banquetPayments" item="row"}>
+            <tr>
+                <th>{$row['banquet_apply_pay_date']}</th>
+                <th>{$paymentTypes[$row['banquet_pay_type']]}</th>
+                <th>{$row['banquet_pay_item_price']}</th>
+                <th>{$row['banquet_supplier']}</th>
+                <th>{$row['banquet_pay_to_account']}</th>
+                <th>
+                    {$confirmStatusList[$row['check_status_payment_account']]}
+                    -
+                    {$confirmStatusList[$row['check_status_payment_fiance']]}
+                    -
+                    {$confirmStatusList[$row['check_status_payment_cashier']]}
+                </th>
+                <th>
+                    <div class="layui-btn-group">
+                        <a href="javascript:void(0);" class="{:auth('order/editBanquetPayment')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetPayment', ['id'=>$row['id']])}">编辑</a>
+                        <button type="button" class="{:auth('order/delBanquetPayment')} layui-btn layui-btn-danger layui-btn-xs btn-delete-api" data-action="{:url('order/delBanquetPayment')}">删除</button>
+                        <a href="javascript:void(0);" class="{:auth('order/checkBanquetPaymentAccounting')} layui-btn layui-btn-xs lay-right" data-title="婚宴付款-会计审核" data-action="{:url('order/checkBanquetPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkBanquetPaymentFiance')} layui-btn layui-btn-xs lay-right" data-title="婚宴付款-财务审核" data-action="{:url('order/checkBanquetPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkBanquetPaymentCashier')} layui-btn layui-btn-xs lay-right" data-title="婚宴付款-出纳审核" data-action="{:url('order/checkBanquetPaymentCashier', ['id'=>$row['id']])}">出纳审核</a>
+                    </div>
+                </th>
+            </tr>
+        <{/foreach}>
+    </tbody>
+</table>

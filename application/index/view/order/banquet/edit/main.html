@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>更新订单信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <style>
+        .layui-form-label {
+            width: 6em;
+        }
+        .layui-form-label-normal{
+            width: 80px;
+        }
+
+        .no-padding{
+            padding: 0!important;
+        }
+
+        .no-margin{
+            margin: 0!important;
+        }
+
+        .layui-table td, .layui-table th{
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<!--创建、编辑订单-->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('Order/doEditOrder')}" lay-filter="component-form-group">
+                <div class="layui-tab" lay-filter="form-tab">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this" lay-id="tab1">合同基本信息</li>
+                        <li lay-id="tab2">婚宴合同信息</li>
+                        <li lay-id="tab3">婚宴收付款信息</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <!--合同基本信息-->
+                            <{include file="order/banquet/edit/fragment/contract" /}>
+
+                            <!--客资基本信息-->
+                            <{include file="order/banquet/edit/fragment/customer" /}>
+                        </div>
+
+                        <!--婚宴合同信息-->
+                        <div class="layui-tab-item">
+                            <!--婚宴基本信息-->
+                            <{include file="order/banquet/edit/fragment/banquet" /}>
+
+                            <!--收款信息-->
+                            <{include file="order/banquet/edit/fragment/pay_steps" /}>
+                            <div class="layui-space10" style="height: 20px;"></div>
+                        </div>
+
+                        <!-- 婚宴收付款信息-->
+                        <div class="layui-tab-item">
+                            <!-- 一站式收款信息 -->
+                            <{include file="order/banquet/edit/fragment/entire_receivables" /}>
+
+                            <!--婚宴付款单-->
+                            <div class="layui-card">
+                                <div class="layui-card-header">
+                                    婚宴付款单
+                                    <a data-title="添加婚宴付款" class="layui-icon layui-icon-add-circle add_banquet_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetPayment', ['order_id'=>$data['id']])}">
+                                        添加婚宴付款
+                                    </a>
+                                </div>
+                                <div class="layui-card-body no-margin no-padding">
+                                    <{include file="order/banquet/edit/fragment/banquet_payment"}>
+                                </div>
+                            </div>
+                            <div class="layui-space10" style="height: 20px;"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="id" value="{$data['id']}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/assets/layui/layui.js"></script>
+<script src="/assets/json/hotels.js"></script>
+<script src="/assets/json/suppliers.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate', 'element'], function () {
+        var $ = layui.jquery
+            ,laydate = layui.laydate
+            ,form = layui.form
+            ,element = layui.element;
+
+        var layid = location.hash.replace(/^#form-tab=/, '');
+        element.tabChange('form-tab', layid);
+        //监听Tab切换，以改变地址hash值
+        element.on('tab(form-tab)', function(){
+            location.hash = 'form-tab='+ this.getAttribute('lay-id');
+        });
+
+        form.render(null, 'component-form-group');
+        lay('.layui-date').each(function() {
+            laydate.render({
+                elem: this,
+                type: 'date'
+            });
+        });
+
+        // 同步酒店公司账户信息
+        form.on('select(hotel_id)', function(data){
+            var index = data.value;
+            var hotel = hotels[index];
+            $("input[name='banquet_pay_to_company']").val(hotel.bank_company);
+            $("input[name='banquet_pay_to_account']").val(hotel.bank_account);
+            $("input[name='banquet_pay_to_bank']").val(hotel.bank_name);
+        })
+
+        form.on('select(news_type)', function(data){
+            var newsType = data.value;
+            $(".layui-form-item").each(function (i, n) {
+                var current = $(n);
+                var range = current.attr("show-range");
+                var index = range.indexOf(newsType);
+                if(index == -1) {
+                    current.addClass("layui-hide");
+                } else {
+                    current.removeClass("layui-hide");
+                }
+            })
+        });
+
+        form.on('select(wedding_supplier)', function(data){
+            var index = data.value;
+            var supplier = suppliers[index];
+            var parents = $(data.elem).parents(".layui-form-item");
+            parents.find("input[name='wedding_pay_to_company']").val(supplier.bank_company);
+            parents.find("input[name='wedding_pay_to_account']").val(supplier.bank_account);
+            parents.find("input[name='wedding_pay_to_bank']").val(supplier.bank_name);
+        });
+
+        /* 监听提交 */
+        form.on('submit(form-submit)', function (data) {
+            var url = data.form.action;
+            var params = data.field;
+            $.post(url, params, function (res) {
+
+                layer.confirm(res.msg + '是否继续?', {icon: 3, title:'提示'}, function(index){
+                    layer.close(index);
+                }, function (index) {
+                    parent.layui.admin.events.closeThisTabs()
+                });
+
+            });
+            return false;
+        });
+        
+        // 添加婚庆子订单
+        $(".add_wedding_suborder").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.6;
+            layer.open({
+                type: 2,
+                title: '添加婚庆子订单',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 添加婚宴子订单
+        $(".add_banquet_suborder").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚宴子订单',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 添加婚宴收款信息
+        $(".add_banquet_receivables").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚宴收款信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+
+        // 添加婚宴付款信息
+        $(".add_banquet_payment").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚宴付款信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        // 添加婚庆付款信息
+        $(".add_wedding_payment").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            layer.open({
+                type: 2,
+                title: '添加婚庆付款信息',
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+        
+        $(".lay-right").click(function () {
+            var url = $(this).attr("data-action");
+            var height = window.innerHeight;
+            var width = window.innerWidth * 0.5;
+            var title = $(this).attr("data-title");
+            layer.open({
+                type: 2,
+                title: title,
+                content: url,
+                area: [width + 'px', height + 'px'],
+                offset: 'rb'
+            });
+        });
+
+        var bindInputs = 'input[name="table_amount"],' +
+            'input[name="table_price"],' +
+            'input[name="service_fee"],' +
+            'input[name="wine_fee"],' +
+            'input[name="banquet_update_table"],' +
+            'input[name="banquet_discount"]';
+
+        /* 监控桌数的输入 */
+        $(bindInputs).bind("input", function () {
+            var totals = 0;
+            var banquetTotals = 0;
+            var serviceFee = $('input[name="service_fee"]').val();
+            if(serviceFee!='') {
+                banquetTotals = banquetTotals + parseFloat(serviceFee);
+            }
+
+            var wineFee = $('input[name="wine_fee"]').val();
+            if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
+
+            var tableAmount = $('input[name="table_amount"]').val();
+            var tablePrice = $('input[name="table_price"]').val();
+            if(tablePrice != '' && tableAmount!='') {
+                tableAmount = parseFloat(tableAmount);
+                tablePrice = parseFloat(tablePrice);
+                banquetTotals = banquetTotals + tableAmount * tablePrice;
+            }
+
+            var banquetUpdateTable = $('input[name="banquet_update_table"]').val();
+            if(banquetUpdateTable!='') {
+                banquetUpdateTable = parseFloat(banquetUpdateTable);
+                banquetTotals = banquetTotals + banquetUpdateTable;
+            }
+
+            var banquetDiscount = $('input[name="banquet_discount"]').val();
+            if(banquetDiscount!='') banquetTotals = banquetTotals - parseFloat(banquetDiscount);
+
+            totals = banquetTotals;
+            // 定金
+            var earnest = totals * 0.3;
+            earnest = earnest.toFixed(2);
+            $('input[name="earnest_money"]').val(earnest);
+            // 中款
+            var middle = totals * 0.5;
+            middle = middle.toFixed(2);
+            $('input[name="middle_money"]').val(middle);
+            // 尾款
+            var tail = totals * 0.2;
+            tail = tail.toFixed(2);
+            $('input[name="tail_money"]').val(tail);
+
+            if(banquetTotals > 0) {
+                banquetTotals = banquetTotals.toFixed(2);
+            }
+            if(totals > 0) {
+                totals = totals.toFixed(2);
+            }
+            $('input[name="banquet_totals"]').val(banquetTotals);
+            $('input[name="contract_totals"]').val(totals);
+        });
+    });
+</script>
+</body>
+</html>
