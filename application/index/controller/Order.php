@@ -917,10 +917,18 @@ class Order extends Base
             case 1:
                 #### 获取婚庆订单信息
                 $where = [];
-                $where['pid'] = 0;
                 $where['order_id'] = $get['id'];
                 $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
                 $order = array_merge($order, $wedding);
+                $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+                if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
+                $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
+
+                #### 获取婚宴二销订单信息
+                $where = [];
+                $where['order_id'] = $get['id'];
+                $weddingOrders = OrderWeddingSuborder::where($where)->select();
+                $this->assign('weddingOrders', $weddingOrders);
                 #### 获取婚庆收款信息
                 $receivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
                 $this->assign('receivables', $receivables);
@@ -946,10 +954,9 @@ class Order extends Base
                 $where = [];
                 $where['order_id'] = $get['id'];
                 $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-
                 $order = array_merge($order, $wedding);
                 $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-                if(empty($selectedWeddingDevices)) $selectedWeddingDevices = [];
+                if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
                 $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
                 #### 获取婚宴二销订单信息
                 $where = [];
