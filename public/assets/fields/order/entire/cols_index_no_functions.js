@@ -6,62 +6,6 @@ var _cols = [[
         "event" : "showOrder"
     },
     {
-        "field": "check_status_source",
-        "title": "渠道审核",
-        "align": "center",
-        "style": "color:red;",
-        "event" : "checkResult",
-        "width": 100
-    },
-    {
-        "field": "check_status_score",
-        "title": "积点审核",
-        "style": "color:red;",
-        "event" : "checkResult",
-        "align": "center",
-        "width": 100
-    },
-    {
-        "field": "check_status_contract_fiance",
-        "title": "财务合同审核",
-        "style": "color:red;",
-        "event" : "checkResult",
-        "align": "center",
-        "width": 100
-    },
-    {
-        "field": "check_status_receivables_cashier",
-        "title": "出纳收款审核",
-        "style": "color:red;",
-        "event" : "checkResult",
-        "align": "center",
-        "width": 100,
-    },
-    {
-        "field": "check_status_payment_account",
-        "title": "会计付款审核",
-        "style": "color:red;",
-        "align": "center",
-        "event" : "checkResult",
-        "width": 140
-    },
-    {
-        "field": "check_status_payment_fiance",
-        "title": "财务付款审核",
-        "style": "color:red;",
-        "align": "center",
-        "event" : "checkResult",
-        "width": 140
-    },
-    {
-        "field": "check_status_payment_cashier",
-        "title": "出纳付款审核",
-        "style": "color:red;",
-        "align": "center",
-        "event" : "checkResult",
-        "width": 140
-    },
-    {
         "field": "salesman",
         "title": "签单销售",
         "align": "center",
