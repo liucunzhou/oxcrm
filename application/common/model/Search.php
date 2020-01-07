@@ -360,6 +360,9 @@ class Search
             case 1: // 管理员
             case 15: // 客服经理
             case 51: // 积分审核
+            case 29: // 财务
+            case 33: // 出纳
+            case 34: // 会计
                 break;
             case 7: // 洗单组主管
                 $map[] = self::getUserStaffs($user);
