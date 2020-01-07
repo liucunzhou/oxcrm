@@ -359,6 +359,7 @@ class Search
         switch ($user['role_id']) {
             case 1: // 管理员
             case 15: // 客服经理
+            case 51: // 积分审核
                 break;
             case 7: // 洗单组主管
                 $map[] = self::getUserStaffs($user);
