@@ -143,37 +143,69 @@
                 'input[name="service_fee"],' +
                 'input[name="wine_fee"],' +
                 'input[name="banquet_update_table"],' +
+                'input[name="wedding_total"],' +
                 'input[name="banquet_discount"]';
 
         /* 监控桌数的输入 */
         $(bindInputs).bind("input", function () {
+            var totals = 0;
             var banquetTotals = 0;
-
             var serviceFee = $('input[name="service_fee"]').val();
             if(serviceFee!='') {
-                banquetTotals = banquetTotals + serviceFee;
-            } else {
-                banquetTotals = banquetTotals 
+                banquetTotals = banquetTotals + parseFloat(serviceFee);
             }
 
             var wineFee = $('input[name="wine_fee"]').val();
-            if(wineFee!='') banquetTotals = banquetTotals + wineFee;
-
-            var banquetDiscount = $('input[name="banquet_discount"]').val();
-            if(banquetDiscount!='') banquetTotals = banquetTotals - banquetDiscount;
+            if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
 
             var tableAmount = $('input[name="table_amount"]').val();
             var tablePrice = $('input[name="table_price"]').val();
-            if(tablePrice != '') {
-                banquetTotals = tableAmount * tablePrice;
+            if(tablePrice != '' && tableAmount!='') {
+                tableAmount = parseFloat(tableAmount);
+                tablePrice = parseFloat(tablePrice);
+                banquetTotals = banquetTotals + tableAmount * tablePrice;
             }
 
             var banquetUpdateTable = $('input[name="banquet_update_table"]').val();
-            if(banquetUpdateTable!='' && tablePrice != '') banquetTotals = banquetTotals + banquetUpdateTable * tablePrice;
+            if(banquetUpdateTable!='') {
+                banquetUpdateTable = parseFloat(banquetUpdateTable);
+                banquetTotals = banquetTotals + banquetUpdateTable;
+            }
 
+            var banquetDiscount = $('input[name="banquet_discount"]').val();
+            if(banquetDiscount!='') banquetTotals = banquetTotals - parseFloat(banquetDiscount);
+            var weddingTotals = $('input[name="wedding_total"]').val();
+            if(weddingTotals!='') {
+                weddingTotals = parseFloat(weddingTotals);
+            } else {
+                weddingTotals = 0;
+            }
 
+            totals = banquetTotals + weddingTotals;
+            // 定金
+            var earnest = totals * 0.3;
+            earnest = earnest.toFixed(2);
+            $('input[name="earnest_money"]').val(earnest);
+            // 中款
+            var middle = totals * 0.5;
+            middle = middle.toFixed(2);
+            $('input[name="middle_money"]').val(middle);
+            // 尾款
+            var tail = totals * 0.2;
+            tail = tail.toFixed(2);
+            $('input[name="tail_money"]').val(tail);
+
+            if(banquetTotals > 0) {
+                banquetTotals = banquetTotals.toFixed(2);
+            }
+            if(totals > 0) {
+                totals = totals.toFixed(2);
+            }
             $('input[name="banquet_totals"]').val(banquetTotals);
+            $('input[name="contract_totals"]').val(totals);
         });
+
+
     });
 </script>
 </body>

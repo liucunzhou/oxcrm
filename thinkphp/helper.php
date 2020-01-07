@@ -757,4 +757,8 @@ if (!class_exists("Layui")) {
     function search($tag){
         return \module\Layui::search($tag);
     }
+
+    function auth($route) {
+        return \module\Layui::checkAuth($route);
+    }
 }

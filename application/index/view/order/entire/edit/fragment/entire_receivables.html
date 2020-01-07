@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">
         一站式收款信息
-        <a class="layui-icon layui-icon-add-circle add_banquet_receivables" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}" data-title="添加收款信息">添加收款信息</a>
+        <a class="{:auth('order/createBanquetReceivable')} layui-icon layui-icon-add-circle add_banquet_receivables" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}" data-title="添加收款信息">添加收款信息</a>
     </div>
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
@@ -36,9 +36,9 @@
                     <td>{$confirmStatusList[$row['check_banquet_receivable_status']]}</td>
                     <td>
                         <div class="layui-btn-group">
-                            <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetReceivable', ['id'=>$row['id']])}">编辑</a>
-                            <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-                            <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-action="{:url('order/confirmBanquetReceivable', ['id'=>$row['id']])}">审核</a>
+                            <a href="javascript:void(0);" class="{:auth('order/editBanquetReceivable')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetReceivable', ['id'=>$row['id']])}">编辑</a>
+                            <a href="javascript:void(0);" class="{:auth('order/deleteBanquetReceivable')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api" data-action="{:url('order/deleteBanquetReceivable', ['id'=>$row['id']])}">删除</a>
+                            <a href="javascript:void(0);" class="{:auth('order/confirmBanquetReceivable')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/confirmBanquetReceivable', ['id'=>$row['id']])}">审核</a>
                         </div>
                     </td>
                 </tr>

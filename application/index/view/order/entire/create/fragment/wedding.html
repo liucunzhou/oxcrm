@@ -85,7 +85,11 @@
                     <label class="layui-form-label">设备包含</label>
                     <div class="layui-input-block">
                         <{foreach name="weddingDevices" item="val"}>
-                        <input type="checkbox" name="weddingDevices" title="{$val.title}"  value="{$val.id}">
+                            <{if in_array($val['id'], $selectedWeddingDevices)}>
+                                <input type="checkbox" name="weddingDevices[]" title="{$val.title}"  value="{$val.id}" checked>
+                            <{else /}>
+                                <input type="checkbox" name="weddingDevices[]" title="{$val.title}"  value="{$val.id}">
+                            <{/if}>
                         <{/foreach}>
                     </div>
                 </div>

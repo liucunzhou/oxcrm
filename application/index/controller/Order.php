@@ -329,7 +329,6 @@ class Order extends Base
         }
     }
 
-
     # 婚庆订单
     public function wedding()
     {
@@ -565,6 +564,7 @@ class Order extends Base
             ];
             return json($result);
         } else {
+            $this->getColsFile('index');
             $this->getTab('banquet');
 
             $this->view->engine->layout(false);
@@ -572,7 +572,7 @@ class Order extends Base
         }
     }
 
-    # 婚宴订单
+    # 婚宴订单审核
     public function banquetSource()
     {
 
@@ -792,80 +792,6 @@ class Order extends Base
         }
     }
 
-    private function _getOrderList($get, $statusField='check_status_source')
-    {
-        $config = [
-            'page' => $get['page']
-        ];
-        $map = Search::order($this->user, $get);
-        ## 关联审核状态
-        if($statusField == 'index') {
-
-        } else if ($statusField == 'complete') {
-
-        } else {
-            $statuses = [
-                'check_status_source',
-                'check_status_score',
-                'check_status_contract_fiance',
-                'check_status_receivables_cashier',
-                'check_status_payment_account',
-                'check_status_payment_fiance',
-                'check_status_payment_cashier'
-            ];
-
-            foreach ($statuses as $value) {
-                if (isset($get[$value])) {
-                    $map[] = [$value, '=', $get[$value]];
-                }
-            }
-        }
-
-        $list = model('order')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
-        $data = $list->getCollection();
-
-        $users = \app\common\model\User::getUsers();
-        $halls = BanquetHall::getBanquetHalls();
-
-        if ($statusField == 'index') {
-            $statusTexts = ['待审核', '已通过', '已驳回'];
-            foreach ($data as $key => &$value) {
-                $value['check_status_source'] = $statusTexts[$value['check_status_source']];
-                $value['check_status_score'] = $statusTexts[$value['check_status_score']];
-                $value['check_status_contract_fiance'] = $statusTexts[$value['check_status_contract_fiance']];
-                $value['check_status_receivables_cashier'] = $statusTexts[$value['check_status_receivables_cashier']];
-                $value['check_status_payment_account'] = $statusTexts[$value['check_status_payment_account']];
-                $value['check_status_payment_fiance'] = $statusTexts[$value['check_status_payment_fiance']];
-                $value['check_status_payment_cashier'] = $statusTexts[$value['check_status_payment_cashier']];
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
-        } else if($statusField == 'complete') {
-            foreach ($data as $key => &$value) {
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
-        } else {
-            $statusTexts = ['待审核', '已通过', '已驳回'];
-            foreach ($data as $key => &$value) {
-                $statusIndex = $value[$statusField];
-                $value['confirm_status'] = $statusTexts[$statusIndex];
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
-        }
-        $count = $list->total();
-
-        return ['data' => $data, 'count' => $count];
-    }
-
-
     # 创建订单视图
     public function createOrder()
     {
@@ -897,29 +823,61 @@ class Order extends Base
     {
         $request = Request::param();
         $OrderModel = new \app\common\model\Order();
-
         $OrderModel->allowField(true)->save($request);
         $request['order_id'] = $OrderModel->id;
+        $newsType = $request['news_type'];
+        switch ($newsType) {
+            case 0: // banquet
+                ## banquet message
+                $BanquetModel = new OrderBanquet();
+                $BanquetModel->allowField(true)->save($request);
 
-        ## banquet message
-        $BanquetModel = new OrderBanquet();
-        $BanquetModel->allowField(true)->save($request);
+                ## banquet receivables message
+                $BanquetReceivablesModel = new OrderBanquetReceivables();
+                $BanquetReceivablesModel->allowField(true)->save($request);
+                break;
+            case 1: // wedding
+                ## wedding contact message
+                $WeddingModel = new OrderWedding();
+                // get wedding devices
+                $WeddingModel->wedding_device = json_encode($request['weddingDevices']);
+                $WeddingModel->allowField(true)->save($request);
 
-        $BanquetPaymentModel = new OrderBanquetPayment();
-        $BanquetPaymentModel->allowField(true)->save($request);
+                ## wedding receivable message
+                $WeddingReceivablesModel = new OrderWeddingReceivables();
+                $WeddingReceivablesModel->allowField(true)->save($request);
+                break;
+            case 2: // entire
+                ## banquet message
+                $BanquetModel = new OrderBanquet();
+                $BanquetModel->allowField(true)->save($request);
 
-        $BanquetReceivablesModel = new OrderBanquetReceivables();
-        $BanquetReceivablesModel->allowField(true)->save($request);
+                ## banquet receivables message
+                $BanquetReceivablesModel = new OrderBanquetReceivables();
+                $BanquetReceivablesModel->allowField(true)->save($request);
 
-        ## wedding message
-        $WeddingModel = new OrderWedding();
-        $WeddingModel->allowField(true)->save($request);
+                ## wedding contact message
+                $WeddingModel = new OrderWedding();
+                // get wedding devices
+                $WeddingModel->wedding_device = json_encode($request['weddingDevices']);
+                $WeddingModel->allowField(true)->save($request);
+                break;
+            default: // entire
+                ## banquet message
+                $BanquetModel = new OrderBanquet();
+                $BanquetModel->allowField(true)->save($request);
 
-        $WeddingPaymentModel = new OrderWeddingPayment();
-        $WeddingPaymentModel->allowField(true)->save($request);
+                ## banquet receivables message
+                $BanquetReceivablesModel = new OrderBanquetReceivables();
+                $BanquetReceivablesModel->allowField(true)->save($request);
 
-        $WeddingReceivablesModel = new OrderWeddingReceivables();
-        $WeddingReceivablesModel->allowField(true)->save($request);
+                ## wedding contact message
+                $WeddingModel = new OrderWedding();
+                // get wedding devices
+                $WeddingModel->wedding_device = json_encode($request['weddingDevices']);
+                $WeddingModel->allowField(true)->save($request);
+                break;
+        }
 
         return json(['code' => '200', 'msg' => '创建成功']);
     }
@@ -941,12 +899,18 @@ class Order extends Base
                 $where['order_id'] = $get['id'];
                 $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
                 $order = array_merge($order, $banquet);
+                #### 获取婚宴二销订单信息
+                $where = [];
+                $where['order_id'] = $get['id'];
+                $banquetOrders = OrderBanquetSuborder::where($where)->select();
+                $this->assign('banquetOrders', $banquetOrders);
+
                 #### 获取婚宴收款信息
                 $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
                 $this->assign('receivables', $receivables);
                 #### 获取婚宴付款信息
                 $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('$banquetPayments', $banquetPayments);
+                $this->assign('banquetPayments', $banquetPayments);
                 break;
 
             ### 婚庆信息
@@ -982,7 +946,11 @@ class Order extends Base
                 $where = [];
                 $where['order_id'] = $get['id'];
                 $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
+
                 $order = array_merge($order, $wedding);
+                $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+                if(empty($selectedWeddingDevices)) $selectedWeddingDevices = [];
+                $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
                 #### 获取婚宴二销订单信息
                 $where = [];
                 $where['order_id'] = $get['id'];
@@ -1033,7 +1001,7 @@ class Order extends Base
                 $this->assign('receivables', $receivables);
                 #### 获取婚宴付款信息
                 $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('$banquetPayments', $banquetPayments);
+                $this->assign('banquetPayments', $banquetPayments);
                 #### 获取婚庆付款信息
                 $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
                 $this->assign('weddingPayments', $weddingPayments);
@@ -1074,32 +1042,69 @@ class Order extends Base
     public function doEditOrder()
     {
         $request = Request::param();
-        $order = \app\common\model\Order::get($request['id']);
-        $order->allowField(true)->save($request);
+        $request['order_id'] = $request['id'];
+        $newsType = $request['news_type'];
+        unset($request['id']);
+        switch ($newsType) {
+            case 0: // banquet
+                ## banquet message
+                $where = [];
+                $where['order_id'] = $request['order_id'];
+                $BanquetModel = OrderBanquet::where($where)->find();
+                $BanquetModel->allowField(true)->save($request);
+                break;
+            case 1: // wedding
+                $where = [];
+                $where['order_id'] = $request['order_id'];
+                ## wedding contact message
+                $WeddingModel = OrderWedding::where($where)->find();
+                // get wedding devices
+                $WeddingModel->wedding_device = json_encode($request['weddingDevices']);
+                $WeddingModel->allowField(true)->save($request);
+                break;
+            case 2: // entire
 
-        ## banquet message
-        $banquet = OrderBanquet::where('order_id', '=', $request['id'])->find();
-        $banquet->allowField(true)->save($request);
+                ## banquet message
+                $where = [];
+                $where['order_id'] = $request['order_id'];
+                $BanquetModel = OrderBanquet::where($where)->find();
+                $BanquetModel->allowField(true)->save($request);
+                ## wedding contact message
+                $WeddingModel = OrderWedding::where($where)->find();
+                // get wedding devices
+                $WeddingModel->wedding_device = json_encode($request['weddingDevices']);
+                $WeddingModel->allowField(true)->save($request);
+                break;
 
-        $banquetPayment = OrderBanquetPayment::where('order_id', '=', $request['id'])->find();
-        $banquetPayment->allowField(true)->save($request);
+            default: // entire
 
-        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $request['id'])->find();
-        $banquetReceivables->allowField(true)->save($request);
+                ## banquet message
+                $where = [];
+                $where['order_id'] = $request['order_id'];
+                $BanquetModel = OrderBanquet::where($where)->find();
+                $BanquetModel->allowField(true)->save($request);
+                ## wedding contact message
+                $WeddingModel = OrderWedding::where($where)->find();
+                // get wedding devices
+                $WeddingModel->wedding_device = json_encode($request['weddingDevices']);
+                $WeddingModel->allowField(true)->save($request);
+                break;
+        }
 
-        ## wedding message
-        $wedding = OrderWedding::where('order_id', '=', $request['id'])->find();
-        $wedding->allowField(true)->save($request);
-
-        $weddingPayment = OrderWeddingPayment::where('order_id', '=', $request['id'])->find();
-        $weddingPayment->allowField(true)->save($request);
-
-        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $request['id'])->find();
-        $weddingReceivables->allowField(true)->save($request);
-
-        return json(['code' => '200', 'msg' => '更新订单信息成功']);
+        ## 重新计算订单金额
+        // tail_money = contact_money * 0.3 +  sum(wedding_totals) + sum(banquet_totals)
+        $order = \app\common\model\Order::get($request['order_id']);
+        $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
+        $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
+        $order->tail_money = $request['contract_totals']*0.2 + $banquetTotals + $weddingTotals;
+        $order->totals = $request['contract_totals'] + $banquetTotals + $weddingTotals;
+        unset($request['tail_money']);
+        unset($request['totals']);
+        $result2 = $order->save($request);
+        return json(['code' => '200', 'msg' => '更新订单成功']);
     }
 
+    # 查看订单信息
     public function showOrder()
     {
         $get = Request::param();
@@ -1185,13 +1190,14 @@ class Order extends Base
         $get = Request::param();
         $suborder = OrderWeddingSuborder::get($get['id']);
         $this->assign('data', $suborder);
-
-        $order = \app\common\model\Order::get($suborder->order_id)->getData();
+        $selectedItems =json_decode($suborder->wedding_items, true);
+        $this->assign('selectedItems', $selectedItems);
 
         ## 获取二销项目列表
         $items = \app\common\model\WeddingDevice::getList();
         $this->assign('items', $items);
 
+        $order = \app\common\model\Order::get($suborder->order_id)->getData();
         if($order['news_type'] == '0') { // 婚宴订单
             $view = 'order/banquet/edit/wedding_suborder';
         } else if ($order['news_type'] == 1) { // 婚庆客资
@@ -1213,14 +1219,25 @@ class Order extends Base
             $action = '添加';
             $model = new OrderWeddingSuborder();
         }
-
+        $model->startTrans();
         $model->wedding_items = json_encode($request['items']);
-        $result = $model->save($request);
-        if($result) {
+        $result1 = $model->save($request);
+
+        // tail_money = contact_money * 0.2 +  sum(wedding_totals) + sum(banquet_totals)
+        $order = \app\common\model\Order::get($request['order_id']);
+        $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
+        $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
+        $order->tail_money = $order->contract_totals*0.2 + $banquetTotals + $weddingTotals;
+        $order->totals = $order->contract_totals + $banquetTotals + $weddingTotals;
+        $result2 = $order->save();
+
+        if($result1 && $result2) {
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($model);
+            $model->commit();
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
+            $model->rollback();
             return json(['code'=>'500', 'msg'=> $action.'失败']);
         }
     }
@@ -1319,16 +1336,28 @@ class Order extends Base
             $model = new OrderBanquetSuborder();
         }
 
-        $result = $model->save($request);
-        if($result) {
+        $model->startTrans();
+        $result1 = $model->save($request);
+        // tail_money = contact_money * 0.2 +  sum(wedding_totals) + sum(banquet_totals)
+        $order = \app\common\model\Order::get($request['order_id']);
+        $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
+        $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
+        $order->tail_money = $order->contract_totals*0.2 + $banquetTotals + $weddingTotals;
+        $order->totals = $order->contract_totals + $banquetTotals + $weddingTotals;
+        $result2 = $order->save();
+
+        if($result1 && $result2) {
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($model);
+            $model->commit();
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
+            $model->rollback();
             return json(['code'=>'500', 'msg'=> $action.'失败']);
         }
     }
 
+    # 确认婚宴二销信息
     public function confirmBanquetSuborder()
     {
         $get = Request::param();
@@ -1793,7 +1822,7 @@ class Order extends Base
         return $this->fetch('order/entire/confirm/contract_score');
     }
 
-    # 财务审核
+    # 合同（财务）审核
     public function fianceConfirm()
     {
         $get = Request::param();
@@ -1838,7 +1867,7 @@ class Order extends Base
         return $this->fetch('order/entire/confirm/contract_fiance');
     }
 
-    # 确认流程
+    # 来源-积分-合同审核确认，执行逻辑
     public function doConfirm()
     {
         $params = Request::param();
@@ -1847,8 +1876,87 @@ class Order extends Base
         $order = \app\common\model\Order::get($params['id']);
 
         $result = $order->save($params);
+        if($result) {
+            $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
+        } else {
+            $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
+        }
 
-        return json(['code' => '200', 'msg' => '完成审核是否继续?']);
+        return json($json);
+    }
+
+    # 获取订单列表
+    private function _getOrderList($get, $statusField='check_status_source')
+    {
+        $config = [
+            'page' => $get['page']
+        ];
+        $map = Search::order($this->user, $get);
+        ## 关联审核状态
+        if($statusField == 'index') {
+
+        } else if ($statusField == 'complete') {
+
+        } else {
+            $statuses = [
+                'check_status_source',
+                'check_status_score',
+                'check_status_contract_fiance',
+                'check_status_receivables_cashier',
+                'check_status_payment_account',
+                'check_status_payment_fiance',
+                'check_status_payment_cashier'
+            ];
+
+            foreach ($statuses as $value) {
+                if (isset($get[$value])) {
+                    $map[] = [$value, '=', $get[$value]];
+                }
+            }
+        }
+
+        $list = model('order')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+        $data = $list->getCollection();
+
+        $users = \app\common\model\User::getUsers();
+        $halls = BanquetHall::getBanquetHalls();
+
+        if ($statusField == 'index') {
+            $statusTexts = ['待审核', '已通过', '已驳回'];
+            foreach ($data as $key => &$value) {
+                $value['check_status_source'] = $statusTexts[$value['check_status_source']];
+                $value['check_status_score'] = $statusTexts[$value['check_status_score']];
+                $value['check_status_contract_fiance'] = $statusTexts[$value['check_status_contract_fiance']];
+                $value['check_status_receivables_cashier'] = $statusTexts[$value['check_status_receivables_cashier']];
+                $value['check_status_payment_account'] = $statusTexts[$value['check_status_payment_account']];
+                $value['check_status_payment_fiance'] = $statusTexts[$value['check_status_payment_fiance']];
+                $value['check_status_payment_cashier'] = $statusTexts[$value['check_status_payment_cashier']];
+                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
+                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            }
+        } else if($statusField == 'complete') {
+            foreach ($data as $key => &$value) {
+                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
+                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            }
+        } else {
+            $statusTexts = ['待审核', '已通过', '已驳回'];
+            foreach ($data as $key => &$value) {
+                $statusIndex = $value[$statusField];
+                $value['confirm_status'] = $statusTexts[$statusIndex];
+                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
+                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            }
+        }
+        $count = $list->total();
+
+        return ['data' => $data, 'count' => $count];
     }
 
     # 一站式

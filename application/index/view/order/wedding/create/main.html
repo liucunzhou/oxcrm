@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css?1" media="all">
     <style>
         .layui-form-label {
             width: 6em;
@@ -23,40 +23,37 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="{:url('Order/doCreateOrder')}" lay-filter="component-form-group">
-                <div class="layui-tab">
+                <div class="layui-tab" lay-filter="form-tab">
                     <ul class="layui-tab-title">
-                        <li class="layui-this">合同基本信息</li>
-                        <li>婚庆合同信息</li>
-                        <li>婚庆付款信息</li>
+                        <li class="layui-this" lay-id="tab1">合同基本信息</li>
+                        <li lay-id="tab2">一站式合同信息</li>
+                        <li lay-id="tab3">一站式收付款信息</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
                             <!--合同基本信息-->
-                            <{include file="order/wedding/create/fragment/contract" /}>
+                            <{include file="order/entire/create/fragment/contract" /}>
 
                             <!--客资基本信息-->
-                            <{include file="order/wedding/create/fragment/customer" /}>
-
-                            <!--收款信息-->
-                            <{include file="order/wedding/create/fragment/pay_steps" /}>
+                            <{include file="order/entire/create/fragment/customer" /}>
                         </div>
 
-                        <!--婚庆合同信息-->
+                        <!--婚宴合同信息-->
                         <div class="layui-tab-item">
-                            <!--婚庆基本信息-->
-                            <{include file="order/wedding/create/fragment/wedding" /}>
+                            <!--婚宴基本信息-->
+                            <{include file="order/entire/create/fragment/banquet" /}>
 
-                            <!--婚庆追加信息-->
-                            <{include file="order/wedding/create/fragment/wedding_suborder" /}>
+                            <!--婚宴追加信息 banquet_suborder-->
+                            <{include file="order/entire/create/fragment/wedding" /}>
+
+                            <!--收款信息-->
+                            <{include file="order/entire/create/fragment/pay_steps" /}>
                         </div>
 
                         <!- -一站式收付款信息-->
                         <div class="layui-tab-item">
                             <!-- 一站式收款信息 -->
-                            <{include file="order/wedding/create/fragment/wedding_receivables" /}>
-
-                            <!--婚庆付款信息-->
-                            <{include file="order/wedding/create/fragment/wedding_payment" /}>
+                            <{include file="order/entire/create/fragment/entire_receivables" /}>
                         </div>
                     </div>
 
@@ -65,7 +62,7 @@
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
                     <div class="layui-input-inline">
                         <input type="hidden" name="member_allocate_id" value="{$allocate['id']}" />
-                        <input type="hidden" name="id" value="{$data['id']}"/>
+                        <input type="hidden" name="member_id" value="{$allocate['member_id']}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -84,10 +81,19 @@
         base: '/assets/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
+    }).use(['index', 'form', 'laydate', 'element'], function () {
         var $ = layui.jquery
             ,laydate = layui.laydate
-            ,form = layui.form;
+            ,form = layui.form
+            ,element = layui.element;
+
+        var layid = location.hash.replace(/^#form-tab=/, '');
+        element.tabChange('form-tab', layid);
+        //监听Tab切换，以改变地址hash值
+        element.on('tab(form-tab)', function(){
+            location.hash = 'form-tab='+ this.getAttribute('lay-id');
+        });
+
 
         form.render(null, 'component-form-group');
         lay('.layui-date').each(function() {
@@ -96,16 +102,6 @@
                 type: 'date'
             });
         });
-
-        // 同步酒店公司账户信息
-        form.on('select(hotel_id)', function(data){
-            var index = data.value;
-            var hotel = hotels[index];
-            console.log(hotel);
-            $("input[name='wedding_pay_to_company']").val(hotel.bank_company);
-            $("input[name='wedding_pay_to_account']").val(hotel.bank_account);
-            $("input[name='wedding_pay_to_bank']").val(hotel.bank_name);
-        })
 
         form.on('select(news_type)', function(data){
             var newsType = data.value;
@@ -121,13 +117,13 @@
             })
         });
 
-        form.on('select(banquet_supplier)', function(data){
+        form.on('select(weddding_supplier)', function(data){
             var index = data.value;
             var supplier = suppliers[index];
             var parents = $(data.elem).parents(".layui-form-item");
-            parents.find("input[name='banquet_pay_to_company']").val(supplier.bank_company);
-            parents.find("input[name='banquet_pay_to_account']").val(supplier.bank_account);
-            parents.find("input[name='banquet_pay_to_bank']").val(supplier.bank_name);
+            parents.find("input[name='wedding_pay_to_company']").val(supplier.bank_company);
+            parents.find("input[name='wedding_pay_to_account']").val(supplier.bank_account);
+            parents.find("input[name='wedding_pay_to_bank']").val(supplier.bank_name);
         });
 
         /* 监听提交 */
@@ -135,15 +131,81 @@
             var url = data.form.action;
             var params = data.field;
             $.post(url, params, function (res) {
-                if (res.code == '200') {
-                    parent.layui.table.reload("table");
-                    parent.layer.closeAll();
-                } else {
-                    layer.msg(res.msg);
-                }
+                layer.confirm(res.msg + '点击确认关闭', {icon: 3, title:'提示'}, function(index){
+                    parent.layui.admin.events.closeThisTabs()
+                });
             });
             return false;
         });
+
+        var bindInputs = 'input[name="table_amount"],' +
+                'input[name="table_price"],' +
+                'input[name="service_fee"],' +
+                'input[name="wine_fee"],' +
+                'input[name="banquet_update_table"],' +
+                'input[name="wedding_total"],' +
+                'input[name="banquet_discount"]';
+
+        /* 监控桌数的输入 */
+        $(bindInputs).bind("input", function () {
+            var totals = 0;
+            var banquetTotals = 0;
+            var serviceFee = $('input[name="service_fee"]').val();
+            if(serviceFee!='') {
+                banquetTotals = banquetTotals + parseFloat(serviceFee);
+            }
+
+            var wineFee = $('input[name="wine_fee"]').val();
+            if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
+
+            var tableAmount = $('input[name="table_amount"]').val();
+            var tablePrice = $('input[name="table_price"]').val();
+            if(tablePrice != '' && tableAmount!='') {
+                tableAmount = parseFloat(tableAmount);
+                tablePrice = parseFloat(tablePrice);
+                banquetTotals = banquetTotals + tableAmount * tablePrice;
+            }
+
+            var banquetUpdateTable = $('input[name="banquet_update_table"]').val();
+            if(banquetUpdateTable!='') {
+                banquetUpdateTable = parseFloat(banquetUpdateTable);
+                banquetTotals = banquetTotals + banquetUpdateTable;
+            }
+
+            var banquetDiscount = $('input[name="banquet_discount"]').val();
+            if(banquetDiscount!='') banquetTotals = banquetTotals - parseFloat(banquetDiscount);
+            var weddingTotals = $('input[name="wedding_total"]').val();
+            if(weddingTotals!='') {
+                weddingTotals = parseFloat(weddingTotals);
+            } else {
+                weddingTotals = 0;
+            }
+
+            totals = banquetTotals + weddingTotals;
+            // 定金
+            var earnest = totals * 0.3;
+            earnest = earnest.toFixed(2);
+            $('input[name="earnest_money"]').val(earnest);
+            // 中款
+            var middle = totals * 0.5;
+            middle = middle.toFixed(2);
+            $('input[name="middle_money"]').val(middle);
+            // 尾款
+            var tail = totals * 0.2;
+            tail = tail.toFixed(2);
+            $('input[name="tail_money"]').val(tail);
+
+            if(banquetTotals > 0) {
+                banquetTotals = banquetTotals.toFixed(2);
+            }
+            if(totals > 0) {
+                totals = totals.toFixed(2);
+            }
+            $('input[name="banquet_totals"]').val(banquetTotals);
+            $('input[name="contract_totals"]').val(totals);
+        });
+
+
     });
 </script>
 </body>

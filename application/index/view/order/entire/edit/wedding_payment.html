@@ -81,10 +81,16 @@
                         <input type="text" name="wedding_pay_to_bank" value="{$data['wedding_pay_to_bank']}" lay-verify="required" placeholder="开户行" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="wedding_payment_remark" class="layui-textarea" placeholder="备注信息">{$data['wedding_payment_remark']}</textarea>
+                    </div>
+                </div>
 
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
                     <div class="layui-input-inline">
-                        <input type="hidden" name="order_id" value="{$Request.param.order_id}" />
+                        <input type="hidden" name="order_id" value="{$data['order_id']}" />
                         <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>

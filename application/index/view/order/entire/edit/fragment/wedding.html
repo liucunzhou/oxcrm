@@ -1,7 +1,7 @@
 <div class="layui-card">
     <div class="layui-card-header">
         婚庆基本信息
-        <a class="layui-icon layui-icon-add-circle add_wedding_suborder" style="color: #1E9FFF;" data-title="添加婚庆二销" href="javascript:void(0);" data-action="{:url('Order/createWeddingSuborder', ['order_id'=>$data['id']])}">添加婚庆二销</a>
+        <a class="{:auth('Order/createWeddingSuborder')} layui-icon layui-icon-add-circle add_wedding_suborder" style="color: #1E9FFF;" data-title="添加婚庆二销" href="javascript:void(0);" data-action="{:url('Order/createWeddingSuborder', ['order_id'=>$data['id']])}">添加婚庆二销</a>
     </div>
     <div class="layui-card-body">
         <div class="layui-row">
@@ -83,10 +83,14 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">设备不包含</label>
+                    <label class="layui-form-label">设备包含</label>
                     <div class="layui-input-block">
                         <{foreach name="weddingDevices" item="val"}>
-                        <input type="checkbox" name="weddingDevices" title="{$val.title}"  value="{$val.id}">
+                            <{if in_array($val['id'], $selectedWeddingDevices)}>
+                                <input type="checkbox" name="weddingDevices[]" title="{$val.title}"  value="{$val.id}" checked>
+                            <{else /}>
+                                <input type="checkbox" name="weddingDevices[]" title="{$val.title}"  value="{$val.id}">
+                            <{/if}>
                         <{/foreach}>
                     </div>
                 </div>
@@ -140,9 +144,9 @@
                 <td>{$confirmStatusList[$row['check_wedding_suborder_status']]}</td>
                 <td>
                     <div class="layui-btn-group">
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="编辑婚庆二销信息" data-action="{:url('order/editWeddingSuborder', ['id'=>$row['id']])}">编辑</a>
-                        <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
-                        <a href="javascript:void(0);" class="layui-btn layui-btn-xs lay-right" data-title="审核婚庆二销信息" data-action="{:url('order/confirmWeddingSuborder', ['id'=>$row['id']])}">审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/editWeddingSuborder')} layui-btn layui-btn-xs lay-right" data-title="编辑婚庆二销信息" data-action="{:url('order/editWeddingSuborder', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="{:auth('order/deleteWeddingSuborder')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api" data-action="{:auth('order/deleteWeddingSuborder', ['id'=>$row['id']])}">删除</a>
+                        <a href="javascript:void(0);" class="{:auth('order/confirmWeddingSuborder')} layui-btn layui-btn-xs lay-right" data-title="审核婚庆二销信息" data-action="{:url('order/confirmWeddingSuborder', ['id'=>$row['id']])}">审核</a>
                     </div>
                 </td>
             </tr>

@@ -3,7 +3,7 @@
     <div class="layui-card-body">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">定金收款日期</label>
+                <label class="layui-form-label layui-color-red">定金收款日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="earnest_money_date" value="{$data['earnest_money_date']}" lay-verify="required" placeholder="定金收款日期" autocomplete="off" class="layui-input layui-date">
                 </div>
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">中款收款日期</label>
+                <label class="layui-form-label layui-color-red">中款收款日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="middle_money_date" value="{$data['middle_money_date']}" lay-verify="required" placeholder="中款收款日期" autocomplete="off" class="layui-input layui-date">
                 </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">尾款收款日期</label>
+                <label class="layui-form-label layui-color-red">尾款收款日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="tail_money_date" value="{$data['tail_money_date']}" lay-verify="required" placeholder="尾款收款日期" autocomplete="off" class="layui-input layui-date">
                 </div>
@@ -44,6 +44,12 @@
                 <label class="layui-form-label">合同总金额</label>
                 <div class="layui-input-inline">
                     <input type="text" name="contract_totals" value="{$data['contract_totals']}" lay-verify="required" placeholder="合同总金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">追加后总金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="totals" value="{$data['totals']}" lay-verify="required" placeholder="追加后总金额" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
