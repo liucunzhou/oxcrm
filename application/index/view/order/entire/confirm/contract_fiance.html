@@ -27,9 +27,7 @@
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">合同基本信息</li>
-                        <li>婚宴合同信息</li>
-                        <li>婚庆合同信息</li>
-                        <li>一站式收付款信息</li>
+                        <li>一站式合同信息</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
@@ -39,50 +37,28 @@
                             <!--客资基本信息-->
                             <{include file="order/entire/confirm/fragment/customer" /}>
 
-                            <!--收款信息-->
-                            <{include file="order/entire/confirm/fragment/pay_steps" /}>
-
                             <!--合同信息确认-->
                             <{include file="order/entire/confirm/fragment/checkout" fieldStatus="check_status_contract_fiance" fieldRemark="check_remark_contract_fiance"/}>
                         </div>
 
-                        <!--婚宴合同信息-->
                         <div class="layui-tab-item">
                             <!--婚宴基本信息-->
                             <{include file="order/entire/confirm/fragment/banquet" /}>
 
-                            <!--婚宴追加信息-->
-                            <{include file="order/entire/confirm/fragment/banquet_suborder" /}>
-                        </div>
-
-                        <!--婚庆合同信息-->
-                        <div class="layui-tab-item">
                             <!--婚庆基本信息-->
                             <{include file="order/entire/confirm/fragment/wedding" /}>
 
-                            <!--婚庆追加信息-->
-                            <{include file="order/entire/confirm/fragment/wedding_suborder" /}>
+                            <!--收款信息-->
+                            <{include file="order/entire/confirm/fragment/pay_steps" /}>
+                            <div class="layui-space10" style="height: 20px;"></div>
                         </div>
 
-                        <!- -一站式收付款信息-->
-                        <div class="layui-tab-item">
-                            <!-- 一站式收款信息 -->
-                            <{include file="order/entire/confirm/fragment/entire_receivables" /}>
-
-
-                            <!--婚宴付款单-->
-                            <{include file="order/entire/confirm/fragment/banquet_payment"}>
-
-                            <!--婚庆付款信息-->
-                            <{include file="order/entire/confirm/fragment/wedding_payment" /}>
-                        </div>
                     </div>
 
                 </div>
 
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
                     <div class="layui-input-inline">
-                        <input type="hidden" name="member_allocate_id" value="{$allocate['id']}" />
                         <input type="hidden" name="id" value="{$data['id']}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">立即提交</button>

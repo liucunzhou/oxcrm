@@ -4,13 +4,13 @@
         <!--合同信息-->
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">公司</label>
+                <label class="layui-form-label layui-color-red">公司</label>
                 <div class="layui-input-inline">
                     <{include file="order/common/company_select" /}>
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">订单类型</label>
+                <label class="layui-form-label layui-color-red">订单类型</label>
                 <div class="layui-input-inline">
                     <select name="news_type" lay-filter="news_type">
                         <option value="2" <{if $data['news_type'] == '2'}>selected<{/if}>>一站式订单</option>
@@ -20,13 +20,13 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">合同编号</label>
+                <label class="layui-form-label layui-color-red">合同编号</label>
                 <div class="layui-input-inline">
                     <input type="text" name="contract_no" value="{$data['contract_no']}" lay-verify="required" placeholder="合同编号" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">签约日期</label>
+                <label class="layui-form-label layui-color-red">签约日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="sign_date" value="{$data['sign_date']}" lay-verify="required" placeholder="签约日期" autocomplete="off" class="layui-input layui-date">
                 </div>
@@ -36,13 +36,13 @@
         <!--举办日期-->
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">举办日期</label>
+                <label class="layui-form-label layui-color-red">举办日期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="event_date" value="{$data['event_date']}" lay-verify="required" placeholder="举办日期" autocomplete="off" class="layui-input layui-date">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">酒店名称</label>
+                <label class="layui-form-label layui-color-red">酒店名称</label>
                 <div class="layui-input-inline">
                     <select name="hotel_id" lay-search lay-filter="hotel_id" lay-verify="required">
                         <option value="">--请选择酒店--</option>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">宴会厅</label>
+                <label class="layui-form-label layui-color-red">宴会厅</label>
                 <div class="layui-input-inline">
                     <select name="banquet_hall_id" lay-search>
                         <option value="">--请选宴会厅--</option>
@@ -79,25 +79,25 @@
         <!--新浪新娘信息-->
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">新郎姓名</label>
+                <label class="layui-form-label layui-color-red">新郎姓名</label>
                 <div class="layui-input-inline">
                     <input type="text" name="bridegroom" value="{$data['bridegroom']}" lay-verify="required" placeholder="新郎姓名" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">新郎电话</label>
+                <label class="layui-form-label layui-color-red">新郎电话</label>
                 <div class="layui-input-inline">
                     <input type="text" name="bridegroom_mobile" value="{$data['bridegroom_mobile']}" lay-verify="required" placeholder="新郎电话" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">新娘姓名</label>
+                <label class="layui-form-label layui-color-red">新娘姓名</label>
                 <div class="layui-input-inline">
                     <input type="text" name="bride" value="{$data['bride']}" lay-verify="required" placeholder="新娘姓名" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">新娘电话</label>
+                <label class="layui-form-label layui-color-red">新娘电话</label>
                 <div class="layui-input-inline">
                     <input type="text" name="bride_mobile" value="{$data['bride_mobile']}" lay-verify="required" placeholder="新娘电话" autocomplete="off" class="layui-input">
                 </div>
