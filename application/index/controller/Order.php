@@ -1981,13 +1981,13 @@ class Order extends Base
         $this->assign('salesmans', $salesmans);
 
         if($allocate->news_type == '0') { // 婚宴订单
-            $view = 'order/banquet/edit/main';
+            $view = 'order/banquet/confirm/contract_fiance';
         } else if ($allocate->news_type == 1) { // 婚庆客资
-            $view = 'order/wedding/edit/main';
+            $view = 'order/wedding/confirm/contract_fiance';
         } else if ($allocate->news_type == 2) { // 一站式客资
-            $view = 'order/entire/edit/main';
+            $view = 'order/entire/confirm/contract_fiance';
         } else {
-            $view = 'order/entire/edit/main';
+            $view = 'order/entire/confirm/contract_fiance';
         }
         return $this->fetch($view);
     }
