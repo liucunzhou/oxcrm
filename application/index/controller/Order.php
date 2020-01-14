@@ -1498,6 +1498,14 @@ class Order extends Base
 
         $result = $model->save($request);
         if($result) {
+            $order = \app\common\model\Order::get($request['order_id']);
+            if($order['news_type'] == 0) {
+                $order->save(['check_status_receivables_cashier' => $request['check_banquet_receivable_status']]);
+            } else if ($order['news_type'] == 1) {
+                $order->save(['check_status_receivables_cashier' => $request['check_status_receivables_cashier']]);
+            } else {
+                $order->save(['check_status_receivables_cashier' => $request['check_banquet_receivable_status']]);
+            }
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
@@ -1648,6 +1656,14 @@ class Order extends Base
 
         $result = $model->save($request);
         if($result) {
+            $order = \app\common\model\Order::get($request['order_id']);
+            if(isset($request['check_status_payment_account'])) {
+                $order->save(['check_status_payment_account' => $request['check_status_payment_account']]);
+            } else if (isset($request['check_status_payment_fiance'])) {
+                $order->save(['check_status_payment_fiance' => $request['check_status_payment_fiance']]);
+            } else if (isset($request['check_status_payment_cashier'])){
+                $order->save(['check_status_payment_cashier' => $request['check_status_payment_cashier']]);
+            }
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
@@ -1763,6 +1779,14 @@ class Order extends Base
 
         $result = $model->save($request);
         if($result) {
+            $order = \app\common\model\Order::get($request['order_id']);
+            if(isset($request['check_status_payment_account'])) {
+                $order->save(['check_status_payment_account' => $request['check_status_payment_account']]);
+            } else if (isset($request['check_status_payment_fiance'])) {
+                $order->save(['check_status_payment_fiance' => $request['check_status_payment_fiance']]);
+            } else if (isset($request['check_status_payment_cashier'])){
+                $order->save(['check_status_payment_cashier' => $request['check_status_payment_cashier']]);
+            }
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($model);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
@@ -1813,6 +1837,10 @@ class Order extends Base
         ## 获取婚庆信息
         $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
         $order = array_merge($order, $wedding);
+
+        $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+        if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
+        $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
 
         $order = $this->formatOrderDate($order);
         $this->assign('data', $order);
@@ -2038,6 +2066,10 @@ class Order extends Base
                     $map[] = [$value, '=', $get[$value]];
                 }
             }
+        }
+
+        if($statusField == 'check_status_score') {
+            $map[] = ['score', '<>', ''];
         }
 
         $list = model('order')->where($map)->order('id desc')->paginate($get['limit'], false, $config);

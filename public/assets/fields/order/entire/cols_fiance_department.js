@@ -2,8 +2,7 @@ var _cols = [[
     {
         "field": "id",
         "title": "ID",
-        "width": 50,
-        "event" : "showOrder"
+        "width": 50
     },
     {
         "field": "tool",
@@ -16,8 +15,6 @@ var _cols = [[
         "field": "confirm_status",
         "title": "审核状态",
         "align": "center",
-        "style": "color:red;text-decoration: underline;",
-        "event" : "checkResult",
         "width": 100
     },
     {
