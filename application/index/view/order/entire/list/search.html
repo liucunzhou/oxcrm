@@ -1,7 +1,7 @@
 <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
     <div class="layui-form-item">
         <div class="layui-inline layui-col-sm1">
-            <select name="staff" lay-verify="">
+            <select name="staff" lay-verify="" lay-search>
                 <option value="">签单销售</option>
                 <{foreach name="staffes" item="val"}>
                 <option value="{$val['id']}">{$val['realname']}</option>
