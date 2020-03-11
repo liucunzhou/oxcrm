@@ -5,6 +5,7 @@ use app\api\model\Member;
 use app\common\model\Client;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberVisit;
+use app\common\model\Rong;
 use app\common\model\Source;
 use app\common\model\User;
 use Firebase\JWT\JWT;
@@ -41,6 +42,25 @@ class Test extends Controller
 
         $this->user = (array)$user;
          * **/
+    }
+
+    public function index()
+    {
+        $mobileModel = new Rong();
+        $mobile = "18321277411";
+        $result = $mobileModel->createSeatAccount($mobile);
+
+        echo "<pre>";
+        print_r($result);
+    }
+
+    public function call()
+    {
+        $mobileModel = new Rong();
+        $caller = '18321277411';
+        $callee = '13764570091';
+        $result = $mobileModel->call($caller, $callee);
+        print_r($result);
     }
 
     public function decode()
