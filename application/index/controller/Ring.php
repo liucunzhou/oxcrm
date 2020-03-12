@@ -14,7 +14,7 @@ class Ring extends Controller {
         $user = session("user");
         $rongModel = new \app\common\model\Rong();
 
-        $customerModel = new \app\common\model\Customer();
+        $customerModel = new \app\common\model\Member();
         $customer = $customerModel->where('id', '=', $params['id'])->find();
         
         if($params['from'] == 'mobile') {
