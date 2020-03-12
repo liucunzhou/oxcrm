@@ -78,6 +78,7 @@
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="bind">绑定</button>
                             <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
                             <button class="layui-btn layui-btn-sm" lay-event="leave">离职</button>
                             <button class="layui-btn layui-btn-sm" lay-event="merge">合并</button>
@@ -109,17 +110,17 @@
             toolbar: '#table-toolbar',
             title: '员工管理',
             cols: [[
-                {"type": "checkbox", "width": 50, "fixed": "left"},
+                {"type": "checkbox", "width": 30, "fixed": "center"},
                 {"field": "id", "title": "ID", "width": 80},
-                {"field": "department_id", "title": "部门"},
-                {"field": "role_id", "title": "角色", "align":"center"},
-                {"field": "nickname", "title": "用户名"},
+                {"field": "department_id", "title": "部门","width": 120},
+                {"field": "role_id", "title": "角色","width": 120},
+                {"field": "nickname", "title": "用户名", "width": 120},
                 {"field": "realname", "title": "姓名", "width": 120},
                 {"field": "mobile", "title": "手机号", "width": 120},
                 {"field": "sort", "title": "排序", "width": 80},
                 {"field": "is_valid", "title": "状态", "width": 80},
                 // {"field": "create_time", "title": "创 建时间", "width": 165},
-                {"type": "tool", "title": "操作", "toolbar": "#table-tool", "width": 300}
+                {"type": "tool", "title": "操作", "toolbar": "#table-tool"}
             ]],
             page: true
             ,limit: 100
@@ -224,6 +225,17 @@
                         offset: 'rb'
                     });
                     break;
+                case 'bind':
+                     url = '/index/user/bind.html?id=' + id;
+                     layer.open({
+                        type: 2,
+                        title: '绑定手机号',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
                 case 'auth':
                     url = '/index/user/editauth.html?id=' + id;
                     layer.open({
