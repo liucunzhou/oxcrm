@@ -25,7 +25,6 @@ class Allocate
                 break;
             default:
                 $AllocateModel = new MemberAllocate();
-
         }
 
         $map[] = ['user_id', '=', $userId];
