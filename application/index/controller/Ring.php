@@ -19,15 +19,18 @@ class Ring extends Controller {
         
         if($params['from'] == 'mobile') {
             // $rongModel->call($user['mobile'], $customer->mobile);
-            $rongModel->call('18321277411', '13764570091');
+            $resulet = $rongModel->call('18321277411', '13764570091');
         } else {
-            $rongModel->call($user['telephone'], $customer->mobile);
+            $resulet = $rongModel->call($user['telephone'], $customer->mobile);
         }
+
+        print_r($resulet);
     }
 
     public function center()
     {
-        $data = filet_get_input("php://input");
+        
+        $data = file_get_contents("php://input");
 
         file_put_contents("./1.txt", $data);
     }
