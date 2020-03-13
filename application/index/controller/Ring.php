@@ -24,14 +24,20 @@ class Ring extends Controller {
             $resulet = $rongModel->call($user['telephone'], $customer->mobile);
         }
 
-        print_r($resulet);
     }
 
     public function center()
     {
         
-        $data = file_get_contents("php://input");
+        $input = file_get_contents("php://input");
+        file_put_contents("./1.txt", $input);
+        $resulet = json_decode($input, 1);
+        if($resulet['Flag'] != 1) {
+            return false;
+        }
 
-        file_put_contents("./1.txt", $data);
+        $data = $resulet['Data'];
+        $callRecord = new \app\common\model\CallRecord();
+        $callRecord->insert($data);
     }
 }
