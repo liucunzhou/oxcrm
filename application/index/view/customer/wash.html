@@ -175,7 +175,8 @@
                                     "field": "mobile",
                                     "title": "手机号",
                                     "width": 108,
-                                    "align": "center"
+                                    "align": "center",
+                                    "event": "call"
                                 }, {
                                     "field": "banquet_size",
                                     "title": "桌数",
@@ -231,16 +232,7 @@
                                     "field": "member_create_time",
                                     "title": "创建日期",
                                     "width": 165
-                                },
-                                <{if $user['nickname'] == 'admin'}>
-                                {
-                                    "type": "tool",
-                                    "title": "操作",
-                                    "toolbar": "#table-tool",
-                                    "width": 226,
-                                    "fixed": "right"
                                 }
-                                <{/if}>
                                 ]], page: true, limit: 20, limits: [20, 30]
                             });
 
@@ -435,6 +427,38 @@
                             var id = obj.data.id;
                             var member_id = obj.data.member_id;
                             switch (obj.event) {
+                                case "call":
+                                    layer.confirm('是否拨打电话?', 
+                                        {
+                                            icon: 3, 
+                                            title:'提示',
+                                            btn: ['手机拨打','座机拨打']
+                                        }, 
+                                        function(index){
+                                            var params = {
+                                                id: id,
+                                                from: 'mobile',
+                                                field: 'mobile'
+                                            };
+                                            url = '/index/Ring/call.html';
+                                            $.post(url, params, function(res){
+                                                layer.close(index);
+                                            });
+                                        },
+                                        function(index){
+                                            var params = {
+                                                id: id,
+                                                from: 'telephone',
+                                                field: 'mobile'
+                                            };
+                                            url = '/index/Ring/call.html';
+                                            $.post(url, params, function(res){
+                                                layer.close(index);
+                                            });
+                                        }
+                                    );
+                                    break;
+                                
                                 case 'editCustomer':
                                     url = '/index/customer/editcustomer.html?member_id=' + member_id;
                                     layer.open({
@@ -466,6 +490,7 @@
                                         }
                                     });
                                     break;
+                                
                             };
                         });
 
