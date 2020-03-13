@@ -21,7 +21,7 @@ var _fields = [{
 }, {
     "field": "mobile",
     "title": "手机号",
-    "width": 108,
+    "width": 120,
     "align": "center"
 }, {
     "field": "banquet_size",
