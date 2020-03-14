@@ -1081,6 +1081,7 @@ class Customer extends Base
             $Model->source_text = $sourceText;
             $post['source_text'] = $sourceText;
         }
+
         ### 基本信息入库
         $Model->is_sea = 1;
         $result1 = $Model->save($post);

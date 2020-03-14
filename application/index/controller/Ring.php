@@ -31,6 +31,8 @@ class Ring extends Controller {
     {
         
         $input = file_get_contents("php://input");
+        if(empty($input)) return json(['code'=>'400', 'msg'=>'请求空数据']);
+
         file_put_contents("./1.txt", $input);
         $result = json_decode($input, 1);
         if($result['Flag'] != 1) {
