@@ -18,6 +18,7 @@ class Ring extends Controller {
         $customer = $customerModel->where('id', '=', $params['id'])->find();
         
         if($params['from'] == 'mobile') {
+            echo $customer->mobile.'-------';
             $result = $rongModel->call($user['mobile'], $customer->mobile);
             // $resulet = $rongModel->call('18321277411', '13764570091');
         } else {
