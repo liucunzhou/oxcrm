@@ -427,20 +427,21 @@ class User extends Base
     public function doBind()
     {
         $params = Request::param();
-        
+        $rongModel = new \app\common\model\Rong();
         if(empty($params['mobile'])) {
             return json(['code'=>'400', 'msg'=>'绑定的手机号不能为空']);
+        } else {
+            $rs1 = $rongModel->createSeatAccount($params['mobile']);
         }
 
         
         if(empty($params['telephone'])) {
-            return json(['code'=>'400', 'msg'=>'绑定的座机号不能为空']);
+            // return json(['code'=>'400', 'msg'=>'绑定的座机号不能为空']);
+        } else {
+            $rs2 = $rongModel->createSeatAccount($params['telephone']);
         }
 
-        $rongModel = new \app\common\model\Rong();
-        $rs1 = $rongModel->createSeatAccount($params['mobile']);
-        $rs2 = $rongModel->createSeatAccount($params['telephone']);
-        if($rs1['statuscode']=='200' && $rs2['statuscode'] == '200') {
+        if($rs1['statuscode']=='200' || $rs2['statuscode'] == '200') {
             return json(['code'=>'200', 'msg'=>'绑定成功']);
         } else {
             return json(['code'=>'500', 'msg'=>'绑定失败']);

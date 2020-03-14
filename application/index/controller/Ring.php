@@ -18,12 +18,13 @@ class Ring extends Controller {
         $customer = $customerModel->where('id', '=', $params['id'])->find();
         
         if($params['from'] == 'mobile') {
-            // $rongModel->call($user['mobile'], $customer->mobile);
-            $resulet = $rongModel->call('18321277411', '13764570091');
+            $result = $rongModel->call($user['mobile'], $customer->mobile);
+            // $resulet = $rongModel->call('18321277411', '13764570091');
         } else {
-            $resulet = $rongModel->call($user['telephone'], $customer->mobile);
+            $result = $rongModel->call($user['telephone'], $customer->mobile);
         }
 
+        return $result;
     }
 
     public function center()
@@ -31,12 +32,12 @@ class Ring extends Controller {
         
         $input = file_get_contents("php://input");
         file_put_contents("./1.txt", $input);
-        $resulet = json_decode($input, 1);
-        if($resulet['Flag'] != 1) {
+        $result = json_decode($input, 1);
+        if($result['Flag'] != 1) {
             return false;
         }
 
-        $data = $resulet['Data'];
+        $data = $result['Data'];
         $callRecord = new \app\common\model\CallRecord();
         $callRecord->insert($data);
     }

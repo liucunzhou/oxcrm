@@ -69,8 +69,8 @@ class Rong
         $auth = $this->getAuth($datetime);
 
         $url = $url.'?sig='.$sign;
-        echo "<pre>";
-        echo $url;
+        // echo "<pre>";
+        // echo $url;
         $header = [
             'Content-type:application/json;charset=utf-8',
             'Accept:application/json',
@@ -89,8 +89,8 @@ class Rong
         $msg = curl_exec($ch);
         $request = curl_getinfo($ch);
         $error = curl_error($ch);
-        echo "<pre>";
-        print_r($request);
+        // echo "<pre>";
+        // print_r($request);
         // var_dump($error);
         curl_close($ch);
 
