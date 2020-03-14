@@ -14,11 +14,11 @@ class Ring extends Controller {
         $user = session("user");
         $rongModel = new \app\common\model\Rong();
 
-        $customerModel = new \app\common\model\Member();
+        $customerModel = new \app\common\model\MemberAllocate();
         $customer = $customerModel->where('id', '=', $params['id'])->find();
         
         if($params['from'] == 'mobile') {
-            echo $customer->mobile.'-------';
+            // echo $customer->mobile.'-------';
             $result = $rongModel->call($user['mobile'], $customer->mobile);
             // $resulet = $rongModel->call('18321277411', '13764570091');
         } else {
