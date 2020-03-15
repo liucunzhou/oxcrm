@@ -43,6 +43,58 @@ class Ring extends Controller {
         $data = $result['Data'];
         $callRecord = new \app\common\model\CallRecord();
         $rs = $callRecord->insert($data[0]);
-        // echo $callRecord->getLastSql();
+
+        $id = $callRecord->getLastInsID();
+        $streamOpts = [
+            "ssl" => [
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ]
+        ];
+        $url = $data[0]['recordFileDownloadUrl'];
+        $wav = file_get_contents($url, false, stream_context_create($streamOpts));
+        $dir = './record/'.date('Ymd').'/';
+        if(!is_dir($dir)) {
+            mkdir($dir);
+        }
+        file_put_contents($dir.$id.'.wav', $wav);
+    }
+
+    public function recodeList($startTime, $endTime, $maxId=0)
+    {
+        $rongModel = new \app\common\model\Rong();
+        $result = $rongModel->getRecordList($startTime, $endTime, $maxId);
+
+        $len = count($result['Data']);
+        echo $len;
+        echo "\n";
+        if($len > 0) {
+            foreach ($result['Data'] as $key=>$row) {
+                $callRecord = new \app\common\model\CallRecord();
+                $rs = $callRecord->insert($row);
+                if($len-1==$key) {
+                    $maxId = $row['maxid'];
+                    $this->recodeList($startTime, $endTime, $maxId);
+                }
+            }
+        }
+    }
+
+    public function initRecordVoice()
+    {
+        $streamOpts = [
+            "ssl" => [
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ]
+        ];
+
+        $callRecord = new \app\common\model\CallRecord();
+        $list = $callRecord->select();
+        foreach($list as $key=>$row) {
+            $url = $row->recordFileDownloadUrl;
+            $wav = file_get_contents($url, false, stream_context_create($streamOpts));
+            file_put_contents('./record/20200314/'.$row->id.'.wav', $wav);
+        }
     }
 }

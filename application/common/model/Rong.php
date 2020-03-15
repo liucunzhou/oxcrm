@@ -59,6 +59,22 @@ class Rong
         return $this->post($url, $params);
     }
 
+    public function getRecordList($startTime, $endTime, $maxId)
+    {
+        $url = "{$this->baseUrl}/{$this->softVersion}/rest/click/call/recordlist/v1";
+        $data = [
+             'BillList' => [
+                'Appid' => $this->appId,
+                'StartTime' => $startTime,
+                'EndTime'   => $endTime,
+                'MaxId' => $maxId
+            ]
+        ];
+
+        $params = json_encode($data);
+        return $this->post($url, $params);
+    }
+
     public function post($url, $data)
     {
 
