@@ -42,6 +42,7 @@ class Ring extends Controller {
 
         $data = $result['Data'];
         $callRecord = new \app\common\model\CallRecord();
-        $callRecord->insert($data);
+        $rs = $callRecord->insert($data[0]);
+        // echo $callRecord->getLastSql();
     }
 }

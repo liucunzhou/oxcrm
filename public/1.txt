@@ -1,0 +1,29 @@
+{
+  "Flag": 1,
+  "Total": 1,
+  "Data": [
+    {
+      "maxid": 22032179,
+      "direction": "0",
+      "sessionId": "1201_6221_4294967295_20200313092512@callenabler245qh.caas.com",
+      "bindNum": "+869717143789",
+      "calleeNum": "+8618321277411",
+      "fwdDstNum": "+8613764570091",
+      "fwdDisplayNum": "+8618321277411",
+      "fwdStartTime": "2020-03-13 09:25:30",
+      "fwdAlertingTime": "2020-03-13 09:25:33",
+      "fwdAnswerTime": "2020-03-13 09:25:40",
+      "callEndTime": "2020-03-13 09:26:25",
+      "failTime": null,
+      "callOutStartTime": "2020-03-13 09:25:12",
+      "callOutAlertingTime": "2020-03-13 09:25:19",
+      "callOutAnswerTime": "2020-03-13 09:25:30",
+      "billsec": 45,
+      "recordFlag": 1,
+      "recordStartTime": "2020-03-13 09:25:40",
+      "recordFileDownloadUrl": "https://111.44.229.178/sp-zzmckmyqwq93e3z8bqdpj0tl7zuh/20031309254012057057589.wav?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20200313T092628Z&X-Amz-SignedHeaders=host&X-Amz-Expires=259200&X-Amz-Credential=D4F10F6F791AC057C66E%2F20200313%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=415b6ed7d3241a765d9569fc8e828e1291a7f89a4c90adfde42f3dd38a1c407f",
+      "fwdUnaswRsn": "0",
+      "ulFailReason": "0"
+    }
+  ]
+}
