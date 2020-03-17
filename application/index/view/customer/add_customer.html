@@ -18,7 +18,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">客资来源</label>
                     <div class="layui-input-block">
-                        <select name="source_id" id="source_id">
+                        <select name="source_id" id="source_id" lay-search>
                             <option value="0">--选择来源--</option>
                             <{foreach name="sources" item="val"}>
                                 <{if $data['source_id']==$val['id']}>

@@ -17,7 +17,7 @@
     <script src="/assets/lib/ox-common.js"></script>
 </head>
 
-<body class="container-fluid" style="padding: 20px;">
+<body style="padding: 8px 12px;">
     <!--
     <div class="form-search-top">
         <select name="" id="">
@@ -26,17 +26,22 @@
     </div>
     -->
     <div class="ox-tab">
+        <a href="" class="active">所有客资</a>
+        <a href="">未跟进</a>
+        <a href="">跟进中</a>
+        <a href="">未接通</a>
+        
         <div class="ox-tab-left">
-            <a href="" class="active">所有客资</a>
+            
         </div>
         <div class="ox-tab-right">
             <a href="">订单客户</a>
             <a href="">预约到店</a>
             <a href="">无效客户</a>
             <a href="">跟进失败</a>
-            <a href="">未接通</a>
-            <a href="">跟进中</a>
-            <a href="">未跟进</a>
+            
+            
+            
         </div>
     </div>
     <div class="ox-table">
@@ -73,11 +78,11 @@
                     <td>{$row.operate_id}</td>
                     <td>{$row.realname}</td>
                     <td>{$row.mobile}</td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.banquet_size}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.budget}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.wedding_date}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.zone}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.hotel_text}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.banquet_size}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.budget}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.wedding_date}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.zone}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.hotel_text}</a></td>
                     <td>{$row.source_text}</td>
                     <td>{$row.news_type}</td>
                     <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.visit/edit?id={$row.id}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>

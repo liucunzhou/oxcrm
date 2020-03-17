@@ -17,8 +17,6 @@ layui.extend({
   ,admin = layui.admin
   ,tabsPage = admin.tabsPage
   ,view = layui.view
-  
-  //打开标签页
   ,openTabsPage = function(url, text){
     //遍历页签选项卡
     var matchTo

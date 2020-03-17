@@ -24,16 +24,27 @@ $(function(){
     $(".layui-center").click(function () {
         var layer = layui.layer;
         var url = $(this).attr('data-action');
-        var title = $(this).attr('title');
-        var percent = $(this).attr("data-width");
-        if(percent != undefined) {
-            percent = parseInt(percent)/100;
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+
+        var cwidth = $(this).attr("data-width");
+        var cheight = $(this).attr("data-height");
+
+        if(cwidth.indexOf("p") >= 0) {
+            width = cwidth
+        } else if(cwidth != undefined) {
+            width = width * parseInt(cwidth) /100;
         } else {
-            percent = 0.6;
+            width = width * 0.6;
         }
 
-        var width = window.innerWidth * percent;
-        var height = window.innerHeight * .5;
+        if(cheight.indexOf("p") >= 0) {
+            height = parseInt(cheight);
+        } else if(cheight != undefined) {
+            height = height * parseInt(cheight) /100;
+        } else {
+            height = height * 0.5;
+        }
         
         layer.open({
             type: 2,
