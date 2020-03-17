@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>我的客资</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
+    <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/lib/ox-common.js"></script>
+</head>
+
+<body class="container-fluid" style="padding: 20px;">
+    <!--
+    <div class="form-search-top">
+        <select name="" id="">
+            <option value=""></option>
+        </select>
+    </div>
+    -->
+    <div class="ox-tab">
+        <div class="ox-tab-left">
+            <a href="" class="active">所有客资</a>
+        </div>
+        <div class="ox-tab-right">
+            <a href="">订单客户</a>
+            <a href="">预约到店</a>
+            <a href="">无效客户</a>
+            <a href="">跟进失败</a>
+            <a href="">未接通</a>
+            <a href="">跟进中</a>
+            <a href="">未跟进</a>
+        </div>
+    </div>
+    <div class="ox-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="check-all">
+                    </th>
+                    <th>回访数</th>
+                    <th>跟单人</th>
+                    <th>客户姓名</th>
+                    <th>手机号码</th>
+                    <th>桌数</th>
+                    <th>预算</th>
+                    <th>订婚日期</th>
+                    <th>区域</th>
+                    <th>酒店</th>
+                    <th>客资渠道</th>
+                    <th>信息类型</th>
+                    <th>回访状态</th>
+                    <th>备注</th>
+                    <th>获取方式</th>
+                    <th>分配时间</th>
+                    <th>创建日期</th>
+                </tr>
+            </thead>
+            <{foreach name="list" item="row"}>
+                <tr>
+                    <td>
+                        <input type="checkbox" class="ids" value="{$row.id}">
+                    </td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/update?id={$row.id}" class="layui-center" data-width="50" title="编辑全部信息" >{$row.visit_amount}</a></td>
+                    <td>{$row.operate_id}</td>
+                    <td>{$row.realname}</td>
+                    <td>{$row.mobile}</td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.banquet_size}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.budget}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.wedding_date}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.zone}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" title="编辑客户信息">{$row.hotel_text}</a></td>
+                    <td>{$row.source_text}</td>
+                    <td>{$row.news_type}</td>
+                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.visit/edit?id={$row.id}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
+                    <td></td>
+                    <td>{$row.allocate_type}</td>
+                    <td>{$row.create_time}</td>
+                    <td>{$row.member_create_time}</td>
+                </tr>
+            <{/foreach}>
+        </table>
+    </div>
+</body>
+
+</html>

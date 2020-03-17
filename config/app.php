@@ -16,7 +16,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 return [
     // 应用名称
-    'app_name'               => 'E5W系统',
+    'app_name'               => '红丝CRM',
     // 应用地址
     'app_host'               => '',
     // 应用调试模式

@@ -1,0 +1,80 @@
+.padding-right-8{
+    padding-right: 8px;
+}
+
+.ox-tab,
+.ox-tab-left,
+.ox-tab-right{
+    display: flex;
+}
+
+.ox-tab a,
+.ox-tab-left a,
+.ox-tab-right a{
+    height: 40px;
+    line-height: 40px;
+    min-width: 65px;
+    padding: 0 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+.ox-tab {
+    border-bottom: 1px solid #dedede;
+}
+
+.ox-tab-right{
+   flex: 1;
+   flex-direction: row-reverse;
+}
+
+.ox-tab a.active{
+    border: 1px solid #dedede;
+    border-bottom: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.ox-table {
+    width: 100%;
+    overflow: auto;
+}
+
+.table thead tr th{
+    background: #e6e6e6;
+    color: #666;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tbody tr td{
+    text-align: center;
+    white-space: nowrap;
+}
+
+.table tbody tr td.break{
+    text-align: left;
+    white-space: normal;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    vertical-align: middle;
+}
+
+.table>tbody>tr.blank>td, 
+.table>tbody>tr.blank>th, 
+.table>tfoot>tr.blank>td, 
+.table>tfoot>tr.blank>th, 
+.table>thead>tr.blank>td, 
+.table>thead>tr.blank>th {
+    height: 51px;
+    border: none;
+}
+
+.table>tbody>tr>td textarea, 
+.table>tfoot>tr>td textarea, 
+.table>tfoot>tr>th textarea, 
+.table>thead>tr>td textarea, 
+.table>thead>tr>th textarea{
+    height: 255px;
+}
