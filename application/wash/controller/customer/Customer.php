@@ -112,7 +112,28 @@ class Customer extends Backend
      */
     public function update(Request $request, $id)
     {
-        //
+        // 获取分配信息
+        $map = [];
+        $map['id'] = $id;
+        $allocate = $this->model->where($map)->find();
+        $this->assign('allocate', $allocate);
+
+        // 获取客户的基本信息
+        $map = [];
+        $map['id'] = $allocate->member_id;
+        $member = $this->customerModel->where($map)->find();
+        $this->assign('member', $member);
+
+        // 获取省市列表
+        $provinceList = Region::getProvinceList();
+        $this->assign('provinceList', $provinceList);
+        // 获取当前省份的城市列表
+        if(!empty($allocate->province_id)) {
+            $cityList = Region::getCityList($allocate->province_id);
+        } else {
+            $cityList = [];
+        }
+        $this->assign('cityList', $cityList);
 
         return $this->fetch();
     }

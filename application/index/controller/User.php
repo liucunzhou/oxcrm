@@ -429,7 +429,7 @@ class User extends Base
         $params = Request::param();
         $rongModel = new \app\common\model\Rong();
         if(empty($params['mobile'])) {
-            return json(['code'=>'400', 'msg'=>'绑定的手机号不能为空']);
+            // return json(['code'=>'400', 'msg'=>'绑定的手机号不能为空']);
         } else {
             $rs1 = $rongModel->createSeatAccount($params['mobile']);
         }

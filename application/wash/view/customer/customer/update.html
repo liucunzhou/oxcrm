@@ -11,33 +11,13 @@
     <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
+    <link rel="stylesheet" href="/assets/style/center.css?{rand(10,10000)}">
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
     <script src="/assets/lib/ox-common.js"></script>
-    <style>
-        html,body{
-            width: 100%;
-            height: 100%;
-        }
-
-        .tabpanel.flex{
-            display: flex;
-        }
-        
-        .hotel-list,
-        .hall-list{
-            flex: 0 25%;
-            height: 100%;
-        }
-        .hotel-list {
-            border-left: 1px solid #dedede;
-            border-right: 1px solid #dedede;
-            
-        }
-    </style>
 </head>
-<body style="padding: 8px 12px;overflow: auto; display: flex;">
+<body>
     <div class="tab-box">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -48,91 +28,194 @@
         </ul>
 
         <div class="tab-content">
-            <div role="tabpanel flex" class="tab-pane active" id="base">
-                <table class="table">
-                    <tr>
-                        <td>信息类型</td>
-                        <td colspan="3" class="break">
-                            <{foreach name="newsTypes" item="row"}>
-                                <label class="padding-right-8">
-                                    <input type="checkbox" name="news_type" value="{$key}" title="{$row}" checked disabled> {$row}
-                                </label>
-                            <{/foreach}>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>联系人</td>
-                        <td>
-                            <input type="text" name="realname" value="" class="form-control">
-                        </td>
-                        <td>联系电话</td>
-                        <td class="flex-mobile">
-                            <input type="text" value="" class="form-control " readonly>
-                            <div class="btn-group">
-                                <a href="javascript:void(0);" class="btn btn-info">
-                                    <i class="glyphicon glyphicon-phone-alt"></i>
-                                </a>
-                                <a href="javascript:void(0);" class="btn btn-warning">
-                                    <i class="glyphicon glyphicon-th-list"></i>
-                                </a>
-                                <a href="javascript:void(0);" class="btn btn-primary">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                </a>
+            <div role="tabpanel" class="tab-pane active" id="base">
+                <div class="flex">
+                    <div class="customer-box">
+                        <table class="table">
+                            <tr>
+                                <td>信息类型</td>
+                                <td colspan="3" class="break">
+                                    <{foreach name="newsTypes" item="row"}>
+                                        <label class="padding-right-8">
+                                            <input type="checkbox" name="news_type" value="{$key}" title="{$row}" checked disabled> {$row}
+                                        </label>
+                                    <{/foreach}>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>渠道</td>
+                                <td>
+                                    <input type="text" class="form-control" value="{$allocate->source_text}">
+                                </td>
+                                <td>重复渠道</td>
+                                <td class="form-control-group">
+                                    <input type="text" class="form-control">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0);" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>联系人</td>
+                                <td>
+                                    <input type="text" name="realname" value="{$allocate.realname}" class="form-control">
+                                </td>
+                                <td>联系电话</td>
+                                <td class="form-control-group">
+                                    <input type="text" value="{$allocate.mobile}" class="form-control " readonly>
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0);" class="btn btn-info">
+                                            <i class="glyphicon glyphicon-phone-alt"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="btn btn-warning">
+                                            <i class="glyphicon glyphicon-th-list"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>省市区</td>
+                                <td colspan="3">
+                                    <div class="region-group">
+                                        <select name="privance" class="form-control">
+                                            <option value="0">--选择省份--</option>
+                                            <{foreach name="provinceList" item="row"}>
+                                                <option value="{$row.id}">{$row.name}</option>
+                                            <{/foreach}>
+                                        </select>
+                                        <select name="city" class="form-control">
+                                            <option value="">--选择城市--</option>
+                                            <{foreach name="cityList" item="row"}>
+                                                <option value="{$row.id}">{$row.name}</option>
+                                            <{/foreach}>
+                                        </select>
+                                        </select>
+                                        <select name="area" class="form-control">
+                                            <option value="">--选择区域--</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>区域</td>
+                                <td colspan="3">
+                                    <input type="text" class="form-control" value="{$member.zone}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>酒店</td>
+                                <td colspan="3">
+                                    <input type="text" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>桌数</td>
+                                <td>
+                                    <input type="number" name="banquet_size" value="{$member.banquet_size}" class="form-control">
+                                </td>
+                                <td>至</td>
+                                <td>
+                                    <input type="number" name="banquet_size_end" value="{$member.banquet_size_end}" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>预算</td>
+                                <td>
+                                    <input type="number" name="budget" value="" class="form-control">
+                                </td>
+                                <td>至</td>
+                                <td>
+                                    <input type="number" name="budget_end" value="" class="form-control">
+                                </td> 
+                            </tr>
+                            <tr>
+                                <td>婚期</td>
+                                <td colspan="3">
+                                    <input type="text" name="wedding_date" value="{$member.wedding_date}" class="form-control date">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>创建人</td>
+                                <td>
+                                    <input type="text" class="form-control" value="">
+                                </td>
+                                <td>创建时间</td>
+                                <td>
+                                    <input type="text" class="form-control" value="{$member.create_time}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>备注</td>
+                                <td colspan="3">
+                                    <textarea name="remark" class="form-control">{$allocate.remark}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="btn-group">
+                                        <a href="javascript:void(0);" class="btn btn-primary">快捷回访</a>
+                                        <button type="submit" class="btn btn-success">保存更新</button>
+                                        <button type="button" class="btn btn-warning btn-close">关闭页面</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <div class="panel panel-store-sales-assigned">
+                            <div class="panel-heading">已分配人员:</div>
+                            <div class="panel-body panel-store-sales-assigned-body">
+                                <div class="store-sales">张三</div>
+                                <div class="store-sales">张三</div>
+                                <div class="store-sales">张三</div>
+                                <div class="store-sales">张三</div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>所在省份</td>
-                        <td>
-                            <select name="privance" class="form-control">
-                                <option value="0">--选择省份--</option>
-                            </select>
-                        </td>
-                        
-                        <td>所在城市</td>
-                        <td>
-                            <select name="city" class="form-control">
-                                <option value="">--选择城市--</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>区域</td>
-                        <td><input type="text" class="form-control"></td>
-                        <td>酒店</td>
-                        <td><input type="text" class="form-control"></td>
-                    </tr>
-                    <tr>
-                        <td>桌数</td>
-                        <td>
-                            <input type="text" value="" class="form-control">
-                        </td>
-                        <td>预算</td>
-                        <td>
-                            <input type="text" value="" class="form-control">
-                        </td>    
-                    </tr>
-                    <tr>
-                        <td>婚期</td>
-                        <td>
-                            <input type="text" value="" class="form-control date">
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <button type="submit" class="btn btn-success">保存更新</button>
-                            <button type="button" class="btn btn-warning btn-close">关闭</button>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                    <div class="hotel-list-box">
+                        <div class="hotel-search-box">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <select name="" class="form-control">
+                                            <option value="0">信息类型</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="form-control" placeholder="区域"></td>
+                                    <td><input type="text" class="form-control" placeholder="桌数"></td>
+                                    <td><input type="text" class="form-control" placeholder="预算"></td>
+                                    <td>
+                                        <a href="javascript:void(0);" class="btn btn-danger">重置</a>
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <input type="text" class="form-control">
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0);" class="btn btn-primary">搜索</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hotel-selected-list">
 
-                <div class="hotel-list">
+                        </div>
+                        <div class="hotel-searched-list">
 
-                </div>
-                <div class="hall-list">
-            
+                        </div>
+                    </div>
+                    <div class="hotel-detail-box">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#hotel-detail" aria-controls="hotel-detail" role="tab" data-toggle="tab">酒店资料</a></li>
+                            <li role="presentation"><a href="#hall-list" aria-controls="hall-list" role="tab" data-toggle="tab">宴会厅</a></li>
+                          </ul>
+                    </div>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="visit">

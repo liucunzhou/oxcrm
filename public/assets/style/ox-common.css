@@ -101,17 +101,23 @@ h4 {
 .table>thead>tr>th .textarea{
     height: 255px;
 }
-.flex-mobile{
+.form-control-group{
     display: flex;
 }
-.flex-mobile .form-control{
+.form-control-group .form-control{
     flex: 1;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
-.flex-mobile .btn-group .btn{
+.form-control-group .btn-group .btn{
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+.region-group {
+    display: flex;
+}
+.region-group select{
+    border-radius: 0;
 }
 .table>thead>tr>th.relative,
 .table>tbody>tr>td.relative{

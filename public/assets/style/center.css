@@ -1,0 +1,88 @@
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    padding: 8px 12px;
+}
+
+.tab-box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tab-box .nav{
+    flex: 0 42px;
+}
+
+.tab-box .tab-content {
+    flex: 1;
+}
+.tab-box .tab-content .tab-pane {
+    width: 100%;
+    height: 100%;
+}
+
+.tab-box .tab-content .tab-pane .flex{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.customer-box{
+    flex: 1;
+}
+
+.panel-store-sales-assigned .panel-heading{
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.panel-store-sales-assigned-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.panel-store-sales-assigned-body .store-sales{
+    padding: 8px 20px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #dedede;
+}
+
+.hotel-list-box,
+.hotel-detail-box{
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+}
+.hotel-list-box {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
+}
+.hotel-search-box{
+  
+}
+.hotel-search-box .btn{
+    border-radius: 0;
+}
+.hotel-search-box .form-control{
+    border-radius: 0;
+}
+.hotel-selected-list{
+    flex: 1;
+    overflow: auto;
+    border-top: 1px solid #dedede;
+}
+.hotel-searched-list{
+    flex: 1;
+    overflow: auto;
+    border-top: 1px solid #dedede;
+}
+

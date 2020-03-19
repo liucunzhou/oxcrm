@@ -17,7 +17,7 @@ class Hotel extends Model
 
     public static function getHotels($update=false)
     {
-        $cacheKey = 'Budget';
+        $cacheKey = 'Hotel';
         $data = redis()->get($cacheKey);
         if(empty($data) || $update) {
             $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
