@@ -32,7 +32,7 @@ class Passport extends Controller
             $this->result([], 500, '密码不正确');
         }
 
-        $path = '/wash.php?ucenter.user/info';
+        $path = '/index/index';
         if($user['is_valid'] == 0){
             $this->result([], 500, '账号已经下线');
         }
@@ -52,6 +52,6 @@ class Passport extends Controller
     public function logout()
     {
         Session::clear();
-        $this->redirect('/wash.php?s=ucenter.passport/login');
+        $this->redirect('ucenter.passport/login');
     }
 }

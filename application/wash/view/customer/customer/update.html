@@ -15,8 +15,29 @@
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
     <script src="/assets/lib/ox-common.js"></script>
+    <style>
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+
+        .tabpanel.flex{
+            display: flex;
+        }
+        
+        .hotel-list,
+        .hall-list{
+            flex: 0 25%;
+            height: 100%;
+        }
+        .hotel-list {
+            border-left: 1px solid #dedede;
+            border-right: 1px solid #dedede;
+            
+        }
+    </style>
 </head>
-<body style="padding: 8px 12px;">
+<body style="padding: 8px 12px;overflow: auto; display: flex;">
     <div class="tab-box">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -24,50 +45,208 @@
           <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">新增跟进</a></li>
           <li role="presentation"><a href="#intostore" aria-controls="intostore" role="tab" data-toggle="tab">预约进店</a></li>
           <li role="presentation"><a href="#record" aria-controls="record" role="tab" data-toggle="tab">回访录音</a></li>
-          
-
         </ul>
 
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="base">
+            <div role="tabpanel flex" class="tab-pane active" id="base">
                 <table class="table">
                     <tr>
                         <td>信息类型</td>
-                        <td>
-                            <select name="" class="form-control">
-                                <option value="0">--选择信息类型--</option>
-                            </select>
-                        </td>
-                        <td>客资渠道</td>
-                        <td>
-                            <select name="" class="form-control">
-                                <option value="0">--选择客资渠道--</option>
-                            </select>
+                        <td colspan="3" class="break">
+                            <{foreach name="newsTypes" item="row"}>
+                                <label class="padding-right-8">
+                                    <input type="checkbox" name="news_type" value="{$key}" title="{$row}" checked disabled> {$row}
+                                </label>
+                            <{/foreach}>
                         </td>
                     </tr>
                     <tr>
                         <td>联系人</td>
-                        <td></td>
+                        <td>
+                            <input type="text" name="realname" value="" class="form-control">
+                        </td>
                         <td>联系电话</td>
+                        <td class="flex-mobile">
+                            <input type="text" value="" class="form-control " readonly>
+                            <div class="btn-group">
+                                <a href="javascript:void(0);" class="btn btn-info">
+                                    <i class="glyphicon glyphicon-phone-alt"></i>
+                                </a>
+                                <a href="javascript:void(0);" class="btn btn-warning">
+                                    <i class="glyphicon glyphicon-th-list"></i>
+                                </a>
+                                <a href="javascript:void(0);" class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>所在省份</td>
+                        <td>
+                            <select name="privance" class="form-control">
+                                <option value="0">--选择省份--</option>
+                            </select>
+                        </td>
+                        
+                        <td>所在城市</td>
+                        <td>
+                            <select name="city" class="form-control">
+                                <option value="">--选择城市--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>区域</td>
+                        <td><input type="text" class="form-control"></td>
+                        <td>酒店</td>
+                        <td><input type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>桌数</td>
+                        <td>
+                            <input type="text" value="" class="form-control">
+                        </td>
+                        <td>预算</td>
+                        <td>
+                            <input type="text" value="" class="form-control">
+                        </td>    
+                    </tr>
+                    <tr>
+                        <td>婚期</td>
+                        <td>
+                            <input type="text" value="" class="form-control date">
+                        </td>
+                        <td></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td colspan="4">
+                            <button type="submit" class="btn btn-success">保存更新</button>
+                            <button type="button" class="btn btn-warning btn-close">关闭</button>
+                        </td>
                     </tr>
+                </table>
+
+                <div class="hotel-list">
+
+                </div>
+                <div class="hall-list">
+            
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="visit">
+                <table class="table">
+                    <tr>
+                        <td width="10%">跟进状态</td>
+                        <td>
+                            <select name="active_status" class="form-control">
+                                <option value="0">--选择跟进状态--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="textarea">
+                        <td>回访内容</td>
+                        <td>
+                            <textarea name="remark" class="form-control"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-left">
+                            <button type="submit" class="btn btn-success">添加跟进</button>
+                            <button type="button" class="btn btn-warning btn-close">关闭</button>
+                        </td>
+                    </tr>
+                </table>
+                <h4>回访列表</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>回放者</th>
+                            <th>回访次数</th>
+                            <th>获取时间</th>
+                            <th>回访状态</th>
+                            <th>下次回访时间</th>
+                            <th>最新跟进时间</th>
+                        </tr>
+                    </thead>
+                </table>
+                <h4>回访历史</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>回放者</th>
+                            <th>回访时间</th>
+                            <th>回访状态</th>
+                            <th>跟踪记录</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="intostore">
+                <table class="table">
+                    <tr>
+                        <td width="15%">预约到店时间</td>
+                        <td width="35%">
+                            <input type="text" name="subscribe_into_time" class="form-control date">
+                        </td>
+                        <td width="15%">预约门店</td>
+                        <td width="35%">
+                            <select name="store_id" class="form-control">
+                                <option value="0">--选择门店--</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>接收预约人员</td>
+                        <td>
+                            <select name="sales" class="form-control">
+                                <option value="0">--选择接收人--</option>
+                            </select>
+                        </td>
+                        <td>备注</td>
+                        <td>
+                            <textarea name="textarea" class="form-control"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-left">
+                            <button type="submit" class="btn btn-success">添加跟进</button>
+                            <button type="button" class="btn btn-warning btn-close">关闭</button>
+                        </td>
+                    </tr>
+                </table>
+                <h4>预约历史</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>操作人</th>
+                            <th>预约酒店</th>
+                            <th>接收月月人</th>
+                            <th>备注</th>
+                            <th>是否到店</th>
+                        </tr>
+                    </thead>
                     
                 </table>
             </div>
-            <div role="tabpanel" class="tab-pane" id="visit">
-
-            </div>
-            <div role="tabpanel" class="tab-pane" id="intostore">
-                
-            </div>
             <div role="tabpanel" class="tab-pane" id="record">
-    
+                <br>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>部门</th>
+                            <th>操作者</th>
+                            <th>接通状态</th>
+                            <th>接通时间</th>
+                            <th>挂断时间</th>
+                            <th>持续时间</th>
+                            <th>录音</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
       

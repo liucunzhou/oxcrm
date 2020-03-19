@@ -2,11 +2,18 @@
 
 namespace app\wash\controller\customer;
 
-use think\Controller;
+use app\wash\controller\Backend;
 use think\Request;
 
-class Visit extends Controller
+class Visit extends Backend
 {
+    protected function initialize()
+    {
+        parent::initialize();
+
+        $this->model = new \app\common\model\MemberVisit();
+    }
+
     /**
      * 显示资源列表
      *
@@ -58,6 +65,7 @@ class Visit extends Controller
     public function edit($id)
     {
         //
+        return $this->fetch();
     }
 
     /**

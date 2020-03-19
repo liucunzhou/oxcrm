@@ -30,21 +30,22 @@ $(function(){
         var cwidth = $(this).attr("data-width");
         var cheight = $(this).attr("data-height");
 
-        if(cwidth.indexOf("p") >= 0) {
-            width = cwidth
-        } else if(cwidth != undefined) {
-            width = width * parseInt(cwidth) /100;
-        } else {
+        if (cwidth == undefined) {
             width = width * 0.6;
-        }
-
-        if(cheight.indexOf("p") >= 0) {
-            height = parseInt(cheight);
-        } else if(cheight != undefined) {
-            height = height * parseInt(cheight) /100;
+        } else if(cwidth.indexOf("p") >= 0) {
+            width = cwidth
         } else {
+            width = width * parseInt(cwidth) /100;
+        } 
+
+        console.log(cheight);
+        if (cheight == undefined) {
             height = height * 0.5;
-        }
+        } else if(cheight.indexOf("p") >= 0) {
+            height = parseInt(cheight);
+        } else {
+            height = height * parseInt(cheight) /100;
+        } 
         
         layer.open({
             type: 2,

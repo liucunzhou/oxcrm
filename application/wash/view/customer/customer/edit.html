@@ -15,6 +15,9 @@
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
     <script src="/assets/lib/ox-common.js"></script>
+    <style>
+        
+    </style>
 </head>
 <body style="padding: 8px 12px;overflow: hidden;">
     <div class="tab-box">
@@ -40,11 +43,11 @@
                     <tr>
                         <td>联系人</td>
                         <td>
-                            <input type="text" name="realname" value="" class="form-control">
+                            <input type="text" name="realname" value="{$member.realname}" class="form-control">
                         </td>
                         <td>联系电话</td>
                         <td>
-                            <input type="text" value="" class="form-control" readonly>
+                            <input type="text" value="{$member.mobile}" class="form-control" readonly>
                         </td>
                     </tr>
                     <tr>
@@ -52,6 +55,9 @@
                         <td>
                             <select name="privance" class="form-control">
                                 <option value="0">--选择省份--</option>
+                                <{foreach name="provinceList" item="row"}>
+                                    <option value="{$row.id}">{$row.name}</option>
+                                <{/foreach}>
                             </select>
                         </td>
                         
@@ -64,25 +70,33 @@
                     </tr>
                     <tr>
                         <td>区域</td>
-                        <td><input type="text" class="form-control"></td>
+                        <td>
+                            <select name="area_id" class="form-control">
+                                <option value="0">--选择区域--</option>
+                            </select>
+                        </td>
                         <td>酒店</td>
-                        <td><input type="text" class="form-control"></td>
+                        <td>
+                            <select name="hotel_id" class="form-control">
+                                <option value="0">--选择酒店--</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td>桌数</td>
                         <td>
-                            <input type="text" value="" class="form-control">
+                            <input type="text" name="banquet_size" value="{$member.banquet_size}" class="form-control">
                         </td>
                         <td>预算</td>
                         <td>
-                            <input type="text" value="" class="form-control">
+                            <input type="text" name="budget" value="{$member.budget}" class="form-control">
                         </td>
                         
                     </tr>
                     <tr>
                         <td>婚期</td>
                         <td>
-                            <input type="text" value="" class="form-control date">
+                            <input type="text" name="wedding_date" value="{$member.wedding_date}" class="form-control date">
                         </td>
                         <td></td>
                         <td></td>
@@ -108,13 +122,13 @@
                     <tr class="textarea">
                         <td>回访内容</td>
                         <td>
-                            <textarea name="remark" class="form-control"></textarea>
+                            <textarea name="remark" class="textarea form-control"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">
                             <button type="submit" class="btn btn-success">添加跟进</button>
-                            <button type="button" class="btn btn-warning">关闭</button>
+                            <button type="button" class="btn btn-warning btn-close">关闭</button>
                         </td>
                     </tr>
                 </table>

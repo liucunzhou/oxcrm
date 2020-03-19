@@ -1,3 +1,7 @@
+h4 {
+    padding: 8px 0;
+}
+
 .padding-right-8{
     padding-right: 8px;
 }
@@ -11,12 +15,18 @@
 .ox-tab a,
 .ox-tab-left a,
 .ox-tab-right a{
+    position: relative;
     height: 40px;
     line-height: 40px;
     min-width: 65px;
     padding: 0 15px;
     color: #333;
     text-decoration: none;
+}
+
+.ox-tab a .badge{
+    position: absolute;
+    top: 0;
 }
 
 .ox-tab {
@@ -56,8 +66,21 @@
     text-align: left;
     white-space: normal;
 }
+.table>tbody>tr:first-child>td, 
+.table>tbody>tr:first-child>th, 
+.table>tfoot>tr:first-child>td, 
+.table>tfoot>tr:first-child>th, 
+.table>thead>tr:first-child>td, 
+.table>thead>tr:first-child>th  {
+    border-top: none;
+}
 
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+.table>tbody>tr>td, 
+.table>tbody>tr>th, 
+.table>tfoot>tr>td, 
+.table>tfoot>tr>th, 
+.table>thead>tr>td, 
+.table>thead>tr>th {
     vertical-align: middle;
 }
 
@@ -71,10 +94,34 @@
     border: none;
 }
 
-.table>tbody>tr>td textarea, 
-.table>tfoot>tr>td textarea, 
-.table>tfoot>tr>th textarea, 
-.table>thead>tr>td textarea, 
-.table>thead>tr>th textarea{
+.table>tbody>tr>td .textarea, 
+.table>tfoot>tr>td .textarea, 
+.table>tfoot>tr>th .textarea, 
+.table>thead>tr>td .textarea, 
+.table>thead>tr>th .textarea{
     height: 255px;
+}
+.flex-mobile{
+    display: flex;
+}
+.flex-mobile .form-control{
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.flex-mobile .btn-group .btn{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.table>thead>tr>th.relative,
+.table>tbody>tr>td.relative{
+    position: relative;
+}
+.table a.block{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
 }

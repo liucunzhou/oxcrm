@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
-    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10000,10000)}">
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/lib/ox-common.js"></script>
@@ -26,23 +26,29 @@
     </div>
     -->
     <div class="ox-tab">
+        <!--
         <a href="" class="active">所有客资</a>
         <a href="">未跟进</a>
         <a href="">跟进中</a>
         <a href="">未接通</a>
-        
-        <div class="ox-tab-left">
-            
-        </div>
-        <div class="ox-tab-right">
-            <a href="">订单客户</a>
-            <a href="">预约到店</a>
-            <a href="">无效客户</a>
-            <a href="">跟进失败</a>
-            
-            
-            
-        </div>
+        <a href="">跟进失败</a>
+        <a href="">无效客户</a>
+        <a href="">预约到店</a>
+        <a href="">订单客户</a>
+        -->
+        <{foreach name="tabs" item="row"}>
+            <{if $row['active'] == '1'}>
+                <a href="{$row.url}" class="active">
+                    {$row.title}
+                    <span class="badge">{$row.total}</span>
+                </a>
+            <{else /}>
+                <a href="{$row.url}">
+                    {$row.title}
+                    <span class="badge">{$row.total}</span>
+                </a>
+            <{/if}>
+        <{/foreach}>
     </div>
     <div class="ox-table">
         <table class="table table-bordered">
@@ -74,18 +80,18 @@
                     <td>
                         <input type="checkbox" class="ids" value="{$row.id}">
                     </td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/update?id={$row.id}" class="layui-center" data-width="50" title="编辑全部信息" >{$row.visit_amount}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/customer.customer/update?id={$row.id}" class="layui-center" data-width="100" data-height="100" title="编辑全部信息" >{$row.visit_amount}</a></td>
                     <td>{$row.operate_id}</td>
                     <td>{$row.realname}</td>
                     <td>{$row.mobile}</td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.banquet_size}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.budget}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.wedding_date}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.zone}</a></td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.customer/edit?id={$row.id}" class="layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.hotel_text}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.banquet_size}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.budget}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.wedding_date}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.zone}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.hotel_text}</a></td>
                     <td>{$row.source_text}</td>
                     <td>{$row.news_type}</td>
-                    <td><a href="javascript:void(0);" data-action="/wash.php?s=customer.visit/edit?id={$row.id}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
+                    <td><a href="javascript:void(0);" data-action="/customer.visit/edit?id={$row.id}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
                     <td></td>
                     <td>{$row.allocate_type}</td>
                     <td>{$row.create_time}</td>
@@ -93,6 +99,8 @@
                 </tr>
             <{/foreach}>
         </table>
+
+        {$list | raw}
     </div>
 </body>
 
