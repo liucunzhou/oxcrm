@@ -10,7 +10,7 @@ class Auth
     {
         $user = Session::get('user');
         if(empty($user)) {
-            echo "<script>window.parent.location.href='/ucenter.passport/login';</script>";
+            echo "<script>window.parent.location.href='/wash/ucenter.passport/login';</script>";
         }
         return $next($request);
     }

@@ -32,7 +32,7 @@ class Passport extends Controller
             $this->result([], 500, '密码不正确');
         }
 
-        $path = '/index/index';
+        $path = url('wash/index/index');
         if($user['is_valid'] == 0){
             $this->result([], 500, '账号已经下线');
         }

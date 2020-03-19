@@ -80,18 +80,18 @@
                     <td>
                         <input type="checkbox" class="ids" value="{$row.id}">
                     </td>
-                    <td><a href="javascript:void(0);" data-action="/customer.customer/update?id={$row.id}" class="layui-center" data-width="100" data-height="100" title="编辑全部信息" >{$row.visit_amount}</a></td>
+                    <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/update', ['id'=>$row['id']])}" class="layui-center" data-width="100" data-height="100" title="编辑全部信息" >{$row.visit_amount}</a></td>
                     <td>{$row.operate_id}</td>
                     <td>{$row.realname}</td>
                     <td>{$row.mobile}</td>
-                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.banquet_size}</a></td>
-                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.budget}</a></td>
-                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.wedding_date}</a></td>
-                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.zone}</a></td>
-                    <td class="relative"><a href="javascript:void(0);" data-action="/customer.customer/edit?id={$row.id}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.hotel_text}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.banquet_size}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.budget}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.wedding_date}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.zone}</a></td>
+                    <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.hotel_text}</a></td>
                     <td>{$row.source_text}</td>
                     <td>{$row.news_type}</td>
-                    <td><a href="javascript:void(0);" data-action="/customer.visit/edit?id={$row.id}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
+                    <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/edit', ['id'=>$row['id']])}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
                     <td></td>
                     <td>{$row.allocate_type}</td>
                     <td>{$row.create_time}</td>

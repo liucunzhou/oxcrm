@@ -13,15 +13,15 @@ class Index extends Controller
                 'items' => [
                     [
                         'text'  => '我的客资',
-                        'url'   => '/customer.customer/index'
+                        'url'   => url('/wash/customer.customer/index')
                     ],
                     [
                         'text'  => '今日跟进',
-                        'url'   => '/customer.customer/today'
+                        'url'   => url('/wash/customer.customer/today')
                     ],
                     [
                         'text'  => '客资公海',
-                        'url'   => '/customer.customer/sea',
+                        'url'   => url('/wash/customer.customer/sea'),
                     ],
                 ]
             ],

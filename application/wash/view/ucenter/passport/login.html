@@ -81,7 +81,7 @@
 
             //请求登入接口
             admin.req({
-                url: "/ucenter.passport/doLogin"
+                url: "{:url('/wash/ucenter.passport/doLogin')}"
                 ,type: 'post'
                 ,data: obj.field
                 ,done: function(res){
