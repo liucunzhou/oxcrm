@@ -75,6 +75,8 @@ class Index extends Controller
             $hotelName = trim($row->ho_name);
             $matched = false;
             foreach($storeList as $line) {
+                $matched = false;
+                
                 $storeName = trim($line->title);
                 if($hotelName == $storeName) {
                     $matched = true;

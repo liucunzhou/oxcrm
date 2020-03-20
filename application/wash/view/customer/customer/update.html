@@ -140,6 +140,21 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>重要程度</td>
+                                <td colspan="3" class="left">
+                                    
+                                    <div class="group-radio">
+                                        <{foreach name="levels" item="row"}>
+                                            <label>
+                                                <input type="radio" name="level" value="{$row.id}"> {$row.title}
+                                            </label>
+                                        <{/foreach}>
+                                    </div>
+                                    
+                                    <input type="hidden" name="level">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>创建人</td>
                                 <td>
                                     <input type="text" class="form-control" value="">

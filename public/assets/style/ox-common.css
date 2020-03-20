@@ -62,6 +62,12 @@ h4 {
     white-space: nowrap;
 }
 
+.table thead tr th.left,
+.table tbody tr td.left
+{
+    text-align: left;
+}
+
 .table tbody tr td.break{
     text-align: left;
     white-space: normal;
@@ -130,4 +136,8 @@ h4 {
     position: absolute;
     left: 0;
     top: 0;
+}
+
+.group-radio label{
+    padding-right: 12px;
 }

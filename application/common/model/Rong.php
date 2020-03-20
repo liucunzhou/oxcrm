@@ -111,6 +111,10 @@ class Rong
         curl_close($ch);
 
         $result = json_decode($msg, 1);
+
+        $result['header'] = $header;
+        $result['url'] = $url;
+        $result['data'] = $data;
         return $result;
     }
 }

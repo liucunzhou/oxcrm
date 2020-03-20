@@ -12,6 +12,7 @@ class Customer extends Backend
 {
     protected $customerModel;
     protected $regionModel;
+    protected $levels = [];
 
     protected function initialize()
     {
@@ -19,6 +20,22 @@ class Customer extends Backend
 
         $this->model = new \app\common\model\MemberAllocate();
         $this->customerModel = new Member();
+
+        $this->levels = [
+            999 => [
+                'title' => '非常重要',
+                'btn'   => 'btn-danger'
+            ],
+            998 => [
+                'title' => '重要',
+                'btn'   => 'btn-warning'
+            ],
+            997 => [
+                'title' => '一般',
+                'btn'   => 'btn-primary'
+            ]
+        ];
+        $this->assign('levels', $this->levels);
     }
 
     /**
