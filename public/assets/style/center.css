@@ -62,27 +62,77 @@ body {
 }
 .hotel-list-box {
     display: flex;
+    height: 100vh;
     flex-direction: column;
     border-left: 1px solid #dedede;
     border-right: 1px solid #dedede;
 }
 .hotel-search-box{
-  
+    flex: 0 68px;
 }
+.hotel-searched-list{
+    flex: 1;
+    overflow: auto;
+}
+.hotel-selected-list{
+    flex: 0 396px;
+    overflow: auto;
+    border-top: 1px solid #dedede;
+}
+/*************** hotel search ***************/
 .hotel-search-box .btn{
     border-radius: 0;
 }
 .hotel-search-box .form-control{
     border-radius: 0;
 }
-.hotel-selected-list{
-    flex: 1;
+/*************** hotel *********************/
+.hotel-list{
+    position: relative;
+    font-size: 12px!important;
     overflow: auto;
-    border-top: 1px solid #dedede;
-}
-.hotel-searched-list{
-    flex: 1;
-    overflow: auto;
+    padding: 42px 12px 8px;
     border-top: 1px solid #dedede;
 }
 
+.hotel-list-header{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 34px;
+    line-height: 34px;
+    background-color: cadetblue;
+    color: #fff;
+    padding: 0 12px;
+}
+
+.hotel-item{
+    display: flex;
+    width: 100%;
+    padding: 3px 0;
+    border-bottom: 1px solid #dedede;
+}
+
+.hotel-item:last-child{
+    border-bottom: none;
+}
+
+.hotel-item .hotel-fields{
+    flex: 1;
+}
+
+.hotel-item dl dt{
+    font-size: 14px!important;
+    font-weight: 900;
+    color: cornflowerblue;
+}
+.hotel-item .hotel-ctrl{
+    flex: 0 5em;
+}
+
+.hotel-item .hotel-ctrl .btn{
+    border-radius: 0;
+    padding: 2px 6px;
+    font-size: 12px;
+}

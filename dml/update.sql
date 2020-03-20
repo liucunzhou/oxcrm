@@ -29,3 +29,5 @@ alter table tk_member_allocate add banquet_size_end int not null default 0 after
 alert table tk_member add budget_end decimal(10, 2) not null default '0.00' after budget;
 alert table tk_member_allocate add budget_end decimal(10, 2) not null default '0.00' after budget;
 ALTER TABLE `platform`.`tk_member_allocate` ADD COLUMN `remark` varchar(255) NULL AFTER `delete_user_id`;
+
+update `tk_store` set `title`=replace(`title`,' ','');

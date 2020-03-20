@@ -152,6 +152,17 @@ class Customer extends Backend
         }
         $this->assign('cityList', $cityList);
 
+
+        // 获取列表
+        $storeModel = new \app\common\model\Store();
+        $where = [];
+        $unselected = $storeModel->whereNotNull('images')->order('id desc')->limit(10)->column('id,title,images');
+        $this->assign('unselected', $unselected);
+
+
+        $where = [];
+        $selected = $storeModel->whereNotNull('images')->order('id')->limit(8)->column('id,title,images');
+        $this->assign('selected', $selected);
         return $this->fetch();
     }
 

@@ -7,23 +7,24 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
-    <link rel="stylesheet" href="/assets/style/center.css?{rand(10,10000)}">
-    <script src="/assets/layui/layui.all.js"></script>
-    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
-    <script src="/assets/bootcss/js/bootstrap.min.js"></script>
-    <script src="/assets/lib/ox-common.js"></script>
+    <{include file="common/meta"}>
+    <script>
+        $(function () {
+            $('select').multipleSelect({
+                placeholder: '请选择城市',
+                locale: 'zh-CN',
+                filter: true,
+            });
+        })
+    </script>
 </head>
 <body>
     <div class="tab-box">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="active"><a href="#base" aria-controls="base" role="tab" data-toggle="tab">基本资料</a></li>
-          <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">新增跟进</a></li>
-          <li role="presentation"><a href="#intostore" aria-controls="intostore" role="tab" data-toggle="tab">预约进店</a></li>
+          <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">跟进记录</a></li>
+          <li role="presentation"><a href="#intostore" aria-controls="intostore" role="tab" data-toggle="tab">进店记录</a></li>
           <li role="presentation"><a href="#record" aria-controls="record" role="tab" data-toggle="tab">回访录音</a></li>
         </ul>
 
@@ -51,7 +52,7 @@
                                 <td class="form-control-group">
                                     <input type="text" class="form-control">
                                     <div class="btn-group">
-                                        <a href="javascript:void(0);" class="btn btn-primary">
+                                        <a href="javascript:void(0);" class="btn btn-primary layui-center" data-action="{:url('/wash/customer.append/source', ['id'=>$allocate['id']])}" data-width="400px" data-height="120px">
                                             <i class="glyphicon glyphicon-plus"></i>
                                         </a>
                                     </div>
@@ -63,40 +64,54 @@
                                     <input type="text" name="realname" value="{$allocate.realname}" class="form-control">
                                 </td>
                                 <td>联系电话</td>
-                                <td class="form-control-group">
-                                    <input type="text" value="{$allocate.mobile}" class="form-control " readonly>
-                                    <div class="btn-group">
-                                        <a href="javascript:void(0);" class="btn btn-info">
-                                            <i class="glyphicon glyphicon-phone-alt"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" class="btn btn-warning">
-                                            <i class="glyphicon glyphicon-th-list"></i>
-                                        </a>
-                                        <a href="javascript:void(0);" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                        </a>
+                                <td>
+                                    <div class="form-control-group">
+                                        <input type="text" value="{$allocate.mobile}" class="form-control " readonly>
+                                        <div class="btn-group">
+                                            <a href="javascript:void(0);" class="btn btn-info event-call">
+                                                <i class="glyphicon glyphicon-phone-alt"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="btn btn-warning toggle-mobile-list">
+                                                <i class="glyphicon glyphicon-th-list"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="btn btn-primary layui-center" data-action="{:url('/wash/customer.append/mobile', ['id'=>$allocate['id']])}" data-width="400px" data-height="120px">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </a>
+                                        </div>
+                                        <div class="group-list mobile-list">
+                                            <div class="list-item">
+                                                <div class="list-item-detail">18321277411</div>
+                                                <div class="list-item-ctrl">
+                                                    <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="list-item">
+                                                <div class="list-item-detail">18321277411</div>
+                                                <div class="list-item-ctrl">
+                                                    <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="list-item">
+                                                <div class="list-item-detail">18321277411</div>
+                                                <div class="list-item-ctrl">
+                                                    <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>省市区</td>
+                                <td>市区</td>
                                 <td colspan="3">
                                     <div class="region-group">
-                                        <select name="privance" class="form-control">
-                                            <option value="0">--选择省份--</option>
-                                            <{foreach name="provinceList" item="row"}>
-                                                <option value="{$row.id}">{$row.name}</option>
-                                            <{/foreach}>
-                                        </select>
-                                        <select name="city" class="form-control">
-                                            <option value="">--选择城市--</option>
+                                        <select name="city">
                                             <{foreach name="cityList" item="row"}>
                                                 <option value="{$row.id}">{$row.name}</option>
                                             <{/foreach}>
                                         </select>
                                         </select>
-                                        <select name="area" class="form-control">
-                                            <option value="">--选择区域--</option>
+                                        <select name="area">
                                         </select>
                                     </div>
                                 </td>
@@ -173,7 +188,7 @@
                             <tr>
                                 <td colspan="4">
                                     <div class="btn-group">
-                                        <a href="javascript:void(0);" class="btn btn-primary">快捷回访</a>
+                                        <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/edit', ['id'=>$allocate['id']])}" data-width="450px" data-height="380px" class="btn btn-primary layui-center">快捷回访</a>
                                         <button type="submit" class="btn btn-success">保存更新</button>
                                         <button type="button" class="btn btn-warning btn-close">关闭页面</button>
                                     </div>
@@ -196,7 +211,7 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <select name="" class="form-control">
+                                        <select name="">
                                             <option value="0">信息类型</option>
                                         </select>
                                     </td>
@@ -218,11 +233,40 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="hotel-selected-list">
-
+                        <div class="hotel-list hotel-searched-list">
+                            <div class="hotel-list-header">搜索结果:</div>
+                            <{foreach name="unselected" item="row"}>
+                                <div class="hotel-item">
+                                    <dl class="hotel-fields">
+                                        <dt>{$row.title}</dt>
+                                        <dd>菜单价格:{$row.min_price}-{$row.max_price}</dd>
+                                        <dd>容纳桌数:{$row.max_capacity}</dd>
+                                        <dd>特色标签:</dd>
+                                    </dl>
+                                    <ul class="hotel-ctrl">
+                                        <li><a href="" class="btn btn-primary">查看详情</a></li>
+                                        <li><a href="" class="btn btn-info">加入推荐</a></li>
+                                    </ul>
+                                </div>
+                            <{/foreach}>
                         </div>
-                        <div class="hotel-searched-list">
-
+                        <div class="hotel-list hotel-selected-list">
+                            <div class="hotel-list-header">已选酒店：</div>
+                            <{foreach name="unselected" item="row"}>
+                            <div class="hotel-item">
+                                <dl class="hotel-fields">
+                                    <dt>{$row.title}</dt>
+                                    <dd>菜单价格:{$row.min_price}-{$row.max_price}</dd>
+                                    <dd>容纳桌数:{$row.max_capacity}</dd>
+                                    <dd>特色标签:</dd>
+                                </dl>
+                                <ul class="hotel-ctrl">
+                                    <li><a href="" class="btn btn-primary">预约进店</a></li>
+                                    <li><a href="" class="btn btn-info">确认进店</a></li>
+                                    <li><a href="" class="btn btn-success">申请成单</a></li>
+                                </ul>
+                            </div>
+                            <{/foreach}>
                         </div>
                     </div>
                     <div class="hotel-detail-box">
@@ -234,28 +278,6 @@
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="visit">
-                <table class="table">
-                    <tr>
-                        <td width="10%">跟进状态</td>
-                        <td>
-                            <select name="active_status" class="form-control">
-                                <option value="0">--选择跟进状态--</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr class="textarea">
-                        <td>回访内容</td>
-                        <td>
-                            <textarea name="remark" class="form-control"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="text-left">
-                            <button type="submit" class="btn btn-success">添加跟进</button>
-                            <button type="button" class="btn btn-warning btn-close">关闭</button>
-                        </td>
-                    </tr>
-                </table>
                 <h4>回访列表</h4>
                 <table class="table table-bordered">
                     <thead>

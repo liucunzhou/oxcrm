@@ -58,7 +58,6 @@ h4 {
 }
 
 .table tbody tr td{
-    text-align: center;
     white-space: nowrap;
 }
 
@@ -109,6 +108,7 @@ h4 {
 }
 .form-control-group{
     display: flex;
+    position: relative;
 }
 .form-control-group .form-control{
     flex: 1;
@@ -125,6 +125,20 @@ h4 {
 .region-group select{
     border-radius: 0;
 }
+.region-group .ms-parent{
+    flex: 1;
+    width: auto!important;
+}
+.region-group .ms-parent .ms-choice,
+.ms-parent .ms-choice{
+    height: 34px;
+    line-height: 34px;
+    border-radius: 0;
+}
+.region-group .ms-parent:nth-child(odd) .ms-choice{
+    border-left: none;
+    border-right: none;
+}
 .table>thead>tr>th.relative,
 .table>tbody>tr>td.relative{
     position: relative;
@@ -137,7 +151,45 @@ h4 {
     left: 0;
     top: 0;
 }
-
 .group-radio label{
     padding-right: 12px;
+}
+
+/*************** group list **************/
+
+.group-list {
+    display: none;
+    background-color: #eee;
+}
+.group-list .list-item {
+    display: flex;
+    height: 34px;
+    line-height: 34px;
+    border-bottom: 1px solid #fff;
+}
+.group-list .list-item:last-child{
+    border-bottom: none;
+}
+
+.group-list .list-item .list-item-detail{
+    flex: 1;
+}
+.group-list .list-item .list-item-ctrl {
+    flex: 0 30%;
+    text-align: right;
+}
+
+.group-list .list-item .list-item-ctrl .btn {
+    padding-left: 12px;
+    font-size: 14px;
+    padding: 0 6px;
+}
+
+.form-control-group .group-list{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 35px;
+    padding: 16px 12px;
+    z-index: 100;
 }

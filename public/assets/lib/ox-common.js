@@ -33,7 +33,7 @@ $(function(){
         if (cwidth == undefined) {
             width = width * 0.6;
         } else if(cwidth.indexOf("p") >= 0) {
-            width = cwidth
+            width =  parseInt(cwidth);
         } else {
             width = width * parseInt(cwidth) /100;
         } 
@@ -60,5 +60,43 @@ $(function(){
     $(".btn-close").click(function(){
         var layer = layui.layer;
         parent.layer.closeAll();
-    })
+    });
+
+    $(".toggle-mobile-list").click(function(){
+        $(".mobile-list").toggle();
+    });
+
+    $(".event-call").click(function(){
+        var id =  1;
+        layer.confirm('是否拨打电话?', 
+            {
+                icon: 3, 
+                title:'提示',
+                btn: ['手机拨打','座机拨打']
+            }, 
+            function(index){
+                var params = {
+                    id: id,
+                    from: 'mobile',
+                    field: 'mobile'
+                };
+                url = '/index/Ring/call.html';
+                $.post(url, params, function(res){
+                    layer.close(index);
+                    
+                });
+            },
+            function(index){
+                var params = {
+                    id: id,
+                    from: 'telephone',
+                    field: 'mobile'
+                };
+                url = '/index/Ring/call.html';
+                $.post(url, params, function(res){
+                    layer.close(index);
+                });
+            }
+        );
+    });
 })

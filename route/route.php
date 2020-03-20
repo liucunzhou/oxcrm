@@ -14,3 +14,5 @@ use think\facade\Route;
 Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
+
+Route::domain('wash.com','wash');
