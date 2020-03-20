@@ -20,9 +20,12 @@ class Ring extends Controller {
         if($params['from'] == 'mobile') {
             // echo $customer->mobile.'-------';
             $result = $rongModel->call($user['mobile'], $customer->mobile);
-            // $resulet = $rongModel->call('18321277411', '13764570091');
+            // $result = $rongModel->call('18321277411', '13764570091');
         } else {
             $result = $rongModel->call($user['telephone'], $customer->mobile);
+            $result['telephone'] = $user['telephone'];
+            $result['mobile'] = $customer->mobile;
+            
         }
 
         return $result;
