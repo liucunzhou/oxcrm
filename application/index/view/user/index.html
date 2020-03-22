@@ -80,6 +80,7 @@
                             <button class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
                             <button class="layui-btn layui-btn-sm" lay-event="bind">绑定</button>
                             <button class="layui-btn layui-btn-sm" lay-event="auth">授权</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="store">酒店</button>
                             <button class="layui-btn layui-btn-sm" lay-event="leave">离职</button>
                             <button class="layui-btn layui-btn-sm" lay-event="merge">合并</button>
                             <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
@@ -241,6 +242,17 @@
                     layer.open({
                         type: 2,
                         title: '授权',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+
+                case 'store':
+                    url = '/admin/store.staff/stores.html?staff_id=' + id;
+                    layer.open({
+                        type: 2,
+                        title: '酒店管理',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'

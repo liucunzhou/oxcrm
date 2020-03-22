@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <script>
+        var tableUrl = "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}";
+    </script>
 </head>
 <body>
 
@@ -30,15 +33,6 @@
                             </div>
 
                             <div class="layui-inline">
-                                <select name="brand_id" id="brand_id" lay-filter="brand_id">
-                                    <option value="0">请选择品牌</option>
-                                    <{foreach name="brands" item="val"}>
-                                        <option value="{$val.id}">{$val.title}</option>
-                                    <{/foreach}>
-                                </select>
-                            </div>
-
-                            <div class="layui-inline">
                                 <input type="text" name="title" lay-verify="0" placeholder="门店名称" autocomplete="off" class="layui-input">
                             </div>
 
@@ -57,6 +51,8 @@
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
                             {:button(["event"=>"editStore", "text"=>"编辑", "atype"=>"edit"])}
+                            <a class="layui-btn layui-btn-sm" lay-event="hall">宴会厅</a>
+                            <a class="layui-btn layui-btn-sm" lay-event="staff">销售管理</a>
                             {:button(["event"=>"deleteStore", "text"=>"删除", "atype"=>"delete"])}
                         </div>
                     </script>
@@ -67,105 +63,6 @@
 </div>
 
 <script src="/assets/layui/layui.js"></script>
-<script>
-    layui.config({
-        base: '/assets/' //静态资源所在路径
-    }).extend({
-        index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
-        var admin = layui.admin
-                , table = layui.table
-                , $ = layui.jquery;
-
-        table.render({
-            elem: '#table',
-            url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
-            height: 'full-100',
-            defaultToolbar: ['filter'],
-            toolbar: '#table-toolbar',
-            title: '门店管理',
-            cols: [[
-                {
-                    "field": "id",
-                    "title": "\u7f16\u53f7",
-                    "width": 80
-                }, {
-                    "field": "brand_id",
-                    "title": "\u54c1\u724c\u540d\u79f0",
-                    "width":160
-                }, {"field": "title", "title": "\u95e8\u5e97\u540d\u79f0"}, {
-                    "field": "sort",
-                    "title": "\u6392\u5e8f",
-                    "width": 60
-                }, {
-                    "field": "is_valid", "title": "\u72b6\u6001", "width": 60}, {
-                    "field": "create_time",
-                    "title": "\u521b\u5efa\u65f6\u95f4",
-                    "width": 165
-                }, {
-                    "type": "tool",
-                    "title": "操作",
-                    "toolbar": "#table-tool",
-                    "width": 160
-                }
-            ]],
-            page: true
-        });
-
-        var height = window.innerHeight;
-        var width = window.innerWidth * 0.6;
-        var url = '';
-        //头工具栏事件
-        table.on('toolbar(table)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-            var url = '';
-            switch (obj.event) {
-                case 'addStore':
-                    var data = checkStatus.data;
-                    url = '/index/store/addstore.html';
-                    layer.open({
-                        type: 2,
-                        title: '添加',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-            }
-            ;
-        });
-
-        //监听行工具事件
-        table.on('tool(table)', function (obj) {
-            var id = obj.data.id;
-            switch (obj.event) {
-                case 'editStore':
-                    url = '/index/store/editstore.html?id=' + id;
-                    layer.open({
-                        type: 2,
-                        title: '编辑门店信息',
-                        content: url,
-                        area: [width + 'px', height + 'px'],
-                        offset: 'rb'
-                    });
-                    break;
-                case 'deleteStore':
-                    url = '/index/store/deletestore.html';
-                    var params = {id:id};
-                    $.post(url, params, function (res) {
-                        if (res.code == '200') {
-                            table.reload("table");
-                            layer.closeAll();
-                        } else {
-                            layer.msg(res.msg);
-                        }
-                    });
-                    break;
-            }
-            ;
-        });
-
-    });
-</script>
+<script src="/assets/actions/store.js"></script>
 </body>
 </html>

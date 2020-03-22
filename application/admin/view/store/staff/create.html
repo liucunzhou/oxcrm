@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>添加酒店客服</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
+    <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/bootcss/js/bootstrap.min.js"></script>
+    <script src="/assets/lib/ox-common.js"></script>
+</head>
+<body style="padding: 8px 12px;overflow: hidden;">
+    
+    <table class="table">
+        <tr>
+            <td>选择客服</td>
+            <td>
+                <select name="staff_id" class="form-control">
+                    <option value="0">--选择跟进状态--</option>
+                    <{foreach name="users" item="val"}>
+                        <option value="{$val.id}">{$val.realname}</option>
+                    <{/foreach}>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="hidden" name="store_id" value="{$store.id}">
+                <input type="hidden" name="redirect" value="/admin/store.staff/index/store_id/{$store.id}">
+                <button type="submit" class="btn btn-success">立即添加</button>
+                <button type="button" class="btn btn-warning btn-close">关闭</button>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -244,7 +244,12 @@
                                         <dd>特色标签:</dd>
                                     </dl>
                                     <ul class="hotel-ctrl">
-                                        <li><a href="" class="btn btn-primary">查看详情</a></li>
+                                        <li>
+                                            <a href="javascript:void(0);" 
+                                                class="btn btn-primary btn-ajax-html" 
+                                                data-action="{:url('wash/dictionary.store/read', ['id'=>$row['id']])}" 
+                                                data-target="#hotel-detail-box">查看详情</a>
+                                        </li>
                                         <li><a href="" class="btn btn-info">加入推荐</a></li>
                                     </ul>
                                 </div>
@@ -269,12 +274,7 @@
                             <{/foreach}>
                         </div>
                     </div>
-                    <div class="hotel-detail-box">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#hotel-detail" aria-controls="hotel-detail" role="tab" data-toggle="tab">酒店资料</a></li>
-                            <li role="presentation"><a href="#hall-list" aria-controls="hall-list" role="tab" data-toggle="tab">宴会厅</a></li>
-                          </ul>
-                    </div>
+                    <div class="hotel-detail-box" id="hotel-detail-box"></div>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="visit">

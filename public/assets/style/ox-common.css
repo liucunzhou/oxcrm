@@ -54,7 +54,6 @@ h4 {
     background: #e6e6e6;
     color: #666;
     white-space: nowrap;
-    text-align: center;
 }
 
 .table tbody tr td{
@@ -192,4 +191,27 @@ h4 {
     top: 35px;
     padding: 16px 12px;
     z-index: 100;
+}
+
+#hotel-images .carousel-inner .item{
+    width: 100%;
+    max-height: 337px;
+    overflow: hidden;
+}
+
+.col-checkbox,
+.col-id{
+    width: 2rem;
+}
+.col-valid{
+    width: 2rem;
+}
+.col-sort{
+    width: 2rem;
+}
+.col-datetime{
+    width: 2rem;
+}
+.col-options{
+    max-width: 100px;
 }

@@ -99,4 +99,13 @@ $(function(){
             }
         );
     });
+
+    $(document).on("click", ".btn-ajax-html", function(){
+        var url = $(this).attr("data-action");
+        var target = $(this).attr("data-target");
+
+        $.get(url, function(res){
+            $(target).html(res);
+        });
+    });
 })
