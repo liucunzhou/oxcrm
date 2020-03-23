@@ -3,6 +3,7 @@
 namespace app\wash\controller\dictionary;
 
 use app\wash\controller\Backend;
+use app\common\model\User;
 use think\Request;
 
 class Store extends Backend
@@ -10,11 +11,35 @@ class Store extends Backend
     protected $customerModel;
     protected $regionModel;
     protected $levels = [];
+    protected $users = [];
 
     protected function initialize(){
         parent::initialize();
 
         $this->model = new \app\common\model\Store();
+
+        $where = [];
+        $where['role_id'] = [5,6,8];
+        $this->users = User::where($where)->column('id,nickname,realname', 'id');
+        $this->assign('users', $this->users);
+    }
+
+    public function search()
+    {
+        $params = $this->request->param();
+
+        $where = [];
+        if(!empty($params['title'])) $where[] = ['title', 'like', "%{$params['title']}%"];
+        $list = $this->model->where($where)->select();
+        // echo $this->model->getLastSql();
+        $this->assign('list', $list);
+        
+        $where = [];
+        $where['id'] = $params['allocate_id'];
+        $allocate = \app\common\model\MemberAllocate::where($where)->find();
+        $this->assign('allocate', $allocate);
+
+        return $this->fetch();
     }
 
     /**
@@ -25,6 +50,8 @@ class Store extends Backend
      */
     public function read($id)
     {
+        $params = $this->request->param();
+
         // 获取酒店信息
         $where = [];
         $where['id'] = $id;
@@ -40,6 +67,19 @@ class Store extends Backend
             $images = [];
         }
         $this->assign('images', $images);
+
+        // 获取酒店的客服列表
+        $storeStaffModel = new \app\common\model\StoreStaff();
+        $where = [];
+        $where['store_id'] = $id;
+        $storeStaffs = $storeStaffModel->where($where)->select();
+        $this->assign('storeStaffs', $storeStaffs);
+
+        // 获取分配数据
+        $where = [];
+        $where['id'] = $params['allocate_id'];
+        $allocate = \app\common\model\MemberAllocate::where($where)->find();
+        $this->assign('allocate', $allocate);
 
         return $this->fetch();
     }

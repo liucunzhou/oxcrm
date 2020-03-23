@@ -31,6 +31,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="base">
                 <div class="flex">
+                    <!-- 客户信息 -->
                     <div class="customer-box">
                         <table class="table">
                             <tr>
@@ -206,75 +207,81 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="hotel-list-box">
                         <div class="hotel-search-box">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <select name="">
-                                            <option value="0">信息类型</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control" placeholder="区域"></td>
-                                    <td><input type="text" class="form-control" placeholder="桌数"></td>
-                                    <td><input type="text" class="form-control" placeholder="预算"></td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn btn-danger">重置</a>
-                                        
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <input type="text" class="form-control">
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn btn-primary">搜索</a>
-                                    </td>
-                                </tr>
-                            </table>
+                            <form class="form-ajax-search" action="/dictionary.store/search" data-target="#hotel-searched-list">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <select name="news_type">
+                                                <option value="0">信息类型</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" placeholder="区域"></td>
+                                        <td><input type="text" class="form-control" placeholder="桌数"></td>
+                                        <td><input type="text" class="form-control" placeholder="预算"></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-danger">重置</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <input type="text" name="title" class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="allocate_id" value="{$allocate.id}">
+                                            <button type="submit" class="btn btn-primary">搜索</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
                         </div>
-                        <div class="hotel-list hotel-searched-list">
+                        <div class="hotel-list hotel-searched">
                             <div class="hotel-list-header">搜索结果:</div>
-                            <{foreach name="unselected" item="row"}>
+                            <div id="hotel-searched-list"></div>
+                        </div>
+
+                        <div class="hotel-list hotel-selected">
+                            <div class="hotel-list-header">已选酒店：</div>
+                            <div id="hotel-selected-list">
+                                <{foreach name="selected" item="row"}>
                                 <div class="hotel-item">
                                     <dl class="hotel-fields">
-                                        <dt>{$row.title}</dt>
-                                        <dd>菜单价格:{$row.min_price}-{$row.max_price}</dd>
-                                        <dd>容纳桌数:{$row.max_capacity}</dd>
+                                        <dt>
+                                            <a href="javascript:void(0);" 
+                                                    class="btn-ajax-html" 
+                                                    data-action="{:url('wash/dictionary.store/read', ['id'=>$row['hotel_id'],'allocate_id'=>$allocate['id']])}" 
+                                                    data-target="#hotel-detail-box">{$stores[$row['hotel_id']]['title']}</a>
+                                        </dt>
+                                        <dd>菜单价格:{$stores[$row['hotel_id']]['min_price']}-{$stores[$row['hotel_id']]['max_price']}</dd>
+                                        <dd>容纳桌数:{$stores[$row['hotel_id']]['max_capacity']}</dd>
                                         <dd>特色标签:</dd>
                                     </dl>
-                                    <ul class="hotel-ctrl">
-                                        <li>
-                                            <a href="javascript:void(0);" 
-                                                class="btn btn-primary btn-ajax-html" 
-                                                data-action="{:url('wash/dictionary.store/read', ['id'=>$row['id']])}" 
-                                                data-target="#hotel-detail-box">查看详情</a>
-                                        </li>
-                                        <li><a href="" class="btn btn-info">加入推荐</a></li>
-                                    </ul>
+                                
+                                    <{if $row['assigned'] == 1}>
+                                        <ul class="hotel-ctrl">
+                                            <li><a href="" class="btn btn-primary">预约进店</a></li>
+                                            <li><a href="" class="btn btn-info">确认进店</a></li>
+                                            <li><a href="" class="btn btn-success">申请成单</a></li>
+                                        </ul>
+                                    <{else /}>
+                                        <ul class="hotel-ctrl">
+                                            <li><a href="" class="btn btn-danger">取消推荐</a></li>
+                                        </ul>
+                                    <{/if}>
                                 </div>
-                            <{/foreach}>
-                        </div>
-                        <div class="hotel-list hotel-selected-list">
-                            <div class="hotel-list-header">已选酒店：</div>
-                            <{foreach name="unselected" item="row"}>
-                            <div class="hotel-item">
-                                <dl class="hotel-fields">
-                                    <dt>{$row.title}</dt>
-                                    <dd>菜单价格:{$row.min_price}-{$row.max_price}</dd>
-                                    <dd>容纳桌数:{$row.max_capacity}</dd>
-                                    <dd>特色标签:</dd>
-                                </dl>
-                                <ul class="hotel-ctrl">
-                                    <li><a href="" class="btn btn-primary">预约进店</a></li>
-                                    <li><a href="" class="btn btn-info">确认进店</a></li>
-                                    <li><a href="" class="btn btn-success">申请成单</a></li>
-                                </ul>
+                                <{/foreach}>
                             </div>
-                            <{/foreach}>
                         </div>
                     </div>
-                    <div class="hotel-detail-box" id="hotel-detail-box"></div>
+
+                    <div class="hotel-detail-box" id="hotel-detail-box">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#hotel-data" aria-controls="hotel-data" role="tab" data-toggle="tab">酒店资料</a></li>
+                            <li role="presentation"><a href="#hall-list" aria-controls="hall-list" role="tab" data-toggle="tab">宴会厅</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="visit">

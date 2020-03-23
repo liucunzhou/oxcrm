@@ -49,25 +49,31 @@
             <dd>容纳区间:{$store.min_capacity}-{$store.max_capacity}</dd>
             <dd>联系地址:{$store.address}</dd>
         </dl>
-        <table class="table table-bordered">
-            <tr>
-                <td width="20%">未选销售</td>
-                <td width="80%"></td>
-            </tr>
-            <tr>
-                <td>已选销售</td>
-                <td>
-
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <a href="javascript:void(0);" class="btn btn-success">确认分配</a>
-                    <a href="javascript:void(0);" class="btn btn-primary">加入分配</a>
-                </td>
-                </td>
-            </tr>
-        </table>
+        <form class="form-assign" action="/customer.append/allocate">
+            <table class="table table-bordered">
+                <tr>
+                    <td width="20%">未选销售</td>
+                    <td width="80%">
+                        <{foreach name="storeStaffs" item="val"}>
+                            <label><input type="checkbox" name="staff_id[]" value="{$val.staff_id}"> {$users[$val['staff_id']]['realname']}</div>
+                        <{/foreach}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>已选销售</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="hidden" name="store_id" value="{$store.id}">
+                        <input type="hidden" name="allocate_id" value="{$allocate.id}">
+                        <input type="hidden" name="member_id" value="{$allocate.member_id}">
+                        <button type="submit" class="btn btn-success">确认分配</button>
+                    </td>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
     <div role="tabpanel" class="tab-pane" id="hall-list">
 

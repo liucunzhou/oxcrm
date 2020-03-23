@@ -43,11 +43,11 @@
                     <input type="checkbox" class="ids" value="{$row.id}">
                 </td>
                 <td class="text-center">{$row.id}</td>
-                <td>{$row.title}</td>
+                <td>{$users[$row['staff_id']]['nickname']}</td>
+                <td>{$users[$row['staff_id']]['realname']}</td>
                 <td class="text-left">
                     <div class="btn-group">
-                        <a href="" class="btn btn-primary">编辑</a>
-                        <a href="" class="btn btn-warning">删除</a>
+                        <a href="javascript:void(0);" class="btn btn-warning btn-delete" data-href="{:url('/admin/store.staff/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </td>
             </tr>

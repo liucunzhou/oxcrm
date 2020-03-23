@@ -11,12 +11,13 @@ class Staff extends Backend
 {
     protected $users =  [];
     protected $stores = [];
+    protected $params = [];
 
     protected function initialize()
     {
         parent::initialize();
-        $params = $this->request->param();
-        $this->assign('params', $params);
+        $this->params = $this->request->param();
+        $this->assign('params', $this->params);
 
         $this->model = new \app\common\model\StoreStaff();
 
@@ -64,6 +65,8 @@ class Staff extends Backend
             $where['staff_id'] = $params['staff_id'];
         }
         $list = $this->model->where($where)->paginate(15);
+        $this->assign('list', $list);
+
         return $this->fetch();
     }
 
@@ -90,32 +93,34 @@ class Staff extends Backend
     public function add()
     {
         $user = User::get($this->params['staff_id']);
-        print_r($user);
         $this->assign('user', $user);
         return $this->fetch();
     }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
+    public function doEdit()
     {
-        //
-    }
+        $where = [];
+        $where['store_id'] = $this->params['store_id'];
+        $where['staff_id'] = $this->params['staff_id'];
+        $obj = $this->model->where($where)->find();
+        
+        if(!empty($obj)) {
+            $arr = [
+                'code'  => '500',
+                'msg'   => '该员工已经绑定该酒店'
+            ];
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            return json($arr);
+        }
+
+        $result = $this->model->allowField(true)->save($this->params);
+        $arr = [
+            'code'  => '200',
+            'msg'   => '绑定成功',
+            'redirect' => $this->params['redirect']
+        ];
+
+        return json($arr);
     }
 
     /**
@@ -126,6 +131,20 @@ class Staff extends Backend
      */
     public function delete($id)
     {
-        //
+        $row = $this->model->find($id);
+        $result = $row->delete();
+        if ($result) {
+            $arr = [
+                'code'  => '200',
+                'msg'   => '删除成功',
+            ];
+        } else {
+            $arr = [
+                'code'  => '500',
+                'msg'   => '删除失败',
+            ];
+        }
+
+        return json($arr);
     }
 }

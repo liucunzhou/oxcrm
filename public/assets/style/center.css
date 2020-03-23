@@ -68,13 +68,13 @@ body {
     border-right: 1px solid #dedede;
 }
 .hotel-search-box{
-    flex: 0 68px;
+
 }
-.hotel-searched-list{
+.hotel-searched{
     flex: 1;
     overflow: auto;
 }
-.hotel-selected-list{
+.hotel-selected{
     flex: 0 396px;
     overflow: auto;
     border-top: 1px solid #dedede;
@@ -93,6 +93,7 @@ body {
     overflow: auto;
     padding: 42px 12px 8px;
     border-top: 1px solid #dedede;
+    box-sizing: content-box;
 }
 
 .hotel-list-header{
@@ -122,7 +123,7 @@ body {
     flex: 1;
 }
 
-.hotel-item dl dt{
+.hotel-item dl dt a{
     font-size: 14px!important;
     font-weight: 900;
     color: cornflowerblue;

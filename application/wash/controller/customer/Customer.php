@@ -5,6 +5,7 @@ namespace app\wash\controller\customer;
 use app\common\model\Intention;
 use app\common\model\Member;
 use app\common\model\Region;
+use app\common\model\Store;
 use app\wash\controller\Backend;
 use think\Request;
 
@@ -13,6 +14,7 @@ class Customer extends Backend
     protected $customerModel;
     protected $regionModel;
     protected $levels = [];
+    protected $stores = [];
 
     protected function initialize()
     {
@@ -36,6 +38,10 @@ class Customer extends Backend
             ]
         ];
         $this->assign('levels', $this->levels);
+
+        $where = [];
+        $this->stores = Store::where($where)->column('id,title,sort', 'id');
+        $this->assign('stores', $this->stores);
     }
 
     /**
@@ -153,16 +159,13 @@ class Customer extends Backend
         $this->assign('cityList', $cityList);
 
 
-        // 获取列表
-        $storeModel = new \app\common\model\Store();
+        // 获取已选酒店
+        $memberHotelSelected = new \app\common\model\MemberHotelSelected();
         $where = [];
-        $unselected = $storeModel->whereNotNull('images')->order('id desc')->limit(10)->column('id,title,images');
-        $this->assign('unselected', $unselected);
-
-
-        $where = [];
-        $selected = $storeModel->whereNotNull('images')->order('id')->limit(8)->column('id,title,images');
+        $where['allocate_id'] = $allocate->id;
+        $selected = $memberHotelSelected->where($where)->order('create_time desc')->select();
         $this->assign('selected', $selected);
+
         return $this->fetch();
     }
 

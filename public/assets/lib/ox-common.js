@@ -103,9 +103,79 @@ $(function(){
     $(document).on("click", ".btn-ajax-html", function(){
         var url = $(this).attr("data-action");
         var target = $(this).attr("data-target");
+        var hinit = $(this).attr("data-confirm");
+    
+        if(hinit!=undefined) {
+            if(!confirm(hinit)) return false;
+        }
 
+        var isRemove = $(this).attr("data-remove");
+        var removeTarget = $(this).attr("data-remove-target");
+        if(isRemove == 'yes') {
+            console.log("remove....");
+            $(this).parents("." + removeTarget).remove();
+        }
+
+        var isAppend = $(this).attr("data-append");
         $.get(url, function(res){
-            $(target).html(res);
+            if(isAppend == undefined) {
+                $(target).html(res);
+            } else {
+                $(target).append(res);
+            }
         });
     });
+
+    $(document).on("submit", ".form-ajax", function(){
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        $.post(url, data, function (res) {
+            if(res.code == '200') {
+                if(res.redirect == 'dialog') {
+                    parent.layer.closeAll();
+                    parent.window.location.reload();
+                } else {
+                    window.location.replace(res.redirect);
+                }
+            } else {
+                alert(res.msg);
+            }
+        });
+        return false;
+    });
+
+    $(".form-ajax-search").submit(function () {
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        var target = $(this).attr("data-target");
+        $.get(url, data, function (res) {
+            $(target).html(res);
+        });
+        return false;
+    });
+
+    $(document).on("submit", ".form-assign", function(){
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        $.get(url, data, function (res) {
+
+        });
+        return false;
+    });
+
+    $(".btn-delete").click(function(){
+        if(!confirm('确认删除该行?')) {
+            return false;
+        }
+
+        var _ = $(this);
+        var url = $(this).attr('data-href');
+        $.get(url, function (res) {
+            layer.msg(res.msg);
+            if(res.code == '200') {
+                _.parents("tr").remove();
+            }
+        });
+        return false
+    })
 })

@@ -14,31 +14,31 @@
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
-    <script src="/assets/lib/ox-common.js"></script>
+    <script src="/assets/lib/ox-common.js?{:rand(1000000,100000000000000)}"></script>
 </head>
 <body style="padding: 8px 12px;overflow: hidden;">
-    
-    <table class="table">
-        <tr>
-            <td>选择客服</td>
-            <td>
-                <select name="staff_id" class="form-control">
-                    <option value="0">--选择跟进状态--</option>
-                    <{foreach name="users" item="val"}>
-                        <option value="{$val.id}">{$val.realname}</option>
-                    <{/foreach}>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="hidden" name="store_id" value="{$store.id}">
-                <input type="hidden" name="redirect" value="/admin/store.staff/index/store_id/{$store.id}">
-                <button type="submit" class="btn btn-success">立即添加</button>
-                <button type="button" class="btn btn-warning btn-close">关闭</button>
-            </td>
-        </tr>
-    </table>
-
+    <form class="form-ajax" action="/admin/store.staff/doEdit">
+        <table class="table">
+            <tr>
+                <td>选择客服</td>
+                <td>
+                    <select name="staff_id" class="form-control">
+                        <option value="0">--选择跟进状态--</option>
+                        <{foreach name="users" item="val"}>
+                            <option value="{$val.id}">{$val.realname}</option>
+                        <{/foreach}>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="hidden" name="store_id" value="{$store.id}">
+                    <input type="hidden" name="redirect" value="/admin/store.staff/staffs/store_id/{$store.id}">
+                    <button type="submit" class="btn btn-success">立即添加</button>
+                    <button type="button" class="btn btn-warning btn-close">关闭</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 </body>
 </html>

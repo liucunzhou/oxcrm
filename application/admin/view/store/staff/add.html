@@ -17,28 +17,29 @@
     <script src="/assets/lib/ox-common.js"></script>
 </head>
 <body style="padding: 8px 12px;overflow: hidden;">
-    
-    <table class="table">
-        <tr>
-            <td>选择酒店</td>
-            <td>
-                <select name="store_id" class="form-control">
-                    <option value="0">--选择跟进状态--</option>
-                    <{foreach name="stores" item="val"}>
-                        <option value="{$val.id}">{$val.title}</option>
-                    <{/foreach}>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="hidden" name="staff_id" value="{$user.id}">
-                <input type="hidden" name="redirect" value="/admin/store.staff/stores/staff_id/{$user.id}">
-                <button type="submit" class="btn btn-success">立即添加</button>
-                <button type="button" class="btn btn-warning btn-close">关闭</button>
-            </td>
-        </tr>
-    </table>
+    <form class="form-ajax" action="/admin/store.staff/doEdit">
+        <table class="table">
+            <tr>
+                <td>选择酒店</td>
+                <td>
+                    <select name="store_id" class="form-control">
+                        <option value="0">--选择跟进状态--</option>
+                        <{foreach name="stores" item="val"}>
+                            <option value="{$val.id}">{$val.title}</option>
+                        <{/foreach}>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="hidden" name="staff_id" value="{$user.id}">
+                    <input type="hidden" name="redirect" value="/admin/store.staff/stores/staff_id/{$user.id}">
+                    <button type="submit" class="btn btn-success">立即添加</button>
+                    <button type="button" class="btn btn-warning btn-close">关闭</button>
+                </td>
+            </tr>
+        </table>
+    </form>
 
 </body>
 </html>

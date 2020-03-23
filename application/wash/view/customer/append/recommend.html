@@ -1,0 +1,21 @@
+<div class="hotel-item">
+    <dl class="hotel-fields">
+        <dt>
+            <a href="javascript:void(0);" 
+                class="btn-ajax-html" 
+                data-action="{:url('wash/dictionary.store/read', ['id'=>$store['id'],'allocate_id'=>$allocate['id']])}" 
+                data-target="#hotel-detail-box">{$store.title}</a>
+        </dt>
+        <dd>菜单价格:{$store.min_price}-{$store.max_price}</dd>
+        <dd>容纳桌数:{$store.max_capacity}</dd>
+        <dd>特色标签:</dd>
+    </dl>
+    <ul class="hotel-ctrl">
+        <li><a href="javascript:void(0);" class="btn btn-danger">取消推荐</a></li>
+        <!--
+        <li><a href="" class="btn btn-primary">预约进店</a></li>
+        <li><a href="" class="btn btn-info">确认进店</a></li>
+        <li><a href="" class="btn btn-success">申请成单</a></li>
+        -->
+    </ul>
+</div>

@@ -144,24 +144,7 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index'], function () {
-        var url = "{:url('Notice/getNotice')}";
-        var $ = layui.jquery;
-        var pause = false;
-
-        let timer = setInterval(function(){
-            if(pause) return false;
-            $.get(url, function(res){
-
-                if(res.code == '200') {
-                    pause = true;
-//                    layer.alert(res.msg, function(index){
-//                        pause = false;
-//                        //do something
-//                        layer.close(index);
-//                    });
-                }
-            });
-        }, 1000000)
+        
     });
 </script>
 </body>
