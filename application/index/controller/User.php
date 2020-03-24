@@ -444,7 +444,7 @@ class User extends Base
         if($rs1['statuscode']=='200' || $rs2['statuscode'] == '200') {
             return json(['code'=>'200', 'msg'=>'绑定成功']);
         } else {
-            return json(['code'=>'500', 'msg'=>'绑定失败']);
+            return json(['code'=>'500', 'msg'=> $rs1['message']]);
         }
     }
 }

@@ -141,277 +141,283 @@
     <script>
         layui.config({
                 base: '/assets/' //静态资源所在路径
-            }).extend({
-                index: 'lib/index' //主入口模块
-            }).use(['index', 'table', 'laydate'], function() {
-                    var $ = layui.jquery,
-                        table = layui.table,
-                        laydate = layui.laydate;
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'table', 'laydate'], function() {
+    var $ = layui.jquery,
+        table = layui.table,
+        laydate = layui.laydate;
 
-                    table.render({
-                        elem: '#table',
-                        url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
-                        height: 'full-100',
-                        defaultToolbar: ['filter'],
-                        toolbar: '#table-toolbar',
-                        title: '我的客资',
-                        cols: [_fields],
-                        page: true, limit: 20, limits: [20, 30]
-                        });
+    table.render({
+        elem: '#table',
+        url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}",
+        height: 'full-100',
+        defaultToolbar: ['filter'],
+        toolbar: '#table-toolbar',
+        title: '我的客资',
+        cols: [_fields],
+        page: true, limit: 20, limits: [20, 30]
+        });
 
-                        laydate.render({
-                            elem: '.date_range',
-                            type: 'date',
-                            range: '~'
-                        });
+        laydate.render({
+            elem: '.date_range',
+            type: 'date',
+            range: '~'
+        });
 
-                        var getSelectedIds = function(jsonArr) {
-                            var ids = [];
-                            jsonArr.forEach(function(value, key) {
-                                ids.push(value.id)
-                            });
+        var getSelectedIds = function(jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function(value, key) {
+                ids.push(value.id)
+            });
 
-                            return ids.join(',');
-                        };
+            return ids.join(',');
+        };
 
-                        var getSelectedMemberIds = function(jsonArr) {
-                            var ids = [];
-                            jsonArr.forEach(function(value, key) {
-                                ids.push(value.member_id)
-                            });
-                            return ids.join(',');
-                        };
+        var getSelectedMemberIds = function(jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function(value, key) {
+                ids.push(value.member_id)
+            });
+            return ids.join(',');
+        };
 
-                        var height = window.innerHeight;
-                        var width = window.innerWidth * 0.6;
-                        var url = '';
-                        //头工具栏事件
-                        table.on('toolbar(table)', function(obj) {
-                            var checkStatus = table.checkStatus(obj.config.id);
-                            var checkedboxes = checkStatus.data;
-                            var url = '';
-                            var ids = '';
-                            switch (obj.event) {
-                                case "searchCustomer":
-                                    if ($("#advance-search").hasClass("layui-hide")) {
-                                        $("#advance-search").removeClass("layui-hide");
-                                    } else {
-                                        $("#advance-search").addClass("layui-hide");
-                                    }
-                                    break;
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function(obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+            var url = '';
+            var ids = '';
+            switch (obj.event) {
+                case "searchCustomer":
+                    if ($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+                    break;
 
-                                case 'addCustomer':
-                                    url = '/index/customer/addcustomer.html';
-                                    layer.open({
-                                        type: 2,
-                                        title: '添加客户',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'bindCustomer':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要绑定的客资");
-                                        return false;
-                                    }
-                                    if (checkedboxes.length > 1) {
-                                        layer.msg("一次只能绑定一个客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/customer/bindCustomer.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '绑定客资',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToWashGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntowashgroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分配到洗单组',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToRecommendGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntorecommendgroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到推荐组',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToWeddingGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntoweddinggroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到婚庆部',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToMerchantGroup':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntomerchantgroup.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到商务部',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-
-                                case 'assignToStoreStaff':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请先选择要分配的客资");
-                                        return false;
-                                    }
-                                    ids = getSelectedIds(checkedboxes);
-                                    url = '/index/allocate/assigntostorestaff.html?ids=' + ids;
-                                    layer.open({
-                                        type: 2,
-                                        title: '分发到门市销售',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-                                case 'createOrder':
-                                    if (checkedboxes.length < 1) {
-                                        layer.msg("请选择要申请成单的客资");
-                                        return false;
-                                    }
-
-                                    if (checkedboxes.length > 1) {
-                                        layer.msg("每次申请一张订单");
-                                        return false;
-                                    }
-
-                                    var order_status = checkedboxes.order_status;
-                                    if (order_status == '1') {
-                                        layer.msg("该客资已经已经成单");
-                                        return false;
-                                    }
-                                    url = '/index/order/createorder.html?id=' + checkedboxes[0].id + '&member_id=' + checkedboxes[0].member_id + '&user_id=' + checkedboxes[0].user_id;
-                                    // layui.index.openTabsPage(url, '申请成单')
-                                    top.layui.index.openTabsPage(url, '申请成单')
-                                    break;
-
-                            };
-                        });
-
-                        //监听行工具事件
-                        table.on('tool(table)', function(obj) {
-                            console.log(obj.data);
-                            var id = obj.data.id;
-                            var member_id = obj.data.member_id;
-                            switch (obj.event) {
-                                case "call":
-                                    layer.confirm('是否拨打电话?', 
-                                        {
-                                            icon: 3, 
-                                            title:'提示',
-                                            btn: ['手机拨打','座机拨打']
-                                        }, 
-                                        function(index){
-                                            var params = {
-                                                id: id,
-                                                from: 'mobile',
-                                                field: 'mobile'
-                                            };
-                                            url = '/index/Ring/call.html';
-                                            $.post(url, params, function(res){
-                                                layer.close(index);
-                                                
-                                            });
-                                        },
-                                        function(index){
-                                            var params = {
-                                                id: id,
-                                                from: 'telephone',
-                                                field: 'mobile'
-                                            };
-                                            url = '/index/Ring/call.html';
-                                            $.post(url, params, function(res){
-                                                layer.close(index);
-                                            });
-                                        }
-                                    );
-                                    break;
-                                
-                                case 'editCustomer':
-                                    url = '/index/customer/editcustomer.html?member_id=' + member_id;
-                                    layer.open({
-                                        type: 2,
-                                        title: '编辑客资信息',
-                                        content: url,
-                                        area: [width + 'px', height + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-                                case 'visitCustomer':
-                                    url = '/index/visit/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
-                                    layer.open({
-                                        type: 2,
-                                        title: '回访客户',
-                                        content: url,
-                                        area: [window.innerWidth + 'px', window.innerHeight + 'px'],
-                                        offset: 'rb'
-                                    });
-                                    break;
-                                case 'deleteCustomer':
-                                    url = '/index/customer/deleteCustomer.html?id=' + id;
-                                    $.get(url, function(res) {
-                                        if (res.code == '200') {
-                                            layer.msg("删除成功");
-                                            table.reload("table");
-                                        } else {
-                                            layser.msg(res.msg);
-                                        }
-                                    });
-                                    break;
-                            };
-                        });
-
+                case 'addCustomer':
+                    url = '/index/customer/addcustomer.html';
+                    layer.open({
+                        type: 2,
+                        title: '添加客户',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
                     });
+                    break;
+
+                case 'bindCustomer':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要绑定的客资");
+                        return false;
+                    }
+                    if (checkedboxes.length > 1) {
+                        layer.msg("一次只能绑定一个客资");
+                            return false;
+                        }
+
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/customer/bindCustomer.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '绑定客资',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'assignToWashGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntowashgroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分配到洗单组',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'assignToRecommendGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntorecommendgroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到推荐组',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'assignToWeddingGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntoweddinggroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到婚庆部',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'assignToMerchantGroup':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntomerchantgroup.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到商务部',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+
+                    case 'assignToStoreStaff':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请先选择要分配的客资");
+                            return false;
+                        }
+                        ids = getSelectedIds(checkedboxes);
+                        url = '/index/allocate/assigntostorestaff.html?ids=' + ids;
+                        layer.open({
+                            type: 2,
+                            title: '分发到门市销售',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+                    case 'createOrder':
+                        if (checkedboxes.length < 1) {
+                            layer.msg("请选择要申请成单的客资");
+                            return false;
+                        }
+
+                        if (checkedboxes.length > 1) {
+                            layer.msg("每次申请一张订单");
+                            return false;
+                        }
+
+                        var order_status = checkedboxes.order_status;
+                        if (order_status == '1') {
+                            layer.msg("该客资已经已经成单");
+                            return false;
+                        }
+                        url = '/index/order/createorder.html?id=' + checkedboxes[0].id + '&member_id=' + checkedboxes[0].member_id + '&user_id=' + checkedboxes[0].user_id;
+                        // layui.index.openTabsPage(url, '申请成单')
+                        top.layui.index.openTabsPage(url, '申请成单')
+                        break;
+
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(table)', function(obj) {
+                console.log(obj.data);
+                var id = obj.data.id;
+                var member_id = obj.data.member_id;
+                switch (obj.event) {
+                    case "call":
+                        layer.confirm('是否拨打电话?', 
+                            {
+                                icon: 3, 
+                                title:'提示',
+                                btn: ['手机拨打','座机拨打']
+                            }, 
+                            function(index){
+                                var params = {
+                                    id: id,
+                                    from: 'mobile',
+                                    field: 'mobile'
+                                };
+                                url = '/index/Ring/call.html';
+                                $.post(url, params, function(res){
+                                    layer.close(index);
+                                    if(res.Flag != 1) {
+                                        layer.alert(res.message); 
+                                    }
+                                });
+                            },
+
+                            function(index){
+                                var params = {
+                                    id: id,
+                                    from: 'telephone',
+                                    field: 'mobile'
+                                };
+                                url = '/index/Ring/call.html';
+                                $.post(url, params, function(res){
+                                    layer.close(index);
+                                    if(res.Flag != 1) {
+                                        layer.alert(res.message); 
+                                    }
+                                });
+                            }
+                        );
+                        break;
+                    
+                    case 'editCustomer':
+                        url = '/index/customer/editcustomer.html?member_id=' + member_id;
+                        layer.open({
+                            type: 2,
+                            title: '编辑客资信息',
+                            content: url,
+                            area: [width + 'px', height + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+                    case 'visitCustomer':
+                        url = '/index/visit/visitcustomer.html?allocate_id=' + id + '&member_id=' + member_id;
+                        layer.open({
+                            type: 2,
+                            title: '回访客户',
+                            content: url,
+                            area: [window.innerWidth + 'px', window.innerHeight + 'px'],
+                            offset: 'rb'
+                        });
+                        break;
+                    case 'deleteCustomer':
+                        url = '/index/customer/deleteCustomer.html?id=' + id;
+                        $.get(url, function(res) {
+                            if (res.code == '200') {
+                                layer.msg("删除成功");
+                                table.reload("table");
+                            } else {
+                                layser.msg(res.msg);
+                            }
+                        });
+                        break;
+                };
+            });
+
+        });
     </script>
 </body>
 
