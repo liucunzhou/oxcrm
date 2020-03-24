@@ -1,11 +1,11 @@
-table {
+table-mine {
     width: 100%;
 }
-table.table tr td{
+table.table-mine tr td{
     border: 1px solid #dedede;
     padding: 3px 5px;
 }
-table.table tr td input{
+table.table-mine tr td input{
     width: 100%;
     border: none;
 } 
