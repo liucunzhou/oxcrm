@@ -103,35 +103,42 @@
     </div>
 </div>
 
-<div class="layui-row">
-    <div class="layui-col-md6">
-        <div class="layui-form-item">
-            <label class="layui-form-label">电子设备</label>
-            <div class="layui-input-block">
-                <table class="table-mine">
-                    <tr>
-                        <td>项目</td>
-                        <td>价格</td>
-                        <td>数量</td>
-                    </tr>
-                    <{foreach name="weddingDevices" item="val"}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        电子设备
+    </div>
+
+    <div class="layui-row">
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <label class="layui-form-label">电子设备</label>
+                <div class="layui-input-block">
+                    <table class="table-mine">
                         <tr>
-                            <td>
-                                {$val.title}
-                            </td>
-                            <td>
-                                <input type="text" name="weddingDevices[{$val.title}][price]" value="">
-                            </td>
-                            <td>
-                                <input type="text" name="weddingDevices[{$val.title}][amount]" value="">
-                            </td>
+                            <td>项目</td>
+                            <td>价格</td>
+                            <td>数量</td>
                         </tr>
-                    <{/foreach}>
-                </table>
+                        <{foreach name="weddingDevices" item="val"}>
+                            <tr>
+                                <td>
+                                    {$val.title}
+                                </td>
+                                <td>
+                                    <input type="text" name="weddingDevices[{$val.title}][price]" value="">
+                                </td>
+                                <td>
+                                    <input type="text" name="weddingDevices[{$val.title}][amount]" value="">
+                                </td>
+                            </tr>
+                        <{/foreach}>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="layui-card">
     <div class="layui-card-header">
         婚车业务
