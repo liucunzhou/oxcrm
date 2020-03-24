@@ -1,0 +1,11 @@
+table {
+    width: 100%;
+}
+table.table tr td{
+    border: 1px solid #dedede;
+    padding: 3px 5px;
+}
+table.table tr td input{
+    width: 100%;
+    border: none;
+} 
