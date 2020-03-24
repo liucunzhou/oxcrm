@@ -25,8 +25,9 @@ class Ring extends Controller {
             $result = $rongModel->call($user['telephone'], $customer->mobile);
             $result['telephone'] = $user['telephone'];
             $result['mobile'] = $customer->mobile;
-            
         }
+
+        // 写入数据库
 
         return $result;
     }
