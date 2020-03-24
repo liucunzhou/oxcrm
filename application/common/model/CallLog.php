@@ -7,4 +7,6 @@ use think\Model;
 class CallLog extends Model
 {
     //
+
+    
 }

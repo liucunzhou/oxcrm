@@ -13,4 +13,5 @@ return [
     'app\common\command\Task',
     'app\common\command\Repair',
     'app\common\command\Notice',
+    'app\common\command\Ring',
 ];

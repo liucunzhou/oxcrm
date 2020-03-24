@@ -6,6 +6,7 @@ use think\Controller;
 use think\facade\Request;
 
 class Ring extends Controller {
+
     public function call()
     {
         $params = Request::param();
@@ -29,14 +30,13 @@ class Ring extends Controller {
             $result = $rongModel->call($user['telephone'], $customer->mobile);
             // $result['telephone'] = $user['telephone'];
             // $result['mobile'] = $customer->mobile;
-
             $data['type'] = 'telephone';
             $data['seat'] = $user['telephone'];
         }
 
         if($result['Flag'] == 1) {
             // 打电话数据库
-            $data['SessionId'] = $result['Msg'];
+            $data['sessionId'] = $result['Msg'];
             $callLog = new \app\common\model\CallLog();
             $callLog->save($data);
         }
@@ -102,7 +102,7 @@ class Ring extends Controller {
         }
     }
 
-    public function initRecordVoice()
+    public function initRecordVoice($startDate, $endDate)
     {
         $streamOpts = [
             "ssl" => [
@@ -112,7 +112,10 @@ class Ring extends Controller {
         ];
 
         $callRecord = new \app\common\model\CallRecord();
-        $list = $callRecord->select();
+        $where = [];
+        $where[] = ['fwdStartTime', 'between', [$startDate, $endDate]];
+        $list = $callRecord->where($where)->select();
+
         foreach($list as $key=>$row) {
             if(empty($row->recordFileDownloadUrl)) continue;
 
