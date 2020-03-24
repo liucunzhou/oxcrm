@@ -49,6 +49,20 @@
 
                 <div class="layui-form-item">
                     <div class="layui-inline">
+                        <label class="layui-form-label">仪式堂</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="banquet_ritual_hall" value="{$data['banquet_ritual_hall']}" lay-verify="" placeholder="仪式堂" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">其他</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="banquet_other" value="{$data['banquet_other']}" lay-verify="" placeholder="其他" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    
+                    <div class="layui-inline">
                         <label class="layui-form-label">婚宴总金额</label>
                         <div class="layui-input-inline">
                             <input readonly type="text" name="banquet_totals" value="{$data['banquet_totals']}" lay-verify="required" placeholder="婚宴总金额" autocomplete="off" class="layui-input">

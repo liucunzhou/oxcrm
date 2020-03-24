@@ -26,6 +26,32 @@
                         </div>
                     </div>
                 </div>
+
+                <!--研发产品信息-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">其他</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="wedding_other" value="{$data['wedding_other']}" lay-verify="" placeholder="其他" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否研发产品</label>
+                        <div class="layui-input-inline">
+                            <select name="is_new_product" lay-search>
+                                <option value="0" <{if $data['is_new_product'] == '0'}>selected<{/if}>>否</option>
+                                <option value="1" <{if $data['is_new_product'] == '1'}>selected<{/if}>>是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">研发产品编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="new_product_no" value="{$data['new_product_no']}" placeholder="研发产品编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label layui-color-red">策划师</label>
@@ -61,39 +87,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!--研发产品信息-->
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">是否研发产品</label>
-                        <div class="layui-input-inline">
-                            <select name="is_new_product" lay-search>
-                                <option value="0" <{if $data['is_new_product'] == '0'}>selected<{/if}>>否</option>
-                                <option value="1" <{if $data['is_new_product'] == '1'}>selected<{/if}>>是</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">研发产品编号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="new_product_no" value="{$data['new_product_no']}" placeholder="研发产品编号" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">设备包含</label>
-                    <div class="layui-input-block">
-                        <{foreach name="weddingDevices" item="val"}>
-                            <{if in_array($val['id'], $selectedWeddingDevices)}>
-                                <input type="checkbox" name="weddingDevices[]" title="{$val.title}"  value="{$val.id}" checked>
-                            <{else /}>
-                                <input type="checkbox" name="weddingDevices[]" title="{$val.title}"  value="{$val.id}">
-                            <{/if}>
-                        <{/foreach}>
-                    </div>
-                </div>
             </div>
             <div class="layui-col-md3">
                 <div class="layui-card">
@@ -102,6 +95,80 @@
                         <textarea name="wedding_remark" class="layui-textarea" placeholder="备注信息">{$data['wedding_remark']}</textarea>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <div class="layui-col-md6">
+        <div class="layui-form-item">
+            <label class="layui-form-label">电子设备</label>
+            <div class="layui-input-block">
+                <table class="table">
+                    <tr>
+                        <td>项目</td>
+                        <td>价格</td>
+                        <td>数量</td>
+                    </tr>
+                    <{foreach name="weddingDevices" item="val"}>
+                        <tr>
+                            <td>
+                                {$val.title}
+                            </td>
+                            <td>
+                                <input type="text" name="weddingDevices[{$val.title}][price]" value="">
+                            </td>
+                            <td>
+                                <input type="text" name="weddingDevices[{$val.title}][amount]" value="">
+                            </td>
+                        </tr>
+                    <{/foreach}>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-header">
+        婚车业务
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-md6">
+            <label class="layui-form-label">婚车数据</label>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <table class="table">
+                        <tr>
+                            <td>品牌型号</td>
+                            <td>是否主车</td>
+                            <td>数量</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-block">
+                <table class="table">
+                    <tr>
+                        <td>使用时间</td>
+                        <td><input type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>接车地点</td>
+                        <td><input type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>联系电话</td>
+                        <td><input type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>家庭住址</td>
+                        <td><input type="text" ></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

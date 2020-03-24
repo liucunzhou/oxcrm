@@ -75,6 +75,12 @@ class Ring extends Controller {
             foreach ($result['Data'] as $key=>$row) {
                 $callRecord = new \app\common\model\CallRecord();
                 $rs = $callRecord->insert($row);
+                if(!$rs) {
+                    echo "写入失败\n";
+                    echo $callRecord->getLastSql();
+                    echo "\n";
+                }
+
                 if($len-1==$key) {
                     $maxId = $row['maxid'];
                     $this->recodeList($startTime, $endTime, $maxId);
@@ -95,9 +101,15 @@ class Ring extends Controller {
         $callRecord = new \app\common\model\CallRecord();
         $list = $callRecord->select();
         foreach($list as $key=>$row) {
+            if(empty($row->recordFileDownloadUrl)) continue;
+
             $url = $row->recordFileDownloadUrl;
             $wav = file_get_contents($url, false, stream_context_create($streamOpts));
-            file_put_contents('./record/20200314/'.$row->id.'.wav', $wav);
+            $date = substr($row->fwdStartTime, 0, 10);
+            $dir = './record/{$date}/';
+            if(!is_dir($dir)) mkdir($dir, 0755);
+
+            file_put_contents($dir.$row->id.'.wav', $wav);
         }
     }
 }
