@@ -177,5 +177,29 @@ $(function(){
             }
         });
         return false
-    })
+    });
+
+    $("select.multiple-select").each(function(i,n) {
+        var placeholder = $(n).attr('placeholder');
+        $(n).multipleSelect({
+            placeholder: placeholder,
+            locale: 'zh-CN',
+            filter: true
+        });
+    });
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        $(".date-range").each(function (i, n) {
+
+            var id = $(n).attr("id");
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#' + id
+                ,range: '~'
+            });
+        });
+
+    });
+
 })

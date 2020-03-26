@@ -113,6 +113,7 @@ class User extends Model
         } else {
             $map[] = ['department_id', '=', $departments[0]];
         }
+
         if($withTrashed) {
             $users = self::withTrashed()->where($map)->column('id,role_id,department_id,nickname,realname');
         } else {

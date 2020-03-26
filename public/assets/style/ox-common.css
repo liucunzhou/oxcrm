@@ -215,3 +215,16 @@ h4 {
 .col-options{
     max-width: 100px;
 }
+
+.space-10{
+    height: 10px;
+}
+
+.multiple-select{
+    padding: 0;
+}
+
+.ms-parent .ms-choice {
+    border: none;
+    background: none;
+}
