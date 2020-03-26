@@ -175,6 +175,12 @@ class Ring extends Command
                 $log->save($data);
             }
 
+            if(empty($row->userid)) {
+                $data = [];
+                $data['userid'] = $user->id;
+                $row->save($data);
+            }
+
             echo $user->id.":::{$mobile}同步成功\n";
         }
     }
