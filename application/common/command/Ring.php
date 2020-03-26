@@ -38,13 +38,13 @@ class Ring extends Command
         if ($input->hasOption('start')) {
             $start = $input->getOption("start");
         } else {
-            $start = strtotime(date('Y-m-d'));
+            $start = strtotime('yesterday');
         }
 
         if ($input->hasOption('end')) {
             $end = $input->getOption("end");
         } else {
-            $end = strtotime(date('Y-m-d'));
+            $end = strtotime('tomorrow');
         }
 
         if ($input->hasOption('maxId')) {
@@ -73,11 +73,11 @@ class Ring extends Command
     /**
      * 初始化呼叫详情
      */
-    public function initRecordList($startTime, $endTime, $maxId=0)
+    public function initRecordList($startTime, $endTime, $maxId)
     {
         $callLog = new \app\common\model\CallLog();
         $rongModel = new \app\common\model\Rong();
-        $result = $rongModel->getRecordList($startTime, $endTime, $maxId);
+        $result = $rongModel->getRecordList($maxId);
 
         $len = count($result['Data']);
         echo $len;
