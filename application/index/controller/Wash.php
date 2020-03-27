@@ -97,7 +97,11 @@ class Wash extends Base
             $successAmount = isset($success[$userId]) ? $success[$userId] : 0;
             $percent = round($successAmount * 100 / $amount, 2);
             $duration = isset($seconds[$userId]) ? $seconds[$userId] : 0;
-            $avg = $duration / $successAmount;
+            if($successAmount > 0) {
+                $avg = $duration / $successAmount;
+            } else {
+                $avg = 0;
+            }
 
             $list[] = [
                 'id' => $userId,
