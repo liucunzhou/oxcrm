@@ -38,13 +38,13 @@ class Ring extends Command
         if ($input->hasOption('start')) {
             $start = $input->getOption("start");
         } else {
-            $start = strtotime('yesterday');
+            $start = date('Y-m-d H:i:s',strtotime('yesterday'));
         }
 
         if ($input->hasOption('end')) {
             $end = $input->getOption("end");
         } else {
-            $end = strtotime('tomorrow');
+            $end = date('Y-m-d H:i:s',strtotime('tomorrow'));
         }
 
         if ($input->hasOption('maxId')) {
