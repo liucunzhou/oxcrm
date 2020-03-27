@@ -126,6 +126,34 @@ $(function(){
         });
     });
 
+    $(document).on("change", ".change-ajax-html", function(){
+        var url = $(this).attr("data-action");
+        var target = $(this).attr("data-target");
+        var hinit = $(this).attr("data-confirm");
+
+        if(hinit!=undefined) {
+            if(!confirm(hinit)) return false;
+        }
+
+        var isRemove = $(this).attr("data-remove");
+        var removeTarget = $(this).attr("data-remove-target");
+        if(isRemove == 'yes') {
+            console.log("remove....");
+            $(this).parents("." + removeTarget).remove();
+        }
+
+        var id = $(this).val();
+        var isAppend = $(this).attr("data-append");
+        $.get(url, {id:id}, function(res){
+            if(isAppend == undefined) {
+                $(target).html(res);
+            } else {
+                $(target).append(res);
+            }
+        });
+    });
+
+
     $(document).on("submit", ".form-ajax", function(){
         var url = $(this).attr('action');
         var data = $(this).serialize();
@@ -170,12 +198,14 @@ $(function(){
 
         var _ = $(this);
         var url = $(this).attr('data-href');
-        $.get(url, function (res) {
-            layer.msg(res.msg);
-            if(res.code == '200') {
-                _.parents("tr").remove();
-            }
-        });
+        if(url != undefined) {
+            $.get(url, function (res) {
+                layer.msg(res.msg);
+                if (res.code == '200') {
+                    _.parents("tr").remove();
+                }
+            });
+        }
         return false
     });
 

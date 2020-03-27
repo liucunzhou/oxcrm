@@ -48,7 +48,6 @@
                     <th>外拨总数</th>
                     <th>接通数</th>
                     <th>接通率</th>
-                    <th>通话总时长</th>
                     <th>平均时长</th>
                     <th>有效通时</th>
                 </tr>
@@ -61,9 +60,8 @@
                         <td>{$row.totals}</td>
                         <td>{$row.success}</td>
                         <td>{$row.percent}%</td>
-                        <td>{$row.seconds}</td>
                         <td>{$row.avg}秒</td>
-                        <td></td>
+                        <td>{$row.seconds}</td>
                     </tr>
                 <{/foreach}>
             </tbody>

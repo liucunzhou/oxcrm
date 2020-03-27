@@ -9,7 +9,9 @@ use app\common\model\MemberAllocate;
 use app\common\model\MemberVisit;
 use app\common\model\Region;
 use app\common\model\Store;
+use app\common\model\User;
 use app\wash\controller\Backend;
+use think\process\exception\Timeout;
 use think\Request;
 
 class Customer extends Backend
@@ -38,6 +40,10 @@ class Customer extends Backend
             997 => [
                 'title' => '一般',
                 'btn'   => 'btn-primary'
+            ],
+            0   => [
+                'title' => '无',
+                'btn'   => 'btn-info'
             ]
         ];
         $this->assign('levels', $this->levels);
@@ -45,6 +51,9 @@ class Customer extends Backend
         $where = [];
         $this->stores = Store::where($where)->column('id,title,sort', 'id');
         $this->assign('stores', $this->stores);
+
+        $users = User::getUsers();
+        $this->assign('users', $users);
     }
 
     /**
@@ -148,19 +157,32 @@ class Customer extends Backend
         $map = [];
         $map['id'] = $allocate->member_id;
         $member = $this->customerModel->where($map)->find();
+        $member->mobile = substr_replace($member->mobile, '***', 3, 3);
         $this->assign('member', $member);
 
-        // 获取省市列表
-        $provinceList = Region::getProvinceList();
-        $this->assign('provinceList', $provinceList);
-        // 获取当前省份的城市列表
-        if(!empty($allocate->province_id)) {
-            $cityList = Region::getCityList($allocate->province_id);
-        } else {
-            $cityList = [];
+        // 计算信息类型
+        if (empty($member->news_types)) {
+            $member->news_types = $member->news_type;
         }
-        $this->assign('cityList', $cityList);
+        $selectNewsTypes = empty($member->news_types) ? [] : explode(',', $member->news_type);
+        $this->assign("selectNewsTypes", $selectNewsTypes);
 
+        // 获取省市列表
+        // $provinceList = Region::getProvinceList();
+        // $this->assign('provinceList', $provinceList);
+        // 获取当前省份的城市列表
+        $fields = 'id,pid,shortname,name,level,pinyin,code,zip_code';
+        $currentCityList = [
+            '802'   => '上海市',
+            '1965'  => '广州市',
+            '934'   => '杭州市',
+            '861'   => '苏州市'
+        ];
+        $currentCityIds = array_keys($currentCityList);
+        $where = [];
+        $where[]    = ['id', 'in', $currentCityIds];
+        $cityList = Region::where($where)->field($fields)->select();
+        $this->assign('cityList', $cityList);
 
         // 获取已选酒店
         $memberHotelSelected = new \app\common\model\MemberHotelSelected();
@@ -203,6 +225,20 @@ class Customer extends Backend
         $records = $callRecord->where($where)->order('fwdStartTime desc')->select();
         $this->assign('records', $records);
         return $this->fetch();
+    }
+
+    public function doUpdate()
+    {
+        $params = $this->request->param();
+        $member = \app\api\model\Member::get($params['member_id']);
+        $allocate = MemberAllocate::get($params['allocate_id']);
+
+        $params['update_time'] = time();
+        print_r($params['news_types']);
+        $params['news_types'] = empty($params['news_types']) ? '' : implode(',', $params['news_types']);
+        echo $params['news_types'];
+        $member->allowField(true)->save($params);
+
     }
 
     /**

@@ -137,3 +137,21 @@ body {
     padding: 2px 6px;
     font-size: 12px;
 }
+
+#hotel-data dl dt,
+#hotel-data dl dd{
+    padding: 4px 8px;
+}
+
+.selected-item-list{
+    display: flex;
+}
+
+.selected-item-list .selected-item{
+    padding: 3px 5px;
+    font-size: 12px;
+    margin-right: 2px;
+    border: 1px solid #dedede;
+    line-height: 1;
+    cursor: pointer;
+}

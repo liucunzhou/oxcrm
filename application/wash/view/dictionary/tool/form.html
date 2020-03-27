@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+    <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <style>
+        .error{
+            border: 1px solid red;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $(".cmxform").submit(function () {
+                $("#commentForm").validate({
+                    errorPlacement: function(error, element) {
+                        $( element )
+                            .closest( "form" )
+                            .find( "#" + element.attr( "id" ) )
+                            .addClass("error");
+                    }
+                });
+
+                return false;
+            })
+        });
+    </script>
+</head>
+<body>
+<form class="cmxform" id="commentForm" method="get" action="">
+    <fieldset>
+        <legend>输入您的名字，邮箱，URL，备注。</legend>
+        <p>
+            <label for="cname">Name (必需, 最小两个字母)</label>
+            <input id="cname" name="name" minlength="2" type="text" required>
+        </p>
+        <p>
+            <label for="cemail">E-Mail (必需)</label>
+            <input id="cemail" type="email" name="email" required>
+        </p>
+        <p>
+            <label for="curl">URL (可选)</label>
+            <input id="curl" type="url" name="url">
+        </p>
+        <p>
+            <label for="ccomment">备注 (必需)</label>
+            <textarea id="ccomment" name="comment" required></textarea>
+        </p>
+        <p>
+            <input class="submit" type="submit" value="Submit">
+        </p>
+    </fieldset>
+</form>
+</body>
+</html>
