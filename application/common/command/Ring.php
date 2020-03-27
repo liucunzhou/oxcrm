@@ -38,7 +38,8 @@ class Ring extends Command
         if ($input->hasOption('start')) {
             $start = $input->getOption("start");
         } else {
-            $start = date('Y-m-d H:i:s',strtotime('yesterday'));
+            // echo $start = date('Y-m-d', time()).' 00:00::00';
+            $start = date('Y-m-d H:i:s',strtotime('yestoday'));
         }
 
         if ($input->hasOption('end')) {
@@ -100,6 +101,7 @@ class Ring extends Command
                 }
 
                 if($len-1==$key) {
+                    sleep(1);
                     $maxId = $row['maxid'];
                     $this->initRecordList($startTime, $endTime, $maxId);
                 }
