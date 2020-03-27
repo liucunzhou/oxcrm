@@ -29,6 +29,7 @@
         </ul>
 
         <div class="tab-content">
+            <!--基本资料-->
             <div role="tabpanel" class="tab-pane active" id="base">
                 <div class="flex">
                     <!-- 客户信息 -->
@@ -284,6 +285,7 @@
                     </div>
                 </div>
             </div>
+            <!--跟进记录-->
             <div role="tabpanel" class="tab-pane" id="visit">
                 <h4>回访列表</h4>
                 <table class="table table-bordered">
@@ -297,6 +299,18 @@
                             <th>最新跟进时间</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <{foreach name="visitGroup" item="row"}>
+                        <tr>
+                            <td>{$row.user_id}</td>
+                            <td>{$row.visit_times}</td>
+                            <td>{$row.create_time}</td>
+                            <td>{$row.active_status}</td>
+                            <td>{$row.next_visit_time}</td>
+                            <td>{$row.last_visit_time}</td>
+                        </tr>
+                        <{/foreach}>
+                    </tbody>
                 </table>
                 <h4>回访历史</h4>
                 <table class="table table-bordered">
@@ -308,9 +322,21 @@
                             <th>跟踪记录</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <{foreach name="visits" item="row"}>
+                            <tr>
+                                <td>{$row.user_id}</td>
+                                <td>{$row.create_time}</td>
+                                <td>{$row.status}</td>
+                                <td>{$row.content}</td>
+                            </tr>
+                        <{/foreach}>
+                    </tbody>
                 </table>
             </div>
+            <!--进店记录-->
             <div role="tabpanel" class="tab-pane" id="intostore">
+                <!--
                 <table class="table">
                     <tr>
                         <td width="15%">预约到店时间</td>
@@ -343,6 +369,7 @@
                         </td>
                     </tr>
                 </table>
+                -->
                 <h4>预约历史</h4>
                 <table class="table table-bordered">
                     <thead>
@@ -355,24 +382,47 @@
                             <th>是否到店</th>
                         </tr>
                     </thead>
-                    
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
+            <!--回访录音-->
             <div role="tabpanel" class="tab-pane" id="record">
                 <br>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>日期</th>
-                            <th>部门</th>
                             <th>操作者</th>
                             <th>接通状态</th>
                             <th>接通时间</th>
-                            <th>挂断时间</th>
                             <th>持续时间</th>
                             <th>录音</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <{foreach name="records" item="row"}>
+                            <tr>
+                                <td>{$row.fwdStartTime}</td>
+                                <td>洗单组</td>
+                                <td>{$}</td>
+                                <td>{$row.fwdStartTime}</td>
+                                <td>{$row.fwdAnswerTime?'接通成功':'接通失败'}</td>
+                                <td>{$row.billsec}</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        <{/foreach}>
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -2,8 +2,11 @@
 
 namespace app\wash\controller\customer;
 
+use app\common\model\CallRecord;
 use app\common\model\Intention;
 use app\common\model\Member;
+use app\common\model\MemberAllocate;
+use app\common\model\MemberVisit;
 use app\common\model\Region;
 use app\common\model\Store;
 use app\wash\controller\Backend;
@@ -166,6 +169,39 @@ class Customer extends Backend
         $selected = $memberHotelSelected->where($where)->order('create_time desc')->select();
         $this->assign('selected', $selected);
 
+        // 获取回访记录
+        $memberVisit = new MemberVisit();
+        $where = [];
+        $where['member_id'] = $member->id;
+        $visits = $memberVisit->where($where)->order('create_time desc')->select();
+        $visitGroup = [];
+        foreach ($visits as $key=>$row) {
+            // 获取该员工该客资的分配信息
+            $userId = $row->user_id;
+            if(!isset($visitGroup[$userId])) {
+                $where = [];
+                $where['user_id'] = $row->user_id;
+                $where['mobile'] = $member->mobile;
+                $callocate = MemberAllocate::where($where)->find();
+                $visitGroup[$userId] = [
+                    'user_id' => $row->user_id,
+                    'visit_times' => $callocate->visit_amount,
+                    'create_time' => $allocate->create_time,
+                    'active_status' => $allocate->active_status,
+                    'next_visit_time' => $row->next_visit_time,
+                    'last_visit_time' => $row->create_time
+                ];
+            }
+        }
+        $this->assign('visitGroup', $visitGroup);
+        $this->assign('visits', $visits);
+
+        // 获取当前手机的接听记录
+        $where = [];
+        $where['fwdDstNum'] = '+86'.$member->mobile;
+        $callRecord = new CallRecord();
+        $records = $callRecord->where($where)->order('fwdStartTime desc')->select();
+        $this->assign('records', $records);
         return $this->fetch();
     }
 

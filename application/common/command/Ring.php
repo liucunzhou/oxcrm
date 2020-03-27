@@ -77,7 +77,7 @@ class Ring extends Command
     {
         $callLog = new \app\common\model\CallLog();
         $rongModel = new \app\common\model\Rong();
-        $result = $rongModel->getRecordList($maxId);
+        $result = $rongModel->getRecordList($startTime, $endTime, $maxId);
 
         $len = count($result['Data']);
         echo $len;
