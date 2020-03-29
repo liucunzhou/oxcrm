@@ -58,6 +58,20 @@ h4 {
 
 .table tbody tr td{
     white-space: nowrap;
+    vertical-align: middle;
+}
+.table-wash tr th,
+.table-wash tr td{
+    text-align: center;
+}
+
+.table-wash tr th a,
+.table-wash tr td a{
+    text-align: center;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 .table thead tr th.left,

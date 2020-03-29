@@ -22,7 +22,7 @@ class Intention extends Base
             $config = [
                 'page' => $get['page']
             ];
-            $list = model('intention')->where($map)->order('type desc,sort desc,id asc')->paginate($get['limit'], false, $config);
+            $list = model('intention')->where($map)->order('sort asc,id asc')->paginate($get['limit'], false, $config);
             $data = $list->getCollection();
             foreach ($data as &$value) {
                 $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';

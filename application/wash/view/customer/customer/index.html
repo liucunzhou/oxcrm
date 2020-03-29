@@ -18,40 +18,61 @@
 </head>
 
 <body style="padding: 8px 12px;">
-    <!--
-    <div class="form-search-top">
-        <select name="" id="">
-            <option value=""></option>
-        </select>
+    <div class="space-10"></div>
+    <form class="form-inline">
+
+        <div class="form-group">
+            <select class="form-control" name="staff_id" placeholder="">
+                <option value="">选择员工</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="source_id" placeholder="">
+                <option value="">选择来源</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="assign_type" placeholder="">
+                <option value="">分配方式</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="assign_type" placeholder="">
+                <option value="">请选择城市</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="mobile" name="mobile" placeholder="请输入手机号">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control date-range" id="date_range" name="date_range" placeholder="请选择时间区间">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+    </form>
+    <div class="space-10"></div>
+    <div class="btn-group">
+        <div class="btn btn-info">添加客资</div>
+        <div class="btn btn-success">分配到清洗组</div>
+        <div class="btn btn-primary">分配到推荐组</div>
     </div>
-    -->
+    <div class="space-10"></div>
     <div class="ox-tab">
-        <!--
-        <a href="" class="active">所有客资</a>
-        <a href="">未跟进</a>
-        <a href="">跟进中</a>
-        <a href="">未接通</a>
-        <a href="">跟进失败</a>
-        <a href="">无效客户</a>
-        <a href="">预约到店</a>
-        <a href="">订单客户</a>
-        -->
         <{foreach name="tabs" item="row"}>
             <{if $row['active'] == '1'}>
                 <a href="{$row.url}" class="active">
                     {$row.title}
-                    <span class="badge">{$row.total}</span>
+                    <span>({$row.total})</span>
                 </a>
             <{else /}>
                 <a href="{$row.url}">
                     {$row.title}
-                    <span class="badge">{$row.total}</span>
+                    <span>({$row.total})</span>
                 </a>
             <{/if}>
         <{/foreach}>
     </div>
     <div class="ox-table">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-wash">
             <thead>
                 <tr>
                     <th>
@@ -83,7 +104,7 @@
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/update', ['id'=>$row['id']])}" class="layui-center" data-width="100" data-height="100" title="编辑全部信息" >{$row.visit_amount}</a></td>
                     <td>{$row.operate_id}</td>
                     <td>{$row.realname}</td>
-                    <td>{$row.mobile}</td>
+                    <td><a href="javascript:void(0);" class="event-call" data-id="{$row.id}">{$row.mobile}</a></td>
                     <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.banquet_size}</a></td>
                     <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.budget}</a></td>
                     <td class="relative"><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/edit', ['id'=>$row['id']])}" class="block layui-center" data-width="40" data-height="430px" title="编辑客户信息">{$row.wedding_date}</a></td>

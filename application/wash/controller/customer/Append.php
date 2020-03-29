@@ -2,6 +2,9 @@
 
 namespace app\wash\controller\customer;
 
+use app\common\model\MemberAllocate;
+use app\common\model\MemberHotelAllocate;
+use app\common\model\User;
 use app\wash\controller\Backend;
 use think\Request;
 
@@ -73,7 +76,6 @@ class Append extends Backend
         $where['id'] = $params['hotel_id'];
         $store = $storeModel->where($where)->find();
         $this->assign('store', $store);
-
         return $this->fetch();
     }
 
@@ -83,36 +85,37 @@ class Append extends Backend
     public function allocate()
     {
         $params = $this->request->param();
-        $memberHotelSelected = new \app\common\model\MemberHotelSelected();
-        $memberHotelAllocate = new \app\common\model\MemberHotelAllocate();
+        $callocate = $this->model->get($params['allocate_id']);
+
+        $allocatedStaff = [];
         foreach($params['staff_id'] as $key=>$val) {
+            $memberAllocate = new MemberAllocate();
+            $memberAllocate->startTrans();
             $where = [];
             $where['member_id'] = $params['member_id'];
             $where['user_id'] = $val;
             // 检测是否已经分配客资给该客服
-            $allocate = $this->model->where($where)->find();
-            $allocate->startTrans();
+            $allocate = $memberAllocate->where($where)->find();
             if(empty($allocate)) {
                 // 分配客资到该客服
-                $data = [];
-                $data = $allocate->getData();
+                $data = $callocate->getData();
                 // 修改分配方式
                 unset($data['id']);
                 $data['allocate_type'] = 0;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $val;
-                $result = $this->model->save($data);
+                $result = $memberAllocate->save($data);
                 if(!$result) { 
                     $allocateId = 0;
                 } else {
-                    $allocateId = $this->model->id;
+                    $allocateId = $memberAllocate->id;
                 }
             } else {
                 $allocateId = $allocate->id;
             }
             
             if(!$allocateId) {
-                $this->model->rollBack();
+                $memberAllocate->rollBack();
                 return json([
                     'code'  => '500',
                     'msg'   => '分配客资失败'
@@ -121,23 +124,26 @@ class Append extends Backend
 
             // 检测是否已经设置为推荐门店
             $where = [];
-            $where['allocate_id'] = $params['allocate_id'];
-            $where['store_id'] = $params['store_id'];
+            $where['allocate_id'] = $allocateId;
+            $where['hotel_id'] = $params['store_id'];
+            $memberHotelSelected = new \app\common\model\MemberHotelSelected();
             $selected = $memberHotelSelected->where($where)->find();
-            if(!empty($selected)) {
+            if(empty($selected)) {
                 $data = [];
-                $data['allocate_id'] = $params['id'];
+                $data['allocate_id'] = $allocateId;
                 $data['member_id'] = $params['member_id'];
                 $data['hotel_id'] = $params['store_id'];
                 $data['assigned'] = 1;
                 $data['create_time'] = time();
-                $selected = $memberHotelSelected->save();   
+                $memberHotelSelected->save($data);
+                $selectedId = $memberHotelSelected->id;
             } else {
                 $selected->save(['assigned'=>1]);
+                $selectedId = $selected->id;
             }
-            $selectedId = $selected->id;
-            if(!$allocateId) {
-                $this->model->rollBack();
+
+            if(!$selectedId) {
+               $memberAllocate->rollBack();
                 return json([
                     'code'  => '500',
                     'msg'   => '推荐酒店失败'
@@ -145,6 +151,7 @@ class Append extends Backend
             }
 
             // 检测是否已经分配客资及门店到该客服
+            $memberHotelAllocate = new \app\common\model\MemberHotelAllocate();
             $where = [];
             $where['from_allocate_id'] = $params['allocate_id'];
             $where['store_id'] = $params['member_id'];
@@ -158,26 +165,28 @@ class Append extends Backend
                 $data['staff_id'] = $val;
                 $data['member_id'] = $params['member_id'];
                 $data['create_time'] = time();
-                $hotelAllocate = $memberHotelAllocate->save($data);
-            }
-            $hotelAllocateId = $hotelAllocate->id;
-            if($hotelAllocateId) {
-                $this->model->commit();
-                $arr = [
-                    'code'  => '200',
-                    'msg'   => '分配成功'
-                ];
+                $memberHotelAllocate->save($data);
+                $hotelAllocateId = $memberHotelAllocate->id;
             } else {
-                $this->model->rollBack();
-                $arr = [
-                    'code'  => '200',
-                    'msg'   => '分配失败'
-                ];
+                $hotelAllocateId = $hotelAllocate->id;
             }
-            
-            return  json($arr);
 
+            if($hotelAllocateId) {
+                $allocatedStaff[] = $val;
+               $memberAllocate->commit();
+            } else {
+               $memberAllocate->rollBack();
+            }
         }
-        
+
+        if(!empty($allocatedStaff)) {
+            $users = User::getUsers();
+            $this->assign('users', $users);
+            $this->assign('allocatedStaff', $allocatedStaff);
+
+            return $this->fetch();
+        } else {
+            return '';
+        }
     }
 }

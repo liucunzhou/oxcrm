@@ -6,6 +6,7 @@ use app\common\model\CallRecord;
 use app\common\model\Intention;
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
+use app\common\model\MemberHotelAllocate;
 use app\common\model\MemberVisit;
 use app\common\model\Region;
 use app\common\model\Store;
@@ -54,6 +55,9 @@ class Customer extends Backend
 
         $users = User::getUsers();
         $this->assign('users', $users);
+
+        $allStatus = Intention::column('id,title');
+        $this->assign('allStatus', $allStatus);
     }
 
     /**
@@ -71,12 +75,20 @@ class Customer extends Backend
         }
 
         // 获取洗单组的意向列表
-        $intention = new Intention();
-        $where['type'] = 'wash';
-        $tabs = $intention->where($where)->order('sort desc')->column('id,title,type', 'id');
-        $all = [
+        $where = [];
+        $where[] = ['type', 'in', ['wash', 'other']];
+        $fields = 'id,title,type';
+        $tabs = \app\common\model\Intention::where($where)->field($fields)->order('sort,id')->column($fields, 'id');
+        $unvisit = [
             'id'    => 0,
-            'title' => '所有客资',
+            'title' => '未跟进',
+            'type'  => 'wash'
+        ];
+        array_unshift($tabs, $unvisit);
+
+        $all = [
+            'id'    => -1,
+            'title' => '全部客资',
             'type'  => 'wash'
         ];
         array_unshift($tabs, $all);
@@ -95,7 +107,7 @@ class Customer extends Backend
             $map = [];
             // 检测所有
             if ($key != 0) {
-                $map['active_status'] = $status;
+                $map['active_status'] = $row['id'];
                 $total = $this->model->where($map)->count();
             } else {
                 $total = $this->model->count(); 
@@ -105,8 +117,13 @@ class Customer extends Backend
         $this->assign('tabs', $tabs);
 
 
-        $list = $this->model->order('id desc')->paginate(15);
+        $list = $this->model->order('id desc')->paginate(15, $config);
+        foreach ($list as $key=>&$row) {
+            $member = \app\api\model\Member::get($row->member_id);
+            $row->visit_amount = $member->visit_amount;
+        }
         $this->assign('list', $list);
+
         return $this->fetch();
     }
 
@@ -164,7 +181,7 @@ class Customer extends Backend
         if (empty($member->news_types)) {
             $member->news_types = $member->news_type;
         }
-        $selectNewsTypes = empty($member->news_types) ? [] : explode(',', $member->news_type);
+        $selectNewsTypes = empty($member->news_types) ? [] : explode(',', $member->news_types);
         $this->assign("selectNewsTypes", $selectNewsTypes);
 
         // 获取省市列表
@@ -183,6 +200,18 @@ class Customer extends Backend
         $where[]    = ['id', 'in', $currentCityIds];
         $cityList = Region::where($where)->field($fields)->select();
         $this->assign('cityList', $cityList);
+        // 获取当前城市的区县列表
+        $where = [];
+        $where['pid'] = $allocate->city_id;
+        $areaList = Region::where($where)->field($fields)->select();
+        $this->assign('areaList', $areaList);
+        // 获取已选区县列表
+        if(!empty($allocate->zone)) {
+            $zoneSelected = explode(',', $allocate->zone);
+        } else {
+            $zoneSelected = [];
+        }
+        $this->assign('zoneSelected', $zoneSelected);
 
         // 获取已选酒店
         $memberHotelSelected = new \app\common\model\MemberHotelSelected();
@@ -190,6 +219,12 @@ class Customer extends Backend
         $where['allocate_id'] = $allocate->id;
         $selected = $memberHotelSelected->where($where)->order('create_time desc')->select();
         $this->assign('selected', $selected);
+
+        // 获取所有已分配的人员
+        $where = [];
+        $where['member_id'] = $allocate->member_id;
+        $allocatedStaff = MemberHotelAllocate::where($where)->select();
+        $this->assign('allocatedStaff', $allocatedStaff);
 
         // 获取回访记录
         $memberVisit = new MemberVisit();
@@ -204,15 +239,16 @@ class Customer extends Backend
                 $where = [];
                 $where['user_id'] = $row->user_id;
                 $where['mobile'] = $member->mobile;
-                $callocate = MemberAllocate::where($where)->find();
                 $visitGroup[$userId] = [
                     'user_id' => $row->user_id,
-                    'visit_times' => $callocate->visit_amount,
+                    'visit_times' => 1,
                     'create_time' => $allocate->create_time,
                     'active_status' => $allocate->active_status,
                     'next_visit_time' => $row->next_visit_time,
                     'last_visit_time' => $row->create_time
                 ];
+            } else {
+                $visitGroup[$userId]['visit_times'] += 1;
             }
         }
         $this->assign('visitGroup', $visitGroup);
@@ -230,15 +266,16 @@ class Customer extends Backend
     public function doUpdate()
     {
         $params = $this->request->param();
+        // $where = [];
+        // $where['id'] = $params['']
         $member = \app\api\model\Member::get($params['member_id']);
         $allocate = MemberAllocate::get($params['allocate_id']);
 
         $params['update_time'] = time();
-        print_r($params['news_types']);
+        // print_r($params['news_types']);
         $params['news_types'] = empty($params['news_types']) ? '' : implode(',', $params['news_types']);
-        echo $params['news_types'];
-        $member->allowField(true)->save($params);
-
+        $result = $member->allowField(true)->save($params);;
+        $allocate->allowField(true)->save($params);
     }
 
     /**

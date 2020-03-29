@@ -53,23 +53,26 @@
             <table class="table table-bordered">
                 <tr>
                     <td width="20%">未选销售</td>
-                    <td width="80%">
-                        <{foreach name="storeStaffs" item="val"}>
-                            <label><input type="checkbox" name="staff_id[]" value="{$val.staff_id}"> {$users[$val['staff_id']]['realname']}</div>
+                    <td width="80%" class="unselected-box">
+                        <{foreach name="unallocatedStaff" item="val"}>
+                            <label><input type="checkbox" name="staff_id[]" value="{$val}"> {$users[$val]['realname']} </label>
                         <{/foreach}>
                     </td>
                 </tr>
                 <tr>
                     <td>已选销售</td>
-                    <td></td>
+                    <td class="selected-box">
+                        <{foreach name="allocatedStaff" item="val"}>
+                            <label>{$users[$val]['realname']}  </label>
+                        <{/foreach}>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <input type="hidden" name="store_id" value="{$store.id}">
                         <input type="hidden" name="allocate_id" value="{$allocate.id}">
                         <input type="hidden" name="member_id" value="{$allocate.member_id}">
-                        <button type="submit" class="btn btn-success">确认分配</button>
-                    </td>
+                        <button type="submit" class="btn btn-success btn-allocate">确认分配</button>
                     </td>
                 </tr>
             </table>

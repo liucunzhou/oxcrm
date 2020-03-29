@@ -2,6 +2,7 @@
 
 namespace app\wash\controller\dictionary;
 
+use app\common\model\MemberHotelAllocate;
 use app\wash\controller\Backend;
 use app\common\model\User;
 use think\Request;
@@ -68,19 +69,28 @@ class Store extends Backend
         }
         $this->assign('images', $images);
 
-        // 获取酒店的客服列表
-        $storeStaffModel = new \app\common\model\StoreStaff();
-        $where = [];
-        $where['store_id'] = $id;
-        $storeStaffs = $storeStaffModel->where($where)->select();
-        $this->assign('storeStaffs', $storeStaffs);
-
         // 获取分配数据
         $where = [];
         $where['id'] = $params['allocate_id'];
         $allocate = \app\common\model\MemberAllocate::where($where)->find();
         $this->assign('allocate', $allocate);
 
+        // 获取酒店的客服列表
+        $storeStaffModel = new \app\common\model\StoreStaff();
+        $where = [];
+        $where['store_id'] = $id;
+        $storeStaffs = $storeStaffModel->where($where)->column('staff_id');
+        $this->assign('storeStaffs', $storeStaffs);
+
+        // 获取已分配的员工
+        $where = [];
+        $where['member_id'] = $allocate->member_id;
+        $allocatedStaff = MemberHotelAllocate::where($where)->column('staff_id');
+        $this->assign('allocatedStaff', $allocatedStaff);
+
+        // 获取未分配的员工列表
+        $unallocatedStaff = array_diff($storeStaffs, $allocatedStaff);
+        $this->assign('unallocatedStaff', $unallocatedStaff);
         return $this->fetch();
     }
 

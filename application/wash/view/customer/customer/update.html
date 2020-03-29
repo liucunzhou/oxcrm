@@ -33,7 +33,8 @@
                                     <{foreach name="newsTypes" item="row"}>
                                         <label class="padding-right-8">
                                             <{if in_array($key, $selectNewsTypes)}>
-                                                <input type="checkbox" name="news_types[]" value="{$key}" title="{$row}" checked disabled> {$row}
+                                                <input type="checkbox" name="news_types[]" value="{$key}" title="{$row}" checked disabled="disabled"> {$row}
+                                                <input type="hidden" name="news_types[]" value="{$key}" title="{$row}">
                                             <{else /}>
                                                 <input type="checkbox" name="news_types[]" value="{$key}" title="{$row}"> {$row}
                                             <{/if}>
@@ -68,7 +69,7 @@
                                     <div class="form-control-group">
                                         <input type="text" value="{$member.mobile}" class="form-control " readonly>
                                         <div class="btn-group">
-                                            <a href="javascript:void(0);" class="btn btn-info event-call">
+                                            <a href="javascript:void(0);" class="btn btn-info event-call" data-id="{$allocate.id}">
                                                 <i class="glyphicon glyphicon-phone-alt"></i>
                                             </a>
                                             <a href="javascript:void(0);" class="btn btn-warning toggle-mobile-list">
@@ -110,12 +111,19 @@
                                                 data-target="#area">
                                             <option value="0">--选择城市--</option>
                                             <{foreach name="cityList" item="row"}>
-                                                <option value="{$row.id}">{$row.name}</option>
+                                                <{if $allocate.city_id == $row.id}>
+                                                    <option value="{$row.id}" selected>{$row.name}</option>
+                                                <{else /}>
+                                                    <option value="{$row.id}">{$row.name}</option>
+                                                <{/if}>
                                             <{/foreach}>
                                         </select>
 
                                         <select name="area" class="form-control" id="area">
                                             <option value="0">--选择区县--</option>
+                                            <{foreach name="areaList" item="row"}>
+                                                <option value="{$row.id}">{$row.name}</option>
+                                            <{/foreach}>
                                         </select>
                                     </div>
                                 </td>
@@ -123,7 +131,12 @@
                             <tr>
                                 <td>区域</td>
                                 <td colspan="3">
-                                    <div class="form-control selected-item-list" id="zone-box"></div>
+                                    <div class="form-control selected-item-list" id="zone-box">
+                                        <{foreach name="zoneSelected" item="row"}>
+                                            <div class="selected-item">{$row}</div>
+                                        <{/foreach}>
+                                    </div>
+                                    <input type="hidden" name="area_id" id="area_id" value="{$member.area_id}">
                                     <input type="hidden" name="zone" id="zone" value="{$member.zone}">
                                 </td>
                             </tr>
@@ -150,7 +163,7 @@
                             <tr>
                                 <td>婚期</td>
                                 <td colspan="3">
-                                    <input type="text" name="wedding_date" value="{$member.wedding_date}" class="form-control date">
+                                    <input type="text" name="wedding_date" id="wedding-date" value="{$member.wedding_date}" class="form-control date-range">
                                 </td>
                             </tr>
                             <tr>
@@ -159,7 +172,13 @@
                                     <div class="group-radio">
                                         <{foreach name="levels" item="row"}>
                                             <label>
-                                                <input type="radio" name="level" value="{$row.id}"> {$row.title}
+                                                <{if $allocate.level == $key}>
+                                                    <input type="radio" name="level" value="{$key}" checked>
+                                                <{else /}>
+                                                    <input type="radio" name="level" value="{$key}" >
+                                                <{/if}>
+
+                                                {$row.title}
                                             </label>
                                         <{/foreach}>
                                     </div>
@@ -186,7 +205,7 @@
                                     <div class="btn-group">
                                         <input type="hidden" name="allocate_id" value="{$allocate.id}">
                                         <input type="hidden" name="member_id" value="{$member.id}">
-                                        <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/edit', ['id'=>$allocate['id']])}" data-width="450px" data-height="380px" class="btn btn-primary layui-center">快捷回访</a>
+                                        <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$allocate['id']])}" data-width="450px" data-height="380px" class="btn btn-primary layui-center">快捷回访</a>
                                         <button type="submit" class="btn btn-success">保存更新</button>
                                         <button type="button" class="btn btn-warning btn-close">关闭页面</button>
                                     </div>
@@ -197,10 +216,9 @@
                         <div class="panel panel-store-sales-assigned">
                             <div class="panel-heading">已分配人员:</div>
                             <div class="panel-body panel-store-sales-assigned-body">
-                                <div class="store-sales">张三</div>
-                                <div class="store-sales">张三</div>
-                                <div class="store-sales">张三</div>
-                                <div class="store-sales">张三</div>
+                                <{foreach name="allocatedStaff" item="row"}>
+                                <div class="store-sales" data-id="{$row.staff_id}">{$users[$row.staff_id]['realname']}</div>
+                                <{/foreach}>
                             </div>
                         </div>
                     </form>
@@ -302,11 +320,17 @@
                 <tbody>
                     <{foreach name="visitGroup" item="row"}>
                     <tr>
-                        <td>{$row.user_id}</td>
+                        <td>{$users[$row.user_id]['realname']}</td>
                         <td>{$row.visit_times}</td>
                         <td>{$row.create_time}</td>
-                        <td>{$row.active_status}</td>
-                        <td>{$row.next_visit_time}</td>
+                        <td>
+                            <{if isset($allStatus[$row.active_status])}>
+                                {$allStatus[$row.active_status]}
+                            <{else /}>
+                                未跟进
+                            <{/if}>
+                        </td>
+                        <td>{$row.next_visit_time!='0'?$row.next_visit_time:'—— ——'}</td>
                         <td>{$row.last_visit_time}</td>
                     </tr>
                     <{/foreach}>
@@ -325,9 +349,15 @@
                 <tbody>
                     <{foreach name="visits" item="row"}>
                         <tr>
-                            <td>{$row.user_id}</td>
+                            <td>{$users[$row.user_id]['realname']}</td>
                             <td>{$row.create_time}</td>
-                            <td>{$row.status}</td>
+                            <td>
+                                <{if isset($allStatus[$row.status])}>
+                                    {$allStatus[$row.status]}
+                                <{else /}>
+                                    未跟进
+                                <{/if}>
+                            </td>
                             <td>{$row.content}</td>
                         </tr>
                     <{/foreach}>
@@ -413,13 +443,10 @@
                         <tr>
                             <td>{$row.fwdStartTime}</td>
                             <td>洗单组</td>
-                            <td></td>
-                            <td>{$row.fwdStartTime}</td>
                             <td>{$row.fwdAnswerTime?'接通成功':'接通失败'}</td>
+                            <td>{$row.fwdStartTime}</td>
                             <td>{$row.billsec}</td>
-                            <td>
-
-                            </td>
+                            <td></td>
                         </tr>
                     <{/foreach}>
                 </tbody>

@@ -155,3 +155,7 @@ body {
     line-height: 1;
     cursor: pointer;
 }
+
+.selected-box label {
+    padding: 0 8px;
+}

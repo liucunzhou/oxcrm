@@ -67,7 +67,7 @@ $(function(){
     });
 
     $(".event-call").click(function(){
-        var id =  1;
+        var id =  $(this).attr("data-id");
         layer.confirm('是否拨打电话?', 
             {
                 icon: 3, 
@@ -86,6 +86,7 @@ $(function(){
                     
                 });
             },
+
             function(index){
                 var params = {
                     id: id,
@@ -178,15 +179,6 @@ $(function(){
         var target = $(this).attr("data-target");
         $.get(url, data, function (res) {
             $(target).html(res);
-        });
-        return false;
-    });
-
-    $(document).on("submit", ".form-assign", function(){
-        var url = $(this).attr('action');
-        var data = $(this).serialize();
-        $.get(url, data, function (res) {
-
         });
         return false;
     });
