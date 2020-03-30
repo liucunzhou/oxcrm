@@ -69,6 +69,10 @@ class Order extends Base
         $rituals = \app\common\model\Ritual::getList();
         $this->assign('rituals', $rituals);
 
+        ## 酒店服务项目
+        $banquetHoteItems = \app\common\model\BanquetHotelItem::getList();
+        $this->assign('banquetHoteItems', $banquetHoteItems);
+
         ## 供应商列表
         $this->suppliers = \app\common\model\Supplier::getList();
         $this->assign('suppliers', $this->suppliers);
@@ -81,6 +85,8 @@ class Order extends Base
         ## 婚庆二销分类列表
         $this->weddingCategories = \app\common\model\WeddingCategory::getList();
         $this->assign('weddingCategories', $this->weddingDevices);
+
+
     }
 
     public function index()

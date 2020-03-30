@@ -205,7 +205,16 @@
             $('input[name="contract_totals"]').val(totals);
         });
 
+        $(document).on("click", ".append_wedding_item", function () {
+            var tbody = $(this).parents("tbody");
+            var row = $(this).parents("tr").clone();
+            tbody.append(row);
+            form.render()
+        });
 
+        $(document).on("click", ".delete_wedding_item", function () {
+            var row = $(this).parents("tr").remove();
+        });
     });
 </script>
 </body>
