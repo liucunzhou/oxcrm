@@ -34,7 +34,7 @@ class Car extends Base
     public function addCar()
     {
         $this->view->engine->layout(false);
-        return $this->fetch('edit_Car');
+        return $this->fetch('edit_car');
     }
 
     public function editCar()
