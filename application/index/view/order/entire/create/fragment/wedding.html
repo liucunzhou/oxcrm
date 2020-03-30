@@ -104,7 +104,7 @@
                 <tr>
                     <th>
                         <select name="items[category][]" lay-search lay-verify="required">
-                            <option value="">请选择服务项目</option>
+                            <option value="">请选择电子设备项目</option>
                             <{foreach name="weddingDevices" item="row"}>
                             <option value="{$row['id']}">{$row['title']}</option>
                             <{/foreach}>
@@ -135,12 +135,30 @@
     <div class="layui-row">
         <div class="layui-col-md6">
             <table class="table-mine">
-                <tr>
-                    <td>品牌型号</td>
-                    <td>数量</td>
-                    <td>价格</td>
-                    <td>操作</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <th>
+                            <select name="items[category][]" lay-search lay-verify="required">
+                                <option value="">请选择婚车</option>
+                                <{foreach name="weddingDevices" item="row"}>
+                                <option value="{$row['id']}">{$row['title']}</option>
+                                <{/foreach}>
+                            </select>
+                        </th>
+                        <th>
+                            <input type="text" name="items[amount][]" value="{$data['wedding_category_amount']}" lay-verify="required" placeholder="数量" autocomplete="off" class="layui-input">
+                        </th>
+                        <th>
+                            <input type="text" name="items[total][]" value="{$data['wedding_total']}" lay-verify="required" placeholder="金额" autocomplete="off" class="layui-input">
+                        </th>
+                        <th>
+                            <div class="layui-btn-group">
+                                <a class="layui-btn layui-btn append_wedding_item" href="javascript:void(0);"><i class="layui-icon"></i></a>
+                                <a class="layui-btn layui-btn-danger layui-btn delete_wedding_item" href="javascript:void(0);"><i class="layui-icon"></i></a>
+                            </div>
+                        </th>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div class="layui-col-md6">
