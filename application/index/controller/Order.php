@@ -73,6 +73,10 @@ class Order extends Base
         $banquetHoteItems = \app\common\model\BanquetHotelItem::getList();
         $this->assign('banquetHoteItems', $banquetHoteItems);
 
+        ## 酒店服务项目
+        $cars = \app\common\model\Car::getList();
+        $this->assign('cars', $cars);
+
         ## 供应商列表
         $this->suppliers = \app\common\model\Supplier::getList();
         $this->assign('suppliers', $this->suppliers);

@@ -103,9 +103,9 @@
             <tbody>
                 <tr>
                     <th>
-                        <select name="items[category][]" lay-search lay-verify="required">
+                        <select name="items[car][]" lay-search lay-verify="required">
                             <option value="">请选择电子设备项目</option>
-                            <{foreach name="weddingDevices" item="row"}>
+                            <{foreach name="cars" item="row"}>
                             <option value="{$row['id']}">{$row['title']}</option>
                             <{/foreach}>
                         </select>
