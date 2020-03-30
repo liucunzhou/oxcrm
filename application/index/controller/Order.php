@@ -61,6 +61,14 @@ class Order extends Base
         $halls = BanquetHall::getBanquetHalls();
         $this->assign('halls', $halls);
 
+        ## 获取套餐列表
+        $packages = \app\common\model\Package::getList();
+        $this->assign('packages', $packages);
+
+        ## 获取仪式列表
+        $rituals = \app\common\model\Ritual::getList();
+        $this->assign('rituals', $rituals);
+
         ## 供应商列表
         $this->suppliers = \app\common\model\Supplier::getList();
         $this->assign('suppliers', $this->suppliers);
@@ -84,14 +92,13 @@ class Order extends Base
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
+
                 'count' => $order['count'],
                 'data' => $order['data']
             ];
             return json($result);
         } else {
-
             $this->getTab('entire');
-
             $this->getColsFile('index');
             $this->view->engine->layout(false);
             return $this->fetch('order/entire/list/index');

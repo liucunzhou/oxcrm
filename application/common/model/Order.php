@@ -17,4 +17,6 @@ class Order extends Model
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];
+
+
 }

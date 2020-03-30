@@ -71,6 +71,7 @@
                         <option value="1" <{if $data['cooperation_mode'] == '1'}>selected<{/if}>>返佣单</option>
                         <option value="2" <{if $data['cooperation_mode'] == '2'}>selected<{/if}>>代收代付</option>
                         <option value="3" <{if $data['cooperation_mode'] == '3'}>selected<{/if}>>代收代付+返佣单</option>
+                        <option value="4" <{if $data['cooperation_mode'] == '4'}>selected<{/if}>>一单一议</option>
                     </select>
                 </div>
             </div>
@@ -104,5 +105,41 @@
             </div>
         </div>
 
+        <!--客户联系信息-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label layui-color-red">新郎微信</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="bridegroom_wechat" value="{$data['bridegroom_wechat']}" lay-verify="required" placeholder="新郎微信" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label layui-color-red">新娘微信</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="bride_wechat" value="{$data['bride_wechat']}" lay-verify="required" placeholder="新娘微信" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label layui-color-red">家庭住址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="home_address" value="{$data['home_address']}" lay-verify="required" placeholder="家庭住址" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">身份证号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="idcard" value="{$data['idcard']}" placeholder="身份证号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">积分</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="score" value="{$data['score']}" placeholder="积分" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
     </div>
 </div>

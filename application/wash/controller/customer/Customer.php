@@ -116,14 +116,21 @@ class Customer extends Backend
         }
         $this->assign('tabs', $tabs);
 
-
-        $list = $this->model->order('id desc')->paginate(15, $config);
+        $config = [
+            'type' => 'bootstrap',
+            'var_page' => 'page',
+            // 'page' => $params['page']
+        ];
+        if (!isset($params['limit'])) $params['limit'] = 30;
+        $list = $this->model->order('id desc')->paginate(15);
+        // print_r($list);
+        /**
         foreach ($list as $key=>&$row) {
             $member = \app\api\model\Member::get($row->member_id);
             $row->visit_amount = $member->visit_amount;
         }
+        **/
         $this->assign('list', $list);
-
         return $this->fetch();
     }
 
