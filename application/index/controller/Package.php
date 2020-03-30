@@ -34,7 +34,7 @@ class Package extends Base
     public function addPackage()
     {
         $this->view->engine->layout(false);
-        return $this->fetch('edit_Package');
+        return $this->fetch('edit_package');
     }
 
     public function editPackage()

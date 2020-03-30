@@ -34,7 +34,7 @@ class Ritual extends Base
     public function addRitual()
     {
         $this->view->engine->layout(false);
-        return $this->fetch('edit_Ritual');
+        return $this->fetch('edit_ritual');
     }
 
     public function editRitual()
