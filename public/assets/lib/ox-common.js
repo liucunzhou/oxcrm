@@ -64,7 +64,6 @@ $(function(){
         layer.open({
             type: 2,
             title: false,
-            shadeClose: true,
             content: url,
             area: [width + 'px', height + 'px'],
             closeBtn: 0
@@ -177,6 +176,8 @@ $(function(){
                 if(res.redirect == 'dialog') {
                     parent.layer.closeAll();
                     parent.window.location.reload();
+                }if(res.redirect == 'reload') {
+                    parent.window.location.reload();
                 } else {
                     window.location.replace(res.redirect);
                 }
@@ -229,10 +230,17 @@ $(function(){
         $(".date-range").each(function (i, n) {
 
             var id = $(n).attr("id");
-            //执行一个laydate实例
             laydate.render({
                 elem: '#' + id
                 ,range: '~'
+            });
+        });
+
+        $(".date").each(function (i, n) {
+
+            var id = $(n).attr("id");
+            laydate.render({
+                elem: '#' + id
             });
         });
 
@@ -247,4 +255,44 @@ $(function(){
         }
     });
 
+    $(".fast-visit").click(function () {
+        var val = $(this).val();
+        if(val == 4) {
+            $(".fast").hide();
+            $(".fast.fast-invalid").show();
+        }
+
+        if(val == 7) {
+            $(".fast").hide();
+            $(".fast.fast-unconnect").show();
+        }
+    });
+
+    $(".color-group .color-item").click(function () {
+        $(".color-group .color-item").removeClass("active");
+        $(this).addClass("active");
+
+        var target = $(this).attr("data-target");
+        var value = $(this).attr("data-value");
+        $(target).val(value);
+    });
+
+    $(".fast-group .fast-item").click(function () {
+        $(".fast .fast-item").removeClass("active");
+        $(this).addClass("active");
+
+        var target = $(this).attr("data-target");
+        var value = $(this).attr("data-value");
+        $(target).val(value);
+
+        $("#auto-content").val(value);
+    });
+
+    $(".fast-group .fast-item").dblclick(function () {
+        if($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            var target = $(this).attr("data-target");
+            $(target).val('');
+        }
+    });
 });

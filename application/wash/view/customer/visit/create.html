@@ -10,41 +10,117 @@
     <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(100000,1000000)}">
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
-    <script src="/assets/lib/ox-common.js"></script>
+    <script src="/assets/lib/ox-common.js?{:rand(10000,10000)}"></script>
 </head>
 <body style="padding: 8px 12px;overflow: hidden;">
-    <form class="form-ajax" action="/customer.visit/doCreate">
-        <table class="table">
-            <tr>
-                <td>跟进状态</td>
-                <td>
-                    <select name="status" class="form-control">
-                        <option value="0">未跟进</option>
-                        <{foreach name="statusList" item="row"}>
-                            <option value="{$row.id}">{$row.title}</option>
-                        <{/foreach}>
-                    </select>
-                </td>
-            </tr>
-            <tr class="textarea">
-                <td>回访内容</td>
-                <td>
-                    <textarea name="content" class="textarea form-control"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="hidden" name="allocate_id" value="{$params.id}">
-                    <input type="hidden" name="redirect" value="dialog">
-                    <button type="submit" class="btn btn-success">添加跟进</button>
-                    <button type="button" class="btn btn-warning btn-close">关闭</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+<form class="form-ajax-page" action="/customer.visit/doCreate">
+    <table class="table">
+        <tr>
+            <td>跟进状态</td>
+            <td>
+                <{foreach name="statusList" item="row"}>
+                    <label class="padding-right-8">
+                        <input type="radio" name="status" value="{$row.id}" class="fast-visit"> {$row.title}
+                    </label>
+                <{/foreach}>
+            </td>
+        </tr>
+        <tr class="fast fast-invalid">
+            <td>快捷内容</td>
+            <td>
+                <div class="fast-group">
+                    <{foreach name="fasts[4]" item="row"}>
+                    <div class="fast-item" data-target="#fast_invalid" data-value="{$row}">{$row}</div>
+                    <{/foreach}>
+                </div>
+                <input type="hidden" id="fast_invalid" name="fast_invalid" value="">
+            </td>
+        </tr>
+        <tr class="fast fast-unconnect">
+            <td>快捷内容</td>
+            <td>
+                <div class="fast-group">
+                    <{foreach name="fasts[7]" item="row"}>
+                    <div class="fast-item" data-target="#fast_unconnect" data-value="{$row}">{$row}</div>
+                    <{/foreach}>
+                </div>
+                <input type="hidden" id="fast_unconnect" name="fast_unconnect" value="">
+            </td>
+        </tr>
+        <tr>
+            <td>下次回访时间</td>
+            <td>
+                <input type="text" name="next_visit_time" class="form-control date" id="next_visit_time" autocomplete="off">
+            </td>
+        </tr>
+        <tr>
+            <td>标记颜色</td>
+            <td>
+                <div class="color-group">
+                    <div class="color-item" data-value="" data-target="#color" style="border: 1px solid #dcdcdc;color: #0C0C0C">无</div>
+                    <div class="color-item" data-value="#f7b55f" data-target="#color" style="background-color: #f7b55f;"></div>
+                    <div class="color-item" data-value="#8f64f0" data-target="#color" style="background-color: #8f64f0;"></div>
+                    <div class="color-item" data-value="#ab9ec8" data-target="#color" style="background-color: #ab9ec8;"></div>
+                    <div class="color-item" data-value="#f47258" data-target="#color" style="background-color: #f47258;"></div>
+                    <div class="color-item" data-value="#406ceb" data-target="#color" style="background-color: #406ceb;"></div>
+                    <div class="color-item" data-value="#ff0000" data-target="#color" style="background-color: #f45858;"></div>
+                </div>
+                <input type="hidden" name="color" value="" id="color">
+            </td>
+        </tr>
+        <tr class="textarea">
+            <td>回访内容</td>
+            <td>
+                <textarea id="auto-content" name="content" class="form-control" placeholder="请输入备注信息"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="hidden" name="allocate_id" value="{$params.id}">
+                <input type="hidden" name="redirect" value="reload">
+                <button type="submit" class="btn btn-success">添加跟进</button>
+                <button type="button" class="btn btn-warning btn-close">关闭</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<script>
+    $(document).on("submit", ".form-ajax-page", function(){
+        var url = $(this).attr('action');
+        var data = $(this).serialize();
+        var status = $('input[name="status"]:checked').val();
+        console.log(status);
+        if(status==undefined) {
+            layer.alert('请选择跟进状态');
+            return false;
+        }
+
+        var content = $('textarea[name="content"]').val();
+        if(content=='') {
+            layer.alert('请输入回访内容');
+            return false;
+        }
+
+        $.post(url, data, function (res) {
+            if(res.code == '200') {
+                if(res.redirect == 'dialog') {
+                    parent.layer.closeAll();
+                    parent.window.location.reload();
+                }if(res.redirect == 'reload') {
+                    parent.window.location.reload();
+                } else {
+                    window.location.replace(res.redirect);
+                }
+            } else {
+                alert(res.msg);
+            }
+        });
+        return false;
+    });
+</script>
 </body>
 </html>

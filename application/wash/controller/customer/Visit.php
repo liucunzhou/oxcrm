@@ -23,6 +23,22 @@ class Visit extends Backend
         $where[] = ['type', 'in', ['wash', 'other']];
         $statusList = \app\common\model\Intention::where($where)->order('sort,id')->select();
         $this->assign('statusList', $statusList);
+
+        $fasts = [
+            4   => [
+                '空号',
+                '无任何需求',
+                '有需求，客户已定',
+                '无结婚需求'
+            ],
+            7   => [
+                '电话无法接通',
+                '关机',
+                '客户直接挂断',
+                '停机'
+            ]
+        ];
+        $this->assign('fasts', $fasts);
     }
 
     /**
@@ -66,6 +82,8 @@ class Visit extends Backend
 
         if ($result1 && $result2) {
             $member->commit();
+            $allocate->save(['color'=>$params['color']]);
+
             ### 添加下次回访提醒
             if ($params['next_visit_time'] > 0) {
                 $Notice = new Notice();
@@ -81,6 +99,45 @@ class Visit extends Backend
             $member->rollback();
             return json(['code' => '500', 'msg' => '回访失败']);
         }
+    }
+
+    public function logs()
+    {
+        $get = $this->request->param();
+        ### 获取用户基本信息
+        $customer = Member::get($get['member_id']);
+        if (!$this->auth['is_show_entire_mobile']) {
+            $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
+            if (!empty($customer['mobile1'])) $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
+        }
+        if($customer['operate_id'] > 0) {
+            $users = \app\common\model\User::getUsers();
+            $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
+        }
+        $this->assign('customer', $customer);
+
+        ### 获取回访日志,检测是否拥有查看所有回访的权限
+        $visits = MemberVisit::getMemberVisitList($this->user, $this->auth, $customer);
+        $this->assign('visits', $visits);
+
+        $repeat = '';
+        if (!empty($customer['repeat_log'])) {
+            if ($this->auth['is_show_alias']) {
+                ### 显示别名，也就是大类
+                $repeat = $customer['repeat_platform_log'];
+            } else {
+                ### 显示来源
+                $repeat = $customer['repeat_log'];
+            }
+        }
+        $this->assign('repeat', $repeat);
+
+        // 获取意向状态、来源、酒店、权限
+        $this->assign('intentions', $this->status);
+        $this->assign('sources', $this->sources);
+        $this->assign('hotels', $this->hotels);
+        $this->assign('newsTypes', $this->newsTypes);
+        return $this->fetch();
     }
 
 }

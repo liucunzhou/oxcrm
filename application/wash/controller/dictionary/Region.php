@@ -20,4 +20,12 @@ class Region extends Backend
         return $this->fetch();
 
     }
+
+    public function getAreaList()
+    {
+        $post = $this->request->param();
+        $data = \app\common\model\Region::getAreaList($post['id']);
+
+        return json($data);
+    }
 }

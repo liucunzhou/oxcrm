@@ -42,7 +42,6 @@ class Allocate
 
     public static function updateAllocateByModel(&$model, &$user, &$data)
     {
-
         // $data['active_status'] = (int)$data['active_status'];
         $result = $model->allowField(true)->save($data);
         return $result;

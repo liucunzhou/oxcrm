@@ -7,17 +7,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
-    <script src="/assets/layui/layui.all.js"></script>
-    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
-    <script src="/assets/bootcss/js/bootstrap.min.js"></script>
-    <script src="/assets/lib/ox-common.js"></script>
-    <style>
-        
-    </style>
+    <{include file="common/meta"}>
+    <script src="/assets/lib/update.wash.js?{:rand(100000,100000)}"></script>
 </head>
 <body style="padding: 8px 12px;overflow: hidden;">
     <div class="tab-box">
@@ -34,9 +25,14 @@
                         <td>信息类型</td>
                         <td colspan="3" class="break">
                             <{foreach name="newsTypes" item="row"}>
-                                <label class="padding-right-8">
-                                    <input type="checkbox" name="news_type" value="{$key}" title="{$row}" checked disabled> {$row}
-                                </label>
+                            <label class="padding-right-8">
+                                <{if in_array($key, $selectNewsTypes)}>
+                                    <input type="checkbox" name="news_types[]" value="{$key}" title="{$row}" checked disabled="disabled"> {$row}
+                                <input type="hidden" name="news_types[]" value="{$key}" title="{$row}">
+                                <{else /}>
+                                 <input type="checkbox" name="news_types[]" value="{$key}" title="{$row}"> {$row}
+                                <{/if}>
+                            </label>
                             <{/foreach}>
                         </td>
                     </tr>
@@ -50,53 +46,58 @@
                             <input type="text" value="{$member.mobile}" class="form-control" readonly>
                         </td>
                     </tr>
+
                     <tr>
-                        <td>所在省份</td>
-                        <td>
-                            <select name="privance" class="form-control">
-                                <option value="0">--选择省份--</option>
-                                <{foreach name="provinceList" item="row"}>
-                                    <option value="{$row.id}">{$row.name}</option>
+                        <td>所在城市</td>
+                        <td class="region-group">
+                            <select name="city" class="form-control">
+                                <option value="">--选择城市--</option>
+                                <{foreach name="cityList" item="row"}>
+                                <{if $allocate.city_id == $row.id}>
+                                <option value="{$row.id}" selected>{$row.name}</option>
+                                <{else /}>
+                                <option value="{$row.id}">{$row.name}</option>
+                                <{/if}>
+                                <{/foreach}>
+                            </select>
+                            <select name="area" class="form-control" id="area">
+                                <option value="0">--选择区县--</option>
+                                <{foreach name="areaList" item="row"}>
+                                <option value="{$row.id}">{$row.name}</option>
                                 <{/foreach}>
                             </select>
                         </td>
-                        
-                        <td>所在城市</td>
+                        <td>已选区域</td>
                         <td>
-                            <select name="city" class="form-control">
-                                <option value="">--选择城市--</option>
-                            </select>
+                            <div class="form-control selected-item-list" id="zone-box">
+                                <{foreach name="zoneSelected" item="row"}>
+                                <div class="selected-item">{$row}</div>
+                                <{/foreach}>
+                            </div>
+                            <input type="hidden" name="area_id" id="area_id" value="{$member.area_id}">
+                            <input type="hidden" name="zone" id="zone" value="{$member.zone}">
                         </td>
                     </tr>
-                    <tr>
-                        <td>区域</td>
-                        <td>
-                            <select name="area_id" class="form-control">
-                                <option value="0">--选择区域--</option>
-                            </select>
-                        </td>
-                        <td>酒店</td>
-                        <td>
-                            <select name="hotel_id" class="form-control">
-                                <option value="0">--选择酒店--</option>
-                            </select>
-                        </td>
-                    </tr>
+
                     <tr>
                         <td>桌数</td>
-                        <td>
-                            <input type="text" name="banquet_size" value="{$member.banquet_size}" class="form-control">
+                        <td class="form-control-group">
+                            <input type="number" name="banquet_size" value="{$member.banquet_size}" class="form-control">
+                            <div class="delimiter">至</div>
+                            <input type="number" name="banquet_size_end" value="{$member.banquet_size_end}" class="form-control">
                         </td>
                         <td>预算</td>
-                        <td>
-                            <input type="text" name="budget" value="{$member.budget}" class="form-control">
+                        <td class="form-control-group">
+                            <input type="number" name="budget" value="{$member.budget}" class="form-control">
+                            <div class="delimiter">至</div>
+                            <input type="number" name="budget_end" value="{$member.budget_end}" class="form-control">
                         </td>
                         
                     </tr>
                     <tr>
                         <td>婚期</td>
                         <td>
-                            <input type="text" name="wedding_date" value="{$member.wedding_date}" class="form-control date">
+                            <input type="text" name="wedding_date" value="{$member.wedding_date}" class="form-control range-date">
                         </td>
                         <td></td>
                         <td></td>
@@ -115,14 +116,23 @@
                         <td>跟进状态</td>
                         <td>
                             <select name="active_status" class="form-control">
-                                <option value="0">--选择跟进状态--</option>
+                                <option value="0">未跟进</option>
+                                <{foreach name="statusList" item="row"}>
+                                    <option value="{$row.id}">{$row.title}</option>
+                                <{/foreach}>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>下次回访时间</td>
+                        <td>
+                            <input type="text" name="next_visit_time" readonly class="form-control date">
                         </td>
                     </tr>
                     <tr class="textarea">
                         <td>回访内容</td>
                         <td>
-                            <textarea name="remark" class="textarea form-control"></textarea>
+                            <textarea name="remark" class="form-control"></textarea>
                         </td>
                     </tr>
                     <tr>

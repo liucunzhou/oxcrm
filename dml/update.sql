@@ -41,3 +41,6 @@ alter table tk_member_allocate add level int not null default 0;
 
 alter table tk_member modify budget decimal(10, 2) not null default '0.00';
 alter table tk_member_allocate modify budget decimal(10, 2) not null default '0.00';
+
+alter table tk_member_visit add fast_unconnect varchar(100) not null default '';
+alter table tk_member_visit add fast_invalid varchar(100) not null default '';

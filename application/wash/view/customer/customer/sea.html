@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>客资公海</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <style>
+        .tips {
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>客资公海</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <!--<div class="layui-card-header">酒店管理</div>-->
+                <div class="layui-card-body">
+                    <div class="lay-box tips layui-bg-red">
+                        <div class="lay-text">
+                        重要提醒: 全号搜索,"自动获取"功能已关闭。请通过点击"确认获取",获取客资
+                        </div>
+                    </div>
+
+                    <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <select name="staff" lay-verify="" lay-search>
+                                    <option value="">员工列表</option>
+                                    <{foreach name="staffes" item="val"}>
+                                    <option value="{$val['id']}">{$val['realname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="number" name="keywords" id="keywords" lay-verify="0" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="source" lay-verify="" lay-search>
+                                    <option value="">平台来源</option>
+                                    <{foreach name="sources" item="val"}>
+                                    <option value="{$val['id']}">{$val['title']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <select name="city_id" id="city_id" lay-filter="city_id">
+                                    <option value="">请选择城市</option>
+                                    <{foreach item="val" name="cities"}>
+                                        <option value="{$val['id']}" <{eq name="$_GET['city_id']" value="$val['id']"}>selected<{/eq}>>{$val['shortname']}</option>
+                                    <{/foreach}>
+                                </select>
+                            </div>
+
+                            <div class="layui-inline">
+                                <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+                            </div>
+
+                            <div class="layui-inline ">
+                                <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table class="layui-hide" id="table" lay-filter="table"></table>
+
+                    <script type="text/html" id="toolbar">
+                        <div class="layui-btn-container">
+                            <a class="layui-btn layui-btn-sm" lay-event="searchCustomer">高级搜索</a>
+                            <a class="layui-btn layui-btn-sm" lay-event="doApply">申请回访</a>
+                            <{if $showGetEntireBtn==1}>
+                                <a class="layui-btn layui-btn-sm" lay-event="getMobileCustomer">确认获取</a>
+                            <{/if}>
+                        </div>
+                    </script>
+
+                    <script type="text/html" id="tool">
+                        <a class="layui-btn layui-btn-xs" lay-event="visitLogs">回访记录</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table', 'laydate'], function () {
+        var $ = layui.jquery
+            ,table = layui.table
+            ,laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
+
+        table.render({
+            elem: 'table'
+            ,url: "{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}"
+            ,toolbar: '#toolbar'
+            ,height: 'full-100'
+            ,title: '客资公海'
+            ,defaultToolbar: ['filter']
+            ,cols: [[
+                {
+                    "type": "radio",
+                    "width": 50,
+                    "fixed": "left"
+                }, {
+                    "field": "operator",
+                    "title": "录入者",
+                    "width": 88,
+                    "align": "center"
+                },{
+                    "field": "visit_amount",
+                    "title": "回访",
+                    "width": 60,
+                    "align": "center",
+                    "event": "visitLogs",
+                }, {
+                    "field": "realname",
+                    "title": "客户姓名",
+                    "width": 88,
+                    "align": "center"
+                }, {
+                    "field": "mobile",
+                    "title": "手机号",
+                    "width": 108,
+                    "align": "center"
+                }, {
+                    "field": "banquet_size",
+                    "title": "桌数",
+                    "width": 60,
+                    "align": "center"
+                }, {
+                    "field": "budget",
+                    "title": "预算",
+                    "width": 90,
+                    "align": "center"
+                },{
+                    "field": "wedding_date",
+                    "title": "订婚日期",
+                    "width": 106,
+                    "align": "center"
+                }, {
+                    "field": "zone",
+                    "title": "区域",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "hotel_text",
+                    "title": "酒店",
+                    "width": 200,
+                    "align": "center"
+                }, {
+                    "field": "source_text",
+                    "title": "客资渠道",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "active_status",
+                    "title": "回访状态",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "news_type",
+                    "title": "信息类型",
+                    "width": 100,
+                    "align": "center"
+                }, {
+                    "field": "remark",
+                    "title": "备注"
+                }, {
+                    "field": "create_time",
+                    "title": "创建日期",
+                    "width": 165
+                }
+            ]]
+            ,page: true
+            ,limit: 20
+            ,limits: [20,30]
+        });
+
+        var getSelectedIds = function (jsonArr) {
+            var ids = [];
+            jsonArr.forEach(function (value, key) {
+                ids.push(value.id)
+            });
+            return ids.join(',');
+        }
+
+        var height = window.innerHeight;
+        var width = window.innerWidth;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var checkedboxes = checkStatus.data;
+            var ids = '';
+            var url = '';
+            switch(obj.event){
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+
+                    break;
+                case 'doApply':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/customer.customer/doapply.html';
+                    $.post(url,{ids:ids}, function(res){
+                        if(res.code == '200') {
+                            layer.msg(res.msg);
+                            table.reload("table")
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
+                    break;
+
+                case 'getMobileCustomer':
+                    if (checkedboxes.length < 1) {
+                        layer.msg("请先选择要分配的客资");
+                        return false;
+                    }
+
+                    if(!confirm("确认获取客资?")) {
+                        return false;
+                    }
+
+                    ids = getSelectedIds(checkedboxes);
+                    url = '/index/allocate/getMobileCustomer.html';
+                    $.post(url,{ids:ids}, function(res){
+                        if(res.code == '200') {
+                            layer.msg(res.msg);
+                            // table.reload("table")
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    });
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function(obj){
+            var member_id = obj.data.id;
+            switch (obj.event) {
+                case 'visitLogs':
+                    url = '/customer.visit/logs.html?member_id=' + member_id;
+                    layer.open({
+                        type: 2,
+                        title: '回访记录',
+                        content: url,
+                        area: [width + 'px', height + 'px'],
+                        offset: 'rb'
+                    });
+                    break;
+            };
+        });
+    });
+</script>
+</body>
+</html>
