@@ -58,6 +58,25 @@ class Customer extends Backend
 
         $allStatus = Intention::column('id,title');
         $this->assign('allStatus', $allStatus);
+
+        $departmentId = $this->user['department_id'];
+        $staffs = User::getUsersInfoByDepartmentId($departmentId);
+        $this->assign('staffs', $staffs);
+
+        // 获取城市列表
+        $currentCityList = [
+            '802'   => '上海市',
+            '1965'  => '广州市',
+            '934'   => '杭州市',
+            '861'   => '苏州市'
+        ];
+        $currentCityIds = array_keys($currentCityList);
+        $where = [];
+        $where[]    = ['id', 'in', $currentCityIds];
+        $cityList = Region::where($where)->select();
+        $this->assign('cityList', $cityList);
+
+        //
     }
 
     /**
@@ -119,11 +138,11 @@ class Customer extends Backend
         $config = [
             'type' => 'bootstrap',
             'var_page' => 'page',
-            // 'page' => $params['page']
+            'page' => $params['page']
         ];
         if (!isset($params['limit'])) $params['limit'] = 30;
-        $list = $this->model->order('id desc')->paginate(15);
-        // print_r($list);
+        $list = $this->model->order('id desc')->paginate(15, false, $config);
+
         /**
         foreach ($list as $key=>&$row) {
             $member = \app\api\model\Member::get($row->member_id);
@@ -195,19 +214,8 @@ class Customer extends Backend
         // $provinceList = Region::getProvinceList();
         // $this->assign('provinceList', $provinceList);
         // 获取当前省份的城市列表
-        $fields = 'id,pid,shortname,name,level,pinyin,code,zip_code';
-        $currentCityList = [
-            '802'   => '上海市',
-            '1965'  => '广州市',
-            '934'   => '杭州市',
-            '861'   => '苏州市'
-        ];
-        $currentCityIds = array_keys($currentCityList);
-        $where = [];
-        $where[]    = ['id', 'in', $currentCityIds];
-        $cityList = Region::where($where)->field($fields)->select();
-        $this->assign('cityList', $cityList);
         // 获取当前城市的区县列表
+        $fields = 'id,pid,shortname,name,level,pinyin,code,zip_code';
         $where = [];
         $where['pid'] = $allocate->city_id;
         $areaList = Region::where($where)->field($fields)->select();

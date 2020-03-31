@@ -2,6 +2,7 @@ $(function(){
     $(".layui-right-side").click(function () {
         var layer = layui.layer;
         var url = $(this).attr('data-action');
+        var is_options = $(this).attr("data-is-option");
         var title = $(this).attr('title');
         var height = window.innerHeight;
         var percent = $(this).attr("data-width");
@@ -11,6 +12,19 @@ $(function(){
             percent = 0.6;
         }
         var width = window.innerWidth * percent;
+
+        if(is_options!=undefined) {
+            var ids = '';
+            $(".ids:checked").each(function (i, n) {
+                if(i==0) {
+                    ids = $(n).val();
+                } else {
+                    ids += ',' + $(n).val();
+                }
+            })
+            url += '?ids=' + ids;
+        }
+
 
         layer.open({
             type: 2,
@@ -224,4 +238,13 @@ $(function(){
 
     });
 
-})
+    // 全选
+    $("#check-all").click(function(){
+        if($(this).prop("checked")) {
+            $(".ids").prop('checked', true);
+        } else {
+            $(".ids").prop("checked", false);
+        }
+    });
+
+});

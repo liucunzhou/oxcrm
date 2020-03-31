@@ -11,6 +11,7 @@ class Backend extends Controller
     protected $user = [];
     protected $middleware = ['Auth'];
     protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式','婚纱摄影','婚车','婚纱礼服','男装','宝宝宴','会务'];
+    protected $allocateTypes = ['分配获取', '全号搜索', '公海申请', '自行添加'];
 
     protected function initialize()
     {
@@ -18,6 +19,7 @@ class Backend extends Controller
         $this->user = $user;
         $this->assign('user', $user);
         $this->assign('newsTypes', $this->newsTypes);
+        $this->assign('allocateTypes', $this->allocateTypes);
     }
 
     /**
