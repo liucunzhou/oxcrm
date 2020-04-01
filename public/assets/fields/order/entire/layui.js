@@ -22,7 +22,9 @@ layui.config({
         ,toolbar: false
         ,title: tableTitle
         ,cols: _cols
-        ,page: true
+        ,page: true,
+        limit: 30,
+        limits: [20, 30]
     });
 
     var height = window.innerHeight;

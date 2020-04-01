@@ -970,16 +970,19 @@ class Order extends Base
                 #### 获取婚庆订单信息
                 $where = [];
                 $where['order_id'] = $get['id'];
-                $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $wedding);
-                $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-                if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-                $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $weddingOrders = OrderWeddingSuborder::where($where)->select();
-                $this->assign('weddingOrders', $weddingOrders);
+                $wedding = OrderWedding::where($where)->field('id', true)->find();
+                if(!empty($wedding)) {
+                    $wedding = $wedding->getData();
+                    $order = array_merge($order, $wedding);
+                    $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+                    if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
+                    $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
+                    #### 获取婚宴二销订单信息
+                    $where = [];
+                    $where['order_id'] = $get['id'];
+                    $weddingOrders = OrderWeddingSuborder::where($where)->select();
+                    $this->assign('weddingOrders', $weddingOrders);
+                }
 
 
                 #### 获取婚宴收款信息
