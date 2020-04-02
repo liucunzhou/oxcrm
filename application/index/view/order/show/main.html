@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>查看订单信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
+    <style>
+        .layui-form-label {
+            width: 6em;
+        }
+        .layui-form-label-normal{
+            width: 80px;
+        }
+
+        .no-padding{
+            padding: 0!important;
+        }
+
+        .no-margin{
+            margin: 0!important;
+        }
+
+        .layui-table td, .layui-table th{
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<!--合同基本信息-->
+<{include file="order/show/fragment/contract" /}>
+
+<!--客资基本信息-->
+<{include file="order/show/fragment/customer" /}>
+
+<!--婚宴基本信息-->
+<{include file="order/show/fragment/banquet" /}>
+
+<!--婚庆基本信息-->
+<{include file="order/show/fragment/wedding" /}>
+
+<!--收款信息-->
+<{include file="order/show/fragment/pay_steps" /}>
+
+<!-- 一站式收款信息 -->
+<{include file="order/show/fragment/entire_receivables" /}>
+
+<!--婚宴付款单-->
+<div class="layui-card">
+    <div class="layui-card-header">
+        婚宴付款单
+    </div>
+    <div class="layui-card-body no-margin no-padding">
+        <{include file="order/entire/edit/fragment/banquet_payment"}>
+    </div>
+</div>
+
+<!--婚庆付款信息-->
+<div class="layui-card">
+    <div class="layui-card-header">
+        婚庆付款信息
+        <a data-title="添加婚庆付款" class="layui-icon layui-icon-add-circle add_wedding_payment" style="color: #1E9FFF;" href="javascript:void(0);" data-action="{:url('order/createWeddingPayment', ['order_id'=>$data['id']])}">
+            添加婚庆付款
+        </a>
+    </div>
+    <div class="layui-card-body no-margin no-padding">
+        <{include file="order/entire/edit/fragment/wedding_payment" /}>
+    </div>
+</div>
+</body>
+</html>

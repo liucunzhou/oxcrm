@@ -352,36 +352,107 @@ class order extends Command
     public function initMemberByRelation()
     {
         $file = file_get_contents("./member.txt");
-        $rows = explode("/n", $file);
+        $rows = explode("\n", $file);
 
         foreach ($rows as $row) {
             $arr = explode(":::", $row);
-            print_r($arr);
-            continue;
+            if(count($arr) < 3) continue;
             if (!empty($arr[0]) && empty($arr[1])) {
                 $where = [];
                 $where[] = ['mobiles', 'like', '%{$arr[0]}%'];
-                $relation = MemberRelation::where($where)->find();
-                $mobiles = $relation->mobiles;
-                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+                $relation = MobileRelation::where($where)->find();
+                if(empty($relation)) {
+                    file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
+                    echo $arr[2]."失败\n";
+                    continue;
+                }
+
+                $mobiles = explode(',',$relation->mobiles);
+                $where1 = [];
+                $where1[] = ['mobile', 'in', $mobiles];
+                $where2 = [];
+                $where2[] = ['mobile1', 'in', $mobiles];
+                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where($where1)->whereOr($where2)->find();
+                echo MemberAllocate::getLastSql();
+                echo "\n";
+                if($allocate) {
+                    echo $allocate->id."成功\n";
+                } else {
+                    file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
+                    echo $arr[2]."失败\n";
+                }
+
             } else if (empty($arr[0]) && !empty($arr[1])) {
                 $where = [];
                 $where[] = ['mobiles', 'like', '%{$arr[1]}%'];
-                $relation = MemberRelation::where($where)->find();
-                $mobiles = $relation->mobiles;
-                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+                $relation = MobileRelation::where($where)->find();
+                if(empty($relation)) {
+                    file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
+                    echo $arr[2]."失败\n";
+                    continue;
+                }
+
+                $mobiles = explode(',',$relation->mobiles);
+                $where1 = [];
+                $where1[] = ['mobile', 'in', $mobiles];
+                $where2 = [];
+                $where2[] = ['mobile1', 'in', $mobiles];
+                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where($where1)->whereOr($where2)->find();
+                echo MemberAllocate::getLastSql();
+                echo "\n";
+                if($allocate) {
+                    echo $allocate->id."成功\n";
+                } else {
+                    file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
+                    echo $arr[2]."失败\n";
+                }
             } else {
                 $where = [];
                 $where[] = ['mobiles', 'like', '%{$arr[0]}%'];
-                $relation = MemberRelation::where($where)->find();
-                $mobiles = $relation->mobiles;
-                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+                $relation = MobileRelation::where($where)->find();
+                if(!empty($relation)) {
+                    $mobiles = explode(',',$relation->mobiles);
+                    $where1 = [];
+                    $where1[] = ['mobile', 'in', $mobiles];
+                    $where2 = [];
+                    $where2[] = ['mobile1', 'in', $mobiles];
+                    $allocate1 = MemberAllocate::where('user_id', '=', $arr[2])->where($where1)->whereOr($where2)->find();
+                    echo MemberAllocate::getLastSql();
+                } else {
+                    $allocate1 = [];
+                }
 
                 $where = [];
                 $where[] = ['mobiles', 'like', '%{$arr[1]}%'];
-                $relation = MemberRelation::where($where)->find();
-                $mobiles = $relation->mobiles;
-                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+                $relation = MobileRelation::where($where)->find();
+                if(!empty($relation)) {
+                    $mobiles = explode(',',$relation->mobiles);
+                    $where1 = [];
+                    $where1[] = ['mobile', 'in', $mobiles];
+                    $where2 = [];
+                    $where2[] = ['mobile1', 'in', $mobiles];
+                    $allocate2 = MemberAllocate::where('user_id', '=', $arr[2])->where($where1)->whereOr($where2)->find();
+                    echo MemberAllocate::getLastSql();
+                } else {
+                    $allocate2 = [];
+                }
+
+                if(!empty($allocate1) && empty($allocate2)) {
+                    $allocate = $allocate1;
+                } else if (empty($allocate1) && !empty($allocate2)) {
+                    $allocate = $allocate2;
+                } else if (!empty($allocate1) && !empty($allocate2)) {
+                    $allocate = $allocate1;
+                } else {
+                    $allocate = false;
+                }
+
+                if($allocate) {
+                    echo $allocate->id."成功\n";
+                } else {
+                    file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
+                    echo $arr[2]."失败\n";
+                }
             }
         }
     }

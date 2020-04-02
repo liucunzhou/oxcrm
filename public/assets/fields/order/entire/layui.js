@@ -53,7 +53,7 @@ layui.config({
         var id = obj.data.id;
         switch (obj.event) {
             case 'editOrder':
-                url = '/index/order/editorder.html?id=' + id;
+                url = '/index/order.Order/editorder.html?id=' + id;
                 top.layui.index.openTabsPage(url, '编辑订单');
                 break;
 
@@ -93,7 +93,7 @@ layui.config({
                 break;
 
             case 'showOrder':
-                url = '/index/order/showorder.html?id=' + id;
+                url = '/index/order.order/showorder.html?id=' + id;
                 top.layui.index.openTabsPage(url, '查看订单详情');
                 break;
 
