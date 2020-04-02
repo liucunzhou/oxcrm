@@ -110,7 +110,6 @@ class Ring extends Command
         }
     }
 
-
     /**
      * 初始化initCall
      */

@@ -3,6 +3,11 @@
 namespace app\common\command;
 
 use app\common\model\Hotel;
+use app\common\model\Member;
+use app\common\model\MemberAllocate;
+use app\common\model\MemberRelation;
+use app\common\model\Mobile;
+use app\common\model\MobileRelation;
 use app\common\model\OrderBanquet;
 use app\common\model\OrderWedding;
 use app\common\model\Store;
@@ -52,10 +57,19 @@ class order extends Command
             case 'initSaleId':
                 $this->initSaleId();
                 break;
+
+            case 'initMemberId':
+                $this->initMemberId();
+                break;
+
+            case 'initMemberByRelation':
+                $this->initMemberByRelation();
+                break;
         }
     }
 
-    public function initOrder(){
+    public function initOrder()
+    {
         $types = [
             '婚宴' => 0,
             '婚庆' => 1,
@@ -188,18 +202,18 @@ class order extends Command
             $where = [];
             $where['title'] = $row->hotel_text;
             $store = Store::where($where)->find();
-            if(!empty($store)) {
+            if (!empty($store)) {
                 $data = [];
                 $data['hotel_id'] = $store->id;
                 $result = $row->save($data);
                 // echo $row->getLastSql();
                 // echo "\n";
                 if (!$result) {
-                    echo $row->id."订单匹配失败\n";
+                    echo $row->id . "订单匹配失败\n";
                 }
             } else {
-                file_put_contents('./hotels.txt', $row->hotel_text."\n", FILE_APPEND);
-                echo $row->id."酒店未匹配\n";
+                file_put_contents('./hotels.txt', $row->hotel_text . "\n", FILE_APPEND);
+                echo $row->id . "酒店未匹配\n";
             }
         }
     }
@@ -209,23 +223,24 @@ class order extends Command
         $orderModel = new \app\common\model\Order();
         $order = $orderModel->select();
         foreach ($order as $row) {
+            $realname = trim($row->sale);
             $where = [];
             $where[] = ['role_id', '>', 0];
-            $where[] = ['realname', 'like', "%{$row->sale}%"];
+            $where[] = ['realname', 'like', "%{$realname}%"];
             $where[] = ['is_valid', '=', 1];
             $user = User::where($where)->find();
-            if(!empty($user)) {
+            if (!empty($user)) {
                 $data = [];
                 $data['salesman'] = $user->id;
                 $result = $row->save($data);
                 // echo $row->getLastSql();
                 // echo "\n";
                 if (!$result) {
-                    echo $row->sale."订单匹配失败\n";
+                    echo $row->sale . "订单匹配失败\n";
                 }
             } else {
-                file_put_contents('./sale.txt', $row->id.":::".$row->sale."\n", FILE_APPEND);
-                echo $row->sale."未匹配\n";
+                file_put_contents('./sale.txt', $row->id . ":::" . $row->sale . "\n", FILE_APPEND);
+                echo $row->sale . "未匹配\n";
             }
         }
     }
@@ -234,7 +249,7 @@ class order extends Command
     public function initStore()
     {
         $citys = [
-            '0'     => 0,
+            '0' => 0,
             '上海市' => '802',
             '广州市' => '1965',
             '杭州市' => '934',
@@ -286,10 +301,87 @@ class order extends Command
             $data['star'] = $hotel->ho_drill;
             $data['address'] = $hotel->ho_adddres;
             $rs = $store->save($data);
-            if($rs) {
-                echo $hotel->ho_name."初始化成功\n";
+            if ($rs) {
+                echo $hotel->ho_name . "初始化成功\n";
             } else {
-                echo $hotel->ho_name."初始化失败\n";
+                echo $hotel->ho_name . "初始化失败\n";
+            }
+        }
+    }
+
+    public function initMemberId()
+    {
+        $orderModel = new \app\common\model\Order();
+        $order = $orderModel->select();
+        foreach ($order as $row) {
+            $where1 = [];
+            $where2 = [];
+            $where1[] = ['user_id', '=', $row->salesman];
+            if (empty($row->bridegroom_mobile) && empty($row->bride_mobile)) {
+                file_put_contents('./member-no.txt', $row->sign_date . ":::" . $row->bridegroom_mobile . "\n", FILE_APPEND);
+                continue;
+            } else if (!empty($row->bridegroom_mobile) && empty($row->bride_mobile)) {
+                $where1[] = ['mobile', '=', $row->bridegroom_mobile];
+                $where2[] = ['mobile1', '=', $row->bridegroom_mobile];
+            } else if (empty($row->bridegroom_mobile) && !empty($row->bride_mobile)) {
+                $where1[] = ['mobile', '=', $row->bride_mobile];
+                $where2[] = ['mobile1', '=', $row->bride_mobile];
+            } else {
+                $where1[] = ['mobile', 'in', [$row->bridegroom_mobile, $row->bride_mobile]];
+                $where2[] = ['mobile1', 'in', [$row->bridegroom_mobile, $row->bride_mobile]];
+            }
+
+            $mobile = MemberAllocate::where($where1)->whereOr($where2)->find();
+            if (!empty($mobile)) {
+                $data = [];
+                // $data['salesman'] = $user->id;
+                // $result = $row->save($data);
+                // echo $row->getLastSql();
+                // echo "\n";
+                $result = 1;
+                if (!$result) {
+                    echo $row->sale . "订单匹配失败\n";
+                }
+            } else {
+                file_put_contents('./member.txt', $row->bride_mobile . ":::" . $row->bridegroom_mobile . ":::".$row->salesman."\n", FILE_APPEND);
+                echo $row->sale . "未匹配\n";
+            }
+        }
+    }
+
+    public function initMemberByRelation()
+    {
+        $file = file_get_contents("./member.txt");
+        $rows = explode("/n", $file);
+
+        foreach ($rows as $row) {
+            $arr = explode(":::", $row);
+            print_r($arr);
+            continue;
+            if (!empty($arr[0]) && empty($arr[1])) {
+                $where = [];
+                $where[] = ['mobiles', 'like', '%{$arr[0]}%'];
+                $relation = MemberRelation::where($where)->find();
+                $mobiles = $relation->mobiles;
+                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+            } else if (empty($arr[0]) && !empty($arr[1])) {
+                $where = [];
+                $where[] = ['mobiles', 'like', '%{$arr[1]}%'];
+                $relation = MemberRelation::where($where)->find();
+                $mobiles = $relation->mobiles;
+                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+            } else {
+                $where = [];
+                $where[] = ['mobiles', 'like', '%{$arr[0]}%'];
+                $relation = MemberRelation::where($where)->find();
+                $mobiles = $relation->mobiles;
+                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
+
+                $where = [];
+                $where[] = ['mobiles', 'like', '%{$arr[1]}%'];
+                $relation = MemberRelation::where($where)->find();
+                $mobiles = $relation->mobiles;
+                $allocate = MemberAllocate::where('user_id', '=', $arr[2])->where('mobile', 'in', $mobiles)->whereOr('mobile1', 'in', $mobiles)->find();
             }
         }
     }

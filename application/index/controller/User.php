@@ -396,7 +396,10 @@ class User extends Base
         $totals = 0;
         foreach ($allocates as $allocate) {
             $data = $allocate->getData();
-            $rs = MemberAllocate::updateAllocateData($request['staff'], $allocate->member_id, $data);
+            $data['user_id'] = $request['staff'];
+            $data['update_time'] = 0;
+            $newAllocate = new MemberAllocate();
+            $rs = $newAllocate->insert($data);
             if ($rs) {
                 $totals = $totals + 1;
             }
