@@ -2,8 +2,11 @@
 
 namespace app\common\command;
 
+use app\common\model\Hotel;
 use app\common\model\OrderBanquet;
 use app\common\model\OrderWedding;
+use app\common\model\Store;
+use app\common\model\User;
 use app\index\controller\Count;
 use think\console\Command;
 use think\console\Input;
@@ -23,6 +26,36 @@ class order extends Command
 
     protected function execute(Input $input, Output $output)
     {
+        $action = '';
+        if ($input->hasOption("action")) {
+            $action = $input->getOption("action");
+        } else {
+            $output->writeln("请输入要执行的操作");
+            return false;
+        }
+
+
+        switch ($action) {
+            // 门店未回访提醒
+            case 'initOrder':
+                $this->initOrder();
+                break;
+
+            case 'initStoreId':
+                $this->initStoreId();
+                break;
+
+            case 'initStore':
+                $this->initStore();
+                break;
+
+            case 'initSaleId':
+                $this->initSaleId();
+                break;
+        }
+    }
+
+    public function initOrder(){
         $types = [
             '婚宴' => 0,
             '婚庆' => 1,
@@ -40,6 +73,7 @@ class order extends Command
             }
             if ($row[0] == '合同编号') continue;
             // 订单类型
+            $data = [];
             if (empty($row[12])) {
                 $data['news_type'] = 2;
                 $data['brand_text'] = '-1';
@@ -55,8 +89,6 @@ class order extends Command
             } else if ($row[12] == '一站式') {
                 $data['news_type'] = 2;
             }
-
-            $data = [];
             !empty($row[0]) && $data['contract_no'] = $row[0];
             !empty($row[1]) && $data['sign_date'] = strtotime($row[1]);
             !empty($row[2]) && $data['event_date'] = strtotime($row[2]);
@@ -144,6 +176,120 @@ class order extends Command
                 } else {
                     echo $row[5] . "婚宴写入失败\n";
                 }
+            }
+        }
+    }
+
+    public function initStoreId()
+    {
+        $orderModel = new \app\common\model\Order();
+        $order = $orderModel->select();
+        foreach ($order as $row) {
+            $where = [];
+            $where['title'] = $row->hotel_text;
+            $store = Store::where($where)->find();
+            if(!empty($store)) {
+                $data = [];
+                $data['hotel_id'] = $store->id;
+                $result = $row->save($data);
+                // echo $row->getLastSql();
+                // echo "\n";
+                if (!$result) {
+                    echo $row->id."订单匹配失败\n";
+                }
+            } else {
+                file_put_contents('./hotels.txt', $row->hotel_text."\n", FILE_APPEND);
+                echo $row->id."酒店未匹配\n";
+            }
+        }
+    }
+
+    public function initSaleId()
+    {
+        $orderModel = new \app\common\model\Order();
+        $order = $orderModel->select();
+        foreach ($order as $row) {
+            $where = [];
+            $where[] = ['role_id', '>', 0];
+            $where[] = ['realname', 'like', "%{$row->sale}%"];
+            $where[] = ['is_valid', '=', 1];
+            $user = User::where($where)->find();
+            if(!empty($user)) {
+                $data = [];
+                $data['salesman'] = $user->id;
+                $result = $row->save($data);
+                // echo $row->getLastSql();
+                // echo "\n";
+                if (!$result) {
+                    echo $row->sale."订单匹配失败\n";
+                }
+            } else {
+                file_put_contents('./sale.txt', $row->id.":::".$row->sale."\n", FILE_APPEND);
+                echo $row->sale."未匹配\n";
+            }
+        }
+    }
+
+    // 初始化Store表
+    public function initStore()
+    {
+        $citys = [
+            '0'     => 0,
+            '上海市' => '802',
+            '广州市' => '1965',
+            '杭州市' => '934',
+            '苏州市' => '861'
+        ];
+
+        $areas = [
+            '松江区' => '816',
+            '江干区' => '937',
+            '浦东新区' => '814',
+            '海珠区' => '1968',
+            '滨江区' => '940',
+            '番禺区' => '1972',
+            '白云区' => '1970',
+            '相城区' => '864',
+            '萧山区' => '941',
+            '虎丘区' => '862',
+            '虹口区' => '809',
+            '西湖区' => '939',
+            '越秀区' => '1967',
+            '金山区' => '815',
+            '长宁区' => '805',
+            '闵行区' => '811',
+            '闸北区' => '808',
+            '青浦区' => '817',
+            '静安区' => '806',
+            '黄埔区' => '1971',
+            '黄浦区' => '803',
+        ];
+
+        $hotels = Hotel::select();
+        foreach ($hotels as $hotel) {
+            $store = new Store();
+            $data = [];
+            $data['title'] = $hotel->ho_name;
+            $data['wechat_id'] = $hotel->id;
+            // $data['sttore_no'] = '';
+            $data['brand_id'] = 0;
+            $data['admin_id'] = 1;
+            $data['is_entire'] = $hotel->ho_money_max;
+            $data['titlepic'] = $hotel->ho_coverurl;
+            $data['images'] = $hotel->ho_carouselurll . ':::' . $hotel->ho_carouselurle . ':::' . $hotel->ho_carouselurls . ':::' . $hotel->ho_carouselurlsh;
+            $data['type'] = $hotel->ho_type;
+            $data['characteristics'] = $hotel->ho_characteristics;
+            $data['province_id'] = 0;
+            $data['city_id'] = isset($citys[$hotel->ho_city]) ? $citys[$hotel->ho_city] : 0;
+            $data['area_id'] = isset($areas[$hotel->ho_area]) ? $areas[$hotel->ho_area] : 0;
+            $data['min_price'] = $hotel->ho_money_min;
+            $data['star'] = $hotel->ho_drill;
+            $data['address'] = $hotel->ho_adddres;
+            $rs = $store->save($data);
+            if($rs) {
+                echo $hotel->ho_name."初始化成功\n";
+            } else {
+                echo $hotel->ho_name."初始化失败\n";
             }
         }
     }

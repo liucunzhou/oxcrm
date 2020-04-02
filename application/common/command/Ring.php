@@ -39,7 +39,7 @@ class Ring extends Command
             $start = $input->getOption("start");
         } else {
             // echo $start = date('Y-m-d', time()).' 00:00::00';
-            $start = date('Y-m-d H:i:s',strtotime('yestoday'));
+            $start = date('Y-m-d H:i:s',strtotime('yesterday'));
         }
 
         if ($input->hasOption('end')) {
@@ -57,6 +57,7 @@ class Ring extends Command
         switch ($action) {
             // 门店未回访提醒
             case 'initRecordList':
+                echo $start;
                 $this->initRecordList($start, $end, 0);
                 break;
 
