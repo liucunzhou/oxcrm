@@ -34,7 +34,7 @@ class Department extends Backend
         $map[] = ['parent_id', '=', $param['id']];
         $result = model('department')->where($map)->order('path,sort')->select();
         foreach ($result as &$row) {
-            $users = \app\common\model\User::getUsersByDepartmentId($row->id);
+            $users = \app\common\model\User::getUsersByDepartmentId($row->id, false);
             $row['staff_amount'] = count($users);
         }
         $this->assign('list', $result);
