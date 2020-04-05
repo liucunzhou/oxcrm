@@ -1,0 +1,92 @@
+<ol class="breadcrumb">
+    <{foreach name="breadcrumb" item="row"}>
+        <li>
+            <a href="javascript:void(0);"
+               class="btn-ajax"
+               data-target="#department-detail"
+               data-action="/index/organization.department/subdepartments.html?id={$row.id}">
+                {$row.title}</a>
+        </li>
+    <{/foreach}>
+</ol>
+
+<div class="panel" id="subdepartment-list">
+    <div class="panel-head">
+        <i></i>
+        下级部门
+    </div>
+    <div class="panel-toolbar">
+        <div class="btn-group">
+            <div class="btn btn-sm btn-default btn-right-side"
+                 title="添加子部门"
+                 data-target="#department-detail"
+                 data-action="/index/organization.department/adddepartment.html?pid={$row.id}">
+                添加子部门</div>
+            <div class="btn btn-sm btn-info">部门排序</div>
+            <div class="btn btn-sm btn-default btn-right-side"
+                 title="编辑部门信息"
+                 data-target="#department-detail"
+                 data-action="/index/organization.department/editdepartment.html?id={$row.id}">
+                编辑部门</div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <{if !$list->isEmpty()}>
+        <ul class="list-group">
+            <{foreach name="list" item="row"}>
+            <li class="list-group-item btn-ajax"
+                data-target="#department-detail"
+                data-action="/index/organization.department/subdepartments.html?id={$row.id}">
+                <span class="badge">{$row.staff_amount}</span>
+                {$row.title}
+            </li>
+            <{/foreach}>
+        </ul>
+        <{else /}>
+            <div class="empty">当前部门不包含下级部门</div>
+        <{/if}>
+    </div>
+</div>
+
+<div class="panel" id="user-list">
+    <div class="panel-head">
+        <i></i>
+        部门人员
+    </div>
+    <div class="panel-toolbar">
+        <div class="btn-group">
+            <div class="btn btn-sm btn-default">添加成员</div>
+            <div class="btn btn-sm btn-info">调整部门</div>
+            <div class="btn btn-sm btn-default">调整顺序</div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>用户名</th>
+                    <th>手机号</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <{foreach name="users" item="row"}>
+            <tr>
+                <td>{$row.id}</td>
+                <td>{$row.realname}</td>
+                <td>{$row.nickname}</td>
+                <td>{$row.mobile}</td>
+                <td>
+                    <div class="btn-group">
+                        <div class="btn btn-sm btn-success btn-right-side">编辑</div>
+                        <div class="btn btn-sm btn-primary btn-right-side">授权</div>
+                        <div class="btn btn-sm btn-success btn-right-side">酒店</div>
+                        <div class="btn btn-sm btn-primary btn-right-side">离职</div>
+                    </div>
+                </td>
+            </tr>
+            <{/foreach}>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="layui-card">
+    <div class="layui-card-header layui-bg-blue">
+        <div class="layui-card-header-left">合同信息</div>
+        <div class="layui-card-header-right">
+            <a title="编辑合同信息"
+               class="layui-icon layui-icon-edit white layer-right-side"
+               href="javascript:void(0);"
+               data-action="{:url('order/createWeddingPayment', ['order_id'=>$data['id']])}">编辑</a>
+        </div>
+    </div>
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>签约公司</th>
+                    <th>订单类型</th>
+                    <th>合同编号</th>
+                    <th>签约日期</th>
+                    <th>举办日期</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$data.company_id}</td>
+                    <td>{$data.news_type}</td>
+                    <td>{$data.contract_no|default='-'}</td>
+                    <td>{$data.sign_date|default='-'}</td>
+                    <td>{$data.event_date|default='-'}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th>酒店名称</th>
+                    <th>宴会厅</th>
+                    <th>合作模式</th>
+                    <th>引流销售</th>
+                    <th>签单销售</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$data.hotel_text|default='-'}</td>
+                    <td>{$data.banquet_hall_name|default='-'}</td>
+                    <td>{$data.cooperation_mode|default='-'}</td>
+                    <td>{$data.recommend_salesman|default='-'}</td>
+                    <td>{$data.sale|default='-'}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+
+
+            <thead>
+                <tr>
+                    <th>新郎姓名</th>
+                    <th>新郎手机</th>
+                    <th>新郎微信</th>
+                    <th>新娘姓名</th>
+                    <th>新娘手机</th>
+                    <th>新娘微信</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$data.bridegroom|default='-'}</td>
+                    <td>{$data.bridegroom_mobile|default='-'}</td>
+                    <td>{$data.bridegroom_wechat|default='-'}</td>
+                    <td>{$data.bride|default='-'}</td>
+                    <td>{$data.bride_mobile|default='-'}</td>
+                    <td>{$data.bride_wechat|default='-'}</td>
+                </tr>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th>客户姓名</th>
+                    <th>客户手机号</th>
+                    <th>客资来源</th>
+                    <th>积分</th>
+                    <th>积点</th>
+                    <th>身份证</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$customer.realname|default='-'}</td>
+                    <td>{$customer.mobile|default='-'}</td>
+                    <td>{$customer.source_text|default='-'}</td>
+                    <td>{$data.score|default='-'}</td>
+                    <td>{$data.point|default='-'}</td>
+                    <td>{$data.idcard|default='-'}</td>
+                </tr>
+            </tbody>
+
+            <thead>
+                <tr>
+                    <th colspan="3">备注</th>
+                    <th colspan="3">家庭住址</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3">{$data.remark|default='-'}</td>
+                    <td colspan="3">{$data.address|default='-'}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

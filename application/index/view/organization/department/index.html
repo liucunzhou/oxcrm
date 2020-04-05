@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>部门管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/assets/style/department.css">
+    <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/lib/department.js?{:rand(100000,1000000)}"></script>
+</head>
+<body>
+<div class="full-flex">
+    <div class="full-flex-left width-p-20">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="layui-text-center">ID</th>
+                    <th>部门名称</th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach name="list" item="row"}>
+                    <tr>
+                        <td class="layui-text-center">{$row.id}</td>
+                        <td>
+                            <a href="javascript:void(0);"
+                               class="btn-ajax"
+                               data-target="#department-detail"
+                               data-action="/index/organization.department/subdepartments.html?id={$row.id}">{$row.title}</a>
+                        </td>
+                    </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+    <div class="full-flex-right" id="department-detail">
+        <ol class="breadcrumb">
+            <li><a href="#">上海誉思酒店管理有限公司</a></li>
+        </ol>
+
+        <div class="panel" id="subdepartment-list">
+            <div class="panel-head">
+                <i></i>
+                下级部门
+            </div>
+            <div class="panel-toolbar">
+                <div class="btn-group">
+                    <div class="btn btn-sm btn-default btn-right-side"
+                         title="添加子部门"
+                         data-target="#department-detail"
+                         data-action="/index/organization.department/adddepartment.html?pid=1">
+                        添加子部门</div>
+                    <div class="btn btn-sm btn-info">部门排序</div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <{foreach name="list" item="row"}>
+                        <li class="list-group-item btn-ajax"
+                            data-target="#department-detail"
+                            data-action="/index/organization.department/subdepartments.html?id={$row.id}">
+                            <span class="badge">{$row.staff_amount}</span>
+                            {$row.title}
+                        </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

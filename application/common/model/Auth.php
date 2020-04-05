@@ -64,7 +64,7 @@ class Auth extends Model
     public static function getMenuList()
     {
         $nlist = [];
-        $list = self::getList();
+        $list = self::getList(true);
         foreach ($list as $value) {
             if($value['is_menu'] != 1) continue;
             $nlist[] = $value;

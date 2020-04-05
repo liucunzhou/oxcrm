@@ -8,7 +8,7 @@ class Tab
         $tabs = [];
 
         $vars = [];
-        $url = url('Source/index', $vars);
+        $url = url('/index/dictionary.Source/index', $vars);
         if (!isset($get['parent_id'])) {
             $checked = 1;
         } else {
@@ -26,7 +26,7 @@ class Tab
             $checked = 0;
         }
         $vars = ['parent_id' => 'yes'];
-        $url = url('Source/index', $vars);
+        $url = url('/index/dictionary.Source/index', $vars);
         $tabs[] = [
             'text' => '渠道',
             'url' => $url,

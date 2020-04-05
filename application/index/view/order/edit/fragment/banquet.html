@@ -1,0 +1,229 @@
+<div class="layui-card">
+    <div class="layui-card-header layui-bg-blue">
+        <div class="layui-card-header-left">
+            婚宴基本信息
+        </div>
+
+        <div class="layui-card-header-right">
+            <a title="编辑婚宴基本信息"
+               class="white layer-right-side layui-icon layui-icon-edit"
+               href="javascript:void(0);"
+               data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}">编辑婚宴基本信息</a>
+
+            <a title="添加婚宴二销信息"
+               class="white layer-right-side layui-icon layui-icon-add-1"
+               href="javascript:void(0);"
+               data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}">添加婚宴二销信息</a>
+
+            <a title="添加婚宴收款信息"
+               class="white layer-right-side layui-icon layui-icon-add-1"
+               href="javascript:void(0);"
+               data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}">添加婚宴收款信息</a>
+
+            <a title="添加婚宴付款信息"
+               class="white layer-right-side layui-icon layui-icon-add-1"
+               href="javascript:void(0);"
+               data-action="{:url('order/createBanquetReceivable', ['order_id'=>$data['id']])}">添加婚宴付款信息</a>
+        </div>
+    </div>
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>婚宴总金额</th>
+                <th>桌数</th>
+                <th>餐标</th>
+                <th>酒水费用</th>
+                <th>加菜换菜</th>
+                <th>优惠金额</th>
+                <th>服务费总计</th>
+                <th>婚礼堂</th>
+                <th>婚礼堂价格</th>
+                <th>其他</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$banquet.banquet_totals}</td>
+                <td>{$banquet.table_amount}</td>
+                <td>{$banquet.table_price}</td>
+                <td>{$banquet.wine_fee}</td>
+                <td>{$banquet.banquet_update_table}</td>
+                <td>{$banquet.banquet_discount}</td>
+                <td>{$banquet.service_fee}</td>
+                <td>{$banquet.banquet_ritual_id}</td>
+                <td>{$banquet.banquet_ritual_hall|default="-"}</td>
+                <td>{$banquet.banquet_other}</td>
+                <td>{$banquet.banquet_remark}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<{if $banquetOrders->isEmpty()}>
+    <div class="layui-card">
+        <div class="layui-card-header">婚宴二销信息</div>
+        <div class="layui-card-body no-padding no-margin">
+            <table class="layui-table no-padding no-margin">
+                <colgroup>
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>桌数</th>
+                    <th>餐标</th>
+                    <th>订单金额</th>
+                    <th>审核状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <{foreach name="banquetOrders" item="row"}>
+                <tr>
+                    <td>{$row['banquet_order_no']}</td>
+                    <td>{$row['table_amount']}</td>
+                    <td>{$row['table_price']}</td>
+                    <td>{$row['banquet_totals']}</td>
+                    <td>{$confirmStatusList[$row['check_banquet_suborder_status']]}</td>
+                    <td>
+                        <div class="layui-btn-group">
+                            <a href="javascript:void(0);" class="{:auth('order/editBanquetSuborder')} layui-btn layui-btn-xs lay-right" data-title="编辑婚宴二销信息" data-action="{:url('order/editBanquetSuborder', ['id'=>$row['id']])}">编辑</a>
+                            <a href="javascript:void(0);" class="{:auth('order/delBanquetSuborder')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api">删除</a>
+                            <a href="javascript:void(0);" class="{:auth('order/confirmBanquetSuborder')} layui-btn layui-btn-xs lay-right" data-title="审核婚宴二销信息" data-action="{:url('order/confirmBanquetSuborder', ['id'=>$row['id']])}">审核</a>
+                        </div>
+                    </td>
+                </tr>
+                <{/foreach}>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<{/if}>
+
+<{if $banquetReceivables->isEmpty()}>
+<div class="layui-card">
+    <div class="layui-card-header">婚宴收款信息</div>
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="240">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>收款日期</th>
+                <th>实际收款日期</th>
+                <th>收款方式</th>
+                <th>款项性质</th>
+                <th>收款金额</th>
+                <th>审核状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="banquetReceivables" item="row"}>
+            <tr>
+                <td>{$row['banquet_income_date']}</td>
+                <td>{$row['banquet_income_date']}</td>
+                <td>{$payments[$row['banquet_income_payment']]}</td>
+                <td>{$paymentTypes[$row['banquet_income_type']]}</td>
+                <td>{$row['banquet_income_item_price']}</td>
+                <td>{$confirmStatusList[$row['check_banquet_receivable_status']]}</td>
+                <td>
+                    <div class="layui-btn-group">
+                        <a href="javascript:void(0);" class="{:auth('order/editBanquetReceivable')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetReceivable', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="{:auth('order/deleteBanquetReceivable')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api" data-action="{:url('order/deleteBanquetReceivable', ['id'=>$row['id']])}">删除</a>
+                        <a href="javascript:void(0);" class="{:auth('order/confirmBanquetReceivable')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/confirmBanquetReceivable', ['id'=>$row['id']])}">审核</a>
+                    </div>
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>
+
+<{if $banquetPayments->isEmpty()}>
+<!--婚宴付款单-->
+<div class="layui-card">
+    <div class="layui-card-header">婚宴付款单</div>
+    <div class="layui-card-body no-margin no-padding">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="240">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>申请日期</th>
+                <th>款项性质</th>
+                <th>付款金额</th>
+                <th>收款名称</th>
+                <th>收款账号</th>
+                <th>审核状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="banquetPayments" item="row"}>
+            <tr>
+                <th>{$row['banquet_apply_pay_date']}</th>
+                <th>{$paymentTypes[$row['banquet_pay_type']]}</th>
+                <th>{$row['banquet_pay_item_price']}</th>
+                <th>{$row['banquet_supplier']}</th>
+                <th>{$row['banquet_pay_to_account']}</th>
+                <th>
+                    {$confirmStatusList[$row['check_status_payment_account']]}
+                    -
+                    {$confirmStatusList[$row['check_status_payment_fiance']]}
+                    -
+                    {$confirmStatusList[$row['check_status_payment_cashier']]}
+                </th>
+                <th>
+                    <div class="layui-btn-group">
+                        <a href="javascript:void(0);" class="{:auth('order/editBanquetPayment')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/editBanquetPayment', ['id'=>$row['id']])}">编辑</a>
+                        <button type="button" class="{:auth('order/delBanquetPayment')} layui-btn layui-btn-danger layui-btn-xs btn-delete-api" data-action="{:url('order/delBanquetPayment')}">删除</button>
+                        <a href="javascript:void(0);" class="{:auth('order/checkBanquetPaymentAccounting')} layui-btn layui-btn-xs lay-right" data-title="一站式婚宴付款-会计审核" data-action="{:url('order/checkBanquetPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkBanquetPaymentFiance')} layui-btn layui-btn-xs lay-right" data-title="一站式婚宴付款-财务审核" data-action="{:url('order/checkBanquetPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
+                        <a href="javascript:void(0);" class="{:auth('order/checkBanquetPaymentCashier')} layui-btn layui-btn-xs lay-right" data-title="一站式婚宴付款-出纳审核" data-action="{:url('order/checkBanquetPaymentCashier', ['id'=>$row['id']])}">出纳审核</a>
+                    </div>
+                </th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>

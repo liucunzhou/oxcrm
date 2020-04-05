@@ -1,5 +1,5 @@
 <div class="layui-card">
-    <div class="layui-card-header">合同基本信息</div>
+    <div class="layui-card-header">客户资料</div>
     <div class="layui-card-body">
         <table class="layui-table">
             <colgroup>
@@ -12,26 +12,14 @@
                 <col>
             </colgroup>
 
-            <thead>
-                <tr>
 
-                    <th>新郎微信</th>
-                    <th>新娘微信</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{$data['bridegroom_wechat']}</td>
-                    <td>{$data['bride_wechat']}</td>
-                </tr>
-            </tbody>
             <thead>
                 <tr>
                     <th>新郎姓名</th>
                     <th>新郎电话</th>
                     <th>新娘姓名</th>
                     <th>新娘手机号</th>
-                    <th>身份证号</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -40,13 +28,117 @@
                     <td>{$data.bridegroom_mobile}</td>
                     <td>{$data.bride}</td>
                     <td>{$data.bride_mobile}</td>
-                    <td>{$data.idcard|default="-"}</td>
+                    <td></td>
                 </tr>
-                <tr>
-                    <td colspan="2">家庭住址:{$data.idcard}</td>
-                    <td colspan="2">身份证号:{$data.idcard}</td>
-                    <td>积分:{$data.score}</td>
-                </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>新郎微信</th>
+                <th>新娘微信</th>
+                <th>身份证号</th>
+                <th colspan="2">家庭住址</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$data['bridegroom_wechat']|default='-'}</td>
+                <td>{$data['bride_wechat']|default='-'}</td>
+                <td>{$data.idcard|default='-'}</td>
+                <td colspan="2">{$data.idcard|default='-'}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="layui-card">
+
+    <div class="layui-card-header">合同信息</div>
+    <div class="layui-card-body">
+        <table class="layui-table">
+            <colgroup>
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col width="120">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>公司</th>
+                <th>订单类型</th>
+                <th>合同号</th>
+                <th>签约日期</th>
+                <th>举办日期</th>
+                <th>酒店名称</th>
+                <th>宴会厅</th>
+                <th>合作模式</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$data.company_id}</td>
+                <td>{$data.news_type}</td>
+                <td>{$data.contract_no}</td>
+                <td>{$data.sign_date}</td>
+                <td>{$data.event_date}</td>
+                <td>{$data.hotel_text}</td>
+                <td>{$data.banquet_hall_name}</td>
+                <td>{$data.cooperation_mode}</td>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>客户姓名</th>
+                <th>客户手机号</th>
+                <th>渠道来源</th>
+                <th>积分</th>
+                <th>积点</th>
+                <th>是否引流销售</th>
+                <th>引流销售</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>{$customer.realname}</th>
+                <th>{$customer.mobile}</th>
+                <th>{$data.source_text}</th>
+                <th>{$data.score}</th>
+                <th>{$data.point}</th>
+                <th>{$data.is_recommend_salesman ? '是' : '否'}</th>
+                <th>{$data.recommend_salesman|default='-'}</th>
+                <th></th>
+            </tr>
+            </tbody>
+            <thead>
+            <tr>
+                <th>订单总金额</th>
+                <th>意向金</th>
+                <th>定金收款日期</th>
+                <th>定金收款金额</th>
+                <th>中款收款日期</th>
+                <th>中款收款金额</th>
+                <th>尾款收款日期</th>
+                <th>尾款收款金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>{$data.totals}</th>
+                <th>{$data.prepay_money}</th>
+                <th>{$data.earnest_money_date}</th>
+                <th>{$data.earnest_money}</th>
+                <th>{$data.middle_money_date}</th>
+                <th>{$data.middle_money}</th>
+                <th>{$data.tail_money_date}</th>
+                <th>{$data.tail_money}</th>
+            </tr>
             </tbody>
         </table>
     </div>

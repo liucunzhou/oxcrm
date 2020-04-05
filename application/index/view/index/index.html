@@ -67,8 +67,8 @@
                         <cite>{$user['realname']|default="超级管理员"}</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a lay-href="{:url('User/info')}">基本资料</a></dd>
-                        <dd><a lay-href="{:url('User/repassword')}">修改密码</a></dd>
+                        <dd><a lay-href="{:url('/index/organization.User/info')}">基本资料</a></dd>
+                        <dd><a lay-href="{:url('/index/organization.User/repassword')}">修改密码</a></dd>
                         <hr>
                         <dd><a href="{:url('/index/Passport/logout')}">退出</a></dd>
                     </dl>
@@ -100,7 +100,7 @@
                         <dl class="layui-nav-child">
                             <{foreach item="val" name="menu['items']"}>
                             <dd data-name="console" <{if condition="CONTROLLER_NAME.'/'.ACTION_NAME eq $val['url']"}>class="layui-this"<{/if}>>
-                                <a lay-href="{:url($val['url'])}">{$val['text']}</a>
+                                <a lay-href="{$val.url}">{$val['text']}</a>
                             </dd>
                             <{/foreach}>
                         </dl>
@@ -137,7 +137,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="{:url('user/info')}" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="/index/organization.user/info" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 
@@ -153,24 +153,7 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index'], function () {
-        var url = "{:url('Notice/getNotice')}";
-        var $ = layui.jquery;
-        var pause = false;
 
-        let timer = setInterval(function(){
-            if(pause) return false;
-            $.get(url, function(res){
-
-                if(res.code == '200') {
-                    pause = true;
-//                    layer.alert(res.msg, function(index){
-//                        pause = false;
-//                        //do something
-//                        layer.close(index);
-//                    });
-                }
-            });
-        }, 1000000)
     });
 </script>
 </body>

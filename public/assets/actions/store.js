@@ -76,7 +76,7 @@ layui.config({
         var id = obj.data.id;
         switch (obj.event) {
             case 'editStore':
-                url = '/index/store/editstore.html?id=' + id;
+                url = '/index/dictionary.store/editstore.html?id=' + id;
                 layer.open({
                     type: 2,
                     title: '编辑门店信息',
@@ -108,7 +108,7 @@ layui.config({
                 break;
 
             case 'deleteStore':
-                url = '/index/store/deletestore.html';
+                url = '/index/dictionary.store/deletestore.html';
                 var params = {id:id};
                 $.post(url, params, function (res) {
                     if (res.code == '200') {
