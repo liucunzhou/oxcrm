@@ -79,10 +79,22 @@
                 <td>{$row.mobile}</td>
                 <td>
                     <div class="btn-group">
-                        <div class="btn btn-sm btn-success btn-right-side">编辑</div>
-                        <div class="btn btn-sm btn-primary btn-right-side">授权</div>
-                        <div class="btn btn-sm btn-success btn-right-side">酒店</div>
-                        <div class="btn btn-sm btn-primary btn-right-side">离职</div>
+                        <div class="btn btn-sm btn-success btn-right-side"
+                             title="编辑员工信息"
+                             data-action="/index/organization.user/edituser.html?id={$row.id}">
+                             编辑</div>
+                        <div class="btn btn-sm btn-primary btn-right-side"
+                             title="给员工授权"
+                             data-action="/index/organization.user/editauth.html?id={$row.id}">
+                             授权</div>
+                        <div class="btn btn-sm btn-success btn-right-side"
+                             title="给员工分配酒店"
+                             data-action="/admin/store.staff/stores.html?staff_id={$row.id}">
+                             酒店</div>
+                        <div class="btn btn-sm btn-primary btn-right-side"
+                             title="员工离职"
+                             data-action="/index/organization.user/leave.html?id={$row.id}">
+                             离职</div>
                     </div>
                 </td>
             </tr>

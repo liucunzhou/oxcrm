@@ -86,7 +86,7 @@
         <!-- 侧边菜单 -->
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
-                <div class="layui-logo" lay-href="{:url('user/info')}">
+                <div class="layui-logo" lay-href="{:url('/index/organization.user/info')}">
                     <span>CRM系统</span>
                 </div>
 
@@ -100,7 +100,7 @@
                         <dl class="layui-nav-child">
                             <{foreach item="val" name="menu['items']"}>
                             <dd data-name="console" <{if condition="CONTROLLER_NAME.'/'.ACTION_NAME eq $val['url']"}>class="layui-this"<{/if}>>
-                                <a lay-href="{$val.url}">{$val['text']}</a>
+                                <a lay-href="{:url($val.url)}">{$val['text']}</a>
                             </dd>
                             <{/foreach}>
                         </dl>

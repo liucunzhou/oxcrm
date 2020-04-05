@@ -49,7 +49,7 @@ class Department extends Backend
         }
         $this->assign('breadcrumb', $breadcrumb);
 
-        $users = \app\common\model\User::getUsersInfoByDepartmentId($param['id']);
+        $users = \app\common\model\User::getUsersInfoByDepartmentId($param['id'], false);
         $this->assign('users', $users);
         return $this->fetch();
     }
