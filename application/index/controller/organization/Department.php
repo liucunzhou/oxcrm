@@ -140,4 +140,49 @@ class Department extends Backend
             return json(['code'=>'500', 'msg'=>'删除失败']);
         }
     }
+
+    public function delete($id)
+    {
+        $get = Request::param();
+        $department = \app\common\model\Department::get($get['id']);
+        $pid = $department->parent_id;
+        $result = $department->delete();
+
+        $where = [];
+        $where[] = ['parent_id', '=', $get['id']];
+        $children = \app\common\model\Department::where($where)->find();
+        if (!empty($children)) {
+            return json(['code'=>'500', 'msg'=>'请先删除子部门']);
+        }
+
+        $staffs = \app\common\model\User::getUsersByDepartmentId($get['id']);
+        if(!empty($staffs)) {
+            return json(['code'=>'500', 'msg'=>'请先清空部门员工']);
+        }
+
+
+        $map = [];
+        $map[] = ['parent_id', '=', $pid];
+        $result = \app\common\model\Department::where($map)->order('path,sort')->select();
+        foreach ($result as &$row) {
+            $users = \app\common\model\User::getUsersByDepartmentId($row->id, false);
+            $row['staff_amount'] = count($users);
+        }
+        $this->assign('list', $result);
+
+        $department = \app\common\model\Department::getDepartment($pid);
+        $breadcrumb = [];
+        $path = explode('-', $department->path);
+        foreach ($path as $row) {
+            if($row > 0) {
+                $breadcrumb[] = \app\common\model\Department::getDepartment($row);
+            }
+        }
+        $this->assign('breadcrumb', $breadcrumb);
+
+        $users = \app\common\model\User::getUsersInfoByDepartmentId($pid, false);
+        $this->assign('users', $users);
+
+        return $this->fetch('subdepartments');
+    }
 }

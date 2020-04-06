@@ -7,6 +7,24 @@ $(function () {
         })
     });
 
+    $(document).on("click", ".btn-delete-department", function () {
+        if(!confirm("确定要删除该部门么？")) {
+            return false;
+        }
+
+        var target = $(this).attr("data-target");
+        var url = $(this).attr("data-action");
+        $.get(url, function(result){
+            if(typeof result == 'string') {
+                layer.msg('删除成功');
+                $(target).html(result);
+            } else {
+                layer.msg(result.msg);
+
+            }
+        })
+    });
+
     $(document).on("click", ".btn-right-side", function () {
         var layer = layui.layer;
         var url = $(this).attr('data-action');
