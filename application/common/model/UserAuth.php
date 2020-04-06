@@ -30,7 +30,7 @@ class UserAuth extends Model
      */
     public static function getUserLogicAuth($id, $update=false)
     {
-
+        /**
         $cacheKey = 'user_logic_auth';
         $data = redis()->hGet($cacheKey, $id);
         $data = json_decode($data, true);
@@ -42,6 +42,14 @@ class UserAuth extends Model
                 $json = json_encode($data);
                 $result = redis()->hSet($cacheKey, $id, $json);
             }
+        }
+         **/
+        $map[] = ['user_id', '=', $id];
+        $result = self::where($map)->find();
+        if(!empty($result)) {
+            $data = $result->toArray();
+        } else {
+            $data = [];
         }
 
         return $data;
