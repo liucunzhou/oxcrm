@@ -14,12 +14,11 @@ use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
-use app\common\model\Search;
 use app\common\model\User;
-use app\index\controller\Base;
+use app\index\controller\Backend;
 use think\facade\Request;
 
-class BanquetSuborder extends Base
+class BanquetSuborder extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -88,43 +87,27 @@ class BanquetSuborder extends Base
     }
 
     # 创建婚宴子合同
-    public function createBanquetSuborder()
+    public function create()
     {
         $get = Request::param();
         $order = \app\common\model\Order::get($get['order_id'])->getData();
-
         $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/banquet_suborder';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/banquet_suborder';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/banquet_suborder';
-        }
-        return $this->fetch($view);
+
+        return $this->fetch();
     }
 
     # 编辑婚宴子合同
-    public function editBanquetSuborder()
+    public function edit($id)
     {
         $get = Request::param();
         $suborder = OrderBanquetSuborder::get($get['id']);
         $this->assign('data', $suborder);
 
-        $order = \app\common\model\Order::get($suborder->order_id)->getData();
-
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/edit/banquet_suborder';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/edit/banquet_suborder';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/edit/banquet_suborder';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 添加/编辑婚宴子合同
-    public function doEditBanquetSuborder()
+    public function doEdit()
     {
         $request = Request::param();
         if(!empty($request['id'])) {
@@ -139,6 +122,7 @@ class BanquetSuborder extends Base
         $result1 = $model->save($request);
         // tail_money = contact_money * 0.2 +  sum(wedding_totals) + sum(banquet_totals)
         $order = \app\common\model\Order::get($request['order_id']);
+
         $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
         $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
         $order->tail_money = $order->contract_totals*0.2 + $banquetTotals + $weddingTotals;

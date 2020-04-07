@@ -1,4 +1,13 @@
-$(function(){
+layui.config({
+    base: '/assets/' //静态资源所在路径
+}).extend({
+    index: 'lib/index' //主入口模块
+}).use(['index', 'form', 'laydate', 'element'], function () {
+    var $ = layui.jquery
+        ,laydate = layui.laydate
+        ,form = layui.form
+        ,element = layui.element;
+
     $(".layui-right-side").click(function () {
         var layer = layui.layer;
         var url = $(this).attr('data-action');

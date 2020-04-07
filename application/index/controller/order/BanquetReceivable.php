@@ -16,10 +16,11 @@ use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\Search;
 use app\common\model\User;
+use app\index\controller\Backend;
 use app\index\controller\Base;
 use think\facade\Request;
 
-class BanquetReceivables extends Base
+class BanquetReceivable extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -87,48 +88,32 @@ class BanquetReceivables extends Base
         $this->assign('weddingCategories', $this->weddingDevices);
     }
 
-# 创建婚宴收款信息
-    public function createBanquetReceivable()
+    # 创建婚宴收款信息
+    public function create()
     {
         $get = Request::param();
         $order = \app\common\model\Order::get($get['order_id'])->getData();
-
         $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/banquet_receivable';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/banquet_receivable';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/banquet_receivable';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 创建婚宴收款信息
-    public function editBanquetReceivable()
+    public function edit($id)
     {
         $get = Request::param();
         $banquetReceivable = OrderBanquetReceivables::get($get['id']);
         $this->assign('data', $banquetReceivable);
         $order = \app\common\model\Order::get($banquetReceivable->order_id)->getData();
+        $this->assign('order', $order);
 
         ## 获取付款信息
         $data = OrderBanquetReceivables::get($get['id']);
         $this->assign('data', $data);
-
-        $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/edit/banquet_receivable';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/edit/banquet_receivable';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/edit/banquet_receivable';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 婚宴收款逻辑
-    public function doEditBanquetReceivable()
+    public function doEdit()
     {
         $request = Request::param();
         if(!empty($request['id'])) {

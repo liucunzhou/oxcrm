@@ -3,23 +3,13 @@
 namespace app\index\controller\order;
 
 use app\common\model\BanquetHall;
-use app\common\model\Member;
-use app\common\model\MemberAllocate;
-use app\common\model\OrderBanquet;
-use app\common\model\OrderBanquetPayment;
-use app\common\model\OrderBanquetReceivables;
-use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderEntire;
-use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingPayment;
-use app\common\model\OrderWeddingReceivables;
-use app\common\model\OrderWeddingSuborder;
-use app\common\model\Search;
 use app\common\model\User;
-use app\index\controller\Base;
+use app\index\controller\Backend;
 use think\facade\Request;
 
-class WeddingPayment extends Base
+class WeddingPayment extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -89,39 +79,23 @@ class WeddingPayment extends Base
 
 
     # 创建婚庆支付信息
-    public function createWeddingPayment()
+    public function create()
     {
         $get = Request::param();
         $order = \app\common\model\Order::get($get['order_id'])->getData();
-
         $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/wedding_payment';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/wedding_payment';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/wedding_payment';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 编辑婚庆信息
-    public function editWeddingPayment()
+    public function edit($id)
     {
         $get = Request::param();
         $weddingPayment = OrderWeddingPayment::get($get['id']);
         $this->assign('data', $weddingPayment);
         $order = \app\common\model\Order::get($weddingPayment->order_id)->getData();
-
         $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/edit/wedding_payment';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/edit/wedding_payment';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/edit/wedding_payment';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 会计审核婚庆支付信息
@@ -182,7 +156,7 @@ class WeddingPayment extends Base
     }
 
     # 执行编辑婚庆信息逻辑
-    public function doEditWeddingPayment()
+    public function doEdit()
     {
         $request = Request::param();
         if(!empty($request['id'])) {

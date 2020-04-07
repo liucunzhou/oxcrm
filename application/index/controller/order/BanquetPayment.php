@@ -88,33 +88,27 @@ class BanquetPayment extends Base
     }
 
     # 创建婚宴付款信息
-    public function createBanquetPayment()
+    public function create()
     {
         $get = Request::param();
         $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $this->assign('order', $order);
 
         // 获取酒店信息
         $hotel = \app\common\model\Store::get($order['hotel_id']);
         $this->assign('hotel', $hotel);
-
-        $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/banquet_payment';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/banquet_payment';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/banquet_payment';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 获取婚宴付款信息
-    public function editBanquetPayment()
+    public function edit($id)
     {
         $get = Request::param();
         $banquetPayment = OrderBanquetPayment::get($get['id']);
         $this->assign('data', $banquetPayment);
-        $order = \app\common\model\Order::get($banquetPayment->order_id)->getData();
+
+        $order = \app\common\model\Order::get($banquetPayment->order_id);
+        $this->assign('order', $order);
 
         ## 获取酒店信息
         $hotel = \app\common\model\Store::get($order['hotel_id']);
@@ -123,16 +117,7 @@ class BanquetPayment extends Base
         ## 获取婚宴付款信息
         $data = OrderBanquetPayment::get($get['id']);
         $this->assign('data', $data);
-
-        $this->assign('order', $order);
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/edit/banquet_payment';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/edit/banquet_payment';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/edit/banquet_payment';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 婚宴付款信息--会计审核
@@ -216,7 +201,7 @@ class BanquetPayment extends Base
         return $this->fetch($view);
     }
 
-    public function doEditBanquetPayment()
+    public function doEdit()
     {
         $request = Request::param();
         if(!empty($request['id'])) {

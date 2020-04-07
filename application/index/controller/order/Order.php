@@ -16,10 +16,10 @@ use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\Search;
 use app\common\model\User;
-use app\index\controller\Base;
+use app\index\controller\Backend;
 use think\facade\Request;
 
-class Order extends Base
+class Order extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -29,6 +29,8 @@ class Order extends Base
     protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
     protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
+    protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式'];
+    protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
     protected function initialize()
     {
@@ -37,6 +39,8 @@ class Order extends Base
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
+        $this->assign('newsTypes', $this->newsTypes);
+        $this->assign('cooperationModes', $this->cooperationModes);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
         $this->assign('staffes', $staffes);
@@ -204,139 +208,50 @@ class Order extends Base
     {
         $get = Request::param();
         if (empty($get['id'])) return false;
-        $order = \app\common\model\Order::get($get['id'])->getData();
-
-        switch ($order['news_type'])
-        {
-            ### 婚宴信息
-            case 0:
-                #### 获取婚宴订单信息
-                $where = [];
-                $where['pid'] = 0;
-                $where['order_id'] = $get['id'];
-                $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $banquet);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $banquetOrders = OrderBanquetSuborder::where($where)->select();
-                $this->assign('banquetOrders', $banquetOrders);
-
-
-                #### 获取婚宴付款信息
-                $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetPayments', $banquetPayments);
-                break;
-
-            ### 婚庆信息
-            case 1:
-                #### 获取婚庆订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $wedding);
-                $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-                if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-                $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $weddingOrders = OrderWeddingSuborder::where($where)->select();
-                $this->assign('weddingOrders', $weddingOrders);
-                #### 获取婚庆收款信息
-                $receivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('receivables', $receivables);
-                #### 获取婚庆付款信息
-                $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingPayments', $weddingPayments);
-                break;
-
-            ### 一站式信息
-            case 2:
-                #### 获取婚宴订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $banquet);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $banquetOrders = OrderBanquetSuborder::where($where)->select();
-                $this->assign('banquetOrders', $banquetOrders);
-                #### 获取婚宴收款信息
-                $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetReceivables', $receivables);
-                #### 获取婚宴付款信息
-                $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetPayments', $banquetPayments);
-
-
-                #### 获取婚庆订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $wedding = OrderWedding::where($where)->field('id', true)->find();
-                if(!empty($wedding)) {
-                    $wedding = $wedding->getData();
-                    $order = array_merge($order, $wedding);
-                    $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-                    if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-                    $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-                    #### 获取婚宴二销订单信息
-                    $where = [];
-                    $where['order_id'] = $get['id'];
-                    $weddingOrders = OrderWeddingSuborder::where($where)->select();
-                    $this->assign('weddingOrders', $weddingOrders);
-                }
-                #### 获取婚宴收款信息
-                $weddingReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingReceivables', $weddingReceivables);
-                #### 获取婚庆付款信息
-                $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingPayments', $weddingPayments);
-
-                break;
-
-            default:
-                #### 获取婚宴订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $where['pid'] = 0;
-                $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $banquet);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['pid'] = ['neq', 0];
-                $where['order_id'] = $get['id'];
-                $banquetOrders = OrderBanquet::where($where)->select();
-                $this->assign('banquetOrders', $banquetOrders);
-
-                #### 获取婚庆订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $where['pid'] = 0;
-                $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $wedding);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['pid'] = ['neq', 0];
-                $where['order_id'] = $get['id'];
-                $weddingOrders = OrderWedding::where($where)->select();
-                $this->assign('weddingOrders', $weddingOrders);
-
-                #### 获取婚宴收款信息
-                $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('receivables', $receivables);
-                #### 获取婚宴付款信息
-                $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetPayments', $banquetPayments);
-                #### 获取婚庆付款信息
-                $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingPayments', $weddingPayments);
-        }
-
-        $order = $this->formatOrderDate($order);
+        $order = \app\common\model\Order::get($get['id']);
         $this->assign('data', $order);
+
+        #### 获取婚宴订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $banquet = OrderBanquet::where($where)->order('id desc')->find();
+        $this->assign('banquet', $banquet);
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $banquetOrders = OrderBanquetSuborder::where($where)->select();
+        $this->assign('banquetOrders', $banquetOrders);
+        #### 获取婚宴收款信息
+        $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
+        $this->assign('banquetReceivables', $receivables);
+        #### 获取婚宴付款信息
+        $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
+        $this->assign('banquetPayments', $banquetPayments);
+
+
+        #### 获取婚庆订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $wedding = OrderWedding::where($where)->order('id desc')->find();
+        $this->assign('wedding', $wedding);
+
+        if(!empty($wedding)) {
+            $wedding = $wedding->getData();
+            $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+            if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
+            $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
+            #### 获取婚宴二销订单信息
+            $where = [];
+            $where['order_id'] = $get['id'];
+            $weddingOrders = OrderWeddingSuborder::where($where)->select();
+            $this->assign('weddingOrders', $weddingOrders);
+        }
+        #### 获取婚宴收款信息
+        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
+        $this->assign('weddingReceivables', $weddingReceivables);
+        #### 获取婚庆付款信息
+        $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
+        $this->assign('weddingPayments', $weddingPayments);
 
         ##　获取客资分配信息
         $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();

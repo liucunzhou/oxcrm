@@ -3,23 +3,12 @@
 namespace app\index\controller\order;
 
 use app\common\model\BanquetHall;
-use app\common\model\Member;
-use app\common\model\MemberAllocate;
-use app\common\model\OrderBanquet;
-use app\common\model\OrderBanquetPayment;
-use app\common\model\OrderBanquetReceivables;
-use app\common\model\OrderBanquetSuborder;
-use app\common\model\OrderEntire;
-use app\common\model\OrderWedding;
-use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingReceivables;
-use app\common\model\OrderWeddingSuborder;
-use app\common\model\Search;
 use app\common\model\User;
-use app\index\controller\Base;
+use app\index\controller\Backend;
 use think\facade\Request;
 
-class WeddingReceivables extends Base
+class WeddingReceivable extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -88,5 +77,48 @@ class WeddingReceivables extends Base
     }
 
 
+    # 创建婚庆收款信息
+    public function create()
+    {
+        $params = $this->request->param();
 
+        $order = \app\common\model\Order::get($params['order_id'])->getData();
+        $this->assign('order', $order);
+        return $this->fetch();
+    }
+
+    # 婚庆收款信息
+    public function edit($id)
+    {
+
+        $banquetReceivable = OrderWeddingReceivables::get($id);
+        $this->assign('data', $banquetReceivable);
+        $order = \app\common\model\Order::get($banquetReceivable->order_id)->getData();
+
+        ## 获取付款信息
+        $data = OrderWeddingReceivables::get($id);
+        $this->assign('data', $data);
+        return $this->fetch();
+    }
+
+    public function doEdit()
+    {
+        $request = Request::param();
+        if(!empty($request['id'])) {
+            $action = '更新';
+            $model = OrderWeddingReceivables::get($request['id']);
+        } else {
+            $action = '添加';
+            $model = new OrderWeddingReceivables();
+        }
+
+        $result = $model->save($request);
+        if($result) {
+            ### 添加操作日志
+            \app\common\model\OperateLog::appendTo($model);
+            return json(['code'=>'200', 'msg'=> $action.'成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=> $action.'失败']);
+        }
+    }
 }

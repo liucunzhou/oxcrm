@@ -16,10 +16,11 @@ use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\Search;
 use app\common\model\User;
+use app\index\controller\Backend;
 use app\index\controller\Base;
 use think\facade\Request;
 
-class WeddingSuborder extends Base
+class WeddingSuborder extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -88,27 +89,21 @@ class WeddingSuborder extends Base
     }
 
     # 创建婚庆子合同
-    public function createWeddingSuborder()
+    public function create()
     {
         $get = Request::param();
         $order = \app\common\model\Order::get($get['order_id'])->getData();
+        $this->assign('data', $order);
 
         ## 获取二销项目列表
         $items = \app\common\model\WeddingDevice::getList();
         $this->assign('items', $items);
 
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/wedding_suborder';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/wedding_suborder';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/wedding_suborder';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 编辑婚庆子合同
-    public function editWeddingSuborder()
+    public function edit($id)
     {
         $get = Request::param();
         $suborder = OrderWeddingSuborder::get($get['id']);
@@ -119,20 +114,11 @@ class WeddingSuborder extends Base
         ## 获取二销项目列表
         $items = \app\common\model\WeddingDevice::getList();
         $this->assign('items', $items);
-
-        $order = \app\common\model\Order::get($suborder->order_id)->getData();
-        if($order['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/edit/wedding_suborder';
-        } else if ($order['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/edit/wedding_suborder';
-        } else if ($order['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/edit/wedding_suborder';
-        }
-        return $this->fetch($view);
+        return $this->fetch();
     }
 
     # 添加/编辑婚庆子合同
-    public function doEditWeddingSuborder()
+    public function doEdit()
     {
         $request = Request::param();
         if(!empty($request['id'])) {
