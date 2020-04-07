@@ -140,4 +140,27 @@ class Department extends Backend
             return json(['code'=>'500', 'msg'=>'删除失败']);
         }
     }
+
+    public function delete($id)
+    {
+        $get = Request::param();
+        $Model = \app\common\model\Department::get($get['id']);
+
+        $where = [];
+        $where[] = ['parent_id', '=', $get['id']];
+        $children = \app\common\model\Department::where($where)->find();
+        if (empty($children)) {
+            $result = $Model->delete();
+        } else {
+            return json(['code'=>'500', 'msg'=>'请先删除子部门']);
+        }
+
+        if($result) {
+            ### 添加操作日志
+            \app\common\model\OperateLog::appendTo($Model);
+            return json(['code'=>'200', 'msg'=>'删除成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=>'删除失败']);
+        }
+    }
 }

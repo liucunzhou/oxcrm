@@ -1,0 +1,122 @@
+.layui-card-top{
+    border-top: 5px solid #1E9FFF;
+}
+
+.layui-card-header {
+    color: #1E9FFF;
+    font-size: 16px;
+    font-weight: 700;
+    background: #f4f4f4;
+}
+
+.layui-card-header-right a.btn-edit {
+    color: #1E9FFF;
+    padding: 3px 20px;
+    font-size: 14px;
+    border: 1px solid #1E9FFF;
+    border-radius: 3px;
+}
+
+.layui-card-footer.text-right{
+    padding: 12px;
+    text-align: right;
+}
+
+.btn-edit-solid {
+    color: #fff;
+    background: #1E9FFF;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.btn-delete-solid {
+    color: #fff;
+    background: #ff4a4a;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.btn-confirm-solid {
+    color: #fff;
+    background: #46b16e;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.table-form {
+    width: 100%;
+}
+
+.table-form td {
+    color: #6d6b74;
+}
+
+.table-form td.tb-field{
+    position: relative;
+    width: 4rem;
+    text-align: justify;
+    text-align-last: justify;
+}
+
+.table-form td.tb-field:after{
+    content: ':';
+    position: absolute;
+}
+.td-remark,
+.td-remark:hover{
+    /*background: #f4f4f4!important;*/
+    background: #fff;
+}
+
+.text-center{
+    text-align: center!important;
+}
+
+.text-left{
+    text-align: left!important;
+}
+
+.text-right{
+    text-align: right!important;
+}
+
+.table-form td.tb-value{
+    padding-left: 8px;
+}
+
+.table-form .td-title {
+    color: #000;
+    font-size: 16px;
+    padding-top: 15px;
+}
+
+.contract-img {
+    height: 159px;
+    width: 50%;
+    background: #eee;
+    text-align: center;
+}
+
+.layui-table tbody tr:hover, .layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-hover, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even){
+    /*background: #f4f4f4;*/
+    background: #fff;
+}
+
+.layui-table td, .layui-table th, .layui-table-col-set, .layui-table-fixed-r, .layui-table-grid-down, .layui-table-header, .layui-table-page, .layui-table-tips-main, .layui-table-tool, .layui-table-total, .layui-table-view, .layui-table[lay-skin=line], .layui-table[lay-skin=row] {
+    border: none!important;
+    border-bottom: 1px solid #e6e6e6!important;
+}
+.layui-table tr.no-border td {
+    border: none!important;
+}
+
+.layui-table thead th,
+.layui-table thead td{
+    font-size: 15px;
+    color: #010101;
+}
+
+.layui-table tbody th,
+.layui-table tbody td{
+    color: #6d6b74;
+}

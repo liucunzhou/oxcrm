@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/order.css?{:rand(10000,100000)}" media="all">
     <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
     <style>
         .layui-form-label {
@@ -36,7 +37,7 @@
 <!--创建、编辑订单-->
 <div class="layui-fluid">
     <div class="layui-card">
-        <div class="layui-card-body" style="padding: 15px;">
+        <div class="layui-card-body" style="padding: 15px; background-color: #f4f4f4;">
             <!--合同基本信息-->
             <{include file="order/edit/fragment/contract" /}>
 
@@ -45,15 +46,6 @@
 
             <!--婚庆基本信息-->
             <{include file="order/edit/fragment/wedding" /}>
-
-            <!--婚庆基本信息-->
-            <{include file="order/edit/fragment/device" /}>
-
-            <!--婚庆基本信息-->
-            <{include file="order/edit/fragment/car" /}>
-
-            <!--收款信息-->
-            <{include file="order/edit/fragment/pay_steps" /}>
 
             <div class="layui-space10" style="height: 20px;"></div>
         </div>
