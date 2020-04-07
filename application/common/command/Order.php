@@ -334,6 +334,8 @@ class order extends Command
             $mobile = MemberAllocate::where($where1)->whereOr($where2)->find();
             if (!empty($mobile)) {
                 $data = [];
+                $data['member_id'] = $mobile->member_id;
+                $data['member_allocate_id'] = $mobile->id;
                 $data['salesman'] = $mobile->user_id;
                 $result = $row->save($data);
                 // echo $row->getLastSql();
