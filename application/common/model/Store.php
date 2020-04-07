@@ -33,17 +33,7 @@ class Store extends Model
 
     public static function getStoreList($update=false)
     {
-        $cacheKey = 'stores';
-        $data = redis()->get($cacheKey);
-        if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,brand_id,title,bank_company,bank_account,bank_name', 'id');
-            $json = json_encode($data);
-            $result = redis()->set($cacheKey, $json);
-        } else {
-
-            $data = json_decode($data, true);
-        }
-
+        $data = self::order('is_valid desc,sort desc,id asc')->column('id,brand_id,title,bank_company,bank_account,bank_name', 'id');
         return $data;
     }
 
