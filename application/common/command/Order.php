@@ -41,7 +41,6 @@ class order extends Command
 
 
         switch ($action) {
-            // 门店未回访提醒
             case 'initOrder':
                 $this->initOrder();
                 break;
@@ -225,9 +224,9 @@ class order extends Command
         foreach ($order as $row) {
             $realname = trim($row->sale);
             $where = [];
-            $where[] = ['role_id', '>', 0];
+            // $where[] = ['role_id', '>', 0];
             $where[] = ['realname', 'like', "%{$realname}%"];
-            $where[] = ['is_valid', '=', 1];
+            // $where[] = ['is_valid', '=', 1];
             $user = User::where($where)->find();
             if (!empty($user)) {
                 $data = [];
