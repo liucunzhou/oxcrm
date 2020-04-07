@@ -40,8 +40,8 @@
                             </div>
 
                             <div class="layui-inline">
-                                <select name="department_id" id="department_id" lay-filter="department_id">
-                                    <option value="0">--父级部门--</option>
+                                <select name="department_id" id="department_id" lay-filter="department_id" lay-search>
+                                    <option></option>
                                     <{foreach item="val" name="departments"}>
                                         <option value="{$val['id']}" ><{if $val['depth'] > 1}>├<{/if}>{:str_repeat('─',$val['depth'] - 1)}{$val['title']}</option>
                                     <{/foreach}>

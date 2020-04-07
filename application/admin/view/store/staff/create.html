@@ -9,11 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/assets/multiple-select/multiple-select.min.css?{:rand(10,10000)}">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10,10000)}">
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
+    <script src="/assets/multiple-select/multiple-select.min.js"></script>
+    <script src="/assets/multiple-select/multiple-select-locale-all.min.js"></script>
     <script src="/assets/lib/ox-common.js?{:rand(1000000,100000000000000)}"></script>
 </head>
 <body style="padding: 8px 12px;overflow: hidden;">
@@ -21,8 +24,8 @@
         <table class="table">
             <tr>
                 <td>选择客服</td>
-                <td>
-                    <select name="staff_id" class="form-control">
+                <td width="80%">
+                    <select name="staff_id" class="form-control multiple-select">
                         <option value="0">--选择跟进状态--</option>
                         <{foreach name="users" item="val"}>
                             <option value="{$val.id}">{$val.realname}</option>
