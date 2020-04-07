@@ -310,6 +310,7 @@ class order extends Command
 
     public function initMemberId()
     {
+        file_put_contents('./member-no.txt', '');
         $orderModel = new \app\common\model\Order();
         $order = $orderModel->select();
         foreach ($order as $row) {
@@ -333,8 +334,8 @@ class order extends Command
             $mobile = MemberAllocate::where($where1)->whereOr($where2)->find();
             if (!empty($mobile)) {
                 $data = [];
-                // $data['salesman'] = $user->id;
-                // $result = $row->save($data);
+                $data['salesman'] = $mobile->user_id;
+                $result = $row->save($data);
                 // echo $row->getLastSql();
                 // echo "\n";
                 $result = 1;
@@ -350,6 +351,7 @@ class order extends Command
 
     public function initMemberByRelation()
     {
+        file_put_contents('./member-end.txt', '');
         $file = file_get_contents("./member.txt");
         $rows = explode("\n", $file);
 
@@ -448,6 +450,7 @@ class order extends Command
 
                 if($allocate) {
                     echo $allocate->id."成功\n";
+
                 } else {
                     file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
                     echo $arr[2]."失败\n";
