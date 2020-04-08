@@ -234,18 +234,18 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $wedding = OrderWedding::where($where)->order('id desc')->find();
         $this->assign('wedding', $wedding);
-
         if(!empty($wedding)) {
             $wedding = $wedding->getData();
             $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
             if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
             $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-            #### 获取婚宴二销订单信息
-            $where = [];
-            $where['order_id'] = $get['id'];
-            $weddingOrders = OrderWeddingSuborder::where($where)->select();
-            $this->assign('weddingOrders', $weddingOrders);
         }
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $weddingOrders = OrderWeddingSuborder::where($where)->select();
+        $this->assign('weddingOrders', $weddingOrders);
+
         #### 获取婚宴收款信息
         $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
         $this->assign('weddingReceivables', $weddingReceivables);
