@@ -198,26 +198,26 @@ class order extends Command
                 }
 
                 // 婚宴付款定金
-                if ($row[2]) {
+                if ($row[23]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
-                    $payment['banquet_receivable_no'] = $row[24];
-                    $payment['banquet_income_type'] = 1;
-                    $payment['banquet_income_item_price'] = $row[23];
-                    $payment['banquet_income_date'] = $row[1];
+                    $payment['banquet_payment_no'] = $row[24];
+                    $payment['banquet_pay_type'] = 1;
+                    $payment['banquet_pay_item_price'] = $row[23];
+                    $payment['banquet_apply_pay_date'] = $row[1];
                     $banquetPayment->save($payment);
                 }
 
-                // 婚宴收款中款
+                // 婚宴付款中款
                 if ($row[27]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
-                    $payment['banquet_receivable_no'] = $row[28];
-                    $payment['banquet_income_type'] = 2;
-                    $payment['banquet_income_item_price'] = $row[27];
-                    $payment['banquet_income_date'] = $row[1];
+                    $payment['banquet_payment_no'] = $row[28];
+                    $payment['banquet_pay_type'] = 2;
+                    $payment['banquet_pay_item_price'] = $row[27];
+                    $payment['banquet_apply_pay_date'] = $row[1];
                     $banquetPayment->save($payment);
                 }
 
@@ -226,10 +226,10 @@ class order extends Command
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
-                    $payment['banquet_receivable_no'] = $row[32];
-                    $payment['banquet_income_type'] = 3;
-                    $payment['banquet_income_item_price'] = $row[31];
-                    $payment['banquet_income_date'] = $row[1];
+                    $payment['banquet_payment_no'] = $row[32];
+                    $payment['banquet_pay_type'] = 3;
+                    $payment['banquet_pay_item_price'] = $row[31];
+                    $payment['banquet_apply_pay_date'] = $row[1];
                     $banquetPayment->save($payment);
                 }
 
@@ -297,26 +297,26 @@ class order extends Command
                 }
 
                 // 婚宴付款定金
-                if ($row[2]) {
+                if ($row[23]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
-                    $payment['banquet_receivable_no'] = $row[24];
-                    $payment['banquet_income_type'] = 1;
-                    $payment['banquet_income_item_price'] = $row[23];
-                    $payment['banquet_income_date'] = $row[1];
+                    $payment['banquet_payment_no'] = $row[24];
+                    $payment['banquet_pay_type'] = 1;
+                    $payment['banquet_pay_item_price'] = $row[23];
+                    $payment['banquet_apply_pay_date'] = $row[1];
                     $banquetPayment->save($payment);
                 }
 
-                // 婚宴收款中款
+                // 婚宴付款中款
                 if ($row[27]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
-                    $payment['banquet_receivable_no'] = $row[28];
-                    $payment['banquet_income_type'] = 2;
-                    $payment['banquet_income_item_price'] = $row[27];
-                    $payment['banquet_income_date'] = $row[1];
+                    $payment['banquet_payment_no'] = $row[28];
+                    $payment['banquet_pay_type'] = 2;
+                    $payment['banquet_pay_item_price'] = $row[27];
+                    $payment['banquet_apply_pay_date'] = $row[1];
                     $banquetPayment->save($payment);
                 }
 
@@ -325,10 +325,10 @@ class order extends Command
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
-                    $payment['banquet_receivable_no'] = $row[32];
-                    $payment['banquet_income_type'] = 3;
-                    $payment['banquet_income_item_price'] = $row[31];
-                    $payment['banquet_income_date'] = $row[1];
+                    $payment['banquet_payment_no'] = $row[32];
+                    $payment['banquet_pay_type'] = 3;
+                    $payment['banquet_pay_item_price'] = $row[31];
+                    $payment['banquet_apply_pay_date'] = $row[1];
                     $banquetPayment->save($payment);
                 }
 
