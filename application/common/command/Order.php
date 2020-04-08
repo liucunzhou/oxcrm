@@ -152,15 +152,17 @@ class order extends Command
                 !empty($row[17]) && $banquet['service_fee'] = $row[17];
                 !empty($row[1]) && $banquet['create_time'] = strtotime($row[1]);
                 $banquetOrder = new OrderBanquet();
-                $result = $banquetOrder->save($banquet);
+                $result = $banquetOrder->insert($banquet);
                 if ($result) {
                     // echo $row[5]."一站式写入成功\n";
                 } else {
                     echo $banquetOrder->getLastSql() . "\n";
                     echo $row[5] . "婚宴写入失败\n";
                 }
+
                 // 写入婚宴收款信息的定金收款
-                if (!$row[21]) {
+                if ($row[21]) {
+                    echo
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;
@@ -168,11 +170,11 @@ class order extends Command
                     $receivable['banquet_income_type'] = 1;
                     $receivable['banquet_income_item_price'] = $row[21];
                     $receivable['banquet_income_date'] = $row[1];
-                    $banquetReceivables->save($receivable);
+                    $banquetReceivables->insert($receivable);
                 }
 
                 // 婚宴收款中款
-                if (!$row[25]) {
+                if ($row[25]) {
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;
@@ -184,7 +186,7 @@ class order extends Command
                 }
 
                 // 婚宴收款尾款
-                if (!$row[29]) {
+                if ($row[29]) {
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;
@@ -196,7 +198,7 @@ class order extends Command
                 }
 
                 // 婚宴付款定金
-                if (!$row[2]) {
+                if ($row[2]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
@@ -208,7 +210,7 @@ class order extends Command
                 }
 
                 // 婚宴收款中款
-                if (!$row[27]) {
+                if ($row[27]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
@@ -220,7 +222,7 @@ class order extends Command
                 }
 
                 // 婚宴收款尾款
-                if (!$row[31]) {
+                if ($row[31]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
@@ -259,7 +261,7 @@ class order extends Command
                 $result = $banquetOrder->save($banquet);
 
                 // 写入婚宴收款信息的定金收款
-                if (!$row[21]) {
+                if ($row[21]) {
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;
@@ -271,7 +273,7 @@ class order extends Command
                 }
 
                 // 婚宴收款中款
-                if (!$row[25]) {
+                if ($row[25]) {
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;
@@ -283,7 +285,7 @@ class order extends Command
                 }
 
                 // 婚宴收款尾款
-                if (!$row[29]) {
+                if ($row[29]) {
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;
@@ -295,7 +297,7 @@ class order extends Command
                 }
 
                 // 婚宴付款定金
-                if (!$row[2]) {
+                if ($row[2]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
@@ -307,7 +309,7 @@ class order extends Command
                 }
 
                 // 婚宴收款中款
-                if (!$row[27]) {
+                if ($row[27]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
@@ -319,7 +321,7 @@ class order extends Command
                 }
 
                 // 婚宴收款尾款
-                if (!$row[31]) {
+                if ($row[31]) {
                     $banquetPayment = new OrderBanquetPayment();
                     $payment = [];
                     $payment['order_id'] = $orderId;
