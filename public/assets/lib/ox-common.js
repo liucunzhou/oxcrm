@@ -1,13 +1,4 @@
-layui.config({
-    base: '/assets/' //静态资源所在路径
-}).extend({
-    index: 'lib/index' //主入口模块
-}).use(['index', 'form', 'laydate', 'element'], function () {
-    var $ = layui.jquery
-        ,laydate = layui.laydate
-        ,form = layui.form
-        ,element = layui.element;
-
+$(function(){
     $(".layui-right-side").click(function () {
         var layer = layui.layer;
         var url = $(this).attr('data-action');
@@ -59,7 +50,7 @@ layui.config({
             width =  parseInt(cwidth);
         } else {
             width = width * parseInt(cwidth) /100;
-        } 
+        }
 
         console.log(cheight);
         if (cheight == undefined) {
@@ -68,8 +59,8 @@ layui.config({
             height = parseInt(cheight);
         } else {
             height = height * parseInt(cheight) /100;
-        } 
-        
+        }
+
         layer.open({
             type: 2,
             title: false,
@@ -90,12 +81,12 @@ layui.config({
 
     $(".event-call").click(function(){
         var id =  $(this).attr("data-id");
-        layer.confirm('是否拨打电话?', 
+        layer.confirm('是否拨打电话?',
             {
-                icon: 3, 
+                icon: 3,
                 title:'提示',
                 btn: ['手机拨打','座机拨打']
-            }, 
+            },
             function(index){
                 var params = {
                     id: id,
@@ -105,7 +96,7 @@ layui.config({
                 url = '/index/Ring/call.html';
                 $.post(url, params, function(res){
                     layer.close(index);
-                    
+
                 });
             },
 
@@ -127,7 +118,7 @@ layui.config({
         var url = $(this).attr("data-action");
         var target = $(this).attr("data-target");
         var hinit = $(this).attr("data-confirm");
-    
+
         if(hinit!=undefined) {
             if(!confirm(hinit)) return false;
         }
