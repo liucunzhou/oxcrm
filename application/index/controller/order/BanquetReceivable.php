@@ -3,21 +3,10 @@
 namespace app\index\controller\order;
 
 use app\common\model\BanquetHall;
-use app\common\model\Member;
-use app\common\model\MemberAllocate;
-use app\common\model\OrderBanquet;
-use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
-use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderEntire;
-use app\common\model\OrderWedding;
-use app\common\model\OrderWeddingPayment;
-use app\common\model\OrderWeddingReceivables;
-use app\common\model\OrderWeddingSuborder;
-use app\common\model\Search;
 use app\common\model\User;
 use app\index\controller\Backend;
-use app\index\controller\Base;
 use think\facade\Request;
 
 class BanquetReceivable extends Backend
@@ -34,6 +23,8 @@ class BanquetReceivable extends Backend
     protected function initialize()
     {
         parent::initialize();
+        $this->model = new OrderBanquetReceivables();
+
         // 获取系统来源,酒店列表,意向状态
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);

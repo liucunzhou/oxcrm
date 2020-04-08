@@ -196,6 +196,17 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单状态</label>
+        <div class="layui-input-block">
+            <select name="complete" lay-search>
+                <option value="0" {$data.complete=="0"?'selected':''}>请选择状态</option>
+                <option value="100"  {$data.complete=="100"?'selected':''}>完成</option>
+                <option value="101"  {$data.complete=="101"?'selected':''}>退单</option>
+            </select>
+        </div>
+    </div>
+
     <div class="layui-form-item layui-layout-admin">
         <div class="layui-input-inline">
             <input type="hidden" name="member_allocate_id" value="{$allocate['id']}" />

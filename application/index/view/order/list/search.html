@@ -19,6 +19,16 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
+            <select name="complete" lay-verify="">
+                <option value="">完成状态</option>
+                <option value="0">待完成</option>
+                <option value="100">已完成</option>
+                <option value="101">退单</option>
+            </select>
+        </div>
+
+
+        <div class="layui-inline layui-col-sm1">
             <select name="hotel_id" lay-verify="">
                 <option value="">酒店名称</option>
                 <{foreach name="hotels" item="val"}>

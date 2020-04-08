@@ -216,6 +216,24 @@ $(function(){
         return false
     });
 
+    $(".lay-delete-api").click(function(){
+        if(!confirm('确认删除该行?')) {
+            return false;
+        }
+
+        var _ = $(this);
+        var url = $(this).attr('data-action');
+        if(url != undefined) {
+            $.get(url, function (res) {
+                layer.msg(res.msg);
+                if (res.code == '200') {
+                    _.parents("tr").remove();
+                }
+            });
+        }
+        return false
+    });
+
     $("select.multiple-select").each(function(i,n) {
         var placeholder = $(n).attr('placeholder');
         $(n).multipleSelect({

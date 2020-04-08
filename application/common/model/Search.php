@@ -334,6 +334,10 @@ class Search
 
     public static function order(&$user, &$get)
     {
+        if (isset($get['complete'])) {
+            $map[] = ['complete', '=', $get['complete']];
+        }
+
         if (isset($get['company_id'])) {
             $map[] = ['company_id', '=', $get['company_id']];
         }

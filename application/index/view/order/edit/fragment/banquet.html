@@ -120,9 +120,9 @@
                         <td class="text-left">{$row.sub_banquet_remark}</td>
                         <td class="text-right">
                             <div>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.BanquetSuborder/edit')} btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.BanquetSuborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.BanquetSuborder/delete')} btn-delete-solid lay-delete-api">删除</a>
+                                <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/edit')} btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
+                                <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>
+                                <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/delete')} btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_suborder/delete', ['id'=>$row['id']])}">删除</a>
                             </div>
                         </td>
                     </tr>
@@ -242,8 +242,8 @@
                            class="{:auth('/index/order.banquet_payment/edit')} btn-edit-solid layui-right-side"
                            data-action="{:url('/index/order.banquet_payment/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/delBanquetPayment')}
-                           btn-delete-solid btn-delete-api" data-action="{:url('/index/order.banquet_payment/delete')}">删除</a>
+                           class="{:auth('/index/order.banquet_payment/delBanquetPayment')} btn-delete-solid btn-delete-api"
+                           data-action="{:url('/index/order.banquet_payment/delete', ['id'=>$row['id']])}">删除</a>
                         <a href="javascript:void(0);"
                            class="{:auth('/index/order.banquet_payment/accountConfirm')} btn-confirm-solid layui-right-side"
                            title="一站式婚宴付款-会计审核"
