@@ -96,7 +96,7 @@ class Order extends Backend
     {
         if (Request::isAjax()) {
             $get = Request::param();
-            $get['news_type'] = 2;
+            // $get['news_type'] = 2;
             $order = $this->_getOrderList($get, 'index');
             $result = [
                 'code' => 0,
