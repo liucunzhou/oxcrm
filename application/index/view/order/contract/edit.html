@@ -35,13 +35,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">合同编号</label>
         <div class="layui-input-block">
-            <input type="text" name="contract_no" value="{$data['contract_no']}" lay-verify="required" placeholder="合同编号" autocomplete="off" class="layui-input">
+            <input type="text" name="contract_no" value="{$data['contract_no']}" lay-verify="" placeholder="合同编号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">签约日期</label>
         <div class="layui-input-block">
-            <input type="text" name="sign_date" value="{$data['sign_date']}" lay-verify="required" placeholder="签约日期" autocomplete="off" class="layui-input layui-date">
+            <input type="text" name="sign_date" value="{$data['sign_date']}" lay-verify="" placeholder="签约日期" autocomplete="off" class="layui-input layui-date">
         </div>
     </div>
 
@@ -49,13 +49,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">举办日期</label>
         <div class="layui-input-block">
-            <input type="text" name="event_date" value="{$data['event_date']}" lay-verify="required" placeholder="举办日期" autocomplete="off" class="layui-input layui-date">
+            <input type="text" name="event_date" value="{$data['event_date']}" lay-verify="" placeholder="举办日期" autocomplete="off" class="layui-input layui-date">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">酒店名称</label>
         <div class="layui-input-block">
-            <select name="hotel_id" lay-search lay-filter="hotel_id" lay-verify="required">
+            <select name="hotel_id" lay-search lay-filter="hotel_id" lay-verify="">
                 <option value=""></option>
                 <{foreach name="hotels" item="val"}>
                 <option value="{$val['id']}" <{if $data['hotel_id']==$val['id']}>selected<{/if}>>{$val['title']}</option>
@@ -86,25 +86,25 @@
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">新郎姓名</label>
         <div class="layui-input-block">
-            <input type="text" name="bridegroom" value="{$data['bridegroom']}" lay-verify="required" placeholder="新郎姓名" autocomplete="off" class="layui-input">
+            <input type="text" name="bridegroom" value="{$data['bridegroom']}" lay-verify="" placeholder="新郎姓名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">新郎电话</label>
         <div class="layui-input-block">
-            <input type="text" name="bridegroom_mobile" value="{$data['bridegroom_mobile']}" lay-verify="required" placeholder="新郎电话" autocomplete="off" class="layui-input">
+            <input type="text" name="bridegroom_mobile" value="{$data['bridegroom_mobile']}" lay-verify="" placeholder="新郎电话" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">新娘姓名</label>
         <div class="layui-input-block">
-            <input type="text" name="bride" value="{$data['bride']}" lay-verify="required" placeholder="新娘姓名" autocomplete="off" class="layui-input">
+            <input type="text" name="bride" value="{$data['bride']}" lay-verify="" placeholder="新娘姓名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">新娘电话</label>
         <div class="layui-input-block">
-            <input type="text" name="bride_mobile" value="{$data['bride_mobile']}" lay-verify="required" placeholder="新娘电话" autocomplete="off" class="layui-input">
+            <input type="text" name="bride_mobile" value="{$data['bride_mobile']}" lay-verify="" placeholder="新娘电话" autocomplete="off" class="layui-input">
         </div>
     </div>
 
@@ -112,19 +112,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">新郎微信</label>
         <div class="layui-input-block">
-            <input type="text" name="bridegroom_wechat" value="{$data['bridegroom_wechat']}" lay-verify="required" placeholder="新郎微信" autocomplete="off" class="layui-input">
+            <input type="text" name="bridegroom_wechat" value="{$data['bridegroom_wechat']}" lay-verify="" placeholder="新郎微信" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">新娘微信</label>
         <div class="layui-input-block">
-            <input type="text" name="bride_wechat" value="{$data['bride_wechat']}" lay-verify="required" placeholder="新娘微信" autocomplete="off" class="layui-input">
+            <input type="text" name="bride_wechat" value="{$data['bride_wechat']}" lay-verify="" placeholder="新娘微信" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">家庭住址</label>
         <div class="layui-input-block">
-            <input type="text" name="home_address" value="{$data['home_address']}" lay-verify="required" placeholder="家庭住址" autocomplete="off" class="layui-input">
+            <input type="text" name="home_address" value="{$data['home_address']}" lay-verify="" placeholder="家庭住址" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
