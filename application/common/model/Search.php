@@ -334,7 +334,7 @@ class Search
 
     public static function order(&$user, &$get)
     {
-        $map[] = ['news_type', '=', $get['news_type']];
+        // $map[] = ['news_type', '=', $get['news_type']];
         if (isset($get['source']) && !empty($get['source'])) {
             $map[] = ['source_id', '=', $get['source']];
         }
