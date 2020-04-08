@@ -41,6 +41,10 @@ class order extends Command
 
 
         switch ($action) {
+            case 'initHs':
+                $this->initHs();
+                break;
+
             case 'initOrder':
                 $this->initOrder();
                 break;
@@ -70,6 +74,173 @@ class order extends Command
         }
     }
 
+    // 初始化红丝订单
+    public function initHs()
+    {
+
+        // 指令输出
+        if (!$fp = fopen('./hongsi.csv', 'r')) {
+            return false;
+        }
+
+        while (!feof($fp)) {
+            $row = fgetcsv($fp);
+            foreach ($row as &$val) {
+                $val = mb_convert_encoding($val, 'UTF-8', 'GBK');
+            }
+
+            if ($row[0] == '合同编号') continue;
+            // 订单类型
+            $data = [];
+            $data['news_type'] = 2;
+            $data['brand_text'] = $row[2];
+            !empty($row[0]) && $data['contract_no'] = $row[0];
+            !empty($row[1]) && $data['sign_date'] = strtotime($row[1]);
+            !empty($row[9]) && $data['event_date'] = strtotime($row[9]);
+            !empty($row[3]) && $data['source_text'] = $row[3];
+            !empty($row[4]) && $data['source_detail'] = $row[4];
+            !empty($row[5]) && $data['point'] = $row[5];
+            !empty($row[6]) && $data['source_fee'] = $row[6];
+            !empty($row[7]) && $data['recommend_salesman'] = $row[7];
+            !empty($row[8]) && $data['score'] = $row[8];
+            !empty($row[10]) && $data['hotel_text'] = $row[10];
+            !empty($row[13]) && $data['bridegroom'] = $row[13];
+            !empty($row[14]) && $data['bride'] = $row[14];
+            !empty($row[15]) && $data['bridegroom_mobile'] = $row[15];
+            !empty($row[16]) && $data['bride_mobile'] = $row[16];
+            !empty($row[12]) && $data['banquet_hall_name'] = $row[12];
+            !empty($row[19]) && $data['contract_totals'] = $row[19];
+            !empty($row[24]) && $data['totals'] = $row[24];
+            !empty($row[21]) && $data['earnest_money'] = $row[21];
+            !empty($row[22]) && $data['middle_money'] = $row[22];
+            !empty($row[23]) && $data['tail_money'] = $row[23];
+            !empty($row[17]) && $data['prepay_money'] = $row[17]; // 意向金
+            !empty($row[31]) && $data['pay_hotel_fee'] = $row[31]; // 付酒店费用
+            // !empty($row[33]) && $data['income_wedding_celebration_admission_fee'] = $row[33]; // 收婚庆进场费
+            // !empty($row[34]) && $data['pay_hotel_admission_fee'] = $row[34]; // 付酒店进场费
+            !empty($row[51]) && $data['sale'] = $row[51]; // 签单销售
+            !empty($row[52]) && $data['sale_commission'] = $row[52]; // 销售提成
+            !empty($row[58]) && $data['remark'] = $row[58]; // 订单备注
+            !empty($row[1]) && $data['create_time'] = strtotime($row[1]);
+            $data['company_id'] = 26;
+            $order = new \app\common\model\Order();
+            $result = $order->save($data);
+            echo "\n";
+            if (!$result) {
+                echo "失败\n";
+                continue;
+            } else {
+                echo "写入成功\n";
+            }
+            $orderId = $order->id;
+            $banquet = [];
+            $banquet['order_id'] = $orderId;
+            !empty($row[31]) && $banquet['table_amount'] = $row[31];
+            !empty($row[32]) && $banquet['table_price'] = $row[32];
+            !empty($row[33]) && $banquet['wine_fee'] = $row[33];
+            // !empty($row[17]) && $banquet['service_fee'] = $row[17];
+            !empty($row[1]) && $banquet['create_time'] = strtotime($row[1]);
+            $banquetOrder = new OrderBanquet();
+            $result = $banquetOrder->insert($banquet);
+            if ($result) {
+                // echo $row[5]."一站式写入成功\n";
+            } else {
+                echo $banquetOrder->getLastSql() . "\n";
+                echo $row[5] . "婚宴写入失败\n";
+            }
+
+            // 写入婚宴收款信息的定金收款
+            if ($row[25]==0) {
+                $banquetReceivables = new OrderBanquetReceivables();
+                $receivable = [];
+                $receivable['order_id'] = $orderId;
+                $receivable['banquet_receivable_no'] = $row[26];
+                $receivable['banquet_income_type'] = 1;
+                $receivable['banquet_income_item_price'] = $row[21];
+                $receivable['banquet_income_date'] = $row[1];
+                $banquetReceivables->insert($receivable);
+            }
+
+            // 婚宴收款中款
+            if ($row[27]==0) {
+                $banquetReceivables = new OrderBanquetReceivables();
+                $receivable = [];
+                $receivable['order_id'] = $orderId;
+                $receivable['banquet_receivable_no'] = $row[28];
+                $receivable['banquet_income_type'] = 2;
+                $receivable['banquet_income_item_price'] = $row[22];
+                $receivable['banquet_income_date'] = $row[1];
+                $banquetReceivables->save($receivable);
+            }
+
+            // 婚宴收款尾款
+            if ($row[29]) {
+                $banquetReceivables = new OrderBanquetReceivables();
+                $receivable = [];
+                $receivable['order_id'] = $orderId;
+                $receivable['banquet_receivable_no'] = $row[30];
+                $receivable['banquet_income_type'] = 3;
+                $receivable['banquet_income_item_price'] = $row[23];
+                $receivable['banquet_income_date'] = $row[1];
+                $banquetReceivables->save($receivable);
+            }
+
+            // 婚宴付款定金
+            if ($row[36]) {
+                $banquetPayment = new OrderBanquetPayment();
+                $payment = [];
+                $payment['order_id'] = $orderId;
+                $payment['banquet_payment_no'] = $row[37];
+                $payment['banquet_pay_type'] = 1;
+                $payment['banquet_pay_item_price'] = $row[36];
+                $payment['banquet_apply_pay_date'] = $row[1];
+                $banquetPayment->save($payment);
+            }
+
+            // 婚宴付款中款
+            if ($row[38]) {
+                $banquetPayment = new OrderBanquetPayment();
+                $payment = [];
+                $payment['order_id'] = $orderId;
+                $payment['banquet_payment_no'] = $row[39];
+                $payment['banquet_pay_type'] = 2;
+                $payment['banquet_pay_item_price'] = $row[38];
+                $payment['banquet_apply_pay_date'] = $row[1];
+                $banquetPayment->save($payment);
+            }
+
+            // 婚宴收款尾款
+            if ($row[40]) {
+                $banquetPayment = new OrderBanquetPayment();
+                $payment = [];
+                $payment['order_id'] = $orderId;
+                $payment['banquet_payment_no'] = $row[41];
+                $payment['banquet_pay_type'] = 3;
+                $payment['banquet_pay_item_price'] = $row[40];
+                $payment['banquet_apply_pay_date'] = $row[1];
+                $banquetPayment->save($payment);
+            }
+
+            $wedding = [];
+            $wedding['order_id'] = $orderId;
+            !empty($row[20]) && $wedding['wedding_total'] = $row[20];
+            !empty($row[50]) && $wedding['sale'] = $row[50];
+            !empty($row[46]) && $wedding['car'] = $row[46];
+            !empty($row[1]) && $wedding['create_time'] = strtotime($row[1]);
+            $weddingOrder = new OrderWedding();
+            $result = $weddingOrder->save($wedding);
+            // $weddingId = $weddingOrder->id;
+
+            if ($result) {
+                // echo $row[5]."一站式写入成功\n";
+            } else {
+                echo $weddingOrder->getLastSql() . "\n";
+                // echo $row[5]."一站式写入失败\n";
+            }
+        }
+    }
+
+    // 初始化誉思订单
     public function initOrder()
     {
         $types = [
@@ -122,7 +293,6 @@ class order extends Command
             !empty($row[25]) && $data['middle_money'] = $row[25];
             !empty($row[29]) && $data['tail_money'] = $row[29];
             !empty($row[19]) && $data['prepay_money'] = $row[19]; // 意向金
-
             !empty($row[31]) && $data['pay_hotel_fee'] = $row[31]; // 付酒店费用
             !empty($row[33]) && $data['income_wedding_celebration_admission_fee'] = $row[33]; // 收婚庆进场费
             !empty($row[34]) && $data['pay_hotel_admission_fee'] = $row[34]; // 付酒店进场费
@@ -162,7 +332,6 @@ class order extends Command
 
                 // 写入婚宴收款信息的定金收款
                 if ($row[21]) {
-                    echo
                     $banquetReceivables = new OrderBanquetReceivables();
                     $receivable = [];
                     $receivable['order_id'] = $orderId;

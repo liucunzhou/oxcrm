@@ -96,7 +96,7 @@ class Order extends Backend
     {
         if (Request::isAjax()) {
             $get = Request::param();
-            // $get['news_type'] = 2;
+            $get['company_id'] = 25;
             $order = $this->_getOrderList($get, 'index');
             $result = [
                 'code' => 0,
@@ -112,6 +112,29 @@ class Order extends Backend
             return $this->fetch('order/list/index');
         }
     }
+
+    // 誉丝
+    public function hs()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['company_id'] = 26;
+            $order = $this->_getOrderList($get, 'index');
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getColsFile('index');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/list/index');
+        }
+    }
+
 
     # 创建订单视图
     public function createOrder()
