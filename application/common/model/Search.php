@@ -347,7 +347,7 @@ class Search
         }
 
         if (isset($get['mobile']) && !empty($get['mobile_type'])) {
-            $map[] = [$get['mobile_type'], '=' . $get['staff']];
+            $map[] = [$get['mobile_type'], '=' . $get['mobile']];
         }
 
         if (isset($get['staff']) && !empty($get['staff'])) {

@@ -474,6 +474,8 @@ class Order extends Backend
         if ($statusField == 'index') {
             $statusTexts = ['待审核', '已通过', '已驳回'];
             foreach ($data as $key => &$value) {
+                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
                 $value['check_status_source'] = $statusTexts[$value['check_status_source']];
                 $value['check_status_score'] = $statusTexts[$value['check_status_score']];
                 $value['check_status_contract_fiance'] = $statusTexts[$value['check_status_contract_fiance']];
@@ -488,6 +490,8 @@ class Order extends Backend
             }
         } else if($statusField == 'complete') {
             foreach ($data as $key => &$value) {
+                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
                 $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
                 $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
                 $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
