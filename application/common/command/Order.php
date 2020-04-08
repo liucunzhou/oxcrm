@@ -26,7 +26,6 @@ class order extends Command
         $this->setName('Order')
             ->addOption('action', null, Option::VALUE_REQUIRED, '要执行的动作');
         // 设置参数
-
     }
 
     protected function execute(Input $input, Output $output)
@@ -64,6 +63,9 @@ class order extends Command
             case 'initMemberByRelation':
                 $this->initMemberByRelation();
                 break;
+
+            case 'initCsvToTable':
+                $this->initCsvToTable();
         }
     }
 
@@ -191,6 +193,11 @@ class order extends Command
                 }
             }
         }
+    }
+
+    public function initCsvToTable()
+    {
+
     }
 
     public function initStoreId()
@@ -345,7 +352,7 @@ class order extends Command
                     echo $row->sale . "订单匹配失败\n";
                 }
             } else {
-                file_put_contents('./member.txt', $row->bride_mobile . ":::" . $row->bridegroom_mobile . ":::".$row->salesman."\n", FILE_APPEND);
+                file_put_contents('./member.txt', $row->bride_mobile . ":::" . $row->bridegroom_mobile . ":::".$row->salesman.":::".$row->id."\n", FILE_APPEND);
                 echo $row->sale . "未匹配\n";
             }
         }
@@ -359,11 +366,16 @@ class order extends Command
 
         foreach ($rows as $row) {
             $arr = explode(":::", $row);
+            echo count($arr);
             if(count($arr) < 3) continue;
+            print_r($arr);
             if (!empty($arr[0]) && empty($arr[1])) {
                 $where = [];
                 $where[] = ['mobiles', 'like', '%{$arr[0]}%'];
                 $relation = MobileRelation::where($where)->find();
+                echo "\n";
+                echo MobileRelation::getLastSql();
+                echo "\n";
                 if(empty($relation)) {
                     file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
                     echo $arr[2]."失败\n";
@@ -380,6 +392,7 @@ class order extends Command
                 echo "\n";
                 if($allocate) {
                     echo $allocate->id."成功\n";
+
                 } else {
                     file_put_contents('./member-end.txt', $arr[0] . ":::" . $arr[1] . ":::".$arr[2]."\n", FILE_APPEND);
                     echo $arr[2]."失败\n";

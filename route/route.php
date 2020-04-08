@@ -16,3 +16,4 @@ Route::get('think', function () {
 });
 
 Route::domain('wash.com','wash');
+Route::domain('h5.com','h5');
