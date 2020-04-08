@@ -30,7 +30,7 @@
                     <div class="layui-input-block">
                         <select name="news_type" lay-filter="news_type">
                             <{foreach name="newsTypes" item="row"}>
-                            <option value="{$data['news_type']==$key?'selected':''}">{$row}</option>
+                            <option value="{$key}" {$data['news_type']==$key?'selected':''}>{$row}</option>
                             <{/foreach}>
                         </select>
                     </div>
