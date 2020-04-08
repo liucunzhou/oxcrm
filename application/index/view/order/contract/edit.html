@@ -29,9 +29,9 @@
                     <label class="layui-form-label layui-color-red">订单类型</label>
                     <div class="layui-input-block">
                         <select name="news_type" lay-filter="news_type">
-                            <option value="2" <{if $data['news_type'] == '2'}>selected<{/if}>>一站式订单</option>
-                            <option value="1" <{if $data['news_type'] == '1'}>selected<{/if}>>婚庆信息</option>
-                            <option value="0" <{if $data['news_type'] == '0'}>selected<{/if}>>婚宴信息</option>
+                            <{foreach name="newsTypes" item="row"}>
+                            <option value="{$data['news_type']==$key?'selected':''}">{$row}</option>
+                            <{/foreach}>
                         </select>
                     </div>
                 </div>
