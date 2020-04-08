@@ -14,7 +14,10 @@
     <script src="/assets/lib/order.edit.js"></script>
 </head>
 <body>
-<form class="layui-form" method="post" action="{:url('/index/order.contract/doEdit')}" lay-filter="component-form-group">
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('/index/order.contract/doEdit')}" lay-filter="component-form-group">
     <div class="layui-form-item">
         <label class="layui-form-label layui-color-red">定金收款日期</label>
         <div class="layui-input-block">
@@ -75,5 +78,8 @@
         </div>
     </div>
 </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
