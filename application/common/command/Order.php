@@ -167,8 +167,8 @@ class order extends Command
                 $receivable['banquet_income_item_price'] = $row[27];
                 $index = strpos($row[28],'-');
                 $date = substr($row[28], 0, $index);
-                $receivable['banquet_income_date'] = $date;
-                $banquetReceivables->insert($receivable);
+                $receivable['banquet_income_date'] = strtotime($date);
+                $banquetReceivables->save($receivable);
             }
 
             // 婚宴收款中款
@@ -181,7 +181,7 @@ class order extends Command
                 $receivable['banquet_income_item_price'] = $row[29];
                 $index = strpos($row[30],'-');
                 $date = substr($row[30], 0, $index);
-                $receivable['banquet_income_date'] = $date;
+                $receivable['banquet_income_date'] = strtotime($date);
                 $banquetReceivables->save($receivable);
             }
 
@@ -195,7 +195,7 @@ class order extends Command
                 $receivable['banquet_income_item_price'] = $row[31];
                 $index = strpos($row[32],'-');
                 $date = substr($row[32], 0, $index);
-                $receivable['banquet_income_date'] = $date;
+                $receivable['banquet_income_date'] = strtotime($date);
                 $banquetReceivables->save($receivable);
             }
 
@@ -209,7 +209,7 @@ class order extends Command
                 $payment['banquet_pay_item_price'] = $row[36];
                 $index = strpos($row[37],'-');
                 $date = substr($row[37], 0, $index);
-                $payment['banquet_apply_pay_date'] = $date;
+                $payment['banquet_apply_pay_date'] = strtotime($date);
                 $banquetPayment->save($payment);
             }
 
@@ -223,7 +223,7 @@ class order extends Command
                 $payment['banquet_pay_item_price'] = $row[38];
                 $index = strpos($row[39],'-');
                 $date = substr($row[39], 0, $index);
-                $payment['banquet_apply_pay_date'] = $date;
+                $payment['banquet_apply_pay_date'] = strtotime($date);
                 $banquetPayment->save($payment);
             }
 
@@ -237,7 +237,7 @@ class order extends Command
                 $payment['banquet_pay_item_price'] = $row[40];
                 $index = strpos($row[41],'-');
                 $date = substr($row[41], 0, $index);
-                $payment['banquet_apply_pay_date'] = $date;
+                $payment['banquet_apply_pay_date'] = strtotime($date);
                 $banquetPayment->save($payment);
             }
 
