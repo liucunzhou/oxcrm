@@ -13,10 +13,15 @@ class Banquet extends Backend
     {
         parent::initialize();
         $this->model = new OrderBanquet();
+
+        ## 获取所有品牌、公司
+        $brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $brands);
     }
 
     public function edit($id)
     {
+
         $where = [];
         $where[] = ['order_id', '=', $id];
         $order = $this->model->where($where)->order('id desc')->find();

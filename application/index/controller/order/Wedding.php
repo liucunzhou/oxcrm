@@ -12,6 +12,10 @@ class Wedding extends Backend
     {
         parent::initialize();
         $this->model = new OrderWedding();
+
+        ## 获取所有品牌、公司
+        $brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $brands);
     }
 
     public function edit($id)
