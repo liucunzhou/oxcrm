@@ -172,7 +172,7 @@ class order extends Command
             }
 
             // 婚宴收款中款
-            if ($row[29]==0) {
+            if ($row[29]) {
                 $banquetReceivables = new OrderBanquetReceivables();
                 $receivable = [];
                 $receivable['order_id'] = $orderId;
