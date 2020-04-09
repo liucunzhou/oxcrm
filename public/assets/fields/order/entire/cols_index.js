@@ -1,10 +1,5 @@
 var _cols = [[
     {
-        "field": "id",
-        "title": "ID",
-        "width": 50,
-        "event" : "showOrder"
-    }, {
         "field": "tool",
         "title": "操作",
         "align": "center",

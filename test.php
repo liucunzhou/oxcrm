@@ -1,3 +1,4 @@
 <?php
-$str = '+8613917479670';
-echo substr($str, 3);
+$str = '2020/3/18-0010040';
+$index = strpos($str, '-');
+echo substr($str, 0, $index);

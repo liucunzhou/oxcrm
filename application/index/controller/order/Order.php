@@ -113,7 +113,7 @@ class Order extends Backend
         }
     }
 
-    // 誉丝
+    // 红丝
     public function hs()
     {
         if (Request::isAjax()) {
@@ -135,6 +135,27 @@ class Order extends Backend
         }
     }
 
+    // 曼格纳
+    public function mangena()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['company_id'] = 24;
+            $order = $this->_getOrderList($get, 'index');
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getColsFile('index');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/list/index');
+        }
+    }
 
     # 创建订单视图
     public function createOrder()
