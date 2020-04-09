@@ -1,3 +1,4 @@
+<{if !empty($wedding)}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">婚庆基本信息</div>
@@ -66,6 +67,7 @@
            data-action="{:url('/index/order.wedding_payment/create', ['order_id'=>$data['id']])}">添加婚庆付款信息</a>
     </div>
 </div>
+<{/if}>
 
 <{if !$weddingOrders->isEmpty()}>
 <div class="layui-card">

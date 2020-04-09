@@ -27,7 +27,7 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"editOrder", "text"=>"编辑"])}
+                            <button class="layui-btn layui-btn-xs" lay-event="editOrder">编辑</button>
                             {:button(["event"=>"delOrder", "text"=>"删除"])}
                         </div>
                     </script>

@@ -9,11 +9,16 @@ use app\common\model\OrderBanquet;
 use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderCar;
+use app\common\model\OrderDessert;
 use app\common\model\OrderEntire;
+use app\common\model\OrderLight;
+use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
+use app\common\model\OrderWine;
 use app\common\model\Search;
 use app\common\model\User;
 use app\index\controller\Backend;
@@ -260,11 +265,13 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $banquet = OrderBanquet::where($where)->order('id desc')->find();
         $this->assign('banquet', $banquet);
+
         #### 获取婚宴二销订单信息
         $where = [];
         $where['order_id'] = $get['id'];
         $banquetOrders = OrderBanquetSuborder::where($where)->select();
         $this->assign('banquetOrders', $banquetOrders);
+
         #### 获取婚宴收款信息
         $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
         $this->assign('banquetReceivables', $receivables);
@@ -279,8 +286,8 @@ class Order extends Backend
         $wedding = OrderWedding::where($where)->order('id desc')->find();
         $this->assign('wedding', $wedding);
         if(!empty($wedding)) {
-            $wedding = $wedding->getData();
-            $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+            $weddingData = $wedding->getData();
+            $selectedWeddingDevices = json_decode($weddingData['wedding_device'], true);
             if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
             $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
         }
@@ -296,6 +303,36 @@ class Order extends Backend
         #### 获取婚庆付款信息
         $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
         $this->assign('weddingPayments', $weddingPayments);
+
+        #### 婚车
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $car = OrderCar::where($where)->find();
+        $this->assign('car', $car);
+
+        #### 喜糖
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $sugar = OrderSugar::where($where)->select();
+        $this->assign('sugar', $sugar);
+
+        #### 酒水
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $wine = OrderWine::where($where)->select();
+        $this->assign('wine', $wine);
+
+        #### 灯光
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $light = OrderLight::where($where)->select();
+        $this->assign('light', $light);
+
+        #### 点心
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $dessert = OrderDessert::where($where)->select();
+        $this->assign('dessert', $dessert);
 
         ##　获取客资分配信息
         $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();

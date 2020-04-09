@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑婚宴基本信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css?2" media="all">
+    <link rel="stylesheet" href="/assets/style/order.css?2" media="all">
+    <script src="/assets/layui/layui.js"></script>
+    <script src="/assets/lib/order.edit.js"></script>
+</head>
+<body>
+<div class="layui-fluid">
+
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('/index/order.banquet/doEdit')}" lay-filter="component-form-group">
+                <div class="layui-form-item">
+                    <div class="layui-form-label">承办公司</div>
+                    <div class="layui-input-block">
+                        <select name="company_id" class="layui-select">
+                            <option value="">--请选择公司--</option>
+                            <{foreach name="brands" item="val"}>
+                            <option value="{$val.id}" <{if $data['company_id'] == $val['id']}>selected<{/if}>>{$val.title}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-color-red">婚宴总金额</label>
+                    <div class="layui-input-block">
+                        <input read type="number" name="banquet_totals" value="{$data['banquet_totals']}" lay-verify="" readonly placeholder="婚宴总金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-color-red">桌数</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="table_amount" value="{$data['table_amount']}" lay-verify="" placeholder="桌数" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label layui-color-red">餐标</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="table_price" value="{$data['table_price']}" lay-verify="" placeholder="餐标" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">服务费总计</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="service_fee" value="{$data['service_fee']}" lay-verify="" placeholder="服务费" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">酒水费用</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="wine_fee" value="{$data['wine_fee']}" lay-verify="" placeholder="酒水费用" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">加菜换菜</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="banquet_update_table" value="{$data['banquet_update_table']}" lay-verify="" placeholder="加菜换菜" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">优惠金额</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="banquet_discount" value="{$data['banquet_discount']}" lay-verify="" placeholder="优惠金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">选择仪式</label>
+                    <div class="layui-input-block">
+                        <select name="banquet_ritual_id" class="layui-input">
+                            <option value="">选择仪式</option>
+                            <{foreach name="rituals" item="row"}>
+                            <option value="{$row.id}" {$row.id==$data.id?'selected':''}>{$row.title}</option>
+                            <{/foreach}>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">仪式价格</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="banquet_ritual_hall" value="{$data['banquet_ritual_hall']}" lay-verify="" placeholder="仪式价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">其他</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="banquet_other" value="{$data['banquet_other']}" lay-verify="" placeholder="其他" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-form-label">备注</div>
+                    <div class="layui-input-block">
+                        <textarea name="banquet_remark" class="layui-textarea" placeholder="备注信息">{$data['banquet_remark']}</textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="order_id" value="{$data.order_id}"/>
+                        <input type="hidden" name="id" value="{$data.id}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

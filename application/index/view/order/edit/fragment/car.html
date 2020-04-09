@@ -1,59 +1,57 @@
+<{if !empty($car)}>
 <div class="layui-card">
-    <div class="layui-card-header layui-bg-blue">
-        婚车业务
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">
+            婚车业务
+        </div>
+
+        <div class="layui-card-header-right">
+            <a title="编辑婚车信息"
+               class="layui-right-side btn-edit"
+               href="javascript:void(0);"
+               data-action="{:url('/index/order.car/edit', ['id'=>$data['id']])}">编辑</a>
+        </div>
+
     </div>
-    <div class="layui-row">
-        <div class="layui-col-md6">
-            <table class="table-mine">
-                <tbody>
-                <tr>
-                    <th>
-                        <select name="items[car][]" lay-search lay-verify="required">
-                            <option value="">请选择婚车</option>
-                            <{foreach name="cars" item="row"}>
-                            <option value="{$row['id']}">{$row['title']}</option>
-                            <{/foreach}>
-                        </select>
-                    </th>
-                    <th>
-                        <input type="text" name="items[amount][]" value="{$data['wedding_category_amount']}" lay-verify="required" placeholder="数量" autocomplete="off" class="layui-input">
-                    </th>
-                    <th>
-                        <input type="text" name="items[total][]" value="{$data['wedding_total']}" lay-verify="required" placeholder="金额" autocomplete="off" class="layui-input">
-                    </th>
-                    <th>
-                        <div class="layui-btn-group">
-                            <a class="layui-btn layui-btn append_wedding_item" href="javascript:void(0);"><i class="layui-icon"></i></a>
-                            <a class="layui-btn layui-btn-danger layui-btn delete_wedding_item" href="javascript:void(0);"><i class="layui-icon"></i></a>
-                        </div>
-                    </th>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="layui-col-md6">
-            <table class="table-mine">
-                <tr>
-                    <td>使用时间</td>
-                    <td><input type="text" ></td>
-                </tr>
-                <tr>
-                    <td>扎花地点</td>
-                    <td><input type="text" ></td>
-                </tr>
-                <tr>
-                    <td>接车地点</td>
-                    <td><input type="text" ></td>
-                </tr>
-                <tr>
-                    <td>联系电话</td>
-                    <td><input type="text" ></td>
-                </tr>
-                <tr>
-                    <td>家庭住址</td>
-                    <td><input type="text" ></td>
-                </tr>
-            </table>
-        </div>
+    <div class="layui-card-body">
+        <table class="table-form">
+            <tr>
+                <td class="tb-field">主车型号</td>
+                <td class="tb-value">{$car.master_car_id}</td>
+                <td class="tb-field">主车颜色</td>
+                <td class="tb-value">{$car.master_car_color}</td>
+                <td class="tb-field">注册数量</td>
+                <td class="tb-value">{$car.master_car_amount}</td>
+                <td class="tb-field">跟车型号</td>
+                <td class="tb-value">{$car.slave_car_id}</td>
+                <td class="tb-field">跟车颜色</td>
+                <td class="tb-value">{$car.slave_car_color}</td>
+                <td class="tb-field">跟车数量</td>
+                <td class="tb-value">{$car.slave_car_amount}</td>
+            </tr>
+            <tr>
+                <td class="tb-field">服务时长</td>
+                <td class="tb-value">{$car.service_hour}</td>
+                <td class="tb-field">服务距离</td>
+                <td class="tb-value">{$car.service_distance}</td>
+                <td class="tb-field">联系人</td>
+                <td class="tb-value">{$car.contact_name}</td>
+                <td class="tb-field">跟车型号</td>
+                <td class="tb-value">{$car.contact_mobile}</td>
+                <td class="tb-field">到达时间</td>
+                <td class="tb-value">{$car.arrive_time}</td>
+                <td class="tb-field">到达地址</td>
+                <td class="tb-value">{$car.arrive_address}</td>
+            </tr>
+            <tr>
+                <td class="tb-field">成交价格</td>
+                <td class="tb-value">{$car.car_totals}</td>
+                <td class="tb-field">成交价格</td>
+                <td class="tb-value">{$car.salesman}</td>
+                <td class="tb-field">备注</td>
+                <td class="tb-value">{$car.car_remark}</td>
+            </tr>
+        </table>
     </div>
 </div>
+<{/if}>

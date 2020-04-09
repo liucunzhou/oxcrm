@@ -111,4 +111,15 @@ layui.config({
     $(document).on("click", ".delete_wedding_item", function () {
         var row = $(this).parents("tr").remove();
     });
+
+    $(document).on("click", ".tbody-append", function () {
+        var table = $(this).parents("table");
+        var tbody = $(this).parents("tbody").clone();
+        table.append(tbody);
+        form.render()
+    });
+
+    $(document).on("click", ".tbody-delete", function () {
+        $(this).parents("tbody").remove();
+    });
 });

@@ -105,6 +105,58 @@
                 <td class="tb-field">备注</td>
                 <td class="tb-value" colspan="8">{$data.remark}</td>
             </tr>
+            <tr>
+                <td colspan="10" class="text-right">
+                    <{if empty($banquet)}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加婚宴信息"
+                           data-action="{:url('/index/order.banquet/create', ['id'=>$data.id])}">添加婚宴信息</a>
+                    <{/if}>
+
+                    <{if empty($wedding)}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加婚庆信息"
+                           data-action="{:url('/index/order.wedding/create', ['id'=>$data.id])}">添加婚庆信息</a>
+                    <{/if}>
+
+                    <{if empty($car)}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加婚车信息"
+                           data-action="{:url('/index/order.car/create', ['id'=>$data.id])}">添加婚车信息</a>
+                    <{/if}>
+
+                    <{if $sugar->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加喜糖信息"
+                           data-action="{:url('/index/order.sugar/create', ['id'=>$data.id])}">添加喜糖信息</a>
+                    <{/if}>
+
+                    <{if $wine->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加酒水信息"
+                           data-action="{:url('/index/order.wine/create', ['id'=>$data.id])}">添加酒水信息</a>
+                    <{/if}>
+
+                    <{if $light->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加灯光信息"
+                           data-action="{:url('/index/order.light/create', ['id'=>$data.id])}">添加灯光信息</a>
+                    <{/if}>
+
+                    <{if $dessert->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加点心信息"
+                           data-action="{:url('/index/order.dessert/create', ['id'=>$data.id])}">添加点心信息</a>
+                    <{/if}>
+                </td>
+            </tr>
         </table>
     </div>
 </div>
