@@ -160,3 +160,7 @@
 .input-no-border input {
     border: none;
 }
+
+form.layui-form {
+    margin-bottom: 30px;
+}

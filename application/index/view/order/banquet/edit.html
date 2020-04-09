@@ -82,7 +82,7 @@
                         <select name="banquet_ritual_id" class="layui-input">
                             <option value="">选择仪式</option>
                             <{foreach name="rituals" item="row"}>
-                            <option value="{$row.id}">{$row.title}</option>
+                            <option value="{$row.id}" {$row.id==$data.id?'selected':''}>{$row.title}</option>
                             <{/foreach}>
                         </select>
                     </div>

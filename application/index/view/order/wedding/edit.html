@@ -22,7 +22,7 @@
                         <select name="company_id" class="layui-select">
                             <option value="">--请选择公司--</option>
                             <{foreach name="brands" item="val"}>
-                            <option value="{$val.id}" <{if $data['company_id'] == $val['id']}>selected<{/if}>>{$val.title}</option>
+                            <option value="{$val.id}"  {$val.id==$data.company_id?'selected':''}>{$val.title}</option>
                             <{/foreach}>
                         </select>
                     </div>
@@ -41,7 +41,7 @@
                         <select name="wedding_package_id" class="layui-input">
                             <option value="">选择套餐</option>
                             <{foreach name="packages" item="row"}>
-                            <option value="{$row.id}">{$row.title}</option>
+                            <option value="{$row.id}" {$row.id==$data.id?'selected':''}>{$row.title}</option>
                             <{/foreach}>
                         </select>
                     </div>
@@ -61,7 +61,7 @@
                         <select name="wedding_ritual_id" class="layui-input">
                             <option value="">选择仪式</option>
                             <{foreach name="rituals" item="row"}>
-                            <option value="{$row.id}">{$row.title}</option>
+                            <option value="{$row.id}" {$row.id==$data.id?'selected':''}>{$row.title}</option>
                             <{/foreach}>
                         </select>
                     </div>

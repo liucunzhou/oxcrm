@@ -17,6 +17,13 @@ class Banquet extends Backend
         ## 获取所有品牌、公司
         $brands = \app\common\model\Brand::getBrands();
         $this->assign('brands', $brands);
+
+
+        $rituals = \app\common\model\Ritual::getList();
+        $this->assign('rituals', $rituals);
+
+        $packages = \app\common\model\Package::getList();
+        $this->assign('packages', $packages);
     }
 
     public function edit($id)
