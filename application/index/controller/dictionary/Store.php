@@ -111,9 +111,9 @@ class Store extends Backend
         $result = $Model->save($post);
         if($result) {
             empty($post['id']) && $post['id'] = $Model->id;
-            $hotels = \app\common\model\Store::getStoreList(true);
-            $js = 'var hotels = '.json_encode($hotels, JSON_UNESCAPED_UNICODE);
-            file_put_contents('./assets/json/hotels.js', $js);
+            // $hotels = \app\common\model\Store::getStoreList(true);
+            // $js = 'var hotels = '.json_encode($hotels, JSON_UNESCAPED_UNICODE);
+            // file_put_contents('./assets/json/hotels.js', $js);
 
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($Model);
