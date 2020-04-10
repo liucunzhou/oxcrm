@@ -3,15 +3,15 @@
 namespace app\index\controller\order;
 
 
-use app\common\model\OrderLight;
+use app\common\model\OrderD3;
 use app\index\controller\Backend;
 
-class Light extends Backend
+class D3 extends Backend
 {
     public function initialize()
     {
         parent::initialize();
-        $this->model = new OrderLight();
+        $this->model = new OrderD3();
 
         ## 获取所有品牌、公司
         $brands = \app\common\model\Brand::getBrands();
@@ -24,8 +24,8 @@ class Light extends Backend
         $packages = \app\common\model\Package::getList();
         $this->assign('packages', $packages);
 
-        $lightList = \app\common\model\Light::getList();
-        $this->assign('lightList', $lightList);
+        $d3List = \app\common\model\D3::getList();
+        $this->assign('d3List', $d3List);
 
         $staffs = \app\common\model\User::getUsers();
         $this->assign('staffs', $staffs);
@@ -46,20 +46,24 @@ class Light extends Backend
     public function doCreate()
     {
         $params = $this->request->param();
-        foreach ($params['light_id'] as $key=>$val) {
+        foreach ($params['d3_id'] as $key=>$val) {
             $data = [];
             $data['salesman'] = $params['salesman'];
             $data['is_suborder'] = $params['is_suborder'];
             $data['operate_id'] = $this->user['id'];
             $data['order_id'] = $params['order_id'];
-            $data['light_id'] = $val;
-            $data['light_amount'] = $params['amount'][$key];
-            $data['light_price'] = $params['price'][$key];
-            $lightOrder = new OrderLight();
-            $lightOrder->save($data);
+            $data['d3_id'] = $val;
+            $data['d3_amount'] = $params['amount'][$key];
+            $data['d3_price'] = $params['price'][$key];
+            $data['d3_contact'] = $params['contact'][$key];
+            $data['d3_mobile'] = $params['mobile'][$key];
+            $data['d3_address'] = $params['address'][$key];
+            $data['d3_remark'] = $params['remark'][$key];
+            $d3Order = new OrderD3();
+            $d3Order->save($data);
         }
 
-        return json(['code'=>'200', 'msg'=>'添加灯光信息成功']);
+        return json(['code'=>'200', 'msg'=>'添加3D信息成功']);
     }
 
     public function edit($id)

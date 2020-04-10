@@ -167,6 +167,20 @@
                            title="添加点心信息"
                            data-action="{:url('/index/order.dessert/create', ['id'=>$data.id])}">添加点心信息</a>
                     <{/if}>
+
+                    <{if $led->isEmpty()}>
+                    <a href="javascript:void(0);"
+                       class="layui-right-side btn-edit-solid"
+                       title="添加LED信息"
+                       data-action="{:url('/index/order.led/create', ['id'=>$data.id])}">添加LED信息</a>
+                    <{/if}>
+
+                    <{if $d3->isEmpty()}>
+                    <a href="javascript:void(0);"
+                       class="layui-right-side btn-edit-solid"
+                       title="添加3D信息"
+                       data-action="{:url('/index/order.d3/create', ['id'=>$data.id])}">添加3D信息</a>
+                    <{/if}>
                 </td>
             </tr>
         </table>

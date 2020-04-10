@@ -10,9 +10,11 @@ use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderCar;
+use app\common\model\OrderD3;
 use app\common\model\OrderDessert;
 use app\common\model\OrderEntire;
 use app\common\model\OrderHotelItem;
+use app\common\model\OrderLed;
 use app\common\model\OrderLight;
 use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
@@ -363,6 +365,20 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $dessert = OrderDessert::where($where)->select();
         $this->assign('dessert', $dessert);
+
+        #### LED
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $led = OrderLed::where($where)->select();
+        $this->assign('led', $led);
+
+
+        #### 3D
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $d3 = OrderD3::where($where)->select();
+        $this->assign('d3', $d3);
+
 
         ##　获取客资分配信息
         $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();

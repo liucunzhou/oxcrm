@@ -3,15 +3,15 @@
 namespace app\index\controller\order;
 
 
-use app\common\model\OrderLight;
+use app\common\model\OrderLed;
 use app\index\controller\Backend;
 
-class Light extends Backend
+class Led extends Backend
 {
     public function initialize()
     {
         parent::initialize();
-        $this->model = new OrderLight();
+        $this->model = new OrderLed();
 
         ## 获取所有品牌、公司
         $brands = \app\common\model\Brand::getBrands();
@@ -24,8 +24,8 @@ class Light extends Backend
         $packages = \app\common\model\Package::getList();
         $this->assign('packages', $packages);
 
-        $lightList = \app\common\model\Light::getList();
-        $this->assign('lightList', $lightList);
+        $ledList = \app\common\model\Led::getList();
+        $this->assign('ledList', $ledList);
 
         $staffs = \app\common\model\User::getUsers();
         $this->assign('staffs', $staffs);
@@ -46,17 +46,20 @@ class Light extends Backend
     public function doCreate()
     {
         $params = $this->request->param();
-        foreach ($params['light_id'] as $key=>$val) {
+        foreach ($params['led_id'] as $key=>$val) {
             $data = [];
             $data['salesman'] = $params['salesman'];
             $data['is_suborder'] = $params['is_suborder'];
             $data['operate_id'] = $this->user['id'];
             $data['order_id'] = $params['order_id'];
-            $data['light_id'] = $val;
-            $data['light_amount'] = $params['amount'][$key];
-            $data['light_price'] = $params['price'][$key];
-            $lightOrder = new OrderLight();
-            $lightOrder->save($data);
+            $data['led_id'] = $val;
+            $data['led_amount'] = $params['amount'][$key];
+            $data['led_price'] = $params['price'][$key];
+            $data['led_mobile'] = $params['mobile'][$key];
+            $data['led_address'] = $params['address'][$key];
+            $data['led_remark'] = $params['remark'][$key];
+            $ledOrder = new OrderLed();
+            $ledOrder->save($data);
         }
 
         return json(['code'=>'200', 'msg'=>'添加灯光信息成功']);

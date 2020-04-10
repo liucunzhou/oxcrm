@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>编辑灯光信息</title>
+    <title>编辑3D信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -30,7 +30,7 @@
 
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('/index/order.light/doEdit')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('/index/order.d3/doEdit')}" lay-filter="component-form-group">
 
                 <table class="layui-table">
                     <tbody>
@@ -62,10 +62,10 @@
                     <tr>
                         <th class="input-title">品牌</th>
                         <th>
-                            <select class="layui-select" name="light_id[]" lay-search lay-verify="">
-                                <option value="">请选择灯光</option>
-                                <{foreach name="lightList" item="row"}>
-                                    <option value="{$row['id']}" {$data.light_id==$row.id?'selected':''}>{$row['title']}</option>
+                            <select class="layui-select" name="d3_id[]" lay-search lay-verify="">
+                                <option value="">请选择3D</option>
+                                <{foreach name="d3List" item="row"}>
+                                    <option value="{$row['id']}" {$data.d3_id==$row.id?'selected':''}>{$row['title']}</option>
                                 <{/foreach}>
                             </select>
                         </th>
@@ -73,19 +73,19 @@
                     <tr>
                         <th>数量</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_amount" value="{$data.light_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="d3_amount" value="{$data.d3_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>金额</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_price" value="{$data.light_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="d3_price" value="{$data.d3_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>备注</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_remark" value="{$data.light_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="d3_remark" value="{$data.d3_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     </tbody>
