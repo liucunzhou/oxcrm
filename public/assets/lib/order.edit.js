@@ -40,7 +40,8 @@ layui.config({
         'input[name="wine_fee"],' +
         'input[name="banquet_update_table"],' +
         'input[name="wedding_total"],' +
-        'input[name="banquet_discount"]';
+        'input[name="banquet_discount"]' +
+        'input[name="banquet_ritual_hall"]';
 
     /* 监控桌数的输入 */
     $(bindInputs).bind("input", function () {
@@ -53,6 +54,9 @@ layui.config({
 
         var wineFee = $('input[name="wine_fee"]').val();
         if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
+
+        var banquetRitualHall = $('input[name="banquet_ritual_hall"]').val();
+        if(banquetRitualHall!=='') banquetTotals = banquetTotals + parseFloat(banquetRitualHall);
 
         var tableAmount = $('input[name="table_amount"]').val();
         var tablePrice = $('input[name="table_price"]').val();
