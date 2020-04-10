@@ -60,8 +60,13 @@
                 <td></td>
                 <td></td>
                 <td colspan="2" rowspan="6">
-                    <div class="contract-img">
-                        <div class="title">合同(点击查看大图,共3张)</div>
+                    <div class="contract-img upload" id="upload" data-action="{:url('/index/order.order/upload', ['id'=>$data.id])}">
+                        <div class="title">合同(点击查看大图)</div>
+                        <div class="img-box">
+                            <{if !empty($data.image)}>
+                                <img src="/{$data.image}" alt="">
+                            <{/if}>
+                        </div>
                     </div>
                 </td>
             </tr>

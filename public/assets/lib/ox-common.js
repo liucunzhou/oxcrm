@@ -313,4 +313,27 @@ $(function(){
             $(target).val('');
         }
     });
+
+    $(".upload").each(function (i, n) {
+        var id = $(n).attr("id");
+        var url = $(n).attr("data-action");
+        layui.use('upload', function(){
+            var upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#' + id
+                ,url: url
+                ,done: function(res){
+                    if(res.code='200') {
+                        var img = `<img src="${res.image}" />`;
+                        $(n).find(".img-box").html(img);
+                    } else {
+                        layer.alert("上传失败");
+                    }
+                }
+                ,error: function(){
+                    layer.alert("上传失败");
+                }
+            });
+        });
+    });
 });

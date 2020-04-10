@@ -24,6 +24,18 @@ class Wedding extends Backend
         $this->assign('packages', $packages);
     }
 
+    public function create()
+    {
+        $params = $this->request->param();
+        $order = new \app\common\model\Order();
+        $where = [];
+        $where['id'] = $params['id'];
+        $row = $order->where($where)->find();
+        $this->assign('order', $row);
+
+        return $this->fetch();
+    }
+
     public function edit($id)
     {
         $where = [];
@@ -38,11 +50,14 @@ class Wedding extends Backend
     {
         $params = $this->request->param();
 
-        $where = [];
-        $where[] = ['id', '=', $params['id']];
-        $banquet = $this->model->where($where)->find();
-
-        $result = $banquet->save($params);
+        if(empty(!$params['id'])) {
+            $where = [];
+            $where[] = ['id', '=', $params['id']];
+            $model = $this->model->where($where)->find();
+            $result = $model->save($params);
+        } else {
+            $result = $this->model->allowField(true)->save($params);
+        }
 
         if($result) {
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];

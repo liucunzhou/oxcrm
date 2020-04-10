@@ -112,10 +112,15 @@
 }
 
 .contract-img {
-    height: 159px;
-    width: 50%;
+    height: 150px;
+    width: 150px;
     background: #eee;
     text-align: center;
+    overflow: hidden;
+}
+
+.contract-img img{
+    width: 100%;
 }
 
 .layui-table tbody tr:hover, .layui-table thead tr, .layui-table-click, .layui-table-header, .layui-table-hover, .layui-table-mend, .layui-table-patch, .layui-table-tool, .layui-table-total, .layui-table-total tr, .layui-table[lay-even] tr:nth-child(even){

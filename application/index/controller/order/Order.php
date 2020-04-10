@@ -40,6 +40,8 @@ class Order extends Backend
     protected function initialize()
     {
         parent::initialize();
+        $this->model = new \app\common\model\Order();
+
         // 获取系统来源,酒店列表,意向状态
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
@@ -601,5 +603,39 @@ class Order extends Backend
         isset($order['banquet_income_real_date']) && $order['banquet_income_real_date'] = date('Y-m-d', $order['banquet_income_real_date']);
 
         return $order;
+    }
+
+    public function upload()
+    {
+        $params = $this->request->param();
+        $file = request()->file("file");
+        $info = $file->move("uploads/order");
+        if ($info) {
+            $origin = $info->getInfo();
+            $data = [];
+            $data['order_id'] = $params['id'];
+            $data['origin_file_name'] = $origin['name'];
+            $data['new_file_name'] = $info->getFileName();
+            $data['new_file_path'] = $info->getPathname();
+
+            $where = [];
+            $where['id'] = $params['id'];
+            $order = $this->model->where($where)->find();
+            $order->save(['image'=>$info->getPathname()]);
+            echo $order->getLastSql();
+
+            $arr = [
+                'code'  => '200',
+                'msg'   => '上传成功',
+                'image' => '/'.$info->getPathname()
+            ];
+        } else {
+            $arr = [
+                'code'  => '500',
+                'msg'   => '上传失败'
+            ];
+        }
+
+        return json($arr);
     }
 }
