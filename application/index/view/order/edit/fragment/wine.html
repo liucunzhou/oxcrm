@@ -1,15 +1,15 @@
-<{if !$sugar->isEmpty()}>
+<{if !$wine->isEmpty()}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">
-            喜糖业务
+            酒水业务
         </div>
 
         <div class="layui-card-header-right">
-            <a title="添加喜糖信息"
+            <a title="添加酒水信息"
                class="layui-right-side btn-edit"
                href="javascript:void(0);"
-               data-action="{:url('/index/order.sugar/create', ['id'=>$data['id']])}">添加</a>
+               data-action="{:url('/index/order.wine/create', ['id'=>$data['id']])}">添加</a>
         </div>
 
     </div>
@@ -27,8 +27,8 @@
             </colgroup>
             <thead>
             <tr>
-                <th class="text-center">喜糖类型</th>
-                <th class="text-center">喜糖数量</th>
+                <th class="text-center">酒水类型</th>
+                <th class="text-center">酒水数量</th>
                 <th class="text-center">价格小计</th>
                 <th class="text-center">联系人</th>
                 <th class="text-center">电话</th>
@@ -38,23 +38,23 @@
             </tr>
             </thead>
             <tbody>
-            <{foreach name="sugar" item="row"}>
+            <{foreach name="wine" item="row"}>
             <tr>
-                <th class="text-center">{$sugarList[$row['sugar_id']]['title']}</th>
-                <th class="text-center">{$row['sugar_amount']}</th>
-                <th class="text-center">{$row['sugar_price']}</th>
-                <th class="text-center">{$row['sugar_contact']}</th>
-                <th class="text-center">{$row['sugar_mobile']}</th>
-                <th class="text-center">{$row['sugar_address']}</th>
-                <th class="text-left">{$row['sugar_remark']}</th>
+                <th class="text-center">{$wineList[$row['wine_id']]['title']}</th>
+                <th class="text-center">{$row['wine_amount']}</th>
+                <th class="text-center">{$row['wine_price']}</th>
+                <th class="text-center">{$row['wine_contact']}</th>
+                <th class="text-center">{$row['wine_mobile']}</th>
+                <th class="text-center">{$row['wine_address']}</th>
+                <th class="text-left">{$row['wine_remark']}</th>
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.sugar/edit')} btn-edit-solid layui-right-side"
-                           data-action="{:url('/index/order.sugar/edit', ['id'=>$row['id']])}">编辑</a>
+                           class="{:auth('/index/order.wine/edit')} btn-edit-solid layui-right-side"
+                           data-action="{:url('/index/order.wine/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.sugar/delBanquetPayment')} btn-delete-solid lay-delete-api"
-                           data-action="{:url('/index/order.sugar/delete', ['id'=>$row['id']])}">删除</a>
+                           class="{:auth('/index/order.wine/delBanquetPayment')} btn-delete-solid lay-delete-api"
+                           data-action="{:url('/index/order.wine/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </th>
             </tr>

@@ -17,15 +17,15 @@
         <table class="table-form">
             <tr>
                 <td class="tb-field">主车型号</td>
-                <td class="tb-value">{$car.master_car_id}</td>
+                <td class="tb-value">{$carList[$car.master_car_id]['title']}</td>
                 <td class="tb-field">主车颜色</td>
-                <td class="tb-value">{$car.master_car_color}</td>
+                <td class="tb-value">{$carList[$car.master_car_id]['color']}</td>
                 <td class="tb-field">注册数量</td>
                 <td class="tb-value">{$car.master_car_amount}</td>
                 <td class="tb-field">跟车型号</td>
-                <td class="tb-value">{$car.slave_car_id}</td>
+                <td class="tb-value">{$carList[$car.slave_car_id]['title']}</td>
                 <td class="tb-field">跟车颜色</td>
-                <td class="tb-value">{$car.slave_car_color}</td>
+                <td class="tb-value">{$carList[$car.slave_car_id]['color']}</td>
                 <td class="tb-field">跟车数量</td>
                 <td class="tb-value">{$car.slave_car_amount}</td>
             </tr>

@@ -3,17 +3,15 @@
 namespace app\index\controller\order;
 
 
-use app\common\model\OrderBanquet;
 use app\common\model\OrderSugar;
 use app\index\controller\Backend;
-use think\response\Json;
 
 class Sugar extends Backend
 {
     public function initialize()
     {
         parent::initialize();
-        $this->model = new OrderBanquet();
+        $this->model = new OrderSugar();
 
         ## 获取所有品牌、公司
         $brands = \app\common\model\Brand::getBrands();
@@ -66,7 +64,7 @@ class Sugar extends Backend
     {
 
         $where = [];
-        $where[] = ['order_id', '=', $id];
+        $where[] = ['id', '=', $id];
         $order = $this->model->where($where)->order('id desc')->find();
         $this->assign('data', $order);
 

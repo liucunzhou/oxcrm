@@ -1,19 +1,11 @@
-未定
-上海扬子江万丽大酒店/索菲特
-未定
-未定
-未定
-未定
-未定
-未定
-美华轩
-未定
-远洋老丰阁
-上海大厦
-浦西四季
-康乃馨
-雅居乐、威斯门、宏安、艾美、豫园
-美丽园
-皇廷国际
-白厦pagoda君亭设计酒店
-白厦pagoda君亭设计酒店
+ALTER TABLE `platform`.`tk_order_sugar`
+CHANGE COLUMN `sugar_adress` `sugar_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `sugar_mobile`;
+
+ALTER TABLE `platform`.`tk_order_wine`
+CHANGE COLUMN `wine_adress` `wine_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `wine_mobile`;
+
+ALTER TABLE `platform`.`tk_order_light` 
+CHANGE COLUMN `light_adress` `light_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `light_mobile`;
+
+ALTER TABLE `platform`.`tk_order_dessert` 
+CHANGE COLUMN `dessert_adress` `dessert_address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `dessert_mobile`;
