@@ -7,8 +7,15 @@
                class="btn-edit layui-right-side"
                href="javascript:void(0);"
                data-action="{:url('/index/order.Wedding/edit', ['id'=>$data['id']])}">编辑</a>
+
+            <a title="删除婚庆基本信息"
+               class="lay-delete-api"
+               href="javascript:void(0);"
+               data-fresh="yes"
+               data-action="{:url('/index/order.Wedding/delete', ['id'=>$data['id']])}">删除</a>
         </div>
     </div>
+
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
             <colgroup>
@@ -51,12 +58,10 @@
     </div>
 
     <div class="layui-card-footer text-right">
-        <!--
         <a title="添加婚庆二销信息"
            class="layui-right-side btn-edit-solid"
            href="javascript:void(0);"
            data-action="{:url('/index/order.wedding_suborder/create', ['order_id'=>$data['id']])}">添加婚庆二销信息</a>
-        -->
 
         <a title="添加婚庆收款信息"
            class="layui-right-side btn-edit-solid"

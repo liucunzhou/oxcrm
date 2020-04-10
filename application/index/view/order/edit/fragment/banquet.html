@@ -10,6 +10,12 @@
                class="layui-right-side btn-edit"
                href="javascript:void(0);"
                data-action="{:url('/index/order.banquet/edit', ['id'=>$data['id']])}">编辑</a>
+
+            <a title="删除婚宴基本信息"
+               class="lay-delete-api"
+               href="javascript:void(0);"
+               data-fresh="yes"
+               data-action="{:url('/index/order.banquet/delete', ['id'=>$data['id']])}">删除</a>
         </div>
     </div>
     <div class="layui-card-body no-padding no-margin">

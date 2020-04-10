@@ -103,7 +103,7 @@ class Contract extends Backend
         $this->assign('halls', $halls);
 
         ## 获取销售列表
-        $salesmans = User::getUsers();
+        $salesmans = User::getUsers(false);
         $this->assign('salesmans', $salesmans);
 
         return $this->fetch();

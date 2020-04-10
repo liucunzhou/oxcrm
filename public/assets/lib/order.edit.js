@@ -56,7 +56,7 @@ layui.config({
         if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
 
         var banquetRitualHall = $('input[name="banquet_ritual_hall"]').val();
-        if(banquetRitualHall!=='') banquetTotals = banquetTotals + parseFloat(banquetRitualHall);
+        if(banquetRitualHall!='') banquetTotals = banquetTotals + parseFloat(banquetRitualHall);
 
         var tableAmount = $('input[name="table_amount"]').val();
         var tablePrice = $('input[name="table_price"]').val();

@@ -38,6 +38,23 @@ a.btn-edit {
     border-radius: 3px;
 }
 
+a.btn-edit {
+    color: #1E9FFF;
+    padding: 3px 20px;
+    font-size: 14px;
+    border: 1px solid #1E9FFF;
+    border-radius: 3px;
+}
+
+a.lay-delete-api,
+a.btn-delete {
+    color: #ff4a4a;
+    padding: 3px 20px;
+    font-size: 14px;
+    border: 1px solid #ff4a4a;
+    border-radius: 3px;
+}
+
 .layui-card-footer.text-right{
     padding: 12px;
     text-align: right;
@@ -51,7 +68,7 @@ a.btn-edit {
 }
 
 .btn-delete-solid {
-    color: #fff;
+    color: #fff!important;
     background: #ff4a4a;
     padding: 5px 20px;
     border-radius: 3px;

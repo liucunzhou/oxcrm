@@ -223,11 +223,16 @@ $(function(){
 
         var _ = $(this);
         var url = $(this).attr('data-action');
+        var fresh = $(this).attr('data-fresh');
         if(url != undefined) {
             $.get(url, function (res) {
-                layer.msg(res.msg);
                 if (res.code == '200') {
-                    _.parents("tr").remove();
+                    if(fresh != undefined) {
+                        window.location.reload();
+                    } else {
+                        layer.msg(res.msg);
+                        _.parents("tr").remove();
+                    }
                 }
             });
         }

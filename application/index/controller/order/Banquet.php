@@ -63,7 +63,23 @@ class Banquet extends Backend
         if($result) {
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
         } else {
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
+        }
+
+        return json($arr);
+    }
+
+    public function delete($id)
+    {
+        $where = [];
+        $where[] = ['order_id', '=', $id];
+        $model = $this->model->where($where)->order('id desc')->find();
+        $result = $model->delete();
+
+        if($result) {
+            $arr = ['code'=>'200', 'msg'=>'删除信息成功'];
+        } else {
+            $arr = ['code'=>'500', 'msg'=>'删除信息失败'];
         }
 
         return json($arr);
