@@ -7,7 +7,7 @@ use app\common\model\OrderBanquet;
 use app\common\model\OrderHotelItem;
 use app\index\controller\Backend;
 
-class Banquet extends Backend
+class HotelItem extends Backend
 {
     public function initialize()
     {
