@@ -62,7 +62,7 @@
                     <tr>
                         <th class="input-title">品牌</th>
                         <th>
-                            <select class="layui-select" name="sugar_id[]" lay-search lay-verify="">
+                            <select class="layui-select" name="sugar_id" lay-search lay-verify="">
                                 <option value="">请选择喜糖</option>
                                 <{foreach name="sugarList" item="row"}>
                                     <option value="{$row['id']}" {$data.sugar_id==$row.id?'selected':''}>{$row['title']}</option>

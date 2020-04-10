@@ -62,7 +62,7 @@
                     <tr>
                         <th class="input-title">品牌</th>
                         <th>
-                            <select class="layui-select" name="d3_id[]" lay-search lay-verify="">
+                            <select class="layui-select" name="d3_id" lay-search lay-verify="">
                                 <option value="">请选择3D</option>
                                 <{foreach name="d3List" item="row"}>
                                     <option value="{$row['id']}" {$data.d3_id==$row.id?'selected':''}>{$row['title']}</option>

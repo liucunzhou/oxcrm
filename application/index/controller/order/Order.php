@@ -120,6 +120,14 @@ class Order extends Backend
         $dessertList = \app\common\model\Dessert::getList();
         $this->assign('dessertList', $dessertList);
 
+        ## led列表
+        $ledList = \app\common\model\Led::getList();
+        $this->assign('ledList', $ledList);
+
+        ## 3d列表
+        $d3List = \app\common\model\D3::getList();
+        $this->assign('d3List', $d3List);
+
     }
 
     // 誉丝

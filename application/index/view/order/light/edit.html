@@ -62,7 +62,7 @@
                     <tr>
                         <th class="input-title">品牌</th>
                         <th>
-                            <select class="layui-select" name="light_id[]" lay-search lay-verify="">
+                            <select class="layui-select" name="light_id" lay-search lay-verify="">
                                 <option value="">请选择灯光</option>
                                 <{foreach name="lightList" item="row"}>
                                     <option value="{$row['id']}" {$data.light_id==$row.id?'selected':''}>{$row['title']}</option>
