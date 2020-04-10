@@ -83,6 +83,7 @@
 </div>
 <{/if}>
 
+<{if !empty($hotelItem)}>
 <div class="layui-card">
     <div class="layui-card-body no-margin no-padding">
         <table class="layui-table no-padding no-margin">
@@ -93,27 +94,28 @@
                     <a title="编辑酒店服务项目"
                        class="layui-right-side btn-edit"
                        href="javascript:void(0);"
-                       data-action="{:url('order.hotel_item/edit', ['order_id'=>$data['id']])}">编辑</a>
+                       data-action="{:url('order.hotel_item/edit', ['id'=>$data['id']])}">编辑</a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td class="tb-field">婚房</td>
-                <td class="tb-value"></td>
+                <td class="tb-value">{$hotelItem.wedding_room}</td>
                 <td class="tb-field">停车位</td>
-                <td class="tb-value"></td>
+                <td class="tb-value">{$hotelItem.part}</td>
                 <td class="tb-field">香槟</td>
-                <td class="tb-value"></td>
+                <td class="tb-value">{$hotelItem.champagne}</td>
                 <td class="tb-field">茶歇</td>
-                <td class="tb-value"></td>
+                <td class="tb-value">{$hotelItem.tea}</td>
                 <td class="tb-field">蛋糕</td>
-                <td class="tb-value"></td>
+                <td class="tb-value">{$hotelItem.cake}</td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
+<{/if}>
 
 <!--婚宴二销信息-->
 <{if !$banquetOrders->isEmpty()}>

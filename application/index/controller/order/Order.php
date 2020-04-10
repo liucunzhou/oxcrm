@@ -12,6 +12,7 @@ use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderCar;
 use app\common\model\OrderDessert;
 use app\common\model\OrderEntire;
+use app\common\model\OrderHotelItem;
 use app\common\model\OrderLight;
 use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
@@ -288,6 +289,12 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $banquet = OrderBanquet::where($where)->order('id desc')->find();
         $this->assign('banquet', $banquet);
+
+        #### 酒店服务项目
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $hotelItem = OrderHotelItem::where($where)->order('id desc')->find();
+        $this->assign('hotelItem', $hotelItem);
 
         #### 获取婚宴二销订单信息
         $where = [];
