@@ -133,7 +133,7 @@
                            data-action="{:url('/index/order.wedding/create', ['id'=>$data.id])}">添加婚庆信息</a>
                     <{/if}>
 
-                    <{if empty($car)}>
+                    <{if $car->isEmpty()}>
                         <a href="javascript:void(0);"
                            class="layui-right-side btn-edit-solid"
                            title="添加婚车信息"
