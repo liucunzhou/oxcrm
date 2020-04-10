@@ -40,7 +40,7 @@
                             <select name="salesman" class="layui-select" lay-search>
                                 <option value=""></option>
                                 <{foreach name="staffs" item="val"}>
-                                <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>
+                                <option value="{$val.id}" {$val.id==$order.salesman?'selected':''}>{$val.realname}</option>
                                 <{/foreach}>
                             </select>
                         </td>
