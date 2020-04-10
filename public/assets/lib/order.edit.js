@@ -40,7 +40,7 @@ layui.config({
         'input[name="wine_fee"],' +
         'input[name="banquet_update_table"],' +
         'input[name="wedding_total"],' +
-        'input[name="banquet_discount"]' +
+        'input[name="banquet_discount"],' +
         'input[name="banquet_ritual_hall"]';
 
     /* 监控桌数的输入 */
