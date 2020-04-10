@@ -1,5 +1,5 @@
 /config/database.php
-/uploads
+/uploads/*
 /runtime
 /update
 .idea/*
