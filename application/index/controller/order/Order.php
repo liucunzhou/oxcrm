@@ -622,7 +622,6 @@ class Order extends Backend
             $where['id'] = $params['id'];
             $order = $this->model->where($where)->find();
             $order->save(['image'=>$info->getPathname()]);
-            echo $order->getLastSql();
 
             $arr = [
                 'code'  => '200',
