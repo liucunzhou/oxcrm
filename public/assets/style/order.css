@@ -30,7 +30,7 @@
     background: #f4f4f4;
 }
 
-.layui-card-header-right a.btn-edit {
+a.btn-edit {
     color: #1E9FFF;
     padding: 3px 20px;
     font-size: 14px;
@@ -168,4 +168,15 @@
 
 form.layui-form {
     margin-bottom: 30px;
+}
+
+.tb-title {
+    width: 5em;
+    text-align: right;
+}
+
+.layui-table td, .layui-table th {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: visible;
 }

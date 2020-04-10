@@ -1,4 +1,4 @@
-<{if !empty($car)}>
+<{if !$car->isEmpty()}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">
@@ -9,48 +9,66 @@
             <a title="编辑婚车信息"
                class="layui-right-side btn-edit"
                href="javascript:void(0);"
-               data-action="{:url('/index/order.car/edit', ['id'=>$data['id']])}">编辑</a>
+               data-action="{:url('/index/order.car/create', ['id'=>$data['id']])}">添加</a>
         </div>
 
     </div>
     <div class="layui-card-body">
-        <table class="table-form">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="240">
+            </colgroup>
+            <thead>
             <tr>
-                <td class="tb-field">主车型号</td>
-                <td class="tb-value">{$carList[$car.master_car_id]['title']}</td>
-                <td class="tb-field">主车颜色</td>
-                <td class="tb-value">{$carList[$car.master_car_id]['color']}</td>
-                <td class="tb-field">注册数量</td>
-                <td class="tb-value">{$car.master_car_amount}</td>
-                <td class="tb-field">跟车型号</td>
-                <td class="tb-value">{$carList[$car.slave_car_id]['title']}</td>
-                <td class="tb-field">跟车颜色</td>
-                <td class="tb-value">{$carList[$car.slave_car_id]['color']}</td>
-                <td class="tb-field">跟车数量</td>
-                <td class="tb-value">{$car.slave_car_amount}</td>
+                <th class="text-center">是否二销</th>
+                <th class="text-center">是否主车</th>
+                <th class="text-center">型号</th>
+                <th class="text-center">数量</th>
+                <th class="text-center">价格</th>
+                <th class="text-center">服务时间</th>
+                <th class="text-center">服务距离</th>
+                <th class="text-center">联系人</th>
+                <th class="text-center">电话</th>
+                <th class="text-center">接车时间</th>
+                <th class="text-center">接车地点</th>
+                <th></th>
             </tr>
+            </thead>
+            <tbody>
+            <{foreach name="car" item="row"}>
             <tr>
-                <td class="tb-field">服务时长</td>
-                <td class="tb-value">{$car.service_hour}</td>
-                <td class="tb-field">服务距离</td>
-                <td class="tb-value">{$car.service_distance}</td>
-                <td class="tb-field">联系人</td>
-                <td class="tb-value">{$car.contact_name}</td>
-                <td class="tb-field">跟车型号</td>
-                <td class="tb-value">{$car.contact_mobile}</td>
-                <td class="tb-field">到达时间</td>
-                <td class="tb-value">{$car.arrive_time}</td>
-                <td class="tb-field">到达地址</td>
-                <td class="tb-value">{$car.arrive_address}</td>
+                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-center">{$row.is_master?'主车':'跟车'}</th>
+                <th class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</th>
+                <th class="text-center">{$row['car_amount']}</th>
+                <th class="text-center">{$row['car_price']}</th>
+                <th class="text-center">{$row['service_hour']}</th>
+                <th class="text-center">{$row['service_distance']}</th>
+                <th class="text-center">{$row['car_contact']}</th>
+                <th class="text-center">{$row['car_mobile']}</th>
+                <th class="text-center">{$row['arrive_time']}</th>
+                <th class="text-center">{$row['arrive_address']}</th>
+                <th class="text-right">
+                    <div>
+                        <a href="javascript:void(0);"
+                           class="btn-edit-solid layui-right-side"
+                           data-action="{:url('/index/order.car/edit', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);"
+                           class="btn-delete-solid lay-delete-api"
+                           data-action="{:url('/index/order.car/delete', ['id'=>$row['id']])}">删除</a>
+                    </div>
+                </th>
             </tr>
-            <tr>
-                <td class="tb-field">成交价格</td>
-                <td class="tb-value">{$car.car_totals}</td>
-                <td class="tb-field">成交价格</td>
-                <td class="tb-value">{$car.salesman}</td>
-                <td class="tb-field">备注</td>
-                <td class="tb-value">{$car.car_remark}</td>
-            </tr>
+            <{/foreach}>
+            </tbody>
         </table>
     </div>
 </div>

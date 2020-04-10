@@ -26,6 +26,9 @@ class Dessert extends Backend
 
         $dessertList = \app\common\model\Dessert::getList();
         $this->assign('dessertList', $dessertList);
+
+        $staffs = \app\common\model\User::getUsers();
+        $this->assign('staffs', $staffs);
     }
 
     public function create()
@@ -45,6 +48,8 @@ class Dessert extends Backend
         $params = $this->request->param();
         foreach ($params['dessert_id'] as $key=>$val) {
             $data = [];
+            $data['salesman'] = $params['salesman'];
+            $data['is_suborder'] = $params['is_suborder'];
             $data['operate_id'] = $this->user['id'];
             $data['order_id'] = $params['order_id'];
             $data['dessert_id'] = $val;

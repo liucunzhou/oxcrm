@@ -25,6 +25,10 @@ class Sugar extends Backend
 
         $sugarList = \app\common\model\Sugar::getList();
         $this->assign('sugarList', $sugarList);
+
+        $staffs = \app\common\model\User::getUsers();
+        $this->assign('staffs', $staffs);
+
     }
 
     public function create()
@@ -44,6 +48,8 @@ class Sugar extends Backend
        $params = $this->request->param();
        foreach ($params['sugar_id'] as $key=>$val) {
            $data = [];
+           $data['salesman'] = $params['salesman'];
+           $data['is_suborder'] = $params['is_suborder'];
            $data['operate_id'] = $this->user['id'];
            $data['order_id'] = $params['order_id'];
            $data['sugar_id'] = $val;

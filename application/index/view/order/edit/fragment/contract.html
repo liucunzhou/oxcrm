@@ -119,6 +119,13 @@
                            data-action="{:url('/index/order.banquet/create', ['id'=>$data.id])}">添加婚宴信息</a>
                     <{/if}>
 
+                    <{if empty($hoteItem)}>
+                    <a href="javascript:void(0);"
+                       class="layui-right-side btn-edit-solid"
+                       title="添加酒店服务项目"
+                       data-action="{:url('/index/order.hotel_item/create', ['id'=>$data.id])}">添加酒店服务项目</a>
+                    <{/if}>
+
                     <{if empty($wedding)}>
                         <a href="javascript:void(0);"
                            class="layui-right-side btn-edit-solid"

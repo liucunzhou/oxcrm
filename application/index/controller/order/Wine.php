@@ -26,6 +26,9 @@ class Wine extends Backend
 
         $wineList = \app\common\model\Wine::getList();
         $this->assign('wineList', $wineList);
+
+        $staffs = \app\common\model\User::getUsers();
+        $this->assign('staffs', $staffs);
     }
 
     public function create()
@@ -45,6 +48,8 @@ class Wine extends Backend
         $params = $this->request->param();
         foreach ($params['wine_id'] as $key=>$val) {
             $data = [];
+            $data['salesman'] = $params['salesman'];
+            $data['is_suborder'] = $params['is_suborder'];
             $data['operate_id'] = $this->user['id'];
             $data['order_id'] = $params['order_id'];
             $data['wine_id'] = $val;

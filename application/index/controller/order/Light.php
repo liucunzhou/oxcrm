@@ -26,6 +26,9 @@ class Light extends Backend
 
         $lightList = \app\common\model\Light::getList();
         $this->assign('lightList', $lightList);
+
+        $staffs = \app\common\model\User::getUsers();
+        $this->assign('staffs', $staffs);
     }
 
     public function create()
@@ -45,6 +48,8 @@ class Light extends Backend
         $params = $this->request->param();
         foreach ($params['light_id'] as $key=>$val) {
             $data = [];
+            $data['salesman'] = $params['salesman'];
+            $data['is_suborder'] = $params['is_suborder'];
             $data['operate_id'] = $this->user['id'];
             $data['order_id'] = $params['order_id'];
             $data['light_id'] = $val;

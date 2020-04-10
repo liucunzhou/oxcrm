@@ -3,17 +3,16 @@
 namespace app\index\controller\order;
 
 
-use app\common\model\OrderCar;
-use app\common\model\User;
+use app\common\model\OrderBanquet;
+use app\common\model\OrderHotelItem;
 use app\index\controller\Backend;
-use think\response\Json;
 
-class Car extends Backend
+class Banquet extends Backend
 {
     public function initialize()
     {
         parent::initialize();
-        $this->model = new OrderCar();
+        $this->model = new OrderHotelItem();
 
         ## 获取所有品牌、公司
         $brands = \app\common\model\Brand::getBrands();
@@ -25,12 +24,6 @@ class Car extends Backend
 
         $packages = \app\common\model\Package::getList();
         $this->assign('packages', $packages);
-
-        $carList = \app\common\model\Car::getList();
-        $this->assign('carList', $carList);
-
-        $staffs = \app\common\model\User::getUsers();
-        $this->assign('staffs', $staffs);
     }
 
     public function create()
@@ -48,7 +41,7 @@ class Car extends Backend
     public function edit($id)
     {
         $where = [];
-        $where[] = ['id', '=', $id];
+        $where[] = ['order_id', '=', $id];
         $order = $this->model->where($where)->order('id desc')->find();
         $this->assign('data', $order);
 
@@ -59,14 +52,13 @@ class Car extends Backend
     {
         $params = $this->request->param();
 
-        if(!empty($params['id'])) {
+        if(empty(!$params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];
             $model = $this->model->where($where)->find();
             $result = $model->save($params);
         } else {
             $result = $this->model->allowField(true)->save($params);
-            echo $this->model->getLastSql();
         }
 
         if($result) {

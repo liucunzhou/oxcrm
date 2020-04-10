@@ -35,9 +35,34 @@
                 <table class="layui-table">
                     <tbody>
                     <tr>
+                        <td class="tb-title">选择销售</td>
+                        <td>
+                            <select name="salesman" class="layui-select" lay-search>
+                                <option value=""></option>
+                                <{foreach name="staffs" item="val"}>
+                                <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>
+                                <{/foreach}>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tb-title">是否二销</td>
+                        <td>
+                            <select name="is_suborder" class="layui-select">
+                                <option value="0">否</option>
+                                <option value="1" {$data.is_suborder==1?'selected':''}>婚宴二销</option>
+                                <option value="2" {$data.is_suborder==2?'selected':''}>婚庆二销</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+
+
+                    <tbody>
+                    <tr>
                         <th class="input-title">品牌</th>
                         <th>
-                            <select class="layui-select" name="light_id[]" lay-search lay-verify="required">
+                            <select class="layui-select" name="light_id[]" lay-search lay-verify="">
                                 <option value="">请选择灯光</option>
                                 <{foreach name="lightList" item="row"}>
                                     <option value="{$row['id']}" {$data.light_id==$row.id?'selected':''}>{$row['title']}</option>
@@ -48,31 +73,31 @@
                     <tr>
                         <th>数量</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_amount" value="{$data.light_amount}" lay-verify="required" placeholder="数量" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="light_amount" value="{$data.light_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>金额</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_price" value="{$data.light_price}" lay-verify="required" placeholder="金额" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="light_price" value="{$data.light_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>联系人</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_contact" value="{$data.light_contact}" lay-verify="required" placeholder="联系人" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="light_contact" value="{$data.light_contact}" lay-verify="" placeholder="联系人" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>手机号</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_mobile" value="{$data.light_mobile}" lay-verify="required" placeholder="联系人手机号" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="light_mobile" value="{$data.light_mobile}" lay-verify="" placeholder="联系人手机号" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>联系地址</th>
                         <th>
-                            <input class="layui-input" type="text" name="light_address" value="{$data.light_address}" lay-verify="required" placeholder="联系地址" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="light_address" value="{$data.light_address}" lay-verify="" placeholder="联系地址" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>

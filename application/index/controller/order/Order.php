@@ -330,7 +330,7 @@ class Order extends Backend
         #### 婚车
         $where = [];
         $where['order_id'] = $get['id'];
-        $car = OrderCar::where($where)->find();
+        $car = OrderCar::where($where)->select();
         $this->assign('car', $car);
 
         #### 喜糖

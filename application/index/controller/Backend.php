@@ -9,6 +9,7 @@ class Backend extends Controller
     public $user = [];
     public $model = null;
     protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式','婚纱摄影','婚车','婚纱礼服','男装','宝宝宴','会务'];
+    protected $suborderTypes = ['否', '婚宴二销', '婚庆二销'];
 
     protected function initialize()
     {
@@ -17,6 +18,7 @@ class Backend extends Controller
 
         if (!$user) $this->redirect('/index/passport/login', ['parent' => 1]);
         $this->assign('newsTypes', $this->newsTypes);
+        $this->assign('suborderTypes', $this->suborderTypes);
 
         $this->user = $user;
         $this->assign('user', $user);
