@@ -1,15 +1,15 @@
-<{if !$light->isEmpty()}>
+<{if !$led->isEmpty()}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">
-            灯光业务
+            Led业务
         </div>
 
         <div class="layui-card-header-right">
-            <a title="添加灯光信息"
+            <a title="添加Led信息"
                class="layui-right-side btn-edit"
                href="javascript:void(0);"
-               data-action="{:url('/index/order.light/create', ['id'=>$data['id']])}">添加</a>
+               data-action="{:url('/index/order.led/create', ['id'=>$data['id']])}">添加</a>
         </div>
 
     </div>
@@ -29,29 +29,29 @@
             <thead>
             <tr>
                 <th class="text-center">是否二销</th>
-                <th class="text-center">灯光类型</th>
-                <th class="text-center">灯光数量</th>
+                <th class="text-center">Led类型</th>
+                <th class="text-center">Led数量</th>
                 <th class="text-center">价格小计</th>
                 <th class="text-left">备注</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <{foreach name="light" item="row"}>
+            <{foreach name="led" item="row"}>
             <tr>
                 <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
-                <th class="text-center">{$lightList[$row['light_id']]['title']}</th>
-                <th class="text-center">{$row['light_amount']}</th>
-                <th class="text-center">{$row['light_price']}</th>
-                <th class="text-left">{$row['light_remark']}</th>
+                <th class="text-center">{$ledList[$row['led_id']]['title']}</th>
+                <th class="text-center">{$row['led_amount']}</th>
+                <th class="text-center">{$row['led_price']}</th>
+                <th class="text-left">{$row['led_remark']}</th>
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
                            class="btn-edit-solid layui-right-side"
-                           data-action="{:url('/index/order.light/edit', ['id'=>$row['id']])}">编辑</a>
+                           data-action="{:url('/index/order.led/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
                            class="btn-delete-solid lay-delete-api"
-                           data-action="{:url('/index/order.light/delete', ['id'=>$row['id']])}">删除</a>
+                           data-action="{:url('/index/order.led/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </th>
             </tr>
