@@ -122,7 +122,7 @@
                         <td class="text-left">{$row.sub_banquet_remark}</td>
                         <td class="text-right">
                             <div>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/edit')} btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
+                                <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
                                 <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>
                                 <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/delete')} btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_suborder/delete', ['id'=>$row['id']])}">删除</a>
                             </div>
@@ -179,7 +179,7 @@
                 <td class="text-left">{$row.remark}</td>
                 <td class="text-right">
                     <div>
-                        <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/edit')}  btn-edit-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/edit', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/confirm')} btn-confirm-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/confirm', ['id'=>$row['id']])}">审核</a>
                         <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/delete')} btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_receivable/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
@@ -241,7 +241,7 @@
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/edit')} btn-edit-solid layui-right-side"
+                           class="btn-edit-solid layui-right-side"
                            data-action="{:url('/index/order.banquet_payment/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
                            class="{:auth('/index/order.banquet_payment/delBanquetPayment')} btn-delete-solid lay-delete-api"

@@ -1,8 +1,9 @@
 /config/database.php
-/uploads/*
+/uploads
 /runtime
 /update
 .idea/*
 .idea/workspace.xml
 /.idea
 config/cache.php
+/public/uploads/*
