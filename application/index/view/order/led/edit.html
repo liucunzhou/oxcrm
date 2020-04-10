@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>编辑Led信息</title>
+    <title>编辑led信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -30,7 +30,7 @@
 
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="{:url('/index/order.Led/doEdit')}" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="{:url('/index/order.led/doEdit')}" lay-filter="component-form-group">
 
                 <table class="layui-table">
                     <tbody>
@@ -62,10 +62,10 @@
                     <tr>
                         <th class="input-title">品牌</th>
                         <th>
-                            <select class="layui-select" name="Led_id" lay-search lay-verify="">
-                                <option value="">请选择Led</option>
+                            <select class="layui-select" name="led_id" lay-search lay-verify="">
+                                <option value="">请选择led</option>
                                 <{foreach name="ledList" item="row"}>
-                                    <option value="{$row['id']}" {$data.Led_id==$row.id?'selected':''}>{$row['title']}</option>
+                                    <option value="{$row['id']}" {$data.led_id==$row.id?'selected':''}>{$row['title']}</option>
                                 <{/foreach}>
                             </select>
                         </th>
@@ -73,19 +73,19 @@
                     <tr>
                         <th>数量</th>
                         <th>
-                            <input class="layui-input" type="text" name="Led_amount" value="{$data.Led_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="led_amount" value="{$data.led_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>金额</th>
                         <th>
-                            <input class="layui-input" type="text" name="Led_price" value="{$data.Led_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="led_price" value="{$data.led_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     <tr>
                         <th>备注</th>
                         <th>
-                            <input class="layui-input" type="text" name="Led_remark" value="{$data.Led_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
+                            <input class="layui-input" type="text" name="led_remark" value="{$data.led_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
                         </th>
                     </tr>
                     </tbody>
