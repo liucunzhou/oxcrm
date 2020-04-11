@@ -30,7 +30,7 @@
 
 
         <div class="layui-inline layui-col-sm1">
-            <select name="hotel_id" lay-verify="">
+            <select name="hotel_id" lay-verify="" lay-search>
                 <option value="">酒店名称</option>
                 <{foreach name="hotels" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
