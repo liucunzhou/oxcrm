@@ -12,6 +12,7 @@ class OrderBanquetPayment extends Model
 
     protected $type = [
         'banquet_apply_pay_date' => 'timestamp',
+        'banquet_pay_real_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];

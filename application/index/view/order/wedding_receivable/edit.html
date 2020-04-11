@@ -31,17 +31,19 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">实际收款日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="wedding_income_real_date" value="{$data['wedding_income_real_date']}" lay-verify="required" placeholder="实际收款日期" autocomplete="off" class="layui-input layui-date">
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">收款方式</label>
                     <div class="layui-input-block">
                         <select name="wedding_income_payment" lay-search>
                             <option value="">请选择收款方式</option>
-                            <option value="1" <{if $data['wedding_income_payment'] == '1'}>selected<{/if}>>支付宝-对公</option>
-                            <option value="2" <{if $data['wedding_income_payment'] == '2'}>selected<{/if}>>支付宝-对私</option>
-                            <option value="3" <{if $data['wedding_income_payment'] == '3'}>selected<{/if}>>微信-对公</option>
-                            <option value="4" <{if $data['wedding_income_payment'] == '4'}>selected<{/if}>>微信-对私</option>
-                            <option value="5" <{if $data['wedding_income_payment'] == '5'}>selected<{/if}>>银行汇款-对公</option>
-                            <option value="6" <{if $data['wedding_income_payment'] == '6'}>selected<{/if}>>银行汇款-对私</option>
-                            <option value="7" <{if $data['wedding_income_payment'] == '7'}>selected<{/if}>>直付酒店</option>
+                            <{foreach name="payments" item="val"}>
+                                <option value="{$key}" <{if $data['wedding_income_payment'] == $key}>selected<{/if}>>{$val}</option>
+                            <{/foreach}>
                         </select>
                     </div>
                 </div>

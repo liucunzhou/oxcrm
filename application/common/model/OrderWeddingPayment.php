@@ -12,6 +12,7 @@ class OrderWeddingPayment extends Model
 
     protected $type = [
         'wedding_apply_pay_date' => 'timestamp',
+        'wedding_pay_real_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];

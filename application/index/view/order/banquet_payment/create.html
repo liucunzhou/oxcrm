@@ -31,6 +31,12 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">实际付款日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="banquet_pay_real_date" value="{$data['banquet_pay_real_date']}" lay-verify="required" placeholder="实际收款日期" autocomplete="off" class="layui-input layui-date">
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">款项性质</label>
                     <div class="layui-input-block">
                         <select name="banquet_pay_type" lay-verify="" lay-filter="news_type">

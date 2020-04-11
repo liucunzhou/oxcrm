@@ -12,6 +12,7 @@ class OrderWeddingReceivables extends Model
 
     protected $type = [
         'wedding_income_date' => 'timestamp',
+        'wedding_income_real_date' => 'timestamp',
         'sign_date' => 'timestamp',
         'event_date' => 'timestamp'
     ];
