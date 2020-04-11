@@ -15,8 +15,6 @@ class WeddingReceivable extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
-    protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
-    protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
 
     protected function initialize()
