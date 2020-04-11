@@ -35,10 +35,13 @@
                     <div class="layui-input-block">
                         <select name="banquet_income_payment" lay-search>
                             <option value="">请选择收款方式</option>
-                            <option value="1" <{if $data['banquet_income_payment'] == '1'}>selected<{/if}>>现金</option>
-                            <option value="2" <{if $data['banquet_income_payment'] == '2'}>selected<{/if}>>POS机</option>
-                            <option value="3" <{if $data['banquet_income_payment'] == '3'}>selected<{/if}>>微信</option>
-                            <option value="4" <{if $data['banquet_income_payment'] == '4'}>selected<{/if}>>支付宝</option>
+                            <option value="1" <{if $data['banquet_income_payment'] == '1'}>selected<{/if}>>支付宝-对公</option>
+                            <option value="2" <{if $data['banquet_income_payment'] == '2'}>selected<{/if}>>支付宝-对私</option>
+                            <option value="3" <{if $data['banquet_income_payment'] == '3'}>selected<{/if}>>微信-对公</option>
+                            <option value="4" <{if $data['banquet_income_payment'] == '4'}>selected<{/if}>>微信-对私</option>
+                            <option value="5" <{if $data['banquet_income_payment'] == '5'}>selected<{/if}>>银行汇款-对公</option>
+                            <option value="6" <{if $data['banquet_income_payment'] == '6'}>selected<{/if}>>银行汇款-对私</option>
+                            <option value="7" <{if $data['banquet_income_payment'] == '7'}>selected<{/if}>>直付酒店</option>
                         </select>
                     </div>
                 </div>

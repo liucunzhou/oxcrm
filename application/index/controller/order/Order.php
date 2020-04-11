@@ -34,8 +34,8 @@ class Order extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
-    protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
-    protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
+    protected $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'其他'];
+    protected $payments = [1=>'支付宝-对公', 2=>'支付宝-对私', 3=>'微信-对公', 4=>'微信-对私', 5=>'银行汇款-对公', 6=>'银行汇款-对私', 7=>'直付酒店'];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
     protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
