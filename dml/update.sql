@@ -27,9 +27,9 @@ alter table tk_order_wedding_payment add wedding_payment_remark text;
 alter table tk_member add banquet_size_end int not null default 0 after banquet_size;
 alter table tk_member_allocate add banquet_size_end int not null default 0 after banquet_size;
 
-alert table tk_member add budget_end decimal(10, 2) not null default '0.00' after budget;
-alert table tk_member_allocate add budget_end decimal(10, 2) not null default '0.00' after budget;
-ALTER TABLE `platform`.`tk_member_allocate` ADD COLUMN `remark` varchar(255) NULL AFTER `delete_user_id`;
+alter table tk_member add budget_end decimal(10, 2) not null default '0.00' after budget;
+alter table tk_member_allocate add budget_end decimal(10, 2) not null default '0.00' after budget;
+alter table `platform`.`tk_member_allocate` add column `remark` varchar(255) null after `delete_user_id`;
 --- 去掉酒店标题中的空格
 update `tk_store` set `title`=replace(`title`,' ','');
 
