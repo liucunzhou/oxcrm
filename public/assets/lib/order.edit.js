@@ -49,37 +49,37 @@ layui.config({
         var totals = 0;
         var banquetTotals = 0;
         var serviceFee = $('input[name="service_fee"]').val();
-        if(serviceFee!='') {
+        if(serviceFee!='' && serviceFee!=undefined) {
             banquetTotals = banquetTotals + parseFloat(serviceFee);
         }
 
         var wineFee = $('input[name="wine_fee"]').val();
-        if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
+        if(wineFee!='' && wineFee!=undefined) banquetTotals = banquetTotals + parseFloat(wineFee);
 
         var banquetRitualHall = $('input[name="banquet_ritual_hall"]').val();
-        if(banquetRitualHall!='') banquetTotals = banquetTotals + parseFloat(banquetRitualHall);
+        if(banquetRitualHall!='' && banquetRitualHall!=undefined) banquetTotals = banquetTotals + parseFloat(banquetRitualHall);
 
         var banquetOther = $('input[name="banquet_other"]').val();
-        if(banquetOther!='') banquetTotals = banquetTotals + parseFloat(banquetOther);
+        if(banquetOther!='' && banquetOther!=undefined) banquetTotals = banquetTotals + parseFloat(banquetOther);
 
         var tableAmount = $('input[name="table_amount"]').val();
         var tablePrice = $('input[name="table_price"]').val();
-        if(tablePrice != '' && tableAmount!='') {
+        if(tablePrice != '' && tableAmount!=undefined && tableAmount!='' && tablePrice!=undefined) {
             tableAmount = parseFloat(tableAmount);
             tablePrice = parseFloat(tablePrice);
             banquetTotals = banquetTotals + tableAmount * tablePrice;
         }
 
         var banquetUpdateTable = $('input[name="banquet_update_table"]').val();
-        if(banquetUpdateTable!='') {
+        if(banquetUpdateTable!='' && banquetUpdateTable != undefined) {
             banquetUpdateTable = parseFloat(banquetUpdateTable);
             banquetTotals = banquetTotals + banquetUpdateTable;
         }
 
         var banquetDiscount = $('input[name="banquet_discount"]').val();
-        if(banquetDiscount!='') banquetTotals = banquetTotals - parseFloat(banquetDiscount);
+        if(banquetDiscount!='' && banquetDiscount!=undefined) banquetTotals = banquetTotals - parseFloat(banquetDiscount);
         var weddingTotals = $('input[name="wedding_total"]').val();
-        if(weddingTotals!='') {
+        if(weddingTotals!='' &&weddingTotals!=undefined) {
             weddingTotals = parseFloat(weddingTotals);
         } else {
             weddingTotals = 0;

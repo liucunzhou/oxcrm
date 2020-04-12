@@ -14,6 +14,7 @@ use app\common\model\OrderD3;
 use app\common\model\OrderDessert;
 use app\common\model\OrderEntire;
 use app\common\model\OrderHotelItem;
+use app\common\model\OrderHotelProtocol;
 use app\common\model\OrderLed;
 use app\common\model\OrderLight;
 use app\common\model\OrderSugar;
@@ -313,9 +314,15 @@ class Order extends Backend
         #### 获取婚宴收款信息
         $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
         $this->assign('banquetReceivables', $receivables);
+
         #### 获取婚宴付款信息
         $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
         $this->assign('banquetPayments', $banquetPayments);
+
+        #### 获取酒店协议信息
+        $hotelProtocol = OrderHotelProtocol::where('order_id', '=', $get['id'])->select();
+        $this->assign('hotelProtocol', $hotelProtocol);
+
 
 
         #### 获取婚庆订单信息

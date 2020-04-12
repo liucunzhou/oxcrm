@@ -85,6 +85,11 @@
            class="layui-right-side btn-edit-solid"
            href="javascript:void(0);"
            data-action="{:url('order.banquet_payment/create', ['order_id'=>$data['id']])}">添加婚宴付款信息</a>
+
+        <a title="添加酒店协议"
+           class="layui-right-side btn-edit-solid"
+           href="javascript:void(0);"
+           data-action="{:url('order.hotel_protocol/create', ['id'=>$data['id']])}">添加酒店协议</a>
     </div>
 </div>
 <{/if}>
@@ -300,6 +305,62 @@
                            data-action="{:url('/index/order.banquet_payment/cashierConfirm', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
                 </th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>
+
+
+<!--婚宴酒店协议信息-->
+<{if !$hotelProtocol->isEmpty()}>
+<div class="layui-card layui-card">
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr class="no-border">
+                <td colspan="7">酒店协议信息</td>
+            </tr>
+            <tr>
+                <th class="text-center">餐标</th>
+                <th class="text-center">桌数</th>
+                <th class="text-center">定金付款金额</th>
+                <th class="text-center">定金付款日期</th>
+                <th class="text-center">中款付款金额</th>
+                <th class="text-center">中款付款日期</th>
+                <th class="text-center">尾款付款金额</th>
+                <th class="text-center">尾款付款日期</th>
+                <th class="text-right"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="hotelProtocol" item="row"}>
+            <tr>
+                <td class="text-center">{$row.table_price}</td>
+                <td class="text-center">{$row.table_amount}</td>
+                <td class="text-center">{$row.earnest_money}</td>
+                <td class="text-center">{$row.earnest_money_date}</td>
+                <td class="text-center">{$row.middle_money}</td>
+                <td class="text-center">{$row.middle_money_date}</td>
+                <td class="text-center">{$row.tail_money}</td>
+                <td class="text-center">{$row.tail_money_date}</td>
+                <td class="text-right">
+                    <div>
+                        <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" title="编辑酒店协议信息" data-action="{:url('/index/order.hotel_protocol/edit', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.hotel_protocol/delete', ['id'=>$row['id']])}">删除</a>
+                    </div>
+                </td>
             </tr>
             <{/foreach}>
             </tbody>
