@@ -98,23 +98,24 @@ class Customer extends Backend
     public function index()
     {
         $params = $this->request->param();
+        $where = [];
+
         if (isset($params['status']) && !empty($params['status'])) {
             $status = $params['status'];
+            if(isset($params['status']) && $params['status'] >= 0) {
+                $where[] = ['active_status', '=', $params['status']];
+            }
         } else {
             $status = 0;
         }
 
         if (isset($params['staff_id']) && !empty($params['staff_id']) && is_array($params['staff_id'])) {
+            // 兼容下面url函数，在转会之前params['staff_id']是一个数组，无法转换成url
             $params['staff_id'] = implode(',', $params['staff_id']);
         }
-
-        // 获取洗单组的意向列表
-        $where = [];
         // 检索员工列表
-        if(isset($params['staff_id']) && !empty($params['staff_id'])) {
+        if (isset($params['staff_id']) && !empty($params['staff_id'])) {
             $where[] = ['user_id', 'in', explode(',', $params['staff_id'])];
-        } else {
-            // if ()
         }
 
         // 检索来源
@@ -132,75 +133,84 @@ class Customer extends Backend
             $where[] = ['city_id', '=', $params['city_id']];
         }
 
-        if (isset($params['mobile']) && !empty($params['mobile'])) {
-            // $params['mobile'] =
+        if (isset($params['mobile']) && strlen($params['mobile']) == 11) {
+            $mobiles = MobileRelation::getMobiles($params['mobile']);
+            if (!empty($mobiles)) {
+                $where[] = ['mobile', 'in', $mobiles];
+            } else {
+                $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
+            }
+        } else if (isset($params['mobile']) && !empty($params['mobile']) && strlen($params['mobile']) < 11) {
+            $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
+        } else if (isset($get['mobile']) && strlen($params['mobile']) > 11) {
+            $where[] = ['mobile', '=', $params['mobile']];
         }
 
+        // 时间区间
         if (isset($params['range']) && stripos($params['range'], '~') > 0) {
             // $range =
             $range = explode('~', $params['range']);
-            if(count($range) == 2) {
+            if (count($range) == 2) {
                 $start = strtotime(trim($range[0]));
                 $end = strtotime(trim($range[1]));
                 $where[] = ['create_time', 'between', [$start, $end]];
             }
         }
 
-        // 获取洗单组的意向列表
-        $map = [];
-        $map[] = ['type', 'in', ['wash', 'other']];
-        $fields = 'id,title,type';
-        $tabs = \app\common\model\Intention::where($map)->field($fields)->order('sort,id')->column($fields, 'id');
-        $unvisit = [
-            'id' => 0,
-            'title' => '未跟进',
-            'type' => 'wash'
-        ];
-        array_unshift($tabs, $unvisit);
+        switch ($this->user['role_id']) {
+            case 15: // 客服经理
+            case 7: // 洗单组主管
+            case 3: // 推荐组主管
+                ## 回访者
+                if (empty($params['staff_id'])) {
+                    $staffs = User::getUsersByDepartmentId($this->user['department_id']);
+                    $where[] = ['user_id', 'in', $staffs];
+                }
+                break;
+            case 2: // 清洗组客服
+            case 4: // 推荐组客服
+            case 11: // 派单组客服
+                $where[] = ['user_id', '=', $this->user['id']];
+                break;
+        }
 
-        $all = [
-            'id' => -1,
-            'title' => '全部客资',
-            'type' => 'wash'
-        ];
-        array_unshift($tabs, $all);
-
+        // 获取清洗组意向列表
+        $tabs = Intention::getWash();
+        // print_r($tabs);
         foreach ($tabs as $key => &$row) {
             // 检测当前
-            if ($key == $status) {
+            if ($row['id'] == $status) {
                 $row['active'] = 1;
             } else {
                 $row['active'] = 2;
             }
 
-            $params['status'] = $key;
-            $row['url'] = url('customer.customer/index', $params, false);
-
-
+            $params['status'] = $row['id'];
+            $row['url'] = url('/wash/customer.customer/index', $params, false);
             // 检测所有
             if ($key != 0) {
                 $map = [];
                 $map[] = ['active_status', '=', $row['id']];
-                $map = array_merge($map, $where);
                 $total = $this->model->where($map)->count();
             } else {
-                $total = $this->model->where($where)->count();
+                $total = $this->model->count();
             }
+            // echo $this->model->getLastSql();
+            // echo "<br>";
             $row['total'] = $total;
         }
         $this->assign('tabs', $tabs);
-
-
         $config = [
             'type' => 'bootstrap',
             'var_page' => 'page',
             'page' => $params['page']
         ];
-        if (!isset($params['limit'])) $params['limit'] = 30;
-        $list = $this->model->where($where)->order('id desc')->paginate(15, false, $config);
+        if (!isset($params['limit'])) $params['limit'] = 50;
+        $list = $this->model->where($where)->order('update_time asc,create_time desc')->paginate(50, false, $config);
         foreach ($list as $key => &$row) {
             $member = \app\api\model\Member::get($row->member_id);
             $row->visit_amount = $member->visit_amount;
+            $row->remark = $member->remark;
         }
         $this->assign('list', $list);
 
@@ -223,7 +233,7 @@ class Customer extends Backend
         // 获取洗单组的意向列表
         $where = [];
         // 检索员工列表
-        if(isset($params['staff_id']) && !empty($params['staff_id'])) {
+        if (isset($params['staff_id']) && !empty($params['staff_id'])) {
             $where[] = ['user_id', 'in', explode(',', $params['staff_id'])];
         } else {
             // if ()
@@ -244,10 +254,18 @@ class Customer extends Backend
             $where[] = ['city_id', '=', $params['city_id']];
         }
 
-        if (isset($params['mobile']) && !empty($params['mobile'])) {
-            // $params['mobile'] =
+        if (isset($params['mobile']) && strlen($params['mobile']) == 11) {
+            $mobiles = MobileRelation::getMobiles($params['mobile']);
+            if (!empty($mobiles)) {
+                $where[] = ['mobile', 'in', $mobiles];
+            } else {
+                $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
+            }
+        } else if (isset($params['mobile']) && !empty($params['mobile']) && strlen($params['mobile']) < 11) {
+            $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
+        } else if (isset($get['mobile']) && strlen($params['mobile']) > 11) {
+            $where[] = ['mobile', '=', $params['mobile']];
         }
-
 
         $start = strtotime('yesterday') + 86400;
         $end = strtotime('tomorrow');
@@ -271,7 +289,6 @@ class Customer extends Backend
             'type' => 'wash'
         ];
         array_unshift($tabs, $all);
-
         foreach ($tabs as $key => &$row) {
             // 检测当前
             if ($key == $status) {

@@ -11,12 +11,12 @@
 </head>
 <body>
 <div class="tab-box">
-    <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#base" aria-controls="base" role="tab" data-toggle="tab">基本资料</a></li>
-      <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">跟进记录</a></li>
-      <li role="presentation"><a href="#intostore" aria-controls="intostore" role="tab" data-toggle="tab">进店记录</a></li>
-      <li role="presentation"><a href="#record" aria-controls="record" role="tab" data-toggle="tab">回访录音</a></li>
+        <li role="presentation" class="active"><a href="#base" aria-controls="base" role="tab" data-toggle="tab">基本资料</a></li>
+        <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">跟进记录</a></li>
+        <li role="presentation"><a href="#intostore" aria-controls="intostore" role="tab" data-toggle="tab">进店记录</a></li>
+        <li role="presentation"><a href="#record" aria-controls="record" role="tab" data-toggle="tab">回访录音</a></li>
+        <li class="pull-right"><button type="button" class="btn btn-warning btn-close ">关闭页面</button></li>
     </ul>
 
     <div class="tab-content">
@@ -205,7 +205,7 @@
                                     <div class="btn-group">
                                         <input type="hidden" name="allocate_id" value="{$allocate.id}">
                                         <input type="hidden" name="member_id" value="{$member.id}">
-                                        <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$allocate['id']])}" data-width="450px" data-height="380px" class="btn btn-primary layui-center">快捷回访</a>
+                                        <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$allocate['id']])}" data-height="380px" class="btn btn-primary layui-center">快捷回访</a>
                                         <button type="submit" class="btn btn-success">保存更新</button>
                                         <button type="button" class="btn btn-warning btn-close">关闭页面</button>
                                     </div>

@@ -77,12 +77,16 @@ class Visit extends Backend
         $model->user_id = $this->user['id'];
         $result1 = $model->save($params);
 
+        $member->active_status = $params['status'];
         $member->visit_amount = ['inc', 1];
         $result2 = $member->save();
 
         if ($result1 && $result2) {
             $member->commit();
-            $allocate->save(['color'=>$params['color']]);
+            $data = [];
+            $data['active_status'] = $params['status'];
+            $data['color'] = $params['color'];
+            $allocate->save($data);
 
             ### 添加下次回访提醒
             if ($params['next_visit_time'] > 0) {
