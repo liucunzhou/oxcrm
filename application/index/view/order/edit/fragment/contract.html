@@ -25,7 +25,13 @@
 
             <tr>
                 <td class="tb-field">酒店名称</td>
-                <td class="tb-value">{$data.hotel_text|default='-'}</td>
+                <td class="tb-value">
+                    <{if empty($data.hotel_id)}>
+                        {$data.hotel_text|default='-'}
+                    <{else /}>
+                        {$hotels[$data.hotel_id]['title']}
+                    <{/if}>
+                </td>
                 <td class="tb-field">宴会厅</td>
                 <td class="tb-value">{$data.banquet_hall_name|default='-'}</td>
                 <td class="tb-field">合作模式</td>
