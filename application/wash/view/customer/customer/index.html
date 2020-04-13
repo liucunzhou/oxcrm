@@ -142,7 +142,13 @@
                         </div>
                     </td>
                     <td>{$row.source_text}</td>
-                    <td>{:get_news_types($row['news_types'])}</td>
+                    <td>
+                        <{if !empty($row['news_types'])}>
+                            {:get_news_types($row['news_types'])}
+                        <{else /}>
+                            {$newsTypes[$row.news_type]}
+                        <{/if}>
+                    </td>
                     <td>
                         <a href="javascript:void(0);"
                            data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="layui-center" data-width="40" title="快速回访">
