@@ -102,7 +102,7 @@ class Customer extends Backend
 
         if (isset($params['status']) && !empty($params['status'])) {
             $status = $params['status'];
-            if(isset($params['status']) && $params['status'] >= 0) {
+            if (isset($params['status']) && $params['status'] >= 0) {
                 $where[] = ['active_status', '=', $params['status']];
             }
         } else {
@@ -203,7 +203,8 @@ class Customer extends Backend
         $config = [
             'type' => 'bootstrap',
             'var_page' => 'page',
-            'page' => $params['page']
+            'page' => $params['page'],
+            'query' => request()->param()
         ];
         if (!isset($params['limit'])) $params['limit'] = 50;
         $list = $this->model->where($where)->order('update_time asc,create_time desc')->paginate(50, false, $config);
