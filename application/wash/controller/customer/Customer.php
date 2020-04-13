@@ -71,7 +71,7 @@ class Customer extends Backend
         $this->assign('users', $users);
 
         $departmentId = $this->user['department_id'];
-        $staffs = User::getUsersInfoByDepartmentId($departmentId);
+        $staffs = User::getUsersInfoByDepartmentId($departmentId, false);
         $this->assign('staffs', $staffs);
 
         // 获取城市列表
