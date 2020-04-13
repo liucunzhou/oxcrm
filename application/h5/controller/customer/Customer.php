@@ -164,6 +164,7 @@ class Customer extends Base
                 }
 
                 foreach ($data as &$value) {
+                    $value['color'] = '#ccc';
                     $value['next_visit_time'] = date('Y-m-d H:i', $value['next_visit_time']);
                     $value['operator'] = $users[$value['operate_id']]['realname'];
                     $value['user_realname'] = $users[$value['user_id']]['realname'];
