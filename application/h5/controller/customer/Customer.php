@@ -111,7 +111,6 @@ class Customer extends Base
             $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
             $config = [
                 'page' => $get['page']
-                23213421
             ];
             //账户登录
             // $map = Search::customerMine($this->user, $get);
@@ -151,8 +150,8 @@ class Customer extends Base
             } else {
                 $list = model('MemberAllocate')->where($map)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
             }*/
-            $field = 'id';
-            $list = $this->model->where($where)->field($field)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
+            $field = 'id,next_visit_time,mobile,news_type,wedding_date,active_status,member_id';
+            $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
 
             if (!empty($list)) {
                 $users = User::getUsers();
