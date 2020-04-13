@@ -66,7 +66,6 @@ class Car extends Backend
             $result = $model->save($params);
         } else {
             $result = $this->model->allowField(true)->save($params);
-            echo $this->model->getLastSql();
         }
 
         if($result) {
