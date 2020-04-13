@@ -334,7 +334,14 @@ class Search
 
     public static function order(&$user, &$get)
     {
-        $map[] = ['news_type', '=', $get['news_type']];
+        if (isset($get['complete'])) {
+            $map[] = ['complete', '=', $get['complete']];
+        }
+
+        if (isset($get['company_id'])) {
+            $map[] = ['company_id', '=', $get['company_id']];
+        }
+
         if (isset($get['source']) && !empty($get['source'])) {
             $map[] = ['source_id', '=', $get['source']];
         }
@@ -344,7 +351,7 @@ class Search
         }
 
         if (isset($get['mobile']) && !empty($get['mobile_type'])) {
-            $map[] = [$get['mobile_type'], '=' . $get['staff']];
+            $map[] = [$get['mobile_type'], '=', $get['mobile']];
         }
 
         if (isset($get['staff']) && !empty($get['staff'])) {

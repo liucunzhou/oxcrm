@@ -5,7 +5,6 @@ namespace app\index\controller\order;
 
 use app\common\model\OrderBanquet;
 use app\index\controller\Backend;
-use think\response\Json;
 
 class Banquet extends Backend
 {
@@ -13,6 +12,29 @@ class Banquet extends Backend
     {
         parent::initialize();
         $this->model = new OrderBanquet();
+
+        ## 获取所有品牌、公司
+        $brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $brands);
+
+
+        $rituals = \app\common\model\Ritual::getList();
+        $this->assign('rituals', $rituals);
+
+        $packages = \app\common\model\Package::getList();
+        $this->assign('packages', $packages);
+    }
+
+    public function create()
+    {
+        $params = $this->request->param();
+        $order = new \app\common\model\Order();
+        $where = [];
+        $where['id'] = $params['id'];
+        $row = $order->where($where)->find();
+        $this->assign('order', $row);
+
+        return $this->fetch();
     }
 
     public function edit($id)
@@ -29,16 +51,35 @@ class Banquet extends Backend
     {
         $params = $this->request->param();
 
-        $where = [];
-        $where[] = ['id', '=', $params['id']];
-        $banquet = $this->model->where($where)->find();
-
-        $result = $banquet->save($params);
+        if(empty(!$params['id'])) {
+            $where = [];
+            $where[] = ['id', '=', $params['id']];
+            $model = $this->model->where($where)->find();
+            $result = $model->save($params);
+        } else {
+            $result = $this->model->allowField(true)->save($params);
+        }
 
         if($result) {
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
         } else {
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
+        }
+
+        return json($arr);
+    }
+
+    public function delete($id)
+    {
+        $where = [];
+        $where[] = ['order_id', '=', $id];
+        $model = $this->model->where($where)->order('id desc')->find();
+        $result = $model->delete();
+
+        if($result) {
+            $arr = ['code'=>'200', 'msg'=>'删除信息成功'];
+        } else {
+            $arr = ['code'=>'500', 'msg'=>'删除信息失败'];
         }
 
         return json($arr);

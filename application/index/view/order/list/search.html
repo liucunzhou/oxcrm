@@ -19,7 +19,18 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="hotel_id" lay-verify="">
+            <select name="complete" lay-verify="">
+                <option value="">完成状态</option>
+                <option value="0">待完成</option>
+                <option value="99">意向金</option>
+                <option value="100">已完成</option>
+                <option value="101">退单</option>
+            </select>
+        </div>
+
+
+        <div class="layui-inline layui-col-sm1">
+            <select name="hotel_id" lay-verify="" lay-search>
                 <option value="">酒店名称</option>
                 <{foreach name="hotels" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -44,13 +55,13 @@
             <select name="date_range_type" lay-verify="">
                 <option value="">时间区间类型</option>
                 <option value="create_time">创建时间</option>
-                <option value="sign_time">签单时间</option>
-                <option value="event_time">举办时间</option>
+                <option value="sign_date">签单时间</option>
+                <option value="event_date">举办时间</option>
             </select>
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <input type="text" name="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
+            <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="时间区间" autocomplete="off" class="layui-input">
         </div>
 
         <div class="layui-inline ">

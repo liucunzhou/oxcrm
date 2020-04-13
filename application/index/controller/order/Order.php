@@ -9,11 +9,20 @@ use app\common\model\OrderBanquet;
 use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderCar;
+use app\common\model\OrderD3;
+use app\common\model\OrderDessert;
 use app\common\model\OrderEntire;
+use app\common\model\OrderHotelItem;
+use app\common\model\OrderHotelProtocol;
+use app\common\model\OrderLed;
+use app\common\model\OrderLight;
+use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
+use app\common\model\OrderWine;
 use app\common\model\Search;
 use app\common\model\User;
 use app\index\controller\Backend;
@@ -26,8 +35,6 @@ class Order extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
-    protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
-    protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
     protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
@@ -35,6 +42,8 @@ class Order extends Backend
     protected function initialize()
     {
         parent::initialize();
+        $this->model = new \app\common\model\Order();
+
         // 获取系统来源,酒店列表,意向状态
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
@@ -89,6 +98,35 @@ class Order extends Backend
         ## 婚庆二销分类列表
         $this->weddingCategories = \app\common\model\WeddingCategory::getList();
         $this->assign('weddingCategories', $this->weddingDevices);
+
+        ## 汽车列表
+        $carList = \app\common\model\Car::getList();
+        $this->assign('carList', $carList);
+
+        ## 酒水列表
+        $wineList = \app\common\model\Wine::getList();
+        $this->assign('wineList', $wineList);
+
+        ## 喜糖列表
+        $sugarList = \app\common\model\Sugar::getList();
+        $this->assign('sugarList', $sugarList);
+
+        ## 灯光列表
+        $lightList = \app\common\model\Light::getList();
+        $this->assign('lightList', $lightList);
+
+        ## 点心列表
+        $dessertList = \app\common\model\Dessert::getList();
+        $this->assign('dessertList', $dessertList);
+
+        ## led列表
+        $ledList = \app\common\model\Led::getList();
+        $this->assign('ledList', $ledList);
+
+        ## 3d列表
+        $d3List = \app\common\model\D3::getList();
+        $this->assign('d3List', $d3List);
+
     }
 
     // 誉丝
@@ -96,7 +134,51 @@ class Order extends Backend
     {
         if (Request::isAjax()) {
             $get = Request::param();
-            $get['news_type'] = 2;
+            $get['company_id'] = 25;
+            $order = $this->_getOrderList($get, 'index');
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getColsFile('index');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/list/index');
+        }
+    }
+
+    // 红丝
+    public function hs()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['company_id'] = 26;
+            $order = $this->_getOrderList($get, 'index');
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getColsFile('index');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/list/index');
+        }
+    }
+
+    // 曼格纳
+    public function mangena()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['company_id'] = 24;
             $order = $this->_getOrderList($get, 'index');
             $result = [
                 'code' => 0,
@@ -216,17 +298,31 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $banquet = OrderBanquet::where($where)->order('id desc')->find();
         $this->assign('banquet', $banquet);
+
+        #### 酒店服务项目
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $hotelItem = OrderHotelItem::where($where)->order('id desc')->find();
+        $this->assign('hotelItem', $hotelItem);
+
         #### 获取婚宴二销订单信息
         $where = [];
         $where['order_id'] = $get['id'];
         $banquetOrders = OrderBanquetSuborder::where($where)->select();
         $this->assign('banquetOrders', $banquetOrders);
+
         #### 获取婚宴收款信息
         $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
         $this->assign('banquetReceivables', $receivables);
+
         #### 获取婚宴付款信息
         $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
         $this->assign('banquetPayments', $banquetPayments);
+
+        #### 获取酒店协议信息
+        $hotelProtocol = OrderHotelProtocol::where('order_id', '=', $get['id'])->select();
+        $this->assign('hotelProtocol', $hotelProtocol);
+
 
 
         #### 获取婚庆订单信息
@@ -234,24 +330,68 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $wedding = OrderWedding::where($where)->order('id desc')->find();
         $this->assign('wedding', $wedding);
-
         if(!empty($wedding)) {
-            $wedding = $wedding->getData();
-            $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
+            $weddingData = $wedding->getData();
+            $selectedWeddingDevices = json_decode($weddingData['wedding_device'], true);
             if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
             $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-            #### 获取婚宴二销订单信息
-            $where = [];
-            $where['order_id'] = $get['id'];
-            $weddingOrders = OrderWeddingSuborder::where($where)->select();
-            $this->assign('weddingOrders', $weddingOrders);
         }
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $weddingOrders = OrderWeddingSuborder::where($where)->select();
+        $this->assign('weddingOrders', $weddingOrders);
+
         #### 获取婚宴收款信息
         $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
         $this->assign('weddingReceivables', $weddingReceivables);
         #### 获取婚庆付款信息
         $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
         $this->assign('weddingPayments', $weddingPayments);
+
+        #### 婚车
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $car = OrderCar::where($where)->select();
+        $this->assign('car', $car);
+
+        #### 喜糖
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $sugar = OrderSugar::where($where)->select();
+        $this->assign('sugar', $sugar);
+
+        #### 酒水
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $wine = OrderWine::where($where)->select();
+        $this->assign('wine', $wine);
+
+        #### 灯光
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $light = OrderLight::where($where)->select();
+        $this->assign('light', $light);
+
+        #### 点心
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $dessert = OrderDessert::where($where)->select();
+        $this->assign('dessert', $dessert);
+
+        #### LED
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $led = OrderLed::where($where)->select();
+        $this->assign('led', $led);
+
+
+        #### 3D
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $d3 = OrderD3::where($where)->select();
+        $this->assign('d3', $d3);
+
 
         ##　获取客资分配信息
         $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
@@ -451,6 +591,8 @@ class Order extends Backend
         if ($statusField == 'index') {
             $statusTexts = ['待审核', '已通过', '已驳回'];
             foreach ($data as $key => &$value) {
+                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
                 $value['check_status_source'] = $statusTexts[$value['check_status_source']];
                 $value['check_status_score'] = $statusTexts[$value['check_status_score']];
                 $value['check_status_contract_fiance'] = $statusTexts[$value['check_status_contract_fiance']];
@@ -465,6 +607,8 @@ class Order extends Backend
             }
         } else if($statusField == 'complete') {
             foreach ($data as $key => &$value) {
+                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
                 $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
                 $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
                 $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
@@ -516,5 +660,38 @@ class Order extends Backend
         isset($order['banquet_income_real_date']) && $order['banquet_income_real_date'] = date('Y-m-d', $order['banquet_income_real_date']);
 
         return $order;
+    }
+
+    public function upload()
+    {
+        $params = $this->request->param();
+        $file = request()->file("file");
+        $info = $file->move("uploads/order");
+        if ($info) {
+            $origin = $info->getInfo();
+            $data = [];
+            $data['order_id'] = $params['id'];
+            $data['origin_file_name'] = $origin['name'];
+            $data['new_file_name'] = $info->getFileName();
+            $data['new_file_path'] = $info->getPathname();
+
+            $where = [];
+            $where['id'] = $params['id'];
+            $order = $this->model->where($where)->find();
+            $order->save(['image'=>$info->getPathname()]);
+
+            $arr = [
+                'code'  => '200',
+                'msg'   => '上传成功',
+                'image' => '/'.$info->getPathname()
+            ];
+        } else {
+            $arr = [
+                'code'  => '500',
+                'msg'   => '上传失败'
+            ];
+        }
+
+        return json($arr);
     }
 }

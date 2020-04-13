@@ -28,13 +28,13 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">订单号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="wedding_order_no" value="{$data['wedding_order_no']}" lay-verify="required" placeholder="订单号" autocomplete="off" class="layui-input">
+                        <input type="text" name="wedding_order_no" value="{$data['wedding_order_no']}" lay-verify="" placeholder="订单号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">金额总计</label>
                     <div class="layui-input-block">
-                        <input type="text" name="wedding_totals" value="{$data['wedding_totals']}" lay-verify="required" placeholder="婚庆金额小计" autocomplete="off" class="layui-input">
+                        <input type="text" name="wedding_totals" value="{$data['wedding_totals']}" lay-verify="" placeholder="婚庆金额小计" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -43,6 +43,7 @@
                         <textarea name="sub_wedding_remark" class="layui-textarea" placeholder="备注信息">{$data['sub_wedding_remark']}</textarea>
                     </div>
                 </div>
+                <!--
                 <div class="wedding_category_box">
                     <table class="layui-table no-padding no-margin">
                         <colgroup>
@@ -64,13 +65,13 @@
                         <tbody>
                         <tr>
                             <th>
-                                <select name="items[ctrl][]" lay-verify="required">
+                                <select name="items[ctrl][]" lay-verify="">
                                     <option value="add">增加</option>
                                     <option value="sub">减少</option>
                                 </select>
                             </th>
                             <th>
-                                <select name="items[category][]" lay-search lay-verify="required">
+                                <select name="items[category][]" lay-search lay-verify="">
                                     <option value="">请选择二销项目</option>
                                     <{foreach name="items" item="row"}>
                                     <option value="{$row['id']}">{$row['title']}</option>
@@ -78,10 +79,10 @@
                                 </select>
                             </th>
                             <th>
-                                <input type="text" name="items[amount][]" value="{$data['wedding_category_amount']}" lay-verify="required" placeholder="数量" autocomplete="off" class="layui-input">
+                                <input type="text" name="items[amount][]" value="{$data['wedding_category_amount']}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
                             </th>
                             <th>
-                                <input type="text" name="items[total][]" value="{$data['wedding_total']}" lay-verify="required" placeholder="金额" autocomplete="off" class="layui-input">
+                                <input type="text" name="items[total][]" value="{$data['wedding_total']}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
                             </th>
                             <th>
                                 <div class="layui-btn-group">
@@ -93,6 +94,7 @@
                         </tbody>
                     </table>
                 </div>
+                -->
 
                 <div class="layui-form-item layui-layout-admin" show-range="0_1_2">
                     <div class="layui-input-inline">

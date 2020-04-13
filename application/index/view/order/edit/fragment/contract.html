@@ -25,7 +25,13 @@
 
             <tr>
                 <td class="tb-field">酒店名称</td>
-                <td class="tb-value">{$data.hotel_text|default='-'}</td>
+                <td class="tb-value">
+                    <{if empty($data.hotel_id)}>
+                        {$data.hotel_text|default='-'}
+                    <{else /}>
+                        {$hotels[$data.hotel_id]['title']}
+                    <{/if}>
+                </td>
                 <td class="tb-field">宴会厅</td>
                 <td class="tb-value">{$data.banquet_hall_name|default='-'}</td>
                 <td class="tb-field">合作模式</td>
@@ -60,8 +66,13 @@
                 <td></td>
                 <td></td>
                 <td colspan="2" rowspan="6">
-                    <div class="contract-img">
-                        <div class="title">合同(点击查看大图,共3张)</div>
+                    <div class="contract-img upload" id="upload" data-action="{:url('/index/order.order/upload', ['id'=>$data.id])}">
+                        <div class="title">合同(点击查看大图)</div>
+                        <div class="img-box">
+                            <{if !empty($data.image)}>
+                                <img src="/{$data.image}" alt="">
+                            <{/if}>
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -104,6 +115,79 @@
             <tr>
                 <td class="tb-field">备注</td>
                 <td class="tb-value" colspan="8">{$data.remark}</td>
+            </tr>
+            <tr>
+                <td colspan="10" class="text-right">
+                    <{if empty($banquet)}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加婚宴信息"
+                           data-action="{:url('/index/order.banquet/create', ['id'=>$data.id])}">添加婚宴信息</a>
+                    <{/if}>
+
+                    <{if empty($hoteItem)}>
+                    <a href="javascript:void(0);"
+                       class="layui-right-side btn-edit-solid"
+                       title="添加酒店服务项目"
+                       data-action="{:url('/index/order.hotel_item/create', ['id'=>$data.id])}">添加酒店服务项目</a>
+                    <{/if}>
+
+                    <{if empty($wedding)}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加婚庆信息"
+                           data-action="{:url('/index/order.wedding/create', ['id'=>$data.id])}">添加婚庆信息</a>
+                    <{/if}>
+
+                    <{if $car->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加婚车信息"
+                           data-action="{:url('/index/order.car/create', ['id'=>$data.id])}">添加婚车信息</a>
+                    <{/if}>
+
+                    <{if $sugar->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加喜糖信息"
+                           data-action="{:url('/index/order.sugar/create', ['id'=>$data.id])}">添加喜糖信息</a>
+                    <{/if}>
+
+                    <{if $wine->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加酒水信息"
+                           data-action="{:url('/index/order.wine/create', ['id'=>$data.id])}">添加酒水信息</a>
+                    <{/if}>
+
+                    <{if $light->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加灯光信息"
+                           data-action="{:url('/index/order.light/create', ['id'=>$data.id])}">添加灯光信息</a>
+                    <{/if}>
+
+                    <{if $dessert->isEmpty()}>
+                        <a href="javascript:void(0);"
+                           class="layui-right-side btn-edit-solid"
+                           title="添加点心信息"
+                           data-action="{:url('/index/order.dessert/create', ['id'=>$data.id])}">添加点心信息</a>
+                    <{/if}>
+
+                    <{if $led->isEmpty()}>
+                    <a href="javascript:void(0);"
+                       class="layui-right-side btn-edit-solid"
+                       title="添加LED信息"
+                       data-action="{:url('/index/order.led/create', ['id'=>$data.id])}">添加LED信息</a>
+                    <{/if}>
+
+                    <{if $d3->isEmpty()}>
+                    <a href="javascript:void(0);"
+                       class="layui-right-side btn-edit-solid"
+                       title="添加3D信息"
+                       data-action="{:url('/index/order.d3/create', ['id'=>$data.id])}">添加3D信息</a>
+                    <{/if}>
+                </td>
             </tr>
         </table>
     </div>

@@ -95,6 +95,10 @@ class Ring extends Command
 
                 $callRecord = new \app\common\model\CallRecord();
                 $rs = $callRecord->insert($row);
+                if(!$rs && $len == 1) {
+                    break;
+                }
+
                 if(!$rs) {
                     echo "写入失败\n";
                     echo $callRecord->getLastSql();

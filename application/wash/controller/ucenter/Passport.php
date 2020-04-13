@@ -29,19 +29,20 @@ class Passport extends Controller
         $where['password'] = md5($post['password']);
         $user = $userModel->where($where)->find();
         if(!$user) {
-            $this->result([], 500, '密码不正确');
+            $this->result([], 501, '密码不正确');
         }
 
         $path = url('wash/index/index');
         if($user['is_valid'] == 0){
-            $this->result([], 500, '账号已经下线');
+            $this->result([], 502, '账号已经下线');
+        }
+
+        $washGroupIds = [2, 7, 15];
+        if(!in_array($user['role_id'], $washGroupIds)) {
+            $this->result([], 503, '非清洗组用户');
         }
 
         Session::set('user', $user);
-        // 加入登录记录
-        $ip = Request::ip();
-        $action = Request::path();
-
         $data = [
             'redirect' => $path
         ];

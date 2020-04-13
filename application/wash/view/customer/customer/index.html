@@ -129,9 +129,9 @@
                         <input type="checkbox" class="ids" value="{$row.id}">
                     </td>
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.customer/update', ['id'=>$row['id']])}" class="layui-center" data-width="100" data-height="100" title="编辑全部信息" >{$row.visit_amount}</a></td>
-                    <td>{$row.operate_id}</td>
+                    <td>{$users[$row.user_id]['realname']}</td>
                     <td>{$row.realname}</td>
-                    <td><a href="javascript:void(0);" class="event-call" data-id="{$row.id}">{$row.mobile}</a></td>
+                    <td><a href="javascript:void(0);" class="event-call" data-id="{$row.id}">{:substr_replace($row.mobile, '***', 3, 3)}</a></td>
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="block layui-center" title="编辑客户信息">{$row.banquet_size|default='--'}</a></td>
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="block layui-center" title="编辑客户信息">{$row.budget|default='--'}</a></td>
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="block layui-center" title="编辑客户信息">{$row.wedding_date|default='--'}</a></td>
@@ -142,12 +142,23 @@
                         </div>
                     </td>
                     <td>{$row.source_text}</td>
-                    <td>{$row.news_type}</td>
-                    <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/edit', ['id'=>$row['id']])}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
-                    <td></td>
-                    <td>{$row.allocate_type}</td>
+                    <td>
+                        <{if !empty($row['news_types'])}>
+                            {:get_news_types($row['news_types'])}
+                        <{else /}>
+                            {$newsTypes[$row.news_type]}
+                        <{/if}>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);"
+                           data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="layui-center" data-width="40" title="快速回访">
+                            {$allStatus[$row.active_status]['title']|default='未回访'}
+                        </a>
+                    </td>
+                    <td>{$row.remark}</td>
+                    <td>{$allocateTypes[$row.allocate_type]}</td>
                     <td>{$row.create_time}</td>
-                    <td>{$row.member_create_time}</td>
+                    <td>{:date('Y-m-d H:i', $row.member_create_time)}</td>
                 </tr>
             <{/foreach}>
         </table>

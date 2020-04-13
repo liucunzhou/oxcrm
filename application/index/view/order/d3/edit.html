@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑3D信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css?2" media="all">
+    <link rel="stylesheet" href="/assets/style/order.css?2" media="all">
+    <script src="/assets/layui/layui.js"></script>
+    <script src="/assets/lib/order.edit.js?13"></script>
+    <style>
+        .layui-table tbody:nth-child(even){
+            background: #eee;
+        }
+        .layui-table td, .layui-table th {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: visible;
+        }
+        .input-title{
+            width: 5em;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post" action="{:url('/index/order.d3/doEdit')}" lay-filter="component-form-group">
+
+                <table class="layui-table">
+                    <tbody>
+                    <tr>
+                        <td class="tb-title">选择销售</td>
+                        <td>
+                            <select name="salesman" class="layui-select" lay-search>
+                                <option value=""></option>
+                                <{foreach name="staffs" item="val"}>
+                                <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>
+                                <{/foreach}>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tb-title">是否二销</td>
+                        <td>
+                            <select name="is_suborder" class="layui-select">
+                                <option value="0">否</option>
+                                <option value="1" {$data.is_suborder==1?'selected':''}>婚宴二销</option>
+                                <option value="2" {$data.is_suborder==2?'selected':''}>婚庆二销</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+
+
+                    <tbody>
+                    <tr>
+                        <th class="input-title">品牌</th>
+                        <th>
+                            <select class="layui-select" name="d3_id" lay-search lay-verify="">
+                                <option value="">请选择3D</option>
+                                <{foreach name="d3List" item="row"}>
+                                    <option value="{$row['id']}" {$data.d3_id==$row.id?'selected':''}>{$row['title']}</option>
+                                <{/foreach}>
+                            </select>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>数量</th>
+                        <th>
+                            <input class="layui-input" type="text" name="d3_amount" value="{$data.d3_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>金额</th>
+                        <th>
+                            <input class="layui-input" type="text" name="d3_price" value="{$data.d3_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>备注</th>
+                        <th>
+                            <input class="layui-input" type="text" name="d3_remark" value="{$data.d3_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="id" value="{$data.id}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

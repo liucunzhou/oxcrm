@@ -7,3 +7,4 @@
 .idea/workspace.xml
 /.idea
 config/cache.php
+/public/uploads/*

@@ -4,7 +4,7 @@ namespace app\wash\controller;
 use think\Controller;
 use think\Request;
 
-class Index extends Controller
+class Index extends Backend
 {
     public function index()
     {

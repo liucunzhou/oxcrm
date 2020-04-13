@@ -20,6 +20,15 @@ class MemberAllocate extends Model
         return $this->belongsTo('member', 'member_id');
     }
 
+    public function searchStaffIdAttr($query, $value, $data)
+    {
+        $query->where('statff_id', 'in', $value);
+        if (isset($data['sort']))
+        {
+            $query->order($data['sort']);
+        }
+    }
+
     public static function getAllocate($userId, $memberId) {
         $map = [];
         $map[] = ['user_id', '=', $userId];

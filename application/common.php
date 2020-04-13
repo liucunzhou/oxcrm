@@ -31,3 +31,17 @@ if(!function_exists('csv_convert_encoding')) {
         return $data;
     }
 }
+
+if(!function_exists('get_news_types')) {
+    function get_news_types($newsTypesText)
+    {
+        if (empty($newsTypesText)) return '';
+        $newsTypes = ['婚宴信息', '婚庆信息', '一站式', '婚纱摄影', '婚车', '婚纱礼服', '男装', '宝宝宴', '会务'];
+        $arr = explode(',', $newsTypesText);
+        $texts = [];
+        foreach ($arr as $key=>$val) {
+            $texts[] = $newsTypes[$val];
+        }
+        return implode(',', $texts);
+    }
+}

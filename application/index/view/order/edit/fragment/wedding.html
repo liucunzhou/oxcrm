@@ -1,3 +1,4 @@
+<{if !empty($wedding)}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">婚庆基本信息</div>
@@ -6,8 +7,15 @@
                class="btn-edit layui-right-side"
                href="javascript:void(0);"
                data-action="{:url('/index/order.Wedding/edit', ['id'=>$data['id']])}">编辑</a>
+
+            <a title="删除婚庆基本信息"
+               class="lay-delete-api"
+               href="javascript:void(0);"
+               data-fresh="yes"
+               data-action="{:url('/index/order.Wedding/delete', ['id'=>$data['id']])}">删除</a>
         </div>
     </div>
+
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
             <colgroup>
@@ -66,6 +74,7 @@
            data-action="{:url('/index/order.wedding_payment/create', ['order_id'=>$data['id']])}">添加婚庆付款信息</a>
     </div>
 </div>
+<{/if}>
 
 <{if !$weddingOrders->isEmpty()}>
 <div class="layui-card">
@@ -107,15 +116,15 @@
                 <td class="text-right">
                     <div>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_suborder/edit')} layui-right-side btn-edit-solid"
+                           class="layui-right-side btn-edit-solid"
                            title="编辑婚庆二销信息" data-action="{:url('/index/order.wedding_suborder/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_suborder/confirm')} layui-right-side btn-confirm-solid"
+                           class="layui-right-side btn-confirm-solid"
                            title="审核婚庆二销信息"
                            data-action="{:url('/index/order.wedding_suborder/confirm', ['id'=>$row['id']])}">审核</a>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_suborder/delete')} layui-right-side btn-delete-solid lay-delete-api"
-                           data-action="{:url('/index/order.wedding_suborder/confirm', ['id'=>$row['id']])}">删除</a>
+                           class="btn-delete-solid lay-delete-api"
+                           data-action="{:url('/index/order.wedding_suborder/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </td>
             </tr>
@@ -170,10 +179,10 @@
                 <td class="text-right">
                     <div>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_receivable/edit')} layui-right-side btn-edit-solid"
+                           class="layui-right-side btn-edit-solid"
                            data-action="{:url('/index/order.wedding_receivable/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_receivable/delete')} layui-right-side btn-delete-solid lay-delete-api"
+                           class="btn-delete-solid lay-delete-api"
                            data-action="{:url('/index/order.wedding_receivable/delete', ['id'=>$row['id']])}">删除</a>
                         <a href="javascript:void(0);"
                            class="{:auth('/index/order.wedding_receivable/accountingConfirm')} layui-right-side btn-confirm-solid"
@@ -247,7 +256,7 @@
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);" 
-                           class="{:auth('/index/order.wedding_payment/edit')} layui-right-side btn-edit-solid"
+                           class="layui-right-side btn-edit-solid"
                            data-action="{:url('/index/order.wedding_payment/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);" 
                            class="{:auth('/index/order.wedding_payment/delete')} layui-right-side btn-delete-solid lay-delete-api"

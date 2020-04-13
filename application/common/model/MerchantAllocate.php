@@ -10,9 +10,9 @@ class MerchantAllocate extends Model
     protected $autoWriteTimestamp = true;
 
     ### 软删除设置
-//    use SoftDelete;
-//    protected $deleteTime = 'delete_time';
-//    protected $defaultSoftDelete = 0;
+    //    use SoftDelete;
+    //    protected $deleteTime = 'delete_time';
+    //    protected $defaultSoftDelete = 0;
 
     public function member()
     {

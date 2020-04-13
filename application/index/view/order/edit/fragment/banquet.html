@@ -1,3 +1,4 @@
+<{if !empty($banquet)}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">
@@ -9,6 +10,12 @@
                class="layui-right-side btn-edit"
                href="javascript:void(0);"
                data-action="{:url('/index/order.banquet/edit', ['id'=>$data['id']])}">编辑</a>
+
+            <a title="删除婚宴基本信息"
+               class="lay-delete-api"
+               href="javascript:void(0);"
+               data-fresh="yes"
+               data-action="{:url('/index/order.banquet/delete', ['id'=>$data['id']])}">删除</a>
         </div>
     </div>
     <div class="layui-card-body no-padding no-margin">
@@ -35,8 +42,8 @@
                     <th class="text-center">加菜换菜</th>
                     <th class="text-center">优惠金额</th>
                     <th class="text-center">服务费总计</th>
-                    <th class="text-center">婚礼堂</th>
-                    <th class="text-center">婚礼堂价格</th>
+                    <th class="text-center">仪式堂</th>
+                    <th class="text-center">仪式堂价格</th>
                     <th class="text-center">其他金额</th>
                 </tr>
             </thead>
@@ -56,7 +63,7 @@
                 <tr>
                     <td class="text-center">备注:</td>
                     <td colspan="9">
-                        {$banquet.banquet_remark} 我是备注信息
+                        {$banquet.banquet_remark}
                     </td>
                 </tr>
             </tbody>
@@ -78,8 +85,48 @@
            class="layui-right-side btn-edit-solid"
            href="javascript:void(0);"
            data-action="{:url('order.banquet_payment/create', ['order_id'=>$data['id']])}">添加婚宴付款信息</a>
+
+        <a title="添加酒店协议"
+           class="layui-right-side btn-edit-solid"
+           href="javascript:void(0);"
+           data-action="{:url('order.hotel_protocol/create', ['id'=>$data['id']])}">添加酒店协议</a>
     </div>
 </div>
+<{/if}>
+
+<{if !empty($hotelItem)}>
+<div class="layui-card">
+    <div class="layui-card-body no-margin no-padding">
+        <table class="layui-table no-padding no-margin">
+            <thead>
+            <tr class="no-border">
+                <td colspan="9">酒店服务项目</td>
+                <td class="text-right">
+                    <a title="编辑酒店服务项目"
+                       class="layui-right-side btn-edit"
+                       href="javascript:void(0);"
+                       data-action="{:url('order.hotel_item/edit', ['id'=>$data['id']])}">编辑</a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="tb-field">婚房</td>
+                <td class="tb-value">{$hotelItem.wedding_room}</td>
+                <td class="tb-field">停车位</td>
+                <td class="tb-value">{$hotelItem.part}</td>
+                <td class="tb-field">香槟</td>
+                <td class="tb-value">{$hotelItem.champagne}</td>
+                <td class="tb-field">茶歇</td>
+                <td class="tb-value">{$hotelItem.tea}</td>
+                <td class="tb-field">蛋糕</td>
+                <td class="tb-value">{$hotelItem.cake}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>
 
 <!--婚宴二销信息-->
 <{if !$banquetOrders->isEmpty()}>
@@ -120,9 +167,9 @@
                         <td class="text-left">{$row.sub_banquet_remark}</td>
                         <td class="text-right">
                             <div>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.BanquetSuborder/edit')} btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.BanquetSuborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.BanquetSuborder/delete')} btn-delete-solid lay-delete-api">删除</a>
+                                <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
+                                <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>
+                                <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_suborder/delete', ['id'=>$row['id']])}">删除</a>
                             </div>
                         </td>
                     </tr>
@@ -177,9 +224,9 @@
                 <td class="text-left">{$row.remark}</td>
                 <td class="text-right">
                     <div>
-                        <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/edit')}  btn-edit-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/edit', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/confirm')} btn-confirm-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/confirm', ['id'=>$row['id']])}">审核</a>
-                        <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/delete')} btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_receivable/delete', ['id'=>$row['id']])}">删除</a>
+                        <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_receivable/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </td>
             </tr>
@@ -239,11 +286,11 @@
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/edit')} btn-edit-solid layui-right-side"
+                           class="btn-edit-solid layui-right-side"
                            data-action="{:url('/index/order.banquet_payment/edit', ['id'=>$row['id']])}">编辑</a>
                         <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/delBanquetPayment')}
-                           btn-delete-solid btn-delete-api" data-action="{:url('/index/order.banquet_payment/delete')}">删除</a>
+                           class="btn-delete-solid lay-delete-api"
+                           data-action="{:url('/index/order.banquet_payment/delete', ['id'=>$row['id']])}">删除</a>
                         <a href="javascript:void(0);"
                            class="{:auth('/index/order.banquet_payment/accountConfirm')} btn-confirm-solid layui-right-side"
                            title="一站式婚宴付款-会计审核"
@@ -258,6 +305,62 @@
                            data-action="{:url('/index/order.banquet_payment/cashierConfirm', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
                 </th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>
+
+
+<!--婚宴酒店协议信息-->
+<{if !$hotelProtocol->isEmpty()}>
+<div class="layui-card layui-card">
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr class="no-border">
+                <td colspan="7">酒店协议信息</td>
+            </tr>
+            <tr>
+                <th class="text-center">餐标</th>
+                <th class="text-center">桌数</th>
+                <th class="text-center">定金付款金额</th>
+                <th class="text-center">定金付款日期</th>
+                <th class="text-center">中款付款金额</th>
+                <th class="text-center">中款付款日期</th>
+                <th class="text-center">尾款付款金额</th>
+                <th class="text-center">尾款付款日期</th>
+                <th class="text-right"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="hotelProtocol" item="row"}>
+            <tr>
+                <td class="text-center">{$row.table_price}</td>
+                <td class="text-center">{$row.table_amount}</td>
+                <td class="text-center">{$row.earnest_money}</td>
+                <td class="text-center">{$row.earnest_money_date}</td>
+                <td class="text-center">{$row.middle_money}</td>
+                <td class="text-center">{$row.middle_money_date}</td>
+                <td class="text-center">{$row.tail_money}</td>
+                <td class="text-center">{$row.tail_money_date}</td>
+                <td class="text-right">
+                    <div>
+                        <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" title="编辑酒店协议信息" data-action="{:url('/index/order.hotel_protocol/edit', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.hotel_protocol/delete', ['id'=>$row['id']])}">删除</a>
+                    </div>
+                </td>
             </tr>
             <{/foreach}>
             </tbody>

@@ -38,6 +38,26 @@ class Intention extends Model
         return $data;
     }
 
+    /**
+     * 获取清洗组意向
+     */
+    public static function getWash($withAll=true)
+    {
+        $map = [];
+        $map[]      = ['type', 'in', ['wash', 'other']];
+        $fields     = 'id,title,type';
+        $rows       = self::where($map)->field($fields)->order('sort,id')->column($fields, 'id');
+        $unvisit    = ['id' => 0, 'title' => '未跟进', 'type' => 'wash'];
+        array_unshift($rows, $unvisit);
+
+        if($withAll) {
+            $all = ['id' => -1, 'title' => '全部客资', 'type' => 'wash'];
+            array_unshift($rows, $all);
+        }
+
+        return $rows;
+    }
+
     public static function getIntentionsByRole($roleId=0)
     {
         $data = self::getIntentions();

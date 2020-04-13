@@ -3,21 +3,10 @@
 namespace app\index\controller\order;
 
 use app\common\model\BanquetHall;
-use app\common\model\Member;
-use app\common\model\MemberAllocate;
-use app\common\model\OrderBanquet;
-use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
-use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderEntire;
-use app\common\model\OrderWedding;
-use app\common\model\OrderWeddingPayment;
-use app\common\model\OrderWeddingReceivables;
-use app\common\model\OrderWeddingSuborder;
-use app\common\model\Search;
 use app\common\model\User;
 use app\index\controller\Backend;
-use app\index\controller\Base;
 use think\facade\Request;
 
 class BanquetReceivable extends Backend
@@ -27,16 +16,12 @@ class BanquetReceivable extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
-    protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
-    protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
 
     protected function initialize()
     {
         parent::initialize();
-        // 获取系统来源,酒店列表,意向状态
-        $this->assign('payments', $this->payments);
-        $this->assign('paymentTypes', $this->paymentTypes);
+        $this->model = new OrderBanquetReceivables();
         $this->assign('confirmStatusList', $this->confirmStatusList);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
