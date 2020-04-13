@@ -38,6 +38,7 @@ class Customer extends Base
 
 
     /**
+     * 客资公海
      * 显示资源列表
      *
      * @return \think\Response
@@ -78,7 +79,7 @@ class Customer extends Base
             }
 
             $result = [
-                'code' => 0,
+                'code' => 200,
                 'msg' => '获取数据成功',
                 'count' => $list->total(),
                 'data' => $data,
@@ -86,7 +87,7 @@ class Customer extends Base
         } else {
 
             $result = [
-                'code' => 0,
+                'code' => 200,
                 'msg' => '获取数据成功',
                 'data' => []
             ];
@@ -95,8 +96,14 @@ class Customer extends Base
         return xjson($result);
     }
 
+    /**
+     * 今日跟进
+     * [today description]
+     * @return [type] [description]
+     */
     public function today()
     {
+        echo "string";
         //
     }
 
