@@ -25,33 +25,15 @@ class Customer extends Backend
     protected $levels = [];
     protected $stores = [];
     protected $sources = [];
+    protected $auth = [];
 
     protected function initialize()
     {
         parent::initialize();
 
+        ### 实例需要使用的model
         $this->model = new \app\common\model\MemberAllocate();
         $this->customerModel = new Member();
-
-        $this->levels = [
-            999 => [
-                'title' => '非常重要',
-                'btn' => 'btn-danger'
-            ],
-            998 => [
-                'title' => '重要',
-                'btn' => 'btn-warning'
-            ],
-            997 => [
-                'title' => '一般',
-                'btn' => 'btn-primary'
-            ],
-            0 => [
-                'title' => '无',
-                'btn' => 'btn-info'
-            ]
-        ];
-        $this->assign('levels', $this->levels);
 
         ### 客资来源
         $this->sources = \app\common\model\Source::getSources();
@@ -87,7 +69,7 @@ class Customer extends Backend
         $cityList = Region::where($where)->select();
         $this->assign('cityList', $cityList);
 
-        //
+
     }
 
     /**
@@ -113,6 +95,7 @@ class Customer extends Backend
             // 兼容下面url函数，在转会之前params['staff_id']是一个数组，无法转换成url
             $params['staff_id'] = implode(',', $params['staff_id']);
         }
+
         // 检索员工列表
         if (isset($params['staff_id']) && !empty($params['staff_id'])) {
             $where[] = ['user_id', 'in', explode(',', $params['staff_id'])];
@@ -140,6 +123,8 @@ class Customer extends Backend
             } else {
                 $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
             }
+
+
         } else if (isset($params['mobile']) && !empty($params['mobile']) && strlen($params['mobile']) < 11) {
             $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
         } else if (isset($get['mobile']) && strlen($params['mobile']) > 11) {
@@ -176,7 +161,6 @@ class Customer extends Backend
 
         // 获取清洗组意向列表
         $tabs = Intention::getWash();
-        // print_r($tabs);
         foreach ($tabs as $key => &$row) {
             // 检测当前
             if ($row['id'] == $status) {
@@ -184,19 +168,18 @@ class Customer extends Backend
             } else {
                 $row['active'] = 2;
             }
-
             $params['status'] = $row['id'];
             $row['url'] = url('/wash/customer.customer/index', $params, false);
             // 检测所有
             if ($key != 0) {
                 $map = [];
+                // 获取自己拥有的客资列表
                 $map[] = ['active_status', '=', $row['id']];
                 $total = $this->model->where($map)->count();
             } else {
+                // 获取自己拥有的客资列表
                 $total = $this->model->count();
             }
-            // echo $this->model->getLastSql();
-            // echo "<br>";
             $row['total'] = $total;
         }
         $this->assign('tabs', $tabs);
