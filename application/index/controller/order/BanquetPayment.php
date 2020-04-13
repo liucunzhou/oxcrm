@@ -16,10 +16,11 @@ use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\Search;
 use app\common\model\User;
+use app\index\controller\Backend;
 use app\index\controller\Base;
 use think\facade\Request;
 
-class BanquetPayment extends Base
+class BanquetPayment extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -34,8 +35,6 @@ class BanquetPayment extends Base
         $this->model = new OrderBanquetPayment();
 
         // 获取系统来源,酒店列表,意向状态
-        $this->assign('payments', $this->payments);
-        $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);

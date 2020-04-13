@@ -23,8 +23,6 @@ class WeddingReceivable extends Backend
         $this->model = new OrderWeddingReceivables();
 
         // 获取系统来源,酒店列表,意向状态
-        $this->assign('payments', $this->payments);
-        $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);

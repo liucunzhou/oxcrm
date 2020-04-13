@@ -9,8 +9,8 @@ class Backend extends Controller
     public $user = [];
     public $model = null;
     protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式','婚纱摄影','婚车','婚纱礼服','男装','宝宝宴','会务'];
-    protected $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'尾款'];
-    protected $payments = [1=>'支付宝-对公', 2=>'支付宝-对私', 3=>'微信-对公', 4=>'微信-对私', 5=>'银行汇款-对公', 6=>'银行汇款-对私', 7=>'直付酒店', 8=>'现金', 9=>'POS机', 10=>'其他'];
+    protected $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
+    protected $payments = [1=>'支付宝-g', 2=>'支付宝-s', 3=>'微信-g', 4=>'微信-s', 5=>'银行汇款-g', 6=>'银行汇款-s', 7=>'直付酒店', 8=>'现金', 9=>'POS机', 10=>'其他'];
     protected $suborderTypes = ['否', '婚宴二销', '婚庆二销'];
 
     protected function initialize()
@@ -20,6 +20,8 @@ class Backend extends Controller
 
         if (!$user) $this->redirect('/index/passport/login', ['parent' => 1]);
         $this->assign('newsTypes', $this->newsTypes);
+        $this->assign('paymentTypes', $this->paymentTypes);
+        $this->assign('payments', $this->payments);
         $this->assign('suborderTypes', $this->suborderTypes);
 
         $this->user = $user;

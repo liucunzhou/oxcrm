@@ -25,8 +25,6 @@ class WeddingPayment extends Backend
         $this->model = new OrderWeddingPayment();
 
         // 获取系统来源,酒店列表,意向状态
-        $this->assign('payments', $this->payments);
-        $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);

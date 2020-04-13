@@ -44,10 +44,9 @@
                     <div class="layui-input-block">
                         <select name="banquet_pay_type" lay-verify="" lay-filter="news_type">
                             <option value="">款项性质</option>
-                            <option value="1" <{if $data['banquet_pay_type'] == '1'}>selected<{/if}>>定金</option>
-                            <option value="2" <{if $data['banquet_pay_type'] == '2'}>selected<{/if}>>中款</option>
-                            <option value="3" <{if $data['banquet_pay_type'] == '3'}>selected<{/if}>>尾款</option>
-                            <option value="4" <{if $data['banquet_pay_type'] == '4'}>selected<{/if}>>意向金</option>
+                            <{foreach name="paymentTypes" item="val"}>
+                            <option value="{$key}" <{if $data['banquet_pay_type'] == $key}>selected<{/if}>>{$val}</option>
+                            <{/foreach}>
                         </select>
                     </div>
                 </div>
