@@ -111,4 +111,9 @@ class Backend extends Controller
 
         return json($arr);
     }
+
+    public function _empty()
+    {
+        return '开发中...';
+    }
 }

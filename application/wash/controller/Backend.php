@@ -97,4 +97,9 @@ class Backend extends Controller
     {
         //
     }
+
+    public function _empty()
+    {
+        return '持续更新中...';
+    }
 }
