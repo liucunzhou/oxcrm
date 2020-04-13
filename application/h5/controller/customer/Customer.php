@@ -45,7 +45,7 @@ class Customer extends Base
     public function index()
     {
         $get = Request::param();
-        $get['limit'] = isset($get['limit']) ? $get['limit'] : 30;
+        $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
         $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
         $config = [
             'page' => $get['page']
@@ -95,12 +95,7 @@ class Customer extends Base
         return xjson($result);
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
+    public function today()
     {
         //
     }
