@@ -15,7 +15,7 @@ class Redis
 
         $cache = new \Redis();
         $cache->connect('127.0.0.1', 6379, 5);
-        $cache->auth('Lcz19860109');
+        $cache->auth('123456');
 
         return $cache;
     }

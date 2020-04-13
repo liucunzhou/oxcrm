@@ -2,5 +2,5 @@
 return [
     'host' => '127.0.0.1',
     'port' => '6379',
-    'password'  => 'Lcz19860109'
+    'password'  => '123456'
 ];
