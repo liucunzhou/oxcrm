@@ -11,6 +11,8 @@ use app\common\model\Store;
 use app\common\model\User;
 use app\h5\controller\Base;
 use think\facade\Request;
+use app\common\model\MobileRelation;
+use app\common\model\Search;
 
 class Customer extends Base
 {
@@ -103,8 +105,116 @@ class Customer extends Base
      */
     public function today()
     {
-        echo "string";
-        //
+        // if (Request::isAjax()) {
+            $get = Request::param();
+            $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
+            $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
+            $config = [
+                'page' => $get['page']
+                23213421
+            ];
+            //账户登录
+            // $map = Search::customerMine($this->user, $get);
+
+            if (!isset($get['next_visit_time']) || empty($get['next_visit_time'])) {
+                $tomorrow = strtotime('tomorrow');
+                $map[] = ['next_visit_time', '>', 0];
+                $map[] = ['next_visit_time', '<', $tomorrow];
+            }
+
+            $map[] = ['active_status', 'not in', [2, 3, 4]];
+            // dump($map);die();
+
+            /*if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                $map = [];
+                $mobiles = MobileRelation::getMobiles($get['keywords']);
+                if (!empty($mobiles)) {
+                    $map[] = ['mobile', 'in', $mobiles];
+                } else {
+                    $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+                }
+
+                echo "string";die();
+
+                $list = model('MemberAllocate')::hasWhere('member', $map, "Member.*")->order('id desc')->paginate($get['limit'], false, $config);
+            } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
+                $map = [];
+                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
+
+                echo "111";die();
+
+
+                $list = model('MemberAllocate')::hasWhere('member', $map, 'Member.*')->order('id desc')->with('member')->paginate($get['limit'], false, $config);
+            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
+                $map = [];
+                $map[] = ['mobile', '=', $get['keywords']];
+            } else {
+                $list = model('MemberAllocate')->where($map)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
+            }*/
+            $field = 'id';
+            $list = $this->model->where($where)->field($field)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
+
+            if (!empty($list)) {
+                $users = User::getUsers();
+                $data = $list->getCollection()->toArray();
+                if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
+                    if (isset($data[0]) && !empty($data[0])) {
+                        $data[0]['active_status'] = 0;
+                        MemberAllocate::updateAllocateData($this->user['id'], $data[0]['member_id'], $data[0]);
+                    }
+                }
+
+                foreach ($data as &$value) {
+                    $value['next_visit_time'] = date('Y-m-d H:i', $value['next_visit_time']);
+                    $value['operator'] = $users[$value['operate_id']]['realname'];
+                    $value['user_realname'] = $users[$value['user_id']]['realname'];
+                    $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
+                    $value['news_type'] = $this->newsTypes[$value['news_type']];
+                    $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
+                    $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                    if ($this->auth['is_show_alias'] == '1') {
+                        $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                    } else {
+                        $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+                    }
+                    $value['allocate_time'] = $value['create_time'];
+                    $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
+
+                    if ($value['member_id'] > 0) {
+                        $memberObj = Member::get($value['member_id']);
+                        $value['visit_amount'] = $this->user['role_id'] != 9 ? $memberObj->visit_amount : '-';
+                    }
+                }
+            // return json($data);
+
+                $result = [
+                    'code' => 200,
+                    'msg' => '获取数据成功',
+                    'count' => $list->total(),
+                    'data' => $data,
+                    'map' => $map
+                ];
+
+            } else {
+
+                $result = [
+                    'code' => 0,
+                    'msg' => '获取数据成功',
+                    'count' => 0,
+                    'data' => []
+                ];
+            }
+            return json($result);
+
+        /*} else {
+            if ($this->user['role_id'] == 9) {
+                $view = 'today_merchant';
+            } else {
+                $view = 'today';
+            }
+
+            return $this->fetch($view);
+        }*/
     }
 
     /**
