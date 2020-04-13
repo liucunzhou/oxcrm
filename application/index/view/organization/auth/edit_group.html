@@ -13,11 +13,22 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="/index/auth/doeditgroup.html" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="/index/organization.auth/doeditgroup.html" lay-filter="component-form-group">
                 <div class="layui-form-item">
                     <label class="layui-form-label">角色名称</label>
                     <div class="layui-input-block">
                         <input type="text" name="title" value="{$data[title]}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">角色性质</label>
+                    <div class="layui-input-block">
+                        <select name="auth_type" lay-verify="">
+                            <option value=""></option>
+                            <option value="0" <{if $data[auth_type]==0}>selected<{/if}>>普通员工角色</option>
+                            <option value="1" <{if $data[auth_type]==1}>selected<{/if}>>管理者角色</option>
+                        </select>
                     </div>
                 </div>
 

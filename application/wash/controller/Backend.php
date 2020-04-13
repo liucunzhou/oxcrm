@@ -10,8 +10,26 @@ class Backend extends Controller
     protected $model;
     protected $user = [];
     protected $middleware = ['Auth'];
-    protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式','婚纱摄影','婚车','婚纱礼服','男装','宝宝宴','会务'];
+    protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式', '婚纱摄影', '婚车', '婚纱礼服', '男装', '宝宝宴', '会务'];
     protected $allocateTypes = ['分配获取', '全号搜索', '公海申请', '自行添加'];
+    protected $levels = [
+        999 => [
+            'title' => '非常重要',
+            'btn' => 'btn-danger'
+        ],
+        998 => [
+            'title' => '重要',
+            'btn' => 'btn-warning'
+        ],
+        997 => [
+            'title' => '一般',
+            'btn' => 'btn-primary'
+        ],
+        0 => [
+            'title' => '无',
+            'btn' => 'btn-info'
+        ]
+    ];
 
     protected function initialize()
     {
@@ -20,6 +38,8 @@ class Backend extends Controller
         $this->assign('user', $user);
         $this->assign('newsTypes', $this->newsTypes);
         $this->assign('allocateTypes', $this->allocateTypes);
+
+        $this->assign('levels', $this->levels);
     }
 
     /**
@@ -45,7 +65,7 @@ class Backend extends Controller
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -56,7 +76,7 @@ class Backend extends Controller
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
@@ -67,7 +87,7 @@ class Backend extends Controller
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -78,8 +98,8 @@ class Backend extends Controller
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -90,7 +110,7 @@ class Backend extends Controller
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
