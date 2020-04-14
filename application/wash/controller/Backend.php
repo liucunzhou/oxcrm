@@ -2,6 +2,7 @@
 
 namespace app\wash\controller;
 
+use app\common\model\AuthGroup;
 use think\Controller;
 use think\Request;
 
