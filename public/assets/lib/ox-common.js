@@ -61,12 +61,13 @@ $(function(){
             height = height * parseInt(cheight) /100;
         }
 
+        var closeBtn = $(this).attr("data-close-btn");
         layer.open({
             type: 2,
             title: false,
             content: url,
             area: [width + 'px', height + 'px'],
-            closeBtn: 0
+            closeBtn: closeBtn!=undefined ? 1 : 0
         });
     });
 
