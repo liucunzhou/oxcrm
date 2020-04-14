@@ -303,6 +303,5 @@ h4 {
 }
 
 .bg-unvisited {
-    background: #ff0000;
-    color: #fff!important;
+    color: #ff0000!important;
 }
