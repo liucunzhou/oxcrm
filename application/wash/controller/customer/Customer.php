@@ -27,7 +27,6 @@ class Customer extends Backend
     protected $levels = [];
     protected $stores = [];
     protected $sources = [];
-    protected $role = [];
     protected $staffs = [];
 
     protected function initialize()
@@ -71,8 +70,6 @@ class Customer extends Backend
         $where[] = ['id', 'in', $currentCityIds];
         $cityList = Region::where($where)->select();
         $this->assign('cityList', $cityList);
-        $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
-        $this->assign('role', $this->role);
     }
 
     /**
