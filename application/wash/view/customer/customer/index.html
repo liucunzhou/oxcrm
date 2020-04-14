@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
     <link rel="stylesheet" href="/assets/multiple-select/multiple-select.min.css?{:rand(10,10000)}">
-    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10000,100000)}">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?2">
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
@@ -88,12 +88,12 @@
     <div class="ox-tab">
         <{foreach name="tabs" item="row"}>
             <{if $row['active'] == '1'}>
-                <a href="{$row.url}" class="active">
+                <a href="{$row.url}" class="active {$row.bg}">
                     {$row.title}
                     <span>({$row.total})</span>
                 </a>
             <{else /}>
-                <a href="{$row.url}">
+                <a href="{$row.url}" class="{$row.bg}">
                     {$row.title}
                     <span>({$row.total})</span>
                 </a>
