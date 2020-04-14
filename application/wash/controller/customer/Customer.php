@@ -86,14 +86,14 @@ class Customer extends Backend
         $staffIds = array_column($this->staffs, 'id');
 
         $where = [];
-        if (isset($params['status']) && $params['status'] >= 0) {
+        if (isset($params['status']) && $params['status'] >=0) {
             $status = $params['status'];
             if (isset($params['status']) && $params['status'] >= 0) {
                 $whereStatus = [];
                 $whereStatus[] = ['active_status', '=', $params['status']];
             }
-        } else {
-            $status = 0;
+        } else  {
+            $status = -1;
             $whereStatus = [];
         }
 
