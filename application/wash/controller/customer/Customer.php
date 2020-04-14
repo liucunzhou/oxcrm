@@ -89,10 +89,12 @@ class Customer extends Backend
         if (isset($params['status']) && !empty($params['status'])) {
             $status = $params['status'];
             if (isset($params['status']) && $params['status'] >= 0) {
-                $where[] = ['active_status', '=', $params['status']];
+                $whereStatus = [];
+                $whereStatus[] = ['active_status', '=', $params['status']];
             }
         } else {
             $status = 0;
+            $whereStatus = [];
         }
 
         if (isset($params['staff_id']) && !empty($params['staff_id']) && is_array($params['staff_id'])) {
@@ -129,8 +131,6 @@ class Customer extends Backend
             } else {
                 $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
             }
-
-
         } else if (isset($params['mobile']) && !empty($params['mobile']) && strlen($params['mobile']) < 11) {
             $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
         } else if (isset($get['mobile']) && strlen($params['mobile']) > 11) {
@@ -139,7 +139,6 @@ class Customer extends Backend
 
         // 时间区间
         if (isset($params['range']) && stripos($params['range'], '~') > 0) {
-            // $range =
             $arr = explode('~', $params['range']);
             if (count($arr) == 2) {
                 $start = strtotime(trim($arr[0]));
@@ -151,22 +150,6 @@ class Customer extends Backend
             $range = [];
         }
 
-        switch ($this->user['role_id']) {
-            case 15: // 客服经理
-            case 7: // 洗单组主管
-            case 3: // 推荐组主管
-                ## 回访者
-                if (empty($params['staff_id'])) {
-                    $staffs = User::getUsersByDepartmentId($this->user['department_id']);
-                    $where[] = ['user_id', 'in', $staffs];
-                }
-                break;
-            case 2: // 清洗组客服
-            case 4: // 推荐组客服
-            case 11: // 派单组客服
-                $where[] = ['user_id', '=', $this->user['id']];
-                break;
-        }
         // 获取清洗组意向列表
         $tabs = Intention::getWash();
         foreach ($tabs as $key => &$row) {
@@ -182,24 +165,11 @@ class Customer extends Backend
             if ($key != 0) {
                 $map = [];
                 // 获取自己拥有的客资列表
-                $map[] = ['active_status', '=', $row['id']];
-                if($this->role['auth_type'] == 0) {
-                    $map[] = ['user_id', '=', $this->user['id']];
-                } else {
-                    $map[] = ['user_id', 'in', $staffIds];
-                }
-                !empty($range) && $map[] = $range;
-                $total = $this->model->where($map)->count();
+                $map[] = ['active_status', '=', $row['id']];;
+                $total = $this->model->where($where)->where($map)->count();
             } else {
                 // 获取自己拥有的客资列表
-                $map = [];
-                if($this->role['auth_type'] == 0) {
-                    $map[] = ['user_id', '=', $this->user['id']];
-                } else {
-                    $map[] = ['user_id', 'in', $staffIds];
-                }
-                !empty($range) && $map[] = $range;
-                $total = $this->model->where($map)->count();
+                $total = $this->model->where($where)->count();
             }
             $row['total'] = $total;
         }
@@ -211,7 +181,8 @@ class Customer extends Backend
             'query' => request()->param()
         ];
         if (!isset($params['limit'])) $params['limit'] = 50;
-        $list = $this->model->where($where)->order('update_time asc,create_time desc')->paginate(50, false, $config);
+        $list = $this->model->where($where)->where($whereStatus)->order('update_time asc,create_time desc')->paginate(50, false, $config);
+
         foreach ($list as $key => &$row) {
             $member = \app\api\model\Member::get($row->member_id);
             $row->visit_amount = $member->visit_amount;
@@ -271,8 +242,6 @@ class Customer extends Backend
             } else {
                 $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
             }
-
-
         } else if (isset($params['mobile']) && !empty($params['mobile']) && strlen($params['mobile']) < 11) {
             $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
         } else if (isset($get['mobile']) && strlen($params['mobile']) > 11) {
@@ -283,23 +252,6 @@ class Customer extends Backend
         $end = strtotime('tomorrow');
         $where[] = ['create_time', 'between', [$start, $end]];
 
-        // 获取洗单组的意向列表
-        switch ($this->user['role_id']) {
-            case 15: // 客服经理
-            case 7: // 洗单组主管
-            case 3: // 推荐组主管
-                ## 回访者
-                if (empty($params['staff_id'])) {
-                    $staffs = User::getUsersByDepartmentId($this->user['department_id']);
-                    $where[] = ['user_id', 'in', $staffs];
-                }
-                break;
-            case 2: // 清洗组客服
-            case 4: // 推荐组客服
-            case 11: // 派单组客服
-                $where[] = ['user_id', '=', $this->user['id']];
-                break;
-        }
         // 获取清洗组意向列表
         $tabs = Intention::getWash();
         foreach ($tabs as $key => &$row) {
@@ -313,26 +265,13 @@ class Customer extends Backend
             $row['url'] = url('/wash/customer.customer/index', $params, false);
             // 检测所有
             if ($key != 0) {
-                $map = [];
                 // 获取自己拥有的客资列表
-                $map[] = ['active_status', '=', $row['id']];
-                if($this->role['auth_type'] == 0) {
-                    $map[] = ['user_id', '=', $this->user['id']];
-                } else {
-                    $map[] = ['user_id', 'in', $staffIds];
-                }
-                !empty($range) && $map[] = $range;
-                $total = $this->model->where($map)->count();
+                $where[] = ['active_status', '=', $row['id']];
+                // !empty($range) && $map[] = $range;
+                $total = $this->model->where($where)->count();
             } else {
                 // 获取自己拥有的客资列表
-                $map = [];
-                if($this->role['auth_type'] == 0) {
-                    $map[] = ['user_id', '=', $this->user['id']];
-                } else {
-                    $map[] = ['user_id', 'in', $staffIds];
-                }
-                !empty($range) && $map[] = $range;
-                $total = $this->model->where($map)->count();
+                $total = $this->model->where($where)->count();
             }
             $row['total'] = $total;
         }
