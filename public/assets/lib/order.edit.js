@@ -46,7 +46,7 @@ layui.config({
 
     /* 监控桌数的输入 */
     $(bindInputs).bind("input", function () {
-        var form = $(this).parent("form");
+        var form = $(this).parents("form");
 
         var totals = 0;
         var banquetTotals = 0;
