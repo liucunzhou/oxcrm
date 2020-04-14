@@ -172,10 +172,6 @@ class Customer extends Base
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
             $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
         }
-        if ($customer['operate_id'] > 0) {
-            $users = User::getUsers();
-            $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
-        }
 
         $result = [
             'code' => 200,
