@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>通时报表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootcss/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?{:rand(10,10000)}">
+    <link rel="stylesheet" href="/assets/style/center.css?{:rand(10,10000)}">
+    <link rel="stylesheet" href="/assets/multiple-select/multiple-select.min.css?{:rand(10,10000)}">
+    <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/bootcss/js/bootstrap.min.js"></script>
+    <script src="/assets/multiple-select/multiple-select.min.js"></script>
+    <script src="/assets/multiple-select/multiple-select-locale-all.min.js"></script>
+    <script src="/assets/lib/ox-common.js?{:rand(100000,100000000)}"></script>
+    <style>
+        table.table tr td,
+        table.table tr th{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body style="padding: 8px 12px;">
+    <div class="ox-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>排序</th>
+                    <th>库内重复</th>
+                    <th>渠道</th>
+                    <th>导入日期</th>
+                    <th>导入城市</th>
+                    <th>手机号</th>
+                    <th>订单状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach name="list" item="row"}>
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td>{$row.duplicate}</td>
+                        <td>{$row.source_text}</td>
+                        <td>{$row.create_time}</td>
+                        <td>{$row.city_text}</td>
+                        <td>{$row.mobile}</td>
+                        <td>{$row.status}</td>
+                    </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+
+        {$list | raw}
+    </div>
+</body>
+
+</html>

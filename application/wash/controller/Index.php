@@ -25,6 +25,18 @@ class Index extends Backend
                     ],
                 ]
             ],
+            '数据统计' => [
+                'items' => [
+                    [
+                        'text'  => '上传统计',
+                        'url'   => url('/wash/count.upload/upload')
+                    ],
+                    [
+                        'text'  => '通话统计',
+                        'url'   => url('/wash/count.ring/call')
+                    ]
+                ]
+            ],
         ];
         $this->assign('menus', $menus);
 
