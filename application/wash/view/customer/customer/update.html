@@ -446,7 +446,11 @@
                             <td>{$row.fwdAnswerTime?'接通成功':'接通失败'}</td>
                             <td>{$row.fwdStartTime}</td>
                             <td>{$row.billsec}</td>
-                            <td></td>
+                            <td>
+                                <{if !empty($row.recordFileDownloadUrl)}>
+                                <audio src="{$row.recordFileDownloadUrl}">您的浏览器不支持audio</audio>
+                                <{if}>
+                            </td>
                         </tr>
                     <{/foreach}>
                 </tbody>

@@ -117,19 +117,16 @@ class Ring extends Command
     /**
      * 初始化initCall
      */
-    public function initRecordVoice($startDate, $endDate)
+    public function initRecordVoice($startDate='', $endDate='')
     {
-        $streamOpts = [
-            "ssl" => [
-                "verify_peer" => false,
-                "verify_peer_name" => false,
-            ]
-        ];
-
         $callRecord = new \app\common\model\CallRecord();
-        $where = [];
-        $where[] = ['fwdStartTime', 'between', [$startDate, $endDate]];
-        $list = $callRecord->where($where)->select();
+        if(empty($startDate) || empty($endDate)) {
+            $where = [];
+            $where[] = ['fwdStartTime', 'between', [$startDate, $endDate]];
+            $list = $callRecord->where($where)->whereNotNull('recordFileDownloadUrl')->select();
+        } else {
+            $list = $callRecord->whereNotNull('recordFileDownloadUrl')->select();
+        }
 
         foreach($list as $key=>$row) {
             if(empty($row->recordFileDownloadUrl)) continue;
@@ -148,7 +145,7 @@ class Ring extends Command
             } else {
                 echo "获取{$row->sessionId}失败\n";
             }
-            sleep(2);
+            sleep(1);
         }
     }
 
