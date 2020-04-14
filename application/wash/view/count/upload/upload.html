@@ -60,7 +60,7 @@
             <td>
                 <a href="javscript:void(0);"
                    class="layui-center"
-                   data-action="{:url('wash/repeat', ['source_text'=>$row['source_text'], 'days'=>$row['days'], 'city_text'=>$row['city_text']])}"
+                   data-action="{:url('/wash/count.upload/repeat', ['source_text'=>$row['source_text'], 'days'=>$row['days'], 'city_text'=>$row['city_text']])}"
                     >{$row.repeat}</a>
             </td>
             <td>{$row.success}</td>
