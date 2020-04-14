@@ -2,6 +2,8 @@
 
 namespace app\wash\controller\customer;
 
+use app\common\model\Auth;
+use app\common\model\AuthGroup;
 use app\common\model\CallRecord;
 use app\common\model\Intention;
 use app\common\model\Member;
@@ -25,7 +27,8 @@ class Customer extends Backend
     protected $levels = [];
     protected $stores = [];
     protected $sources = [];
-    protected $auth = [];
+    protected $role = [];
+    protected $staffs = [];
 
     protected function initialize()
     {
@@ -53,8 +56,8 @@ class Customer extends Backend
         $this->assign('users', $users);
 
         $departmentId = $this->user['department_id'];
-        $staffs = User::getUsersInfoByDepartmentId($departmentId, false);
-        $this->assign('staffs', $staffs);
+        $this->staffs = User::getUsersInfoByDepartmentId($departmentId, false);
+        $this->assign('staffs', $this->staffs);
 
         // 获取城市列表
         $currentCityList = [
@@ -68,8 +71,7 @@ class Customer extends Backend
         $where[] = ['id', 'in', $currentCityIds];
         $cityList = Region::where($where)->select();
         $this->assign('cityList', $cityList);
-
-
+        $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
     }
 
     /**
@@ -134,12 +136,15 @@ class Customer extends Backend
         // 时间区间
         if (isset($params['range']) && stripos($params['range'], '~') > 0) {
             // $range =
-            $range = explode('~', $params['range']);
-            if (count($range) == 2) {
-                $start = strtotime(trim($range[0]));
-                $end = strtotime(trim($range[1]));
-                $where[] = ['create_time', 'between', [$start, $end]];
+            $arr = explode('~', $params['range']);
+            if (count($arr) == 2) {
+                $start = strtotime(trim($arr[0]));
+                $end = strtotime(trim($arr[1]));
+                $range = ['create_time', 'between', [$start, $end]];
+                $where[] = $range;
             }
+        } else {
+            $range = [];
         }
 
         switch ($this->user['role_id']) {
@@ -158,7 +163,6 @@ class Customer extends Backend
                 $where[] = ['user_id', '=', $this->user['id']];
                 break;
         }
-
         // 获取清洗组意向列表
         $tabs = Intention::getWash();
         foreach ($tabs as $key => &$row) {
@@ -175,9 +179,24 @@ class Customer extends Backend
                 $map = [];
                 // 获取自己拥有的客资列表
                 $map[] = ['active_status', '=', $row['id']];
+                if($this->role['auty_type'] == 0) {
+                    $map[] = ['user_id', '=', $this->user['id']];
+                } else {
+                    $staffIds = array_column($this->staffs, 'id');
+                    $map[] = ['user_id', 'in', $staffIds];
+                }
+                !empty($range) && $map[] = $range;
                 $total = $this->model->where($map)->count();
             } else {
                 // 获取自己拥有的客资列表
+                $map = [];
+                if($this->role['auty_type'] == 0) {
+                    $map[] = ['user_id', '=', $this->user['id']];
+                } else {
+                    $staffIds = array_column($this->staffs, 'id');
+                    $map[] = ['user_id', 'in', $staffIds];
+                }
+                !empty($range) && $map[] = $range;
                 $total = $this->model->count();
             }
             $row['total'] = $total;

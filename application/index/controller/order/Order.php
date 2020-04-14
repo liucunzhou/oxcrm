@@ -211,14 +211,7 @@ class Order extends Backend
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        if($allocate['news_type'] == '0') { // 婚宴订单
-            $view = 'order/banquet/create/main';
-        } else if ($allocate['news_type'] == 1) { // 婚庆客资
-            $view = 'order/wedding/create/main';
-        } else if ($allocate['news_type'] == 2) { // 一站式客资
-            $view = 'order/entire/create/main';
-        }
-        return $this->fetch($view);
+        return $this->fetch('order/entire/create/main');
     }
 
     # 创建订单逻辑

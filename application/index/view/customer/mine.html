@@ -139,14 +139,14 @@
     <script src="/assets/layui/layui.js"></script>
     <script src="/assets/fields/customer/admin.js?21"></script>
     <script>
-        layui.config({
-                base: '/assets/' //静态资源所在路径
-        }).extend({
-            index: 'lib/index' //主入口模块
-        }).use(['index', 'table', 'laydate'], function() {
-    var $ = layui.jquery,
-        table = layui.table,
-        laydate = layui.laydate;
+    layui.config({
+            base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table', 'laydate'], function() {
+        var $ = layui.jquery,
+            table = layui.table,
+            laydate = layui.laydate;
 
     table.render({
         elem: '#table',
@@ -330,7 +330,7 @@
                             layer.msg("该客资已经已经成单");
                             return false;
                         }
-                        url = '/index/order/createorder.html?id=' + checkedboxes[0].id + '&member_id=' + checkedboxes[0].member_id + '&user_id=' + checkedboxes[0].user_id;
+                        url = '/index/order.order/createorder.html?id=' + checkedboxes[0].id + '&member_id=' + checkedboxes[0].member_id + '&user_id=' + checkedboxes[0].user_id;
                         // layui.index.openTabsPage(url, '申请成单')
                         top.layui.index.openTabsPage(url, '申请成单')
                         break;
