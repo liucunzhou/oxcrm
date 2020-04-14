@@ -22,7 +22,7 @@ class Intention extends Model
         $cacheKey = 'intentions';
         $data = redis()->get($cacheKey);
         if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,color,is_valid', 'id');
             $json = json_encode($data);
             $result = redis()->set($cacheKey, $json);
         } else {

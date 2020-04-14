@@ -70,6 +70,7 @@ class Customer extends Base
                 $value['news_type'] = $this->newsTypes[$value['news_type']];
                 $value['wedding_date'] = substr($value['wedding_date'], 0, 10);
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+                $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
                 $value['allocate_time'] = $value['create_time'];
                 if($value['member_create_time']>0) {
                     $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
@@ -166,7 +167,7 @@ class Customer extends Base
             }
 
             foreach ($data as &$value) {
-                $value['color'] = '#ccc';
+                $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
                 $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
@@ -190,14 +191,9 @@ class Customer extends Base
             return json($result);
     }
 
-    public function userInfo()
+    public function member()
     {
         $get = Request::param();
-//        $allocate = MemberAllocate::getAllocate($this->user['id'], $get['member_id']);
-//        if(empty($get['member_id']))
-//        {
-//            return json(['code'=>400,'msg'=>'没有用户ID']);
-//        }
         ### 获取用户基本信息
         $customer = Member::get($get['member_id']);
         if (!empty($allocate)) {
