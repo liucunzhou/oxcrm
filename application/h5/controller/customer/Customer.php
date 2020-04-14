@@ -59,7 +59,7 @@ class Customer extends Base
 
         $map = [];
         $list = $this->model->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
-        if(!empty($list)) {
+        if (!empty($list)) {
             $users = User::getUsers();
             $data = $list->getCollection()->toArray();
 
@@ -72,13 +72,13 @@ class Customer extends Base
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
                 $value['allocate_time'] = $value['create_time'];
-                if($value['member_create_time']>0) {
+                if ($value['member_create_time'] > 0) {
                     $value['member_create_time'] = date('Y-m-d H:i', $value['member_create_time']);
                 } else {
                     $value['member_create_time'] = $value['create_time'];
                 }
 
-                if($value['member_id'] > 0) {
+                if ($value['member_id'] > 0) {
                     $memberObj = Member::get($value['member_id']);
                     $value['visit_amount'] = $memberObj->visit_amount;
                 }
@@ -109,64 +109,27 @@ class Customer extends Base
      */
     public function today()
     {
-            $get = Request::param();
-            $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
-            $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
-            $config = [
-                'page' => $get['page']
-            ];
-            //账户登录
-            // $map = Search::customerMine($this->user, $get);
+        $get = Request::param();
+        $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
+        $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
+        $config = [
+            'page' => $get['page']
+        ];
 
-            $tomorrow = strtotime('tomorrow');
-            if (!isset($get['next_visit_time']) || empty($get['next_visit_time'])) {
-                $map[] = ['next_visit_time', '>', 0];
-                $map[] = ['next_visit_time', '<', $tomorrow];
-            }else{
-                $get['next_visit_time'] = strtotime($get['next_visit_time']);
-                $map[] = ['next_visit_time', '>', $get['next_visit_time']];
-                $map[] = ['next_visit_time', '<', $tomorrow];
-            }
+        $map[] = ['active_status', 'not in', [2, 3, 4]];
+        $tomorrow = strtotime('tomorrow');
+        if (!isset($get['next_visit_time']) || empty($get['next_visit_time'])) {
+            $map[] = ['next_visit_time', '>', 0];
+            $map[] = ['next_visit_time', 'between', [0, $tomorrow]];
+        } else {
+            $get['next_visit_time'] = strtotime($get['next_visit_time']);
+            $map[] = ['next_visit_time', 'between', [$get['next_visit_time'], $tomorrow]];
+        }
 
-            $map[] = ['active_status', 'not in', [2, 3, 4]];
-            /*if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                $map = [];
-                $mobiles = MobileRelation::getMobiles($get['keywords']);
-                if (!empty($mobiles)) {
-                    $map[] = ['mobile', 'in', $mobiles];
-                } else {
-                    $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-                }
-
-                echo "string";die();
-
-                $list = model('MemberAllocate')::hasWhere('member', $map, "Member.*")->order('id desc')->paginate($get['limit'], false, $config);
-            } else if (isset($get['keywords']) && !empty($get['keywords']) && strlen($get['keywords']) < 11) {
-                $map = [];
-                $map[] = ['mobile', 'like', "%{$get['keywords']}%"];
-
-                echo "111";die();
-
-
-                $list = model('MemberAllocate')::hasWhere('member', $map, 'Member.*')->order('id desc')->with('member')->paginate($get['limit'], false, $config);
-            } else if (isset($get['keywords']) && strlen($get['keywords']) > 11) {
-                $map = [];
-                $map[] = ['mobile', '=', $get['keywords']];
-            } else {
-                $list = model('MemberAllocate')->where($map)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
-            }*/
-            $field = 'id,realname,mobile,active_status,member_id,create_time';
-            $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
+        $field = 'id,realname,mobile,active_status,member_id,create_time';
+        $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
         if (!empty($list)) {
-            $data = $list->getCollection()->toArray();
-            if (isset($get['keywords']) && strlen($get['keywords']) == 11) {
-                if (isset($data[0]) && !empty($data[0])) {
-                    $data[0]['active_status'] = 0;
-                    MemberAllocate::updateAllocateData($this->user['id'], $data[0]['member_id'], $data[0]);
-                }
-            }
-
-            foreach ($data as &$value) {
+            foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
                 $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -175,8 +138,7 @@ class Customer extends Base
                 'code' => 0,
                 'msg' => '获取数据成功',
                 'count' => $list->total(),
-                'data' => $data,
-                'map' => $map
+                'data' => $list
             ];
 
         } else {
@@ -188,7 +150,7 @@ class Customer extends Base
                 'data' => []
             ];
         }
-            return json($result);
+        return json($result);
     }
 
     public function member()
@@ -204,7 +166,7 @@ class Customer extends Base
                 $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
             }
         }
-        if($customer['operate_id'] > 0) {
+        if ($customer['operate_id'] > 0) {
             $users = User::getUsers();
             $customer['operate_id'] = $users[$customer['operate_id']]['realname'];
         }
@@ -234,11 +196,11 @@ class Customer extends Base
         $visits = MemberVisit::getMemberVisitList($this->user, $this->auth, $customer);
         $this->assign('visits', $visits);
         $result = [
-            'code'=>200,
-            'msg' =>'信息',
-            'data'=>[
-                'customer'=>$customer,
-                'visits'  =>$visits
+            'code' => 200,
+            'msg' => '信息',
+            'data' => [
+                'customer' => $customer,
+                'visits' => $visits
             ]
         ];
         return json($result);
@@ -270,7 +232,7 @@ class Customer extends Base
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -281,7 +243,7 @@ class Customer extends Base
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
@@ -292,7 +254,7 @@ class Customer extends Base
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -303,8 +265,8 @@ class Customer extends Base
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -315,7 +277,7 @@ class Customer extends Base
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
