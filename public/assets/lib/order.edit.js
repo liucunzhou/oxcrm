@@ -107,11 +107,11 @@ layui.config({
 
         // 尾款
         if (form.hasClass("form-hotel-protocol")) {
-            var tail = totals * 0.2;
+            var tail = totals * 0.3;
             tail = tail.toFixed(2);
             $('input[name="tail_money"]').val(tail);
         } else {
-            var tail = totals * 0.3;
+            var tail = totals * 0.2;
             tail = tail.toFixed(2);
             $('input[name="tail_money"]').val(tail);
         }
