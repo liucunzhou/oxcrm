@@ -348,7 +348,7 @@
                             <td>{$users[$row.user_id]['realname']}</td>
                             <td>{$row.create_time}</td>
                             <td>
-                                <{if isset($allStatus[$row.status])}>
+                                <{if $row.status > 0}>
                                     {$allStatus[$row.status]}
                                 <{else /}>
                                     未跟进
