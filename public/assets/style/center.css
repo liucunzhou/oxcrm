@@ -21,6 +21,7 @@ body {
 
 .tab-box .tab-content {
     flex: 1;
+    overflow-y: auto;
 }
 .tab-box .tab-content .tab-pane {
     width: 100%;
