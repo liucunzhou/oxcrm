@@ -609,6 +609,7 @@ class Customer extends Backend
         $map = [];
         $map['id'] = $allocate->member_id;
         $member = $this->customerModel->where($map)->find();
+        $mobile = $member->mobile;
         $member->mobile = substr_replace($member->mobile, '***', 3, 3);
         $this->assign('member', $member);
 
@@ -680,10 +681,9 @@ class Customer extends Backend
 
         // 获取当前手机的接听记录
         $where = [];
-        $where['fwdDstNum'] = '+86' . $member->mobile;
+        $where['fwdDstNum'] = '+86' . $mobile;
         $callRecord = new CallRecord();
         $records = $callRecord->where($where)->order('fwdStartTime desc')->select();
-        echo $callRecord->getLastSql();
         $this->assign('records', $records);
 
         return $this->fetch();
