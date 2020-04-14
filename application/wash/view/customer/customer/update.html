@@ -309,29 +309,29 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>回放者</th>
-                        <th>回访次数</th>
-                        <th>获取时间</th>
-                        <th>回访状态</th>
-                        <th>下次回访时间</th>
-                        <th>最新跟进时间</th>
+                        <th class="text-center">回放者</th>
+                        <th class="text-center">回访次数</th>
+                        <th class="text-center">获取时间</th>
+                        <th class="text-center">回访状态</th>
+                        <th class="text-center">下次回访时间</th>
+                        <th class="text-center">最新跟进时间</th>
                     </tr>
                 </thead>
                 <tbody>
                     <{foreach name="visitGroup" item="row"}>
                     <tr>
-                        <td>{$users[$row.user_id]['realname']}</td>
-                        <td>{$row.visit_times}</td>
-                        <td>{$row.create_time}</td>
-                        <td>
+                        <td class="text-center">{$users[$row.user_id]['realname']}</td>
+                        <td class="text-center">{$row.visit_times}</td>
+                        <td class="text-center">{$row.create_time}</td>
+                        <td class="text-center">
                             <{if isset($allStatus[$row.active_status])}>
                                 {$allStatus[$row.active_status]}
                             <{else /}>
                                 未跟进
                             <{/if}>
                         </td>
-                        <td>{$row.next_visit_time!='0'?$row.next_visit_time:'—— ——'}</td>
-                        <td>{$row.last_visit_time}</td>
+                        <td class="text-center">{$row.next_visit_time!='0'?date('Y-m-d H:i',$row.next_visit_time):'—— ——'}</td>
+                        <td class="text-center">{$row.last_visit_time}</td>
                     </tr>
                     <{/foreach}>
                 </tbody>
