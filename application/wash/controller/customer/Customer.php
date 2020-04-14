@@ -692,27 +692,24 @@ class Customer extends Backend
     public function doUpdate()
     {
         $params = $this->request->param();
-        // $where = [];
-        // $where['id'] = $params['']
         $member = \app\api\model\Member::get($params['member_id']);
         $allocate = MemberAllocate::get($params['allocate_id']);
 
         $params['update_time'] = time();
-        // print_r($params['news_types']);
         $params['news_types'] = empty($params['news_types']) ? '' : implode(',', $params['news_types']);
-        $result = $member->allowField(true)->save($params);;
-        $allocate->allowField(true)->save($params);
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
+        $member->allowField(true)->save($params);;
+        $result = $allocate->allowField(true)->save($params);
+        if ($result) {
+            return json([
+                'code' => '200',
+                'msg' => '修改客资成功'
+            ]);
+        } else {
+            return json([
+                'code' => '500',
+                'msg' => '修改客资失败'
+            ]);
+        }
     }
 
     public function doApply()
