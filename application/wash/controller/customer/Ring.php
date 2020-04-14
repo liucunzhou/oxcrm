@@ -1,11 +1,13 @@
 <?php
-namespace app\wash\controller;
+namespace app\wash\controller\customer;
 
-class Ring extends Backend{
-    
+use app\wash\controller\Backend;
+
+class Ring extends Backend {
+
     public function call()
     {
-        $params = Request::param();
+        $params = $this->request->param();
 
         $user = session("user");
         $rongModel = new \app\common\model\Rong();

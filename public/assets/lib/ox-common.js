@@ -93,7 +93,7 @@ $(function(){
                     from: 'mobile',
                     field: 'mobile'
                 };
-                url = '/index/Ring/call.html';
+                url = '/customer.ring/call.html';
                 $.post(url, params, function(res){
                     layer.close(index);
 

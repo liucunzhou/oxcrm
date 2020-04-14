@@ -617,8 +617,11 @@ class Customer extends Backend
         if (empty($member->news_types)) {
             $member->news_types = $member->news_type;
         }
-        $selectNewsTypes = empty($member->news_types) ? [] : explode(',', $member->news_types);
+        $selectNewsTypes = empty($member->news_types) ? [$member->news_type] : explode(',', $member->news_types);
         $this->assign("selectNewsTypes", $selectNewsTypes);
+
+        $mobiles = MobileRelation::getMobiles($mobile);
+        $this->assign('mobiles', $mobiles);
 
         // 获取省市列表
         // $provinceList = Region::getProvinceList();

@@ -80,24 +80,18 @@
                                             </a>
                                         </div>
                                         <div class="group-list mobile-list">
-                                            <div class="list-item">
-                                                <div class="list-item-detail">18321277411</div>
-                                                <div class="list-item-ctrl">
-                                                    <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                            <{if empty($mobiles)}>
+                                                暂无
+                                            <{else /}>
+                                                <{foreach name="mobiles" item="val"}>
+                                                <div class="list-item">
+                                                    <div class="list-item-detail">{:substr_replace($val, '***', 3, 3)}</div>
+                                                    <div class="list-item-ctrl">
+                                                        <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="list-item">
-                                                <div class="list-item-detail">18321277411</div>
-                                                <div class="list-item-ctrl">
-                                                    <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="list-item">
-                                                <div class="list-item-detail">18321277411</div>
-                                                <div class="list-item-ctrl">
-                                                    <a class="btn bt-sm btn-info event-call"><i class="glyphicon glyphicon-phone-alt"></i></a>
-                                                </div>
-                                            </div>
+                                                <{/foreach}>
+                                            <{/if}>
                                         </div>
                                     </div>
                                 </td>
@@ -205,7 +199,9 @@
                                     <div class="btn-group">
                                         <input type="hidden" name="allocate_id" value="{$allocate.id}">
                                         <input type="hidden" name="member_id" value="{$member.id}">
-                                        <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$allocate['id']])}" data-height="380px" class="btn btn-primary layui-center">快捷回访</a>
+                                        <a href="javascript:void(0);"
+                                           data-action="{:url('/wash/customer.visit/create', ['id'=>$allocate['id']])}"
+                                           class="btn btn-primary layui-center">快捷回访</a>
                                         <button type="submit" class="btn btn-success">保存更新</button>
                                         <button type="button" class="btn btn-warning btn-close">关闭页面</button>
                                     </div>
@@ -366,40 +362,6 @@
         </div>
         <!--进店记录-->
         <div role="tabpanel" class="tab-pane" id="intostore">
-            <!--
-            <table class="table">
-                <tr>
-                    <td width="15%">预约到店时间</td>
-                    <td width="35%">
-                        <input type="text" name="subscribe_into_time" class="form-control date">
-                    </td>
-                    <td width="15%">预约门店</td>
-                    <td width="35%">
-                        <select name="store_id" class="form-control">
-                            <option value="0">--选择门店--</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>接收预约人员</td>
-                    <td>
-                        <select name="sales" class="form-control">
-                            <option value="0">--选择接收人--</option>
-                        </select>
-                    </td>
-                    <td>备注</td>
-                    <td>
-                        <textarea name="textarea" class="form-control"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="text-left">
-                        <button type="submit" class="btn btn-success">添加跟进</button>
-                        <button type="button" class="btn btn-warning btn-close">关闭</button>
-                    </td>
-                </tr>
-            </table>
-            -->
             <h4>预约历史</h4>
             <table class="table table-bordered">
                 <thead>
