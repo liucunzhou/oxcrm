@@ -134,23 +134,17 @@ class Customer extends Base
                 $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => $list->total(),
-                'data' => $list
-            ];
+
+            $list->code = '200';
+            $list->msg = '获取数据成功';
 
         } else {
 
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => 0,
-                'data' => []
-            ];
+            $list->code = '200';
+            $list->msg = '获取数据为空';
         }
-        return json($result);
+
+        return json($list);
     }
 
     public function member()
