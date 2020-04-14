@@ -45,7 +45,6 @@ class Customer extends Base
     /**
      * 客资公海
      * 显示资源列表
-     *
      * @return \think\Response
      */
     public function index()
@@ -135,7 +134,7 @@ class Customer extends Base
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
             $result = [
-                'code' => 0,
+                'code' => 200,
                 'msg' => '获取数据成功',
                 'count' => $list->total(),
                 'data' => $list->getCollection(),
@@ -144,7 +143,7 @@ class Customer extends Base
         } else {
 
             $result = [
-                'code' => 0,
+                'code' => 200,
                 'msg' => '获取数据成功',
                 'count' => 0,
                 'data' => []
@@ -153,11 +152,20 @@ class Customer extends Base
         return json($result);
     }
 
+    /**
+     * 客资详情
+     * Method member
+     * @return \think\response\Json
+     *
+     */
     public function member()
     {
         $get = Request::param();
         ### 获取用户基本信息
-        $customer = Member::get($get['member_id']);
+        $field = "id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,next_visit_time,hotel_text,remark";
+        $customer = Member::field($field)->get($get['member_id']);
+        $customer['color'] = $customer['active_status'] ? $this->status[$customer['active_status']]['color'] : '#FF0000';
+        $customer['active_status'] = $customer['active_status'] ? $this->status[$customer['active_status']]['title'] : "未跟进";
         if (!($this->auth['is_show_entire_mobile'] || !empty($allocate))) {
             $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
             $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
@@ -169,12 +177,25 @@ class Customer extends Base
 
         $result = [
             'code' => 200,
-            'msg' => '信息',
+            'msg' => '客资详情',
             'data' =>$customer
         ];
         return json($result);
     }
 
+    public function mine()
+    {
+        $get = Request::param();
+        $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
+        $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
+        $config = [
+            'page' => $get['page']
+        ];
+        $map = [];
+        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+        return json($list->getCollection());
+
+    }
     /**
      * 保存新建的资源
      *
