@@ -301,3 +301,7 @@ h4 {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.bg-unvisited {
+    color: #ff0000!important;
+}

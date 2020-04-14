@@ -46,6 +46,8 @@ layui.config({
 
     /* 监控桌数的输入 */
     $(bindInputs).bind("input", function () {
+        var form = $(this).parents("form");
+
         var totals = 0;
         var banquetTotals = 0;
         var serviceFee = $('input[name="service_fee"]').val();
@@ -86,18 +88,33 @@ layui.config({
         }
 
         totals = banquetTotals + weddingTotals;
+
         // 定金
-        var earnest = totals * 0.3;
-        earnest = earnest.toFixed(2);
-        $('input[name="earnest_money"]').val(earnest);
+        if(form.hasClass("form-hotel-protocol")) {
+            var earnest = totals * 0.2;
+            earnest = earnest.toFixed(2);
+            $('input[name="earnest_money"]').val(earnest);
+        } else {
+            var earnest = totals * 0.3;
+            earnest = earnest.toFixed(2);
+            $('input[name="earnest_money"]').val(earnest);
+        }
+
         // 中款
         var middle = totals * 0.5;
         middle = middle.toFixed(2);
         $('input[name="middle_money"]').val(middle);
+
         // 尾款
-        var tail = totals * 0.2;
-        tail = tail.toFixed(2);
-        $('input[name="tail_money"]').val(tail);
+        if (form.hasClass("form-hotel-protocol")) {
+            var tail = totals * 0.3;
+            tail = tail.toFixed(2);
+            $('input[name="tail_money"]').val(tail);
+        } else {
+            var tail = totals * 0.2;
+            tail = tail.toFixed(2);
+            $('input[name="tail_money"]').val(tail);
+        }
 
         if(banquetTotals > 0) {
             banquetTotals = banquetTotals.toFixed(2);

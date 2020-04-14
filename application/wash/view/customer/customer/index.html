@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
     <link rel="stylesheet" href="/assets/multiple-select/multiple-select.min.css?{:rand(10,10000)}">
-    <link rel="stylesheet" href="/assets/style/ox-common.css?{rand(10000,100000)}">
+    <link rel="stylesheet" href="/assets/style/ox-common.css?2">
     <script src="/assets/layui/layui.all.js"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/bootcss/js/bootstrap.min.js"></script>
@@ -71,6 +71,9 @@
             </select>
         </div>
         <div class="form-group">
+            <input type="number" class="form-control" id="visit_amount" name="visit_amount" placeholder="回访数">
+        </div>
+        <div class="form-group">
             <input type="number" class="form-control" id="mobile" name="mobile" placeholder="请输入手机号">
         </div>
         <div class="form-group">
@@ -78,22 +81,24 @@
         </div>
         <button type="submit" class="btn btn-default">搜索</button>
     </form>
+
     <div class="space-10"></div>
     <div class="btn-group">
         <div class="btn btn-info layui-right-side" data-is-option="yes" data-action="{:url('customer.customer/add')}" data-width="30" title="添加客资">添加客资</div>
         <div class="btn btn-success layui-right-side" data-is-option="yes" data-action="{:url('customer.allocate/wash')}" data-width="30" title="分配到清洗组">分配到清洗组</div>
         <div class="btn btn-primary layui-right-side" data-is-option="yes" data-action="{:url('customer.allocate/recommend')}" data-width="30" title="分配到推荐组">分配到推荐组</div>
+        <div class="btn btn-info layui-right-side" data-is-option="yes" data-action="{:url('customer.allocate/merchant')}" data-width="30" title="分配到商务部">分配到商务部</div>
     </div>
     <div class="space-10"></div>
     <div class="ox-tab">
         <{foreach name="tabs" item="row"}>
             <{if $row['active'] == '1'}>
-                <a href="{$row.url}" class="active">
+                <a href="{$row.url}" class="active {$row.bg}">
                     {$row.title}
                     <span>({$row.total})</span>
                 </a>
             <{else /}>
-                <a href="{$row.url}">
+                <a href="{$row.url}" class="{$row.bg}">
                     {$row.title}
                     <span>({$row.total})</span>
                 </a>

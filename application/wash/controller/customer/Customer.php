@@ -48,7 +48,7 @@ class Customer extends Backend
         $this->assign('stores', $this->stores);
 
         // 意向列表
-        $allStatus = Intention::column('id,title');
+        $allStatus = Intention::column('id,title,color');
         $this->assign('allStatus', $allStatus);
 
         // 用户列表
@@ -86,7 +86,7 @@ class Customer extends Backend
         $staffIds = array_column($this->staffs, 'id');
 
         $where = [];
-        if (isset($params['status']) && !empty($params['status'])) {
+        if (isset($params['status']) && $params['status'] >= 0) {
             $status = $params['status'];
             if (isset($params['status']) && $params['status'] >= 0) {
                 $whereStatus = [];
@@ -122,6 +122,11 @@ class Customer extends Backend
         // 检索城市
         if (isset($params['city_id']) && !empty($params['city_id'])) {
             $where[] = ['city_id', '=', $params['city_id']];
+        }
+
+        // 检索回访数
+        if (isset($params['visit_amount']) && $params['visit_amount'] >= 0) {
+            $where[] = ['visit_amount', '=', $params['visit_amount']];
         }
 
         if (isset($params['mobile']) && strlen($params['mobile']) == 11) {
@@ -167,9 +172,16 @@ class Customer extends Backend
                 // 获取自己拥有的客资列表
                 $map[] = ['active_status', '=', $row['id']];;
                 $total = $this->model->where($where)->where($map)->count();
+
+                if($row['id']==0 && $total > 0) {
+                    $row['bg'] = 'bg-unvisited';
+                } else {
+                    $row['bg'] = '';
+                }
             } else {
                 // 获取自己拥有的客资列表
                 $total = $this->model->where($where)->count();
+                $row['bg'] = '';
             }
             $row['total'] = $total;
         }
