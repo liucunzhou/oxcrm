@@ -683,7 +683,9 @@ class Customer extends Backend
         $where['fwdDstNum'] = '+86' . $member->mobile;
         $callRecord = new CallRecord();
         $records = $callRecord->where($where)->order('fwdStartTime desc')->select();
+        echo $callRecord->getLastSql();
         $this->assign('records', $records);
+
         return $this->fetch();
     }
 
