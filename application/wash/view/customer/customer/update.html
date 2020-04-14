@@ -349,7 +349,7 @@
                             <td>{$row.create_time}</td>
                             <td>
                                 <{if $row.status > 0}>
-                                    {$allStatus[$row.status]}
+                                    {$allStatus[$row.status]['title']}
                                 <{else /}>
                                     未跟进
                                 <{/if}>
