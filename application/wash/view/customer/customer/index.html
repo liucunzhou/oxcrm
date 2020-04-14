@@ -71,6 +71,9 @@
             </select>
         </div>
         <div class="form-group">
+            <input type="number" class="form-control" id="visit_amount" name="visit_amount" placeholder="回访数">
+        </div>
+        <div class="form-group">
             <input type="number" class="form-control" id="mobile" name="mobile" placeholder="请输入手机号">
         </div>
         <div class="form-group">
@@ -78,11 +81,13 @@
         </div>
         <button type="submit" class="btn btn-default">搜索</button>
     </form>
+
     <div class="space-10"></div>
     <div class="btn-group">
         <div class="btn btn-info layui-right-side" data-is-option="yes" data-action="{:url('customer.customer/add')}" data-width="30" title="添加客资">添加客资</div>
         <div class="btn btn-success layui-right-side" data-is-option="yes" data-action="{:url('customer.allocate/wash')}" data-width="30" title="分配到清洗组">分配到清洗组</div>
         <div class="btn btn-primary layui-right-side" data-is-option="yes" data-action="{:url('customer.allocate/recommend')}" data-width="30" title="分配到推荐组">分配到推荐组</div>
+        <div class="btn btn-info layui-right-side" data-is-option="yes" data-action="{:url('customer.allocate/merchant')}" data-width="30" title="分配到商务部">分配到商务部</div>
     </div>
     <div class="space-10"></div>
     <div class="ox-tab">

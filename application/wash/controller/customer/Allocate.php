@@ -52,17 +52,29 @@ class Allocate extends Backend
         return $this->fetch();
     }
 
+    public function merchant()
+    {
+        $users = User::getUsers(false);
+        foreach ($users as $key => $value) {
+            if ($value['role_id'] != 9) {
+                unset($users[$key]);
+            }
+        }
+        $this->assign('users', $users);
+        return $this->fetch();
+    }
+
     public function doAssign()
     {
         $post = $this->request->param();
-        $ids = explode(',', $post['ids']);
-        if (empty($ids)) {
+        if (empty($post['ids'])) {
             return json([
                 'code' => '500',
-                'msg' => '请选择要分配的客资'
+                'msg' => '请先选择要分配的客资'
             ]);
         }
 
+        $ids = explode(',', $post['ids']);
         $totals = count($ids);
         $success = 0;
         foreach ($ids as $id) {

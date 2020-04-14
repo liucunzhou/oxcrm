@@ -124,6 +124,11 @@ class Customer extends Backend
             $where[] = ['city_id', '=', $params['city_id']];
         }
 
+        // 检索回访数
+        if (isset($params['visit_amount']) && $params['visit_amount'] >= 0) {
+            $where[] = ['visit_amount', '=', $params['visit_amount']];
+        }
+
         if (isset($params['mobile']) && strlen($params['mobile']) == 11) {
             $mobiles = MobileRelation::getMobiles($params['mobile']);
             if (!empty($mobiles)) {
