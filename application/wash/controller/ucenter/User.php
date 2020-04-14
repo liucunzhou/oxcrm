@@ -2,6 +2,7 @@
 
 namespace app\wash\controller\ucenter;
 
+use app\common\model\AuthGroup;
 use app\wash\controller\Backend;
 use think\Request;
 
@@ -95,6 +96,11 @@ class User extends Backend
      */
     public function info()
     {
+        $user = \think\facade\Session::get("user");
+
+        $roles = AuthGroup::getRoles();
+        $this->assign('role', $roles[$user['role_id']]);
+        $this->assign("user", $user);
         return $this->fetch();
     }
 
@@ -111,6 +117,20 @@ class User extends Backend
      */
     public function doRepassword()
     {
+        $post = Request::post();
+        $user = \think\facade\Session::get("user");
+        $user = \app\common\model\User::get($user['id']);
+        $post['password'] = md5($post['password']);
+        if ($user['password'] != $post['password']) {
+            return json(['code'=>'500', 'msg'=>'请输入原密码']);
+        }
+        $user->password = md5($post['newpassword']);
+        $result = $user->save();
 
+        if($result) {
+            return json(['code'=>'200', 'msg'=>'修改密码成功']);
+        } else {
+            return json(['code'=>'500', 'msg'=>'修改密码失败']);
+        }
     }
 }

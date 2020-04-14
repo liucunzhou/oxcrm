@@ -18,7 +18,7 @@ class AuthGroup extends Model
 
     public static function getRoles()
     {
-        $list = self::column('id,title,auth_set');
+        $list = self::column('id,title,auth_type,auth_set');
 
         return $list;
     }
@@ -55,7 +55,7 @@ class AuthGroup extends Model
         **/
 
         $map[] = ['id', '=', $id];
-        $data = self::where($map)->field('id,title,auth_set')->find()->toArray();
+        $data = self::where($map)->field('id,title,auth_type,auth_set')->find()->toArray();
 
         return $data;
     }
