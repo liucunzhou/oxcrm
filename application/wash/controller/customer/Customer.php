@@ -72,6 +72,7 @@ class Customer extends Backend
         $cityList = Region::where($where)->select();
         $this->assign('cityList', $cityList);
         $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
+        $this->assign('role', $this->role);
     }
 
     /**
@@ -82,8 +83,9 @@ class Customer extends Backend
     public function index()
     {
         $params = $this->request->param();
-        $where = [];
+        $staffIds = array_column($this->staffs, 'id');
 
+        $where = [];
         if (isset($params['status']) && !empty($params['status'])) {
             $status = $params['status'];
             if (isset($params['status']) && $params['status'] >= 0) {
@@ -101,6 +103,8 @@ class Customer extends Backend
         // 检索员工列表
         if (isset($params['staff_id']) && !empty($params['staff_id'])) {
             $where[] = ['user_id', 'in', explode(',', $params['staff_id'])];
+        } else {
+            $where[] = ['user_id', '=', $this->user['id']];
         }
 
         // 检索来源
@@ -182,7 +186,6 @@ class Customer extends Backend
                 if($this->role['auty_type'] == 0) {
                     $map[] = ['user_id', '=', $this->user['id']];
                 } else {
-                    $staffIds = array_column($this->staffs, 'id');
                     $map[] = ['user_id', 'in', $staffIds];
                 }
                 !empty($range) && $map[] = $range;
@@ -193,11 +196,10 @@ class Customer extends Backend
                 if($this->role['auty_type'] == 0) {
                     $map[] = ['user_id', '=', $this->user['id']];
                 } else {
-                    $staffIds = array_column($this->staffs, 'id');
                     $map[] = ['user_id', 'in', $staffIds];
                 }
                 !empty($range) && $map[] = $range;
-                $total = $this->model->count();
+                $total = $this->model->where($map)->count();
             }
             $row['total'] = $total;
         }

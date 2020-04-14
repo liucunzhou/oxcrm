@@ -24,7 +24,7 @@
 <body style="padding: 8px 12px;">
     <div class="space-10"></div>
     <form class="form-inline">
-
+        <{if $role.auth_type!=0}>
         <div class="form-group">
             <select class="form-control multiple-select" name="staff_id[]" placeholder="选择员工" multiple>
                 <{foreach name="staffs" item="row"}>
@@ -32,6 +32,8 @@
                 <{/foreach}>
             </select>
         </div>
+        <{/if}>
+
         <div class="form-group">
             <select class="form-control multiple-select" name="source_id" placeholder="">
                 <option value="">选择来源</option>
