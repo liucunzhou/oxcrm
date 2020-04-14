@@ -320,7 +320,7 @@
                         <td class="text-center">{$row.visit_times}</td>
                         <td class="text-center">{$row.create_time}</td>
                         <td class="text-center">
-                            <{if isset($allStatus[$row.active_status])}>
+                            <{if $row.active_status > 0}>
                                 {$allStatus[$row.active_status]}
                             <{else /}>
                                 未跟进
