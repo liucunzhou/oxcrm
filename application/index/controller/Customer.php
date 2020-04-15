@@ -457,7 +457,6 @@ class Customer extends Base
             if (isset($get['keywords']) && !empty($get['keywords'])) {
                 $get['keywords'] = trim($get['keywords']);
                 preg_match_all('/\d+/', $get['keywords'], $arr);
-
             }
 
             if (isset($get['keywords']) && strlen($get['keywords']) == 11) {

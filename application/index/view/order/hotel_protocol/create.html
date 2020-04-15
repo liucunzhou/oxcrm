@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css?1" media="all">
-    <link rel="stylesheet" href="/assets/style/order.css?2" media="all">
+    <link rel="stylesheet" href="/assets/style/order.css?3" media="all">
     <script src="/assets/layui/layui.js"></script>
     <script src="/assets/lib/order.edit.js?{:rand(100000,1000000)}"></script>
 </head>
@@ -29,6 +29,52 @@
                     <label class="layui-form-label">桌数</label>
                     <div class="layui-input-block">
                         <input type="text" name="table_amount" value="{$data['table_amount']}" lay-verify="" placeholder="桌数" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block layui-input-flex">
+                        <input type="text" value="婚房数量" class="layui-input input-no-border" readonly>
+                        <input type="text" value="婚房价格" class="layui-input input-no-border" readonly>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">婚房</label>
+                    <div class="layui-input-block layui-input-flex">
+                        <input type="number" name="wedding_room_amount" value="{$data['wedding_room_amount']}" lay-verify="" placeholder="婚房数量" autocomplete="off" class="layui-input">
+                        <input type="number" name="wedding_room" value="{$data['wedding_room']}" lay-verify="" placeholder="婚房价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">停车位</label>
+                    <div class="layui-input-block layui-input-flex">
+                        <input type="number" name="part_amount" value="{$data['part_amount']}" lay-verify="" placeholder="停车位数量" autocomplete="off" class="layui-input">
+                        <input type="number" name="part" value="{$data['part']}" lay-verify="" placeholder="停车位价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">香槟</label>
+                    <div class="layui-input-block layui-input-flex">
+                        <input type="number" name="champagne_amount" value="{$data['champagne_amount']}" lay-verify="" placeholder="香槟数量" autocomplete="off" class="layui-input">
+                        <input type="number" name="champagne" value="{$data['champagne']}" lay-verify="" placeholder="香槟价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">茶歇</label>
+                    <div class="layui-input-block layui-input-flex">
+                        <input type="number" name="tea_amount" value="{$data['tea_amount']}" lay-verify="" placeholder="茶歇数量" autocomplete="off" class="layui-input">
+                        <input type="number" name="tea" value="{$data['tea']}" lay-verify="" placeholder="茶歇价格" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">蛋糕</label>
+                    <div class="layui-input-block layui-input-flex">
+                        <input type="number" name="cake_amount" value="{$data['cake_amount']}" lay-verify="" placeholder="蛋糕数量" autocomplete="off" class="layui-input">
+                        <input type="number" name="cake" value="{$data['cake']}" lay-verify="" placeholder="蛋糕价格" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -73,6 +119,15 @@
                         <input type="text" name="tail_money" value="{$data['tail_money']}" lay-verify="" placeholder="尾款付款金额" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">付酒店总金额</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="pay_hotel_totals" value="{$data['pay_hotel_totals']}" lay-verify="" placeholder="付酒店总金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="space-50"></div>
 
                 <div class="layui-form-item layui-layout-admin">
                     <div class="layui-input-inline">

@@ -42,7 +42,17 @@ layui.config({
         'input[name="wedding_total"],' +
         'input[name="banquet_discount"],' +
         'input[name="banquet_ritual_hall"],' +
-        'input[name="banquet_other"]';
+        'input[name="banquet_other"]' +
+        'input[name="wedding_room_amount"]' +
+        'input[name="wedding_room"]' +
+        'input[name="part_amount"]' +
+        'input[name="part"]' +
+        'input[name="champagne_amount"]' +
+        'input[name="champagne"]' +
+        'input[name="tea_amount"]' +
+        'input[name="tea"]' +
+        'input[name="cake_amount"]' +
+        'input[name="cake"]';
 
     /* 监控桌数的输入 */
     $(bindInputs).bind("input", function () {
@@ -64,12 +74,61 @@ layui.config({
         var banquetOther = $('input[name="banquet_other"]').val();
         if(banquetOther!='' && banquetOther!=undefined) banquetTotals = banquetTotals + parseFloat(banquetOther);
 
+        // 餐标
         var tableAmount = $('input[name="table_amount"]').val();
         var tablePrice = $('input[name="table_price"]').val();
         if(tablePrice != '' && tableAmount!=undefined && tableAmount!='' && tablePrice!=undefined) {
             tableAmount = parseFloat(tableAmount);
             tablePrice = parseFloat(tablePrice);
             banquetTotals = banquetTotals + tableAmount * tablePrice;
+        }
+
+        // 婚房
+        var weddingRoomAmount = $('input[name="wedding_room_amount"]').val();
+        var weddingRoom = $('input[name="wedding_room"]').val();
+        if(weddingRoomAmount != '' && weddingRoomAmount!=undefined && weddingRoom!='' && weddingRoom!=undefined) {
+            weddingRoomAmount = parseFloat(weddingRoomAmount);
+            weddingRoom = parseFloat(weddingRoom);
+            banquetTotals = banquetTotals + weddingRoomAmount * weddingRoom;
+            console.log(banquetTotals);
+        } else {
+            console.log(weddingRoomAmount);
+        }
+
+        // 停车位
+        var partAmount = $('input[name="part_amount"]').val();
+        var part = $('input[name="part"]').val();
+        if(partAmount != '' && partAmount!=undefined && part!='' && part!=undefined) {
+            partAmount = parseFloat(partAmount);
+            part = parseFloat(part);
+            banquetTotals = banquetTotals + partAmount * part;
+        }
+
+        // 香槟
+        var champagneAmount = $('input[name="champagne_amount"]').val();
+        var champagne = $('input[name="champagne"]').val();
+        if(champagneAmount != '' && champagneAmount!=undefined && champagne!='' && champagne!=undefined) {
+            champagneAmount = parseFloat(champagneAmount);
+            champagne = parseFloat(champagne);
+            banquetTotals = banquetTotals + champagneAmount * champagne;
+        }
+
+        // 茶歇
+        var teaAmount = $('input[name="tea_amount"]').val();
+        var tea = $('input[name="tea"]').val();
+        if(teaAmount != '' && teaAmount!=undefined && tea!='' && tea!=undefined) {
+            teaAmount = parseFloat(teaAmount);
+            tea = parseFloat(tea);
+            banquetTotals = banquetTotals + teaAmount * tea;
+        }
+
+        // 蛋糕
+        var cakeAmount = $('input[name="cake_amount"]').val();
+        var cake = $('input[name="cake"]').val();
+        if(cakeAmount != '' && cakeAmount!=undefined && cake!='' && cake!=undefined) {
+            cakeAmount = parseFloat(cakeAmount);
+            cake = parseFloat(cake);
+            banquetTotals = banquetTotals + cakeAmount * cake;
         }
 
         var banquetUpdateTable = $('input[name="banquet_update_table"]').val();

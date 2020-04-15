@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>更新订单信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/order.css?{:rand(10000,100000)}" media="all">
+    <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/ox-common.js?{:rand(1000000,199999999)}"></script>
+</head>
+<body>
+<!--创建、编辑订单-->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px; background-color: #f4f4f4;">
+            <!--合同基本信息-->
+            <{include file="order/create/fragment/contract" /}>
+
+            <!--婚宴基本信息-->
+            <{include file="order/create/fragment/banquet" /}>
+
+            <!--婚庆基本信息-->
+            <{include file="order/create/fragment/wedding" /}>
+
+            <!--婚车业务-->
+            <{include file="order/create/fragment/car" /}>
+
+            <!--酒水业务-->
+            <{include file="order/create/fragment/wine" /}>
+
+            <!--喜糖业务-->
+            <{include file="order/create/fragment/sugar" /}>
+
+            <{include file="order/create/fragment/light" /}>
+
+            <{include file="order/create/fragment/dessert" /}>
+
+            <{include file="order/create/fragment/led" /}>
+
+            <{include file="order/create/fragment/3d" /}>
+
+            <{include file="order/create/fragment/money" /}>
+            <div class="layui-space10" style="height: 20px;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
