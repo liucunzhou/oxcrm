@@ -14,7 +14,6 @@ use think\facade\Request;
 use app\common\model\Region;
 use app\common\model\MemberVisit;
 use app\common\model\MobileRelation;
-use app\common\model\Search;
 
 class Customer extends Base
 {
@@ -36,6 +35,7 @@ class Customer extends Base
         $this->hotels = Store::getStoreList();
         $this->status = Intention::getIntentions();
         // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
+
 
         $this->model = new MemberAllocate();
         $this->Membermodel = new Member();
@@ -156,7 +156,6 @@ class Customer extends Base
      * 客资详情
      * Method member
      * @return \think\response\Json
-     *
      */
     public function member()
     {
@@ -198,65 +197,31 @@ class Customer extends Base
         ##用户  权限   查询
         //$map = Search::customerMine($this->user, $get);
 
-        $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date";
-        $list = $this->model->where($map)->field($field)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config)->getCollection();
+        $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
+        $list = $this->model->where($map)->field($field)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+        if (!empty($list)) {
+            foreach ($list as &$value) {
+                $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
+                $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
+                $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+            }
+            $result = [
+                'code' => 200,
+                'msg' => '获取数据成功',
+                'count' => $list->total(),
+                'data' => $list->getCollection(),
+            ];
 
-        return json($list);
+        } else {
 
-    }
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
-    {
-        //
-    }
+            $result = [
+                'code' => 200,
+                'msg' => '获取数据成功',
+                'count' => 0,
+                'data' => []
+            ];
+        }
+        return json($result);
 
-    /**
-     * 显示指定的资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request $request
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
     }
 }

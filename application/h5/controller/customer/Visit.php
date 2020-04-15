@@ -62,6 +62,7 @@ class Visit extends Base
 
         $result = [
             'code'  => '200',
+            'msg'   => '回访记录',
             'data'  => $list
         ];
         return json($result);

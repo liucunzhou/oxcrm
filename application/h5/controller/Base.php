@@ -3,6 +3,7 @@
 namespace app\h5\controller;
 
 use app\common\model\User;
+use Firebase\JWT\JWT;
 use think\Controller;
 use think\facade\Config;
 use think\Request;
@@ -16,7 +17,6 @@ class Base extends Controller
         $config = config();
         $crmConfig = $config['crm'];
         $this->allocateTypes = $crmConfig['allocate_type_list'];
-
         /**
         $token = $this->request->header("token");
         $decode = JWT::decode($token, '');
