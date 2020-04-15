@@ -45,7 +45,7 @@
                 <td class="text-center">{$wedding.wedding_total}</td>
                 <td class="text-center">{$wedding.wedding_package_id}</td>
                 <td class="text-center">{$wedding.wedding_package_price|default='-'}</td>
-                <td class="text-center">{$wedding.wedding_ritual_id}</td>
+                <td class="text-center">{$rituals[$wedding.wedding_ritual_id]['title']}</td>
                 <td class="text-center">{$wedding.wedding_ritual_hall|default='-'}</td>
                 <td class="text-center">{$wedding.new_product_no|default='-'}</td>
                 <td class="text-center">{$wedding.wedding_other}</td>
