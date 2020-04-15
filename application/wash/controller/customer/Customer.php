@@ -2,8 +2,6 @@
 
 namespace app\wash\controller\customer;
 
-use app\common\model\Auth;
-use app\common\model\AuthGroup;
 use app\common\model\CallRecord;
 use app\common\model\Intention;
 use app\common\model\Member;
@@ -80,8 +78,6 @@ class Customer extends Backend
     public function index()
     {
         $params = $this->request->param();
-        $staffIds = array_column($this->staffs, 'id');
-
         $where = [];
         if (isset($params['status']) && $params['status'] >=0) {
             $status = $params['status'];
