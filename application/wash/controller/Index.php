@@ -8,24 +8,37 @@ class Index extends Backend
 {
     public function index()
     {
-        $menus = [
-            '客资管理' => [
+        $menus['客资管理'] =  [
+            'items' => [
+                [
+                    'text' => '我的客资',
+                    'url' => url('/wash/customer.customer/index')
+                ],
+                [
+                    'text' => '今日跟进',
+                    'url' => url('/wash/customer.customer/today')
+                ],
+                [
+                    'text' => '客资公海',
+                    'url' => url('/wash/customer.customer/sea'),
+                ],
+            ]
+        ];
+
+        if ($this->role['auth_type'] != 0) {
+            $menus['数据统计'] = [
                 'items' => [
                     [
-                        'text'  => '我的客资',
-                        'url'   => url('/wash/customer.customer/index')
+                        'text' => '上传统计',
+                        'url' => url('/wash/count.upload/upload')
                     ],
                     [
-                        'text'  => '今日跟进',
-                        'url'   => url('/wash/customer.customer/today')
-                    ],
-                    [
-                        'text'  => '客资公海',
-                        'url'   => url('/wash/customer.customer/sea'),
-                    ],
+                        'text' => '通话统计',
+                        'url' => url('/wash/count.ring/call')
+                    ]
                 ]
-            ],
-        ];
+            ];
+        }
         $this->assign('menus', $menus);
 
         return $this->fetch();

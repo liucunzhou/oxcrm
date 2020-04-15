@@ -2,6 +2,7 @@
 
 namespace app\wash\controller;
 
+use app\common\model\AuthGroup;
 use think\Controller;
 use think\Request;
 
@@ -30,6 +31,7 @@ class Backend extends Controller
             'btn' => 'btn-info'
         ]
     ];
+    protected $role = [];
 
     protected function initialize()
     {
@@ -40,6 +42,8 @@ class Backend extends Controller
         $this->assign('allocateTypes', $this->allocateTypes);
 
         $this->assign('levels', $this->levels);
+        $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
+        $this->assign('role', $this->role);
     }
 
     /**

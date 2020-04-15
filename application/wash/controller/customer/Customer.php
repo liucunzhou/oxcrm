@@ -2,8 +2,6 @@
 
 namespace app\wash\controller\customer;
 
-use app\common\model\Auth;
-use app\common\model\AuthGroup;
 use app\common\model\CallRecord;
 use app\common\model\Intention;
 use app\common\model\Member;
@@ -27,7 +25,6 @@ class Customer extends Backend
     protected $levels = [];
     protected $stores = [];
     protected $sources = [];
-    protected $role = [];
     protected $staffs = [];
 
     protected function initialize()
@@ -71,8 +68,6 @@ class Customer extends Backend
         $where[] = ['id', 'in', $currentCityIds];
         $cityList = Region::where($where)->select();
         $this->assign('cityList', $cityList);
-        $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
-        $this->assign('role', $this->role);
     }
 
     /**
@@ -83,8 +78,6 @@ class Customer extends Backend
     public function index()
     {
         $params = $this->request->param();
-        $staffIds = array_column($this->staffs, 'id');
-
         $where = [];
         if (isset($params['status']) && $params['status'] >=0) {
             $status = $params['status'];

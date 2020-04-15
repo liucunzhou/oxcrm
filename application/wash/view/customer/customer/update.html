@@ -320,7 +320,7 @@
                         <td class="text-center">{$row.visit_times}</td>
                         <td class="text-center">{$row.create_time}</td>
                         <td class="text-center">
-                            <{if isset($allStatus[$row.active_status])}>
+                            <{if $row.active_status > 0}>
                                 {$allStatus[$row.active_status]}
                             <{else /}>
                                 未跟进
@@ -348,8 +348,8 @@
                             <td>{$users[$row.user_id]['realname']}</td>
                             <td>{$row.create_time}</td>
                             <td>
-                                <{if isset($allStatus[$row.status])}>
-                                    {$allStatus[$row.status]}
+                                <{if $row.status > 0}>
+                                    {$allStatus[$row.status]['title']}
                                 <{else /}>
                                     未跟进
                                 <{/if}>
