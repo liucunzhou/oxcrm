@@ -36,5 +36,7 @@ class Passport extends Controller
             'msg'   => '获取token成功',
             'data'  => $token
         ];
+
+        return json($arr);
     }
 }

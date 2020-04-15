@@ -211,7 +211,7 @@ class Order extends Backend
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
-        return $this->fetch('order/entire/create/main');
+        return $this->fetch('order/create/main');
     }
 
     # 创建订单逻辑
