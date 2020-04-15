@@ -165,7 +165,7 @@ class Customer extends Base
         ### 获取用户基本信息
         $field = "id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,hotel_text,remark";
         $customer = Member::field($field)->get($allocate->member_id);
-        $customer['next_visit_time'] = $allocate->next_visit_time;
+        $customer['next_visit_time'] = date('Y-m-s h:i:s',$allocate->next_visit_time);
         $customer['color'] = $customer['active_status'] ? $this->status[$customer['active_status']]['color'] : '#FF0000';
         $customer['active_status'] = $customer['active_status'] ? $this->status[$customer['active_status']]['title'] : "未跟进";
         if (!($this->auth['is_show_entire_mobile'] || !empty($allocate))) {
@@ -181,6 +181,11 @@ class Customer extends Base
         return json($result);
     }
 
+    /**
+     * 我的客资
+     * Method mine
+     * @return \think\response\Json
+     */
     public function mine()
     {
         $get = Request::param();
@@ -189,9 +194,14 @@ class Customer extends Base
         $config = [
             'page' => $get['page']
         ];
-        $map = [];
-        $list = model('MemberAllocate')->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
-        return json($list->getCollection());
+        $map[] = ['user_id','=','191'];
+        ##用户  权限   查询
+        //$map = Search::customerMine($this->user, $get);
+
+        $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date";
+        $list = $this->model->where($map)->field($field)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config)->getCollection();
+
+        return json($list);
 
     }
     /**
