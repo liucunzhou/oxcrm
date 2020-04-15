@@ -42,16 +42,16 @@ layui.config({
         'input[name="wedding_total"],' +
         'input[name="banquet_discount"],' +
         'input[name="banquet_ritual_hall"],' +
-        'input[name="banquet_other"]' +
-        'input[name="wedding_room_amount"]' +
-        'input[name="wedding_room"]' +
-        'input[name="part_amount"]' +
-        'input[name="part"]' +
-        'input[name="champagne_amount"]' +
-        'input[name="champagne"]' +
-        'input[name="tea_amount"]' +
-        'input[name="tea"]' +
-        'input[name="cake_amount"]' +
+        'input[name="banquet_other"],' +
+        'input[name="wedding_room_amount"],' +
+        'input[name="wedding_room"],' +
+        'input[name="part_amount"],' +
+        'input[name="part"],' +
+        'input[name="champagne_amount"],' +
+        'input[name="champagne"],' +
+        'input[name="tea_amount"],' +
+        'input[name="tea"],' +
+        'input[name="cake_amount"],' +
         'input[name="cake"]';
 
     /* 监控桌数的输入 */
@@ -178,11 +178,14 @@ layui.config({
         if(banquetTotals > 0) {
             banquetTotals = banquetTotals.toFixed(2);
         }
+
         if(totals > 0) {
             totals = totals.toFixed(2);
         }
+
         $('input[name="banquet_totals"]').val(banquetTotals);
         $('input[name="contract_totals"]').val(totals);
+        $('input[name="pay_hotel_totals"]').val(totals);
     });
 
     $(document).on("click", ".append_wedding_item", function () {

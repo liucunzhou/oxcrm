@@ -1,4 +1,7 @@
 <?php
-$str = '2020/3/18-0010040';
-$index = strpos($str, '-');
-echo substr($str, 0, $index);
+$arr = ['a', 'b', 'c', 'd'];
+// print_r($arr);
+$b = ['all'=>'全部'];
+
+$arr = $b + $arr;
+print_r($arr);
