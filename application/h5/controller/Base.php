@@ -9,15 +9,13 @@ use think\Request;
 
 class Base extends Controller
 {
+    // 分配类型
     protected $allocateTypes = [];
     public $user = [];
     protected function initialize(){
-        $files = get_included_files();
-        // print_r($files);
-        // exit;
-        $this->allocateTypes = Config::get('crm');
-        var_dump($this->allocateTypes);
-        exit;
+        $config = config();
+        $crmConfig = $config['crm'];
+        $this->allocateTypes = $crmConfig['allocate_type_list'];
 
         /**
         $token = $this->request->header("token");
