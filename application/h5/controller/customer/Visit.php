@@ -15,6 +15,7 @@ use app\common\model\Region;
 use app\common\model\MemberVisit;
 use app\common\model\MobileRelation;
 use app\common\model\Search;
+use think\response\Json;
 
 class Visit extends Base
 {
@@ -27,6 +28,7 @@ class Visit extends Base
     protected $budgets = [];
     protected $scales = [];
     protected $model = null;
+    protected $memberModel = null;
 
     protected function initialize()
     {
@@ -38,7 +40,7 @@ class Visit extends Base
         // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
 
         $this->model = new MemberVisit();
-        $this->Membermodel = new Member();
+        $this->memberModel = new Member();
     }
 
 
@@ -51,25 +53,33 @@ class Visit extends Base
         ### 获取用户基本信息
         $allocate = MemberAllocate::get($request['allocate_id']);
 
-        if (!empty($allocate)) {
-            $map = [];
-            $map[] = ['member_id','=',$allocate['member_id']];
-            $field = "";
-            ### 根据分配表的数据查询回访记录
-            $list = $this->model->where($map)->field($field)->order('create_time desc')->select();
-
-            $result = [
-                'code'  => '200',
-                'msg'   => '回访记录',
-                'data'  => $list
-            ];
-        }else{
+        if (empty($allocate)) {
             $result = [
                 'code'  => '200',
                 'msg'   => '回访记录',
                 'data'  => ''
             ];
+            return json($result);
         }
+
+        $map = [];
+        $map[] = ['member_id','=',$allocate['member_id']];
+        $field = "";
+        ### 根据分配表的数据查询回访记录
+        $list = $this->model->where($map)->field($field)->order('create_time desc')->select();
+        $data = [];
+        foreach ($list as $key=>$value) {
+            $row = [];
+            $row['status'] = $this->statusList[$value['status']]['title'];
+            $row['user'] = '';
+            $data[] = $row;
+        }
+
+        $result = [
+            'code'  => '200',
+            'msg'   => '回访记录',
+            'data'  => $data
+        ];
 
         return json($result);
     }
