@@ -56,7 +56,7 @@
                     <td class="text-center">{$banquet.banquet_update_table}</td>
                     <td class="text-center">{$banquet.banquet_discount}</td>
                     <td class="text-center">{$banquet.service_fee}</td>
-                    <td class="text-center">{$banquet.banquet_ritual_id}</td>
+                    <td class="text-center">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
                     <td class="text-center">{$banquet.banquet_ritual_hall|default="-"}</td>
                     <td class="text-center">{$banquet.banquet_other}</td>
                 </tr>

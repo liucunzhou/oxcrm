@@ -75,8 +75,31 @@ class order extends Command
 
             case 'initCsvToTable':
                 $this->initCsvToTable();
+                break;
+
+            case 'initComplete':
+                $this->isComplete();
+                break;
         }
     }
+
+    public function isComplete()
+    {
+        $handle = fopen('./update.txt', 'r');
+
+        $rows = [];
+        $update = '';
+        while (!feof($handle)) {
+            $line = fgets($handle);
+            preg_match('/`id` = \d+/', $line, $matches);
+            $update .= "update tk_order set complete=100 where {$matches[0]};\n";
+        }
+
+        file_put_contents('./update.sql', $update);
+        fclose($handle);
+    }
+
+
 
     // 初始化红丝订单
     public function initMGN()

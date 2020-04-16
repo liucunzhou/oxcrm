@@ -41,7 +41,7 @@
                         <select name="wedding_package_id" class="layui-input">
                             <option value="">选择套餐</option>
                             <{foreach name="packages" item="row"}>
-                            <option value="{$row.id}" {$row.id==$data.id?'selected':''}>{$row.title}</option>
+                            <option value="{$row.id}" {$row.id==$data.wedding_package_id?'selected':''}>{$row.title}</option>
                             <{/foreach}>
                         </select>
                     </div>
@@ -61,7 +61,7 @@
                         <select name="wedding_ritual_id" class="layui-input">
                             <option value="">选择仪式</option>
                             <{foreach name="rituals" item="row"}>
-                            <option value="{$row.id}" {$row.id==$data.id?'selected':''}>{$row.title}</option>
+                            <option value="{$row.id}" {$row.id==$data.wedding_ritual_id?'selected':''}>{$row.title}</option>
                             <{/foreach}>
                         </select>
                     </div>

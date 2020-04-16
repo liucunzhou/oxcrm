@@ -42,8 +42,11 @@ class Backend extends Controller
         $this->assign('allocateTypes', $this->allocateTypes);
 
         $this->assign('levels', $this->levels);
-        $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
-        $this->assign('role', $this->role);
+
+        if(!empty($this->user['role_id'])) {
+            $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
+            $this->assign('role', $this->role);
+        }
     }
 
     /**

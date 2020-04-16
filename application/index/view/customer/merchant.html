@@ -44,19 +44,6 @@
                                 </div>
 
                                 <div class="layui-inline">
-                                    <select name="source" lay-verify="" lay-search>
-                                    <option value="">平台来源</option>
-                                    <{foreach name="sources" item="val"}>
-                                        <{if $get['source'] == $val['id']}>
-                                            <option value="{$val['id']}" selected>{$val['title']}</option>
-                                        <{else /}>
-                                            <option value="{$val['id']}">{$val['title']}</option>
-                                        <{/if}>
-                                    <{/foreach}>
-                                </select>
-                                </div>
-
-                                <div class="layui-inline">
                                     <input type="text" name="create_time" lay-verify="0" placeholder="创建时间区间" value="{$get['create_time']}" autocomplete="off" class="date_range layui-input">
                                 </div>
 
