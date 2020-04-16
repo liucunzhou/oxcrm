@@ -23,7 +23,7 @@ class Base extends Controller
         $token = $this->request->header("token");
         $decode = JWT::decode($token, 'hongsi', ['HS256']);
 
-        if(empty($decode['id'])) {
+        if(!isset($decode->id) && $decode->id > 0) {
             $arr = [
                 'code'  => '400',
                 'msg'   =>  'token解析失败',
@@ -31,7 +31,7 @@ class Base extends Controller
             return json($arr);
         }
 
-        $where['id'] = $decode['id'];
+        $where['id'] = $decode->id;
         $this->user = User::where($where)->find();
         if(empty($this->user)) {
             $arr = [
