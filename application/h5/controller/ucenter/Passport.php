@@ -34,7 +34,7 @@ class Passport extends Controller
         $arr = [
             'code'  => '200',
             'msg'   => '获取token成功',
-            'data'  => $token
+            'token'  => $token
         ];
 
         return json($arr);
