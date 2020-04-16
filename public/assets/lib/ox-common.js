@@ -342,4 +342,20 @@ $(function(){
             });
         });
     });
+
+    $(".btn-append-card .layui-btn").click(function(){
+        $(this).addClass("btn-disable");
+        var formBody = $(this).parents(".form-body");
+        var url = $(this).attr("data-action");
+
+        $.get(url, function (res) {
+            formBody.append(res);
+        });
+    });
+
+    $(document).on("click", ".layui-card-delete", function () {
+        if (!confirm("确定删除该项目?")) return false;
+
+        $(this).parents(".layui-card-item").remove();
+    });
 });

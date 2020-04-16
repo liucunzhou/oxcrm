@@ -2,17 +2,17 @@
     <div class="layui-card-header layui-card-header-flex" style="padding-right: 0;">
         <div class="layui-card-title">合同基本信息</div>
         <div class="order-modules">
-            <div class="layui-btn-group">
-                <div class="layui-btn-normal layui-btn">添加婚宴信息</div>
-                <div class="layui-btn-normal layui-btn">添加婚庆信息</div>
-                <div class="layui-btn-normal layui-btn">添加酒店消费项目</div>
-                <div class="layui-btn-normal layui-btn">添加婚车信息</div>
-                <div class="layui-btn-normal layui-btn">添加喜糖信息</div>
-                <div class="layui-btn-normal layui-btn">添加酒水信息</div>
-                <div class="layui-btn-normal layui-btn">添加灯光信息</div>
-                <div class="layui-btn-normal layui-btn">添加点心信息</div>
-                <div class="layui-btn-normal layui-btn">添加LED信息</div>
-                <div class="layui-btn-normal layui-btn">添加3D信息</div>
+            <div class="layui-btn-group btn-append-card">
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/wedding')}">添加婚庆信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/banquet')}">添加婚宴信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/hotelItems')}">添加酒店消费项目</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/car')}">添加婚车信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/sugar')}">添加喜糖信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/wine')}">添加酒水信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/light')}">添加灯光信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/dessert')}">添加点心信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/led')}">添加LED信息</div>
+                <div class="layui-btn-normal layui-btn" data-action="{:url('/index/order.ajax/d3')}">添加3D信息</div>
             </div>
         </div>
     </div>

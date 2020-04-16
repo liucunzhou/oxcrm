@@ -53,7 +53,7 @@ class Visit extends Base
     {
         ### 获取分配信息
         $get = Request::param();
-        $allocate = MemberAllocate::getAllocate($this->user['id'], $get['member_id']);
+        $allocate = MemberAllocate::getAllocate($this->user['id'], ['member_id']);
 
         ### 获取用户基本信息
         $customer = Member::get($get['member_id']);

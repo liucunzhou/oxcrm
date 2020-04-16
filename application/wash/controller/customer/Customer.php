@@ -267,7 +267,7 @@ class Customer extends Backend
                 $row['active'] = 2;
             }
             $params['status'] = $row['id'];
-            $row['url'] = url('/wash/customer.customer/index', $params, false);
+            $row['url'] = url('/wash/customer.customer/today', $params, false);
             // 检测所有
             if ($key != 0) {
                 // 获取自己拥有的客资列表

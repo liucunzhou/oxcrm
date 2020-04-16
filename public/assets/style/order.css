@@ -221,3 +221,7 @@ form.layui-form {
 .space-50{
     height: 50px;
 }
+
+.layui-card-delete{
+    cursor: pointer;
+}

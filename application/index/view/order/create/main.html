@@ -28,20 +28,25 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px; background-color: #f4f4f4;">
             <form class="layui-form" method="post" action="{:url('Order/doCreateOrder')}" lay-filter="component-form-group">
-                <!--合同基本信息-->
-                <{include file="order/create/fragment/contract" /}>
+                <div class="form-body">
+                    <!--合同基本信息-->
+                    <{include file="order/create/fragment/contract" /}>
 
-                <!--客资信息-->
-                <{include file="order/create/fragment/customer" /}>
+                    <!--客资信息-->
+                    <{include file="order/create/fragment/customer" /}>
 
-                <!--支付信息-->
-                <{include file="order/create/fragment/money" /}>
+                    <!--支付信息-->
+                    <{include file="order/create/fragment/money" /}>
+                </div>
 
-                <!--婚宴信息-->
-                <{include file="order/create/fragment/banquet" /}>
-
-                <!--婚庆信息-->
-                <{include file="order/create/fragment/wedding" /}>
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="order_id" value="{$order.id}"/>
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="form-submit">保存</button>
+                        </div>
+                    </div>
+                </div>
             </form>
             <div class="layui-space10" style="height: 20px;"></div>
         </div>
