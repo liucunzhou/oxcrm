@@ -47,24 +47,30 @@ class Visit extends Base
      */
     public function detail() {
         $request = $this->request->param();
-        $users = User::getUsers();
 
-        $map = [];
-        $map[] = ['member_id', '=', $request['member_id']];
-        $list = $this->model->where($map)->order('create_time desc')->select();
-        foreach ($list as $key=>&$value) {
-            $userId = $value->user_id;
-            $status = $value->status;
-            $value['level'] = '重要客户';
-            $value['user_id'] = $users[$userId]['realname'];
-            $value['status'] = $this->statusList[$status]['title'];
+        ### 获取用户基本信息
+        $allocate = MemberAllocate::get($request['allocate_id']);
+
+        if (!empty($allocate)) {
+            $map = [];
+            $map[] = ['member_id','=',$allocate['member_id']];
+            $field = "";
+            ### 根据分配表的数据查询回访记录
+            $list = $this->model->where($map)->field($field)->order('create_time desc')->select();
+
+            $result = [
+                'code'  => '200',
+                'msg'   => '回访记录',
+                'data'  => $list
+            ];
+        }else{
+            $result = [
+                'code'  => '200',
+                'msg'   => '回访记录',
+                'data'  => ''
+            ];
         }
 
-        $result = [
-            'code'  => '200',
-            'msg'   => '回访记录',
-            'data'  => $list
-        ];
         return json($result);
     }
 }
