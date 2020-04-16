@@ -21,6 +21,13 @@ class Base extends Controller
         $this->allocateTypes = $crmConfig['allocate_type_list'];
 
         $token = $this->request->header("token");
+        if( empty($token) ){
+            $arr = [
+                'code'  => '400',
+                'msg'   =>  'token为空',
+            ];
+            return json($arr);
+        }
         $decode = JWT::decode($token, 'hongsi', ['HS256']);
 
         if(!isset($decode->id) && $decode->id > 0) {
