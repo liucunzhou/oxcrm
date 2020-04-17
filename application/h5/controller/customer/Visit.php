@@ -49,6 +49,11 @@ class Visit extends Base
      */
     public function detail() {
         $request = $this->request->param();
+        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
+        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $config = [
+            'page' => $request['page']
+        ];
 
         ### 获取用户基本信息
         $allocate = MemberAllocate::get($request['allocate_id']);
@@ -66,19 +71,16 @@ class Visit extends Base
         $map[] = ['member_id','=',$allocate['member_id']];
         $field = "";
         ### 根据分配表的数据查询回访记录
-        $list = $this->model->where($map)->field($field)->order('create_time desc')->select();
-        $data = [];
-        foreach ($list as $key=>$value) {
-            $row = [];
-            $row['status'] = $this->statusList[$value['status']]['title'];
-            $row['user'] = '';
-            $data[] = $row;
+        $list = $this->model->where($map)->field($field)->order('create_time desc')->paginate($request['limit'], false, $config);
+        foreach ($list as &$value) {
+            $value['status'] = $this->statusList[$value['status']]['title'];
+            $value['user'] = '';
         }
 
         $result = [
             'code'  => '200',
             'msg'   => '回访记录',
-            'data'  => $data
+            'data'  => $list->getCollection()
         ];
 
         return json($result);

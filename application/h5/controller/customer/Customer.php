@@ -123,7 +123,7 @@ class Customer extends Base
      */
     public function today()
     {
-        $get = Request::param();
+        $request = $this->request->param();
         $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
         $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
         $config = [
