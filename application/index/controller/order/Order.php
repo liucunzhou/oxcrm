@@ -254,10 +254,10 @@ class Order extends Backend
             $row['arrive_address'] = $request['arrive_address'];
             $row['car_remark'] = $request['master_car_remark'];
             $row['create_time'] = time();
+            $row['salesman'] = $row['car_salesman'];
+            $row['company_id'] = $row['car_company_id'];
 
             $carModel = new OrderCar();
-            $carModel->salesman = $row['car_salesman'];
-            $carModel->company_id = $row['car_company_id'];
             $carModel->allowField(true)->save($row);
         }
 
@@ -280,10 +280,10 @@ class Order extends Backend
             $row['arrive_address'] = $request['arrive_address'];
             $row['car_remark'] = $request['slave_car_remark'];
             $row['create_time'] = time();
+            $row['salesman'] = $row['car_salesman'];
+            $row['company_id'] = $row['car_company_id'];
 
             $carModel = new OrderCar();
-            $carModel->salesman = $row['car_salesman'];
-            $carModel->company_id = $row['car_company_id'];
             $carModel->allowField(true)->save($row);
         }
 
@@ -291,6 +291,7 @@ class Order extends Backend
         if (!empty($request['sugar_id'])) {
             $sugarModel = new OrderSugar();
             // get wedding devices
+            $request['salesman']= $request['sugar_salesman'];
             $sugarModel->allowField(true)->save($request);
         }
 
@@ -299,7 +300,7 @@ class Order extends Backend
         if (!empty($request['wine_id'])) {
             $wineModel = new OrderWine();
             // get wedding devices
-            $wineModel->salesman = $request['wine_salesman'];
+            $request['salesman'] = $request['wine_salesman'];
             $wineModel->allowField(true)->save($request);
         }
 
@@ -307,6 +308,7 @@ class Order extends Backend
         if (!empty($request['light_id'])) {
             $lightModel = new OrderLight();
             // get wedding devices
+            $request['salesman']= $request['light_salesman'];
             $lightModel->allowField(true)->save($request);
         }
 
@@ -314,6 +316,7 @@ class Order extends Backend
         if (!empty($request['dessert_id'])) {
             $dessertModel = new OrderDessert();
             // get wedding devices
+            $request['salesman'] = $request['dessert_salesman'];
             $dessertModel->allowField(true)->save($request);
         }
 
@@ -321,6 +324,7 @@ class Order extends Backend
         if (!empty($request['led_id'])) {
             $ledModel = new OrderLed();
             // get wedding devices
+            $request['salesman'] = $request['led_salesman'];
             $ledModel->allowField(true)->save($request);
         }
 
@@ -328,7 +332,9 @@ class Order extends Backend
         if (!empty($request['d3_id'])) {
             $d3Model = new OrderD3();
             // get wedding devices
+            $request['salesman'] = $request['d3_salesman'];
             $d3Model->allowField(true)->save($request);
+            echo $d3Model->getLastSql();
         }
 
 
