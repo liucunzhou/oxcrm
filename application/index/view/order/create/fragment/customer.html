@@ -45,6 +45,7 @@
                     <{else /}>
                     <input type="text" value="{$member['realname']}" readonly  lay-verify="0" placeholder="客户姓名" autocomplete="off" class="layui-input">
                     <{/if}>
+                    <input type="hidden" name="member_id" value="{$member.id}">
                 </div>
             </div>
             <div class="layui-inline">
