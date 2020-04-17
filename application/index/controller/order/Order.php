@@ -456,7 +456,7 @@ class Order extends Backend
 
         ## 获取客户信息
         $member = Member::get($order->member_id);
-        if($member) $this->assign('customer', $member);
+        if($member) $this->assign('member', $member);
 
         ## 宴会厅列表
         $halls = BanquetHall::getBanquetHalls();
