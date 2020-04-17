@@ -12,7 +12,7 @@
                 <label class="layui-form-label">选择销售</label>
                 <div class="layui-input-inline">
                     <input type="hidden" name="is_suborder" value="0">
-                    <select name="salesman" class="layui-select" lay-search>
+                    <select name="sugar_salesman" class="layui-select" lay-search>
                         <option value=""></option>
                         <{foreach name="staffs" item="val"}>
                         <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>

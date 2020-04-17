@@ -49,7 +49,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">选择销售</label>
                 <div class="layui-input-inline">
-                    <select name="salesman" class="layui-select" lay-search>
+                    <select name="car_salesman" class="layui-select" lay-search>
                         <option value=""></option>
                         <{foreach name="staffs" item="val"}>
                         <option value="{$val.id}" {$val.id==$order.salesman?'selected':''}>{$val.realname}</option>

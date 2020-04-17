@@ -256,6 +256,8 @@ class Order extends Backend
             $row['create_time'] = time();
 
             $carModel = new OrderCar();
+            $carModel->salesman = $row['car_salesman'];
+            $carModel->company_id = $row['car_company_id'];
             $carModel->allowField(true)->save($row);
         }
 
@@ -280,6 +282,8 @@ class Order extends Backend
             $row['create_time'] = time();
 
             $carModel = new OrderCar();
+            $carModel->salesman = $row['car_salesman'];
+            $carModel->company_id = $row['car_company_id'];
             $carModel->allowField(true)->save($row);
         }
 
@@ -295,6 +299,7 @@ class Order extends Backend
         if (!empty($request['wine_id'])) {
             $wineModel = new OrderWine();
             // get wedding devices
+            $wineModel->salesman = $request['wine_salesman'];
             $wineModel->allowField(true)->save($request);
         }
 

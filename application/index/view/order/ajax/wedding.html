@@ -66,6 +66,18 @@
 
                 <div class="layui-form-item">
                     <div class="layui-inline">
+                        <label class="layui-form-label">承办公司</label>
+                        <div class="layui-input-inline">
+                            <select name="wedding_company_id">
+                                <option value="">--承办公司--</option>
+                                <{foreach name="brands" item="val"}>
+                                    <option value="{$val.id}">{$val.title}</option>
+                                <{/foreach}>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
                         <label class="layui-form-label">是否研发产品</label>
                         <div class="layui-input-inline">
                             <select name="is_new_product" lay-search>
