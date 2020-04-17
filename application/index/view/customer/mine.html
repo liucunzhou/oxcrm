@@ -120,7 +120,7 @@
                                 <{/if}>
                                 {:button(["event"=>"assignToWeddingGroup", "text"=>"分配到婚庆部"])}
                                 {:button(["event"=>"assignToMerchantGroup", "text"=>"分配到商务部"])}
-                                {:button(["event"=>"createOrder", "text"=>"申请成单"])}
+                                <a class="layui-btn layui-btn-sm {:auth('/index/order.order/createOrder')}" lay-event="createOrder">申请成单</a>
                             </div>
                         </script>
                         <{if $user[ 'nickname']=='admin' }>
