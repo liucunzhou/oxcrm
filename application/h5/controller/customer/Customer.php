@@ -124,24 +124,24 @@ class Customer extends Base
     public function today()
     {
         $request = $this->request->param();
-        $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
-        $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
+        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
+        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
         $config = [
-            'page' => $get['page']
+            'page' => $request['page']
         ];
 
         $map[] = ['active_status', 'not in', [2, 3, 4]];
         $tomorrow = strtotime('tomorrow');
-        if (!isset($get['next_visit_time']) || empty($get['next_visit_time'])) {
+        if (!isset($request['next_visit_time']) || empty($request['next_visit_time'])) {
             $map[] = ['next_visit_time', '>', 0];
             $map[] = ['next_visit_time', 'between', [0, $tomorrow]];
         } else {
-            $get['next_visit_time'] = strtotime($get['next_visit_time']);
-            $map[] = ['next_visit_time', 'between', [$get['next_visit_time'], $tomorrow]];
+            $request['next_visit_time'] = strtotime($request['next_visit_time']);
+            $map[] = ['next_visit_time', 'between', [$request['next_visit_time'], $tomorrow]];
         }
 
         $field = 'id,realname,mobile,active_status,member_id,create_time';
-        $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($get['limit'], false, $config);
+        $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($request['limit'], false, $config);
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
@@ -208,7 +208,7 @@ class Customer extends Base
         $config = [
             'page' => $get['page']
         ];
-        $map[] = ['user_id', '=', '191'];
+        $map[] = ['user_id', '=', $get['user_id']];
         ##用户  权限   查询
         //$map = Search::customerMine($this->user, $get);
 
