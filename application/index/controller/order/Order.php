@@ -267,7 +267,7 @@ class Order extends Backend
             $row['operate_id'] = $this->user['id'];
             $row['order_id'] = $request['order_id'];
             $row['company_id'] = $request['car_company_id'];
-            $row['is_master'] = 1;
+            $row['is_master'] = 0;
             $row['is_suborder'] = 0;
             $row['car_id'] = $request['slave_car_id'];
             $row['car_price'] = $request['slave_car_price'];
