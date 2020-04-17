@@ -1,10 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="layui-card layui-card-item">
+    <div class="layui-card-header">
+        <div class="layui-card-header-title">点心信息</div>
+        <div class="layui-card-header-right layui-card-delete" data-target="#btn-append-desert">删除</div>
+    </div>
+    <div class="layui-card-body">
 
-</body>
-</html>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">选择销售</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="is_suborder" value="0">
+                    <select name="salesman" class="layui-select" lay-search>
+                        <option value=""></option>
+                        <{foreach name="staffs" item="val"}>
+                        <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">品牌</label>
+                <div class="layui-input-inline">
+                    <select class="layui-select" name="dessert_id" lay-search lay-verify="">
+                        <option value="">请选择点心</option>
+                        <{foreach name="dessertList" item="row"}>
+                        <option value="{$row['id']}" {$data.dessert_id==$row.id?'selected':''}>{$row['title']}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">点心数量</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="dessert_amount" value="{$data.dessert_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">点心费用</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="dessert_price" value="{$data.dessert_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="dessert_contact" value="{$data.dessert_contact}" lay-verify="" placeholder="联系人" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="dessert_mobile" value="{$data.dessert_mobile}" lay-verify="" placeholder="联系人手机号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系地址</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="dessert_address" value="{$data.dessert_address}" lay-verify="" placeholder="联系地址" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="dessert_remark" value="{$data.dessert_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

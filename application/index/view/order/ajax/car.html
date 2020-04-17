@@ -1,12 +1,14 @@
 <div class="layui-card layui-card-item">
     <div class="layui-card-header">
         <div class="layui-card-header-title">婚车信息</div>
-        <div class="layui-card-header-right layui-card-delete">删除</div>
+        <div class="layui-card-header-right">
+            <div class="layui-card-delete" data-target="#btn-append-car">删除</div>
+        </div>
     </div>
     <div class="layui-card-body">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label layui-color-red">联系人</label>
+                <label class="layui-form-label">联系人</label>
                 <div class="layui-input-inline">
                     <input type="text" name="car_contact" value="{$data['car_contact']}" lay-verify="" placeholder="联系人" autocomplete="off" class="layui-input">
                 </div>
@@ -26,109 +28,116 @@
             <div class="layui-inline">
                 <label class="layui-form-label">到达地点</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="arrive_time" value="{$data['arrive_time']}" lay-verify="" placeholder="到达时间" autocomplete="off" class="layui-input layui-date">
+                    <input type="text" name="arrive_time" value="{$data['arrive_time']}" lay-verify="" placeholder="到达地点" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">承办公司</label>
+                <div class="layui-input-inline">
+                    <select name="car_company_id" class="layui-select">
+                        <option value="">--请选择公司--</option>
+                        <{foreach name="brands" item="val"}>
+                        <option value="{$val.id}" <{if $data['company_id'] == $val['id']}>selected<{/if}>>{$val.title}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
 
-        <tr>
-            <td class="tb-title">到达地点</td>
-            <td>
-                <input type="text" name="arrive_address" value="{$data['arrive_address']}" lay-verify="" placeholder="到达地点" autocomplete="off" class="layui-input">
-            </td>
-        </tr>
+            <div class="layui-inline">
+                <label class="layui-form-label">选择销售</label>
+                <div class="layui-input-inline">
+                    <select name="salesman" class="layui-select" lay-search>
+                        <option value=""></option>
+                        <{foreach name="staffs" item="val"}>
+                        <option value="{$val.id}" {$val.id==$order.salesman?'selected':''}>{$val.realname}</option>
+                        <{/foreach}>
+                    </select>
+                    <input type="hidden" name="is_suborder" value="0">
+                </div>
+            </div>
 
-        <table class="layui-table">
-            <tbody>
-                <tr>
-                    <td class="tb-title">承办公司</td>
-                    <td>
-                        <select name="company_id" class="layui-select">
-                            <option value="">--请选择公司--</option>
-                            <{foreach name="brands" item="val"}>
-                            <option value="{$val.id}" <{if $data['company_id'] == $val['id']}>selected<{/if}>>{$val.title}</option>
-                            <{/foreach}>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tb-title">选择销售</td>
-                    <td>
-                        <select name="salesman" class="layui-select" lay-search>
-                            <option value=""></option>
-                            <{foreach name="staffs" item="val"}>
-                            <option value="{$val.id}" {$val.id==$order.salesman?'selected':''}>{$val.realname}</option>
-                            <{/foreach}>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tb-title">是否二销</td>
-                    <td>
-                        <select name="is_suborder" class="layui-select">
-                            <option value="0">否</option>
-                            <option value="1" {$data.is_master==1?'selected':''}>婚宴二销</option>
-                            <option value="2" {$data.is_master==2?'selected':''}>婚庆二销</option>
-                        </select>
-                    </td>
-                </tr>
-                </tbody>
-                <tbody>
-                <tr>
-                    <td class="tb-title">是否主车</td>
-                    <td>
-                        <select name="is_master" class="layui-select">
-                            <option value="0" {$data.is_master?'':'selected'}>否</option>
-                            <option value="1" {$data.is_master?'selected':''}>是</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tb-title">车型号</td>
-                    <td>
-                        <select name="car_id" class="layui-select" lay-search>
-                            <option value=""></option>
-                            <{foreach name="carList" item="val"}>
-                            <option value="{$val.id}" {$data.car_id==$val.id?'selected':''}>{$val.title}-{$val.color}</option>
-                            <{/foreach}>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tb-title">数量</td>
-                    <td>
-                        <input type="number" name="car_amount" lay-verify="{$data.car_amount}" placeholder="数量" autocomplete="off" class="layui-input">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="tb-title">婚车费用</td>
-                    <td>
-                        <input type="number" name="car_price" value="{$data['car_price']}" lay-verify="" placeholder="婚车费用" autocomplete="off" class="layui-input">
-                    </td>
-                </tr>
+            <div class="layui-inline">
+                <label class="layui-form-label">婚车服务时长</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="service_hour" value="{$data['service_hour']}" lay-verify="" placeholder="婚车服务时长" autocomplete="off" class="layui-input">
+                </div>
+            </div>
 
-                <tr>
-                    <td class="tb-title">婚车服务时长</td>
-                    <td>
-                        <input type="number" name="service_hour" value="{$data['service_hour']}" lay-verify="" placeholder="婚车服务时长" autocomplete="off" class="layui-input">
-                    </td>
-                </tr>
+            <div class="layui-inline">
+                <label class="layui-form-label">婚车服务距离</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="service_distance" value="{$data['service_distance']}" lay-verify="" placeholder="婚车服务距离" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
 
-                <tr>
-                    <td class="tb-title">婚车服务距离</td>
-                    <td>
-                        <input type="number" name="service_distance" value="{$data['service_distance']}" lay-verify="" placeholder="婚车服务距离" autocomplete="off" class="layui-input">
-                    </td>
-                </tr>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">主车型号</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="is_master" value="1">
+                    <select name="master_car_id" class="layui-select" lay-search>
+                        <option value=""></option>
+                        <{foreach name="carList" item="val"}>
+                        <option value="{$val.id}" {$data.car_id==$val.id?'selected':''}>{$val.title}-{$val.color}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">主车数量</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="master_car_amount" lay-verify="{$data.car_amount}" placeholder="主车数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">主车费用</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="master_car_price" value="{$data['car_price']}" lay-verify="" placeholder="主车费用" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">主车备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="master_car_remark" value="{$data['master_car_remark']}" lay-verify="" placeholder="主车备注" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
 
-                <tr>
-                    <td class="tb-title">备注</td>
-                    <td>
-                        <input name="car_remark" class="layui-input" placeholder="备注信息" value="{$data['car_remark']}">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">跟车型号</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="is_master" value="1">
+                    <select name="slave_car_id" class="layui-select" lay-search>
+                        <option value=""></option>
+                        <{foreach name="carList" item="val"}>
+                        <option value="{$val.id}" {$data.car_id==$val.id?'selected':''}>{$val.title}-{$val.color}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">跟车数量</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="slave_car_amount" lay-verify="{$data.car_amount}" placeholder="跟车数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">跟车费用</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="slave_car_price" value="{$data['car_price']}" lay-verify="" placeholder="跟车费用" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">跟车备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="slave_car_remark" value="{$data['slave_car_remark']}" lay-verify="" placeholder="跟车备注" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -177,7 +177,13 @@ $(function(){
                 if(res.redirect == 'dialog') {
                     parent.layer.closeAll();
                     parent.window.location.reload();
-                }if(res.redirect == 'reload') {
+                } else if (res.redirect == 'tab') {
+                    layer.confirm(res.msg + '点击确认关闭', {icon: 3, title:'提示'}, function(index){
+                        parent.layui.admin.events.closeThisTabs();
+                    }, function(index){
+                        parent.layui.admin.events.closeThisTabs();
+                    });
+                } else if(res.redirect == 'reload') {
                     parent.window.location.reload();
                 } else {
                     window.location.replace(res.redirect);
@@ -344,12 +350,19 @@ $(function(){
     });
 
     $(".btn-append-card .layui-btn").click(function(){
-        $(this).addClass("btn-disable");
+
+        if($(this).hasClass("layui-disabled")) {
+            return false;
+        }
+
+        $(this).addClass("layui-disabled");
         var formBody = $(this).parents(".form-body");
         var url = $(this).attr("data-action");
 
         $.get(url, function (res) {
             formBody.append(res);
+            form = layui.form;
+            form.render();
         });
     });
 
@@ -357,5 +370,7 @@ $(function(){
         if (!confirm("确定删除该项目?")) return false;
 
         $(this).parents(".layui-card-item").remove();
+        var target = $(this).attr("data-target");
+        $(target).removeClass("layui-disabled");
     });
 });

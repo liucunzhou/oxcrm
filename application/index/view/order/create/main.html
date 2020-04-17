@@ -27,21 +27,18 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px; background-color: #f4f4f4;">
-            <form class="layui-form" method="post" action="{:url('Order/doCreateOrder')}" lay-filter="component-form-group">
+            <form class="layui-form form-ajax" method="post" action="{:url('/index/order.order/doCreateOrder')}" lay-filter="component-form-group">
                 <div class="form-body">
                     <!--合同基本信息-->
                     <{include file="order/create/fragment/contract" /}>
 
-                    <!--客资信息-->
                     <{include file="order/create/fragment/customer" /}>
 
-                    <!--支付信息-->
                     <{include file="order/create/fragment/money" /}>
                 </div>
 
                 <div class="layui-form-item layui-layout-admin">
                     <div class="layui-input-inline">
-                        <input type="hidden" name="order_id" value="{$order.id}"/>
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="form-submit">保存</button>
                         </div>
@@ -80,31 +77,164 @@
             });
         });
 
-        form.on('select(news_type)', function(data){
-            var newsType = data.value;
-            $(".layui-form-item").each(function (i, n) {
-                var current = $(n);
-                var range = current.attr("show-range");
-                var index = range.indexOf(newsType);
-                if(index == -1) {
-                    current.addClass("layui-hide");
-                } else {
-                    current.removeClass("layui-hide");
-                }
-            })
+        var bindInputs = 'input[name="table_amount"],' +
+            'input[name="table_price"],' +
+            'input[name="service_fee"],' +
+            'input[name="wine_fee"],' +
+            'input[name="banquet_update_table"],' +
+            'input[name="wedding_total"],' +
+            'input[name="banquet_discount"],' +
+            'input[name="banquet_ritual_hall"],' +
+            'input[name="banquet_other"],' +
+            'input[name="wedding_room_amount"],' +
+            'input[name="wedding_room"],' +
+            'input[name="part_amount"],' +
+            'input[name="part"],' +
+            'input[name="champagne_amount"],' +
+            'input[name="champagne"],' +
+            'input[name="tea_amount"],' +
+            'input[name="tea"],' +
+            'input[name="cake_amount"],' +
+            'input[name="cake"]';
+
+        /* 监控桌数的输入 */
+        $(document).on("input", bindInputs, function () {
+            var form = $(this).parents("form");
+
+            var totals = 0;
+            var banquetTotals = 0;
+            var serviceFee = $('input[name="service_fee"]').val();
+            if(serviceFee!='' && serviceFee!=undefined) {
+                banquetTotals = banquetTotals + parseFloat(serviceFee);
+            }
+
+            var wineFee = $('input[name="wine_fee"]').val();
+            if(wineFee!='' && wineFee!=undefined) banquetTotals = banquetTotals + parseFloat(wineFee);
+
+            var banquetRitualHall = $('input[name="banquet_ritual_hall"]').val();
+            if(banquetRitualHall!='' && banquetRitualHall!=undefined) banquetTotals = banquetTotals + parseFloat(banquetRitualHall);
+
+            var banquetOther = $('input[name="banquet_other"]').val();
+            if(banquetOther!='' && banquetOther!=undefined) banquetTotals = banquetTotals + parseFloat(banquetOther);
+
+            // 餐标
+            var tableAmount = $('input[name="table_amount"]').val();
+            var tablePrice = $('input[name="table_price"]').val();
+            if(tablePrice != '' && tableAmount!=undefined && tableAmount!='' && tablePrice!=undefined) {
+                tableAmount = parseFloat(tableAmount);
+                tablePrice = parseFloat(tablePrice);
+                banquetTotals = banquetTotals + tableAmount * tablePrice;
+            }
+
+            // 婚房
+            var weddingRoomAmount = $('input[name="wedding_room_amount"]').val();
+            var weddingRoom = $('input[name="wedding_room"]').val();
+            if(weddingRoomAmount != '' && weddingRoomAmount!=undefined && weddingRoom!='' && weddingRoom!=undefined) {
+                weddingRoomAmount = parseFloat(weddingRoomAmount);
+                weddingRoom = parseFloat(weddingRoom);
+                banquetTotals = banquetTotals + weddingRoomAmount * weddingRoom;
+                console.log(banquetTotals);
+            } else {
+                console.log(weddingRoomAmount);
+            }
+
+            // 停车位
+            var partAmount = $('input[name="part_amount"]').val();
+            var part = $('input[name="part"]').val();
+            if(partAmount != '' && partAmount!=undefined && part!='' && part!=undefined) {
+                partAmount = parseFloat(partAmount);
+                part = parseFloat(part);
+                banquetTotals = banquetTotals + partAmount * part;
+            }
+
+            // 香槟
+            var champagneAmount = $('input[name="champagne_amount"]').val();
+            var champagne = $('input[name="champagne"]').val();
+            if(champagneAmount != '' && champagneAmount!=undefined && champagne!='' && champagne!=undefined) {
+                champagneAmount = parseFloat(champagneAmount);
+                champagne = parseFloat(champagne);
+                banquetTotals = banquetTotals + champagneAmount * champagne;
+            }
+
+            // 茶歇
+            var teaAmount = $('input[name="tea_amount"]').val();
+            var tea = $('input[name="tea"]').val();
+            if(teaAmount != '' && teaAmount!=undefined && tea!='' && tea!=undefined) {
+                teaAmount = parseFloat(teaAmount);
+                tea = parseFloat(tea);
+                banquetTotals = banquetTotals + teaAmount * tea;
+            }
+
+            // 蛋糕
+            var cakeAmount = $('input[name="cake_amount"]').val();
+            var cake = $('input[name="cake"]').val();
+            if(cakeAmount != '' && cakeAmount!=undefined && cake!='' && cake!=undefined) {
+                cakeAmount = parseFloat(cakeAmount);
+                cake = parseFloat(cake);
+                banquetTotals = banquetTotals + cakeAmount * cake;
+            }
+
+            var banquetUpdateTable = $('input[name="banquet_update_table"]').val();
+            if(banquetUpdateTable!='' && banquetUpdateTable != undefined) {
+                banquetUpdateTable = parseFloat(banquetUpdateTable);
+                banquetTotals = banquetTotals + banquetUpdateTable;
+            }
+
+            var banquetDiscount = $('input[name="banquet_discount"]').val();
+            if(banquetDiscount!='' && banquetDiscount!=undefined) banquetTotals = banquetTotals - parseFloat(banquetDiscount);
+            var weddingTotals = $('input[name="wedding_total"]').val();
+            if(weddingTotals!='' &&weddingTotals!=undefined) {
+                weddingTotals = parseFloat(weddingTotals);
+            } else {
+                weddingTotals = 0;
+            }
+
+            totals = banquetTotals + weddingTotals;
+
+            // 定金
+            if(form.hasClass("form-hotel-protocol")) {
+                var earnest = totals * 0.2;
+                earnest = earnest.toFixed(2);
+                $('input[name="earnest_money"]').val(earnest);
+            } else {
+                var earnest = totals * 0.3;
+                earnest = earnest.toFixed(2);
+                $('input[name="earnest_money"]').val(earnest);
+            }
+
+            // 中款
+            var middle = totals * 0.5;
+            middle = middle.toFixed(2);
+            $('input[name="middle_money"]').val(middle);
+
+            // 尾款
+            if (form.hasClass("form-hotel-protocol")) {
+                var tail = totals * 0.3;
+                tail = tail.toFixed(2);
+                $('input[name="tail_money"]').val(tail);
+            } else {
+                var tail = totals * 0.2;
+                tail = tail.toFixed(2);
+                $('input[name="tail_money"]').val(tail);
+            }
+
+            if(banquetTotals > 0) {
+                banquetTotals = banquetTotals.toFixed(2);
+            }
+
+            if(totals > 0) {
+                totals = totals.toFixed(2);
+            }
+
+            $('input[name="banquet_totals"]').val(banquetTotals);
+            $('input[name="contract_totals"]').val(totals);
+            $('input[name="pay_hotel_totals"]').val(totals);
         });
 
-        form.on('select(weddding_supplier)', function(data){
-            var index = data.value;
-            var supplier = suppliers[index];
-            var parents = $(data.elem).parents(".layui-form-item");
-            parents.find("input[name='wedding_pay_to_company']").val(supplier.bank_company);
-            parents.find("input[name='wedding_pay_to_account']").val(supplier.bank_account);
-            parents.find("input[name='wedding_pay_to_bank']").val(supplier.bank_name);
-        });
 
-        /* 监听提交 */
-        form.on('submit(form-submit)', function (data) {
+        /**
+        form.on('submit(component-form-group)', function (data) {
+            alert(111);
             var url = data.form.action;
             var params = data.field;
             $.post(url, params, function (res) {
@@ -114,84 +244,7 @@
             });
             return false;
         });
-
-        var bindInputs = 'input[name="table_amount"],' +
-            'input[name="table_price"],' +
-            'input[name="service_fee"],' +
-            'input[name="wine_fee"],' +
-            'input[name="banquet_update_table"],' +
-            'input[name="wedding_total"],' +
-            'input[name="banquet_discount"]';
-
-        /* 监控桌数的输入 */
-        $(bindInputs).bind("input", function () {
-            var totals = 0;
-            var banquetTotals = 0;
-            var serviceFee = $('input[name="service_fee"]').val();
-            if(serviceFee!='') {
-                banquetTotals = banquetTotals + parseFloat(serviceFee);
-            }
-
-            var wineFee = $('input[name="wine_fee"]').val();
-            if(wineFee!='') banquetTotals = banquetTotals + parseFloat(wineFee);
-
-            var tableAmount = $('input[name="table_amount"]').val();
-            var tablePrice = $('input[name="table_price"]').val();
-            if(tablePrice != '' && tableAmount!='') {
-                tableAmount = parseFloat(tableAmount);
-                tablePrice = parseFloat(tablePrice);
-                banquetTotals = banquetTotals + tableAmount * tablePrice;
-            }
-
-            var banquetUpdateTable = $('input[name="banquet_update_table"]').val();
-            if(banquetUpdateTable!='') {
-                banquetUpdateTable = parseFloat(banquetUpdateTable);
-                banquetTotals = banquetTotals + banquetUpdateTable;
-            }
-
-            var banquetDiscount = $('input[name="banquet_discount"]').val();
-            if(banquetDiscount!='') banquetTotals = banquetTotals - parseFloat(banquetDiscount);
-            var weddingTotals = $('input[name="wedding_total"]').val();
-            if(weddingTotals!='') {
-                weddingTotals = parseFloat(weddingTotals);
-            } else {
-                weddingTotals = 0;
-            }
-
-            totals = banquetTotals + weddingTotals;
-            // 定金
-            var earnest = totals * 0.3;
-            earnest = earnest.toFixed(2);
-            $('input[name="earnest_money"]').val(earnest);
-            // 中款
-            var middle = totals * 0.5;
-            middle = middle.toFixed(2);
-            $('input[name="middle_money"]').val(middle);
-            // 尾款
-            var tail = totals * 0.2;
-            tail = tail.toFixed(2);
-            $('input[name="tail_money"]').val(tail);
-
-            if(banquetTotals > 0) {
-                banquetTotals = banquetTotals.toFixed(2);
-            }
-            if(totals > 0) {
-                totals = totals.toFixed(2);
-            }
-            $('input[name="banquet_totals"]').val(banquetTotals);
-            $('input[name="contract_totals"]').val(totals);
-        });
-
-        $(document).on("click", ".append_wedding_item", function () {
-            var tbody = $(this).parents("tbody");
-            var row = $(this).parents("tr").clone();
-            tbody.append(row);
-            form.render()
-        });
-
-        $(document).on("click", ".delete_wedding_item", function () {
-            var row = $(this).parents("tr").remove();
-        });
+         **/
     });
 </script>
 </body>

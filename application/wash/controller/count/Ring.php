@@ -128,7 +128,6 @@ class Ring extends Backend
         if ($output == '') {
             $output = 0;
         }
-
         return $output;
     }
 }
