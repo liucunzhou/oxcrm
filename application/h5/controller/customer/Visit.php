@@ -67,14 +67,22 @@ class Visit extends Base
             return json($result);
         }
 
+        $users = User::getUsers(false);
+
         $map = [];
         $map[] = ['member_id','=',$allocate['member_id']];
-        $field = "";
+        $field = "status,create_time,next_visit_time,user_id,content";
+
         ### 根据分配表的数据查询回访记录
-        $list = $this->model->where($map)->field($field)->order('create_time desc')->paginate($request['limit'], false, $config);
+        $list = $this->model->where($map)
+                    ->field($field)
+                    ->order('create_time desc')
+                    ->paginate($request['limit'], false, $config);
+
         foreach ($list as &$value) {
+            $value['level'] = '重要程度';
             $value['status'] = $this->statusList[$value['status']]['title'];
-            $value['user'] = User::get($value['user_id']);
+            $value['user'] = $users[$value['user_id']]['realname'];
         }
 
         $result = [
