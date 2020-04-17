@@ -80,9 +80,9 @@ class Visit extends Base
                     ->paginate($request['limit'], false, $config);
 
         foreach ($list as &$value) {
-            $value['level'] = '重要程度';
+            $value['level'] = '重要客户';
             $value['status'] = $this->statusList[$value['status']]['title'];
-            $value['user'] = $users[$value['user_id']]['realname'];
+            $value['realname'] = $users[$value['user_id']]['realname'];
         }
 
         $result = [
