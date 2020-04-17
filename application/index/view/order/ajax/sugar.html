@@ -1,10 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="layui-card layui-card-item">
+    <div class="layui-card-header">
+        <div class="layui-card-header-title">喜糖信息</div>
+        <div class="layui-card-header-right">
+            <div class="layui-card-delete" data-target="#btn-append-sugar">删除</div>
+        </div>
+    </div>
+    <div class="layui-card-body">
 
-</body>
-</html>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">选择销售</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="is_suborder" value="0">
+                    <select name="sugar_salesman" class="layui-select" lay-search>
+                        <option value=""></option>
+                        <{foreach name="staffs" item="val"}>
+                        <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">品牌</label>
+                <div class="layui-input-inline">
+                    <select class="layui-select" name="sugar_id" lay-search lay-verify="">
+                        <option value="">请选择喜糖</option>
+                        <{foreach name="sugarList" item="row"}>
+                        <option value="{$row['id']}" {$data.sugar_id==$row.id?'selected':''}>{$row['title']}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">喜糖数量</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sugar_amount" value="{$data.sugar_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">喜糖费用</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sugar_price" value="{$data.sugar_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sugar_contact" value="{$data.sugar_contact}" lay-verify="" placeholder="联系人" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sugar_mobile" value="{$data.sugar_mobile}" lay-verify="" placeholder="联系人手机号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">联系地址</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sugar_address" value="{$data.sugar_address}" lay-verify="" placeholder="联系地址" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="sugar_remark" value="{$data.sugar_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

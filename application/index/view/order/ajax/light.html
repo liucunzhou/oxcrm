@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="layui-card layui-card-item">
+    <div class="layui-card-header">
+        <div class="layui-card-header-title">灯光信息</div>
+        <div class="layui-card-header-right">
+            <div class="layui-card-delete" data-target="#btn-append-light">删除</div>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">选择销售</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="is_suborder" value="0">
+                    <select name="light_salesman" class="layui-select" lay-search>
+                        <option value=""></option>
+                        <{foreach name="staffs" item="val"}>
+                        <option value="{$val.id}" {$data.salesman==$order.salesman?'selected':''}>{$val.realname}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">品牌</label>
+                <div class="layui-input-inline">
+                    <select class="layui-select" name="light_id" lay-search lay-verify="">
+                        <option value="">请选择灯光</option>
+                        <{foreach name="lightList" item="row"}>
+                        <option value="{$row['id']}" {$data.light_id==$row.id?'selected':''}>{$row['title']}</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-</body>
-</html>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">数量</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="light_amount" value="{$data.light_amount}" lay-verify="" placeholder="数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">金额</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="light_price" value="{$data.light_price}" lay-verify="" placeholder="金额" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" type="text" name="light_remark" value="{$data.light_remark}" lay-verify="" placeholder="备注" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

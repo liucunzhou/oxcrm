@@ -1,7 +1,9 @@
 <div class="layui-card layui-card-item">
     <div class="layui-card-header layui-card-header-flex">
         <div class="layui-card-header-title">婚宴基本信息</div>
-        <div class="layui-card-header-right layui-card-delete">删除</div>
+        <div class="layui-card-header-right">
+            <div class="layui-card-delete" data-target="#btn-append-banquet">删除</div>
+        </div>
     </div>
     <div class="layui-card-body">
         <div class="layui-row">
@@ -79,7 +81,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label layui-color-red">婚宴总金额</label>
                         <div class="layui-input-inline">
-                            <input read type="number" name="banquet_totals" value="{$data['banquet_totals']}" lay-verify="required" readonly placeholder="婚宴总金额" autocomplete="off" class="layui-input">
+                            <input read type="number" name="banquet_totals" value="{$data['banquet_totals']}" placeholder="婚宴总金额" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                 </div>

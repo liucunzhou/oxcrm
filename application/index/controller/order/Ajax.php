@@ -5,6 +5,46 @@ use app\wash\controller\Backend;
 
 class Ajax extends Backend
 {
+    public function initialize()
+    {
+        parent::initialize();
+
+        ## 获取所有品牌、公司
+        $brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $brands);
+
+
+        $rituals = \app\common\model\Ritual::getList();
+        $this->assign('rituals', $rituals);
+
+        $packages = \app\common\model\Package::getList();
+        $this->assign('packages', $packages);
+
+        $carList = \app\common\model\Car::getList();
+        $this->assign('carList', $carList);
+
+        $sugarList = \app\common\model\Sugar::getList();
+        $this->assign('sugarList', $sugarList);
+
+        $wineList = \app\common\model\Wine::getList();
+        $this->assign('wineList', $wineList);
+
+        $lightList = \app\common\model\Light::getList();
+        $this->assign('lightList', $lightList);
+
+        $dessertList = \app\common\model\Dessert::getList();
+        $this->assign('dessertList', $dessertList);
+
+        $ledList = \app\common\model\Led::getList();
+        $this->assign('ledList', $ledList);
+
+        $d3List = \app\common\model\D3::getList();
+        $this->assign('d3List', $d3List);
+
+        $staffs = \app\common\model\User::getUsers();
+        $this->assign('staffs', $staffs);
+    }
+
     // 婚庆表单
     public function wedding()
     {
