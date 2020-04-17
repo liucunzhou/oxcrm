@@ -74,7 +74,7 @@ class Visit extends Base
         $list = $this->model->where($map)->field($field)->order('create_time desc')->paginate($request['limit'], false, $config);
         foreach ($list as &$value) {
             $value['status'] = $this->statusList[$value['status']]['title'];
-            $value['user'] = '';
+            $value['user'] = User::get($value['user_id']);
         }
 
         $result = [
