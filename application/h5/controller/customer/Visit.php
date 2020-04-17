@@ -45,7 +45,7 @@ class Visit extends Base
 
 
     /**
-     * 回访详情
+     * 回访列表
      */
     public function detail() {
         $request = $this->request->param();
