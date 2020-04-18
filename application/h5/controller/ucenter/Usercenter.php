@@ -16,10 +16,13 @@ class Usercenter extends Base
         // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
     }
 
+    ###  个人信息
     public function index()
     {
         $request = $this->request->param();
+        ###  个人信息
         $usersCenter = User::getUser($request['id']);
+        ###  个人权限
         $data = AuthGroup::getAuthGroup($usersCenter['role_id']);
         $usersCenter['title'] = $data['title'];
         $usersCenter['auth_type'] = $data['auth_type'];
@@ -30,5 +33,29 @@ class Usercenter extends Base
         ];
 
         return json($result);
+    }
+
+    /**
+     * 修改密码
+     * Method doRepassword
+     * @return \think\response\Json
+     */
+    public function doRepassword()
+    {
+        $request = $this->request->param();
+        $user = User::get($request['id']);
+        $post['password'] = md5($request['password']);
+
+        if ($user['password'] != $post['password']) {
+            return json(['code'=>'400', 'msg'=>'请输入原密码']);
+        }
+        $user->password = md5($request['newpassword']);
+        $result = $user->save();
+
+        if($result) {
+            return json(['code'=>'200', 'msg'=>'修改密码成功']);
+        } else {
+            return json(['code'=>'400', 'msg'=>'修改密码失败']);
+        }
     }
 }

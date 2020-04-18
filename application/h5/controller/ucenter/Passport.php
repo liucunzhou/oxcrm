@@ -17,13 +17,14 @@ class Passport extends Controller
 
         $field = 'id,nickname,realname,mobile,password';
         $user = User::field($field)->where($where)->find();
+
         if($user->password != md5($params['password'])) {
             $arr = [
                 'code'  => '400',
                 'msg'   => '用户名或者密码错误'
             ];
 
-            return $arr;
+            return json($arr);
         }
 
         $salt = 'hongsi';
