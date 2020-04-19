@@ -3,6 +3,7 @@ namespace app\index\controller\organization;
 
 use app\common\model\Brand;
 use app\index\controller\Backend;
+use think\response\Json;
 
 class Audit extends Backend
 {
@@ -29,6 +30,10 @@ class Audit extends Backend
 
             $map = [];
             $list = $this->model->where($map)->order("sort desc")->paginate($request['limit'], false, $config);
+            foreach ($list as &$row) {
+                $row['company_id'] = $this->brands[$row['company_id']]['title'];
+            }
+
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
@@ -53,13 +58,15 @@ class Audit extends Backend
     {
         $request = $this->request->param();
         if(empty($request['company_id'])) {
-            $request = [
+            $result = [
                 'code'  => '400',
                 'msg'   => '请选择所属公司'
             ];
+            return json($result);
         }
 
-        $row = $this->model->allowFields->save($request);
+        $this->model->content = json_encode($request['rule']);
+        $row = $this->model->allowField(true)->save($request);
         if($row) {
             $result = [
                 'code'  => '200',
@@ -77,6 +84,14 @@ class Audit extends Backend
 
     public function edit($id)
     {
+        $map = [];
+        $map[] = ['id', '=', $id];
+        $data = $this->model->where($map)->find();
+        $this->assign('data', $data);
+
+        $rules = json_decode($data['content'], true);
+        $this->assign('rules', $rules);
+
         return $this->fetch();
     }
 
