@@ -102,6 +102,48 @@ class Visit extends Base
         return json($result);
     }
 
+    ### 获取回访状态列表
+    public function create()
+    {
+        $map = [];
+        $map[]  = ['type', '<>', 'wash'];
+
+        $fields = 'id,title';
+        $statusList = Intention::field($fields)->where($map)->order('is_valid desc,sort desc,id asc')->select();
+        foreach ($statusList as &$row) {
+            if ($row['id'] == 4) {
+                $row['children'] = [
+                    '空号',
+                    '无任何需求',
+                    '有需求，客户已定',
+                    '无结婚需求'
+                ];
+
+            } else if ($row['id'] == 7) {
+                $row['children'] = [
+                    '电话无法接通',
+                    '关机',
+                    '客户直接挂断',
+                    '停机'
+                ];
+
+            } else {
+                $row['children'] = [];
+            }
+        }
+
+        $result = [
+            'code'  => '200',
+            'msg'   => '获取数据成功',
+            'data'  => [
+                'statusList' => $statusList
+            ]
+        ];
+
+        return json($result);
+    }
+
+    ## 添加回访记录
     public function doCreate()
     {
         $request = $this->request->param();
