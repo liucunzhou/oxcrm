@@ -47,7 +47,6 @@ class Ring extends Base
             $result = [
                 'code'  =>  '400',
                 'msg'   =>  $result['Msg'],
-                'data'  =>  ''
             ];
         }
 
@@ -69,9 +68,8 @@ class Ring extends Base
             ];
         } else {
             $result = [
-                'code'  =>  '200',
+                'code'  =>  '400',
                 'msg'   =>  '获取手机号失败',
-                'data'  =>  ''
             ];
         }
         return json($result);

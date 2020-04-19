@@ -47,7 +47,7 @@ class Visit extends Base
     /**
      * 回访列表
      */
-    public function detail() {
+    public function detailList() {
         $request = $this->request->param();
         $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
         $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
@@ -60,9 +60,8 @@ class Visit extends Base
 
         if (empty($allocate)) {
             $result = [
-                'code'  => '200',
-                'msg'   => '回访记录',
-                'data'  => ''
+                'code'  => '400',
+                'msg'   => '获取用户基本信息失败',
             ];
             return json($result);
         }
@@ -83,7 +82,7 @@ class Visit extends Base
         {
             $result = [
                 'code'  => '200',
-                'msg'   => '回访记录',
+                'msg'   => '回访记录为空',
                 'data'  => []
             ];
             return json($result);
@@ -102,5 +101,11 @@ class Visit extends Base
         ];
 
         return json($result);
+    }
+
+    public function doCreate()
+    {
+        $request = $this->request->param();
+
     }
 }
