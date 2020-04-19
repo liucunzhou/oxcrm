@@ -53,4 +53,25 @@ class Ring extends Base
 
         return json($result);
     }
+
+    public function toCall()
+    {
+        $request = $this->request->param();
+        $MemberAllocate = new MemberAllocate();
+        $customer = $MemberAllocate->where('id','=',$request['id'])->field('id,mobile,mobile1')->find();
+        if( !empty($customer) ){
+            $result = [
+                'code'  =>  '200',
+                'msg'   =>  '获取手机号成功',
+                'data'  =>  $customer->$request['type']
+            ];
+        } else {
+            $result = [
+                'code'  =>  '200',
+                'msg'   =>  '获取手机号失败',
+                'data'  =>  ''
+            ];
+        }
+        return json($result);
+    }
 }
