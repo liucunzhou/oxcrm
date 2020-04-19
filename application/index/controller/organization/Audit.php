@@ -51,7 +51,28 @@ class Audit extends Backend
 
     public function doCreate()
     {
-       return json([]);
+        $request = $this->request->param();
+        if(empty($request['company_id'])) {
+            $request = [
+                'code'  => '400',
+                'msg'   => '请选择所属公司'
+            ];
+        }
+
+        $row = $this->model->allowFields->save($request);
+        if($row) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '添加审核规则成功'
+            ];
+        } else {
+            $result = [
+                'code'  => '500',
+                'msg'   => '添加审核规则失败'
+            ];
+        }
+
+        return json($result);
     }
 
     public function edit($id)

@@ -25,7 +25,16 @@ class Index extends Backend
             ]
         ];
 
-        if ($this->role['auth_type'] != 0) {
+        if ($this->role['auth_type'] == 0) {
+            $menus['数据统计'] = [
+                'items' => [
+                    [
+                        'text' => '通话统计',
+                        'url' => url('/wash/count.ring/call')
+                    ]
+                ]
+            ];
+        } else {
             $menus['数据统计'] = [
                 'items' => [
                     [
