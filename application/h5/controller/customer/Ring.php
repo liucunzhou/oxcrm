@@ -12,22 +12,32 @@ class Ring extends Base
 {
     public function call()
     {
+        if(empty($this->user['mobile'])) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '您的手机号未绑定，请联系管理员'
+            ];
+
+            return json($result);
+        }
+
         $request = $this->request->param();
         $rongModel = new Rong();
         $MemberAllocate = new MemberAllocate();
 
         ###  查询分配表数据
         $customer = $MemberAllocate->where('id','=',$request['id'])->field('id,member_id,mobile,mobile1')->find();
-
-        ###  查询个人手机号
-        $user = User::get($customer['member_id']);
-
-        $result = $rongModel->call($user['mobile'], $customer->$request['type']);
+        $result = $rongModel->call($this->user['mobile'], $customer->$request['type']);
         if($result['Flag'] == 1) {
-            // 打电话数据库
+            $data = [];
+            $data['user_id'] = $this->user['id'];
+            $data['type'] = 'mobile';
+            $data['seat'] = $this->user['mobile'];
+            $data['create_time'] = time();
             $data['sessionId'] = $result['Msg'];
-//            $callLog = new \app\common\model\CallLog();
-//            $callLog->save($data);
+            $callLog = new \app\common\model\CallLog();
+            $callLog->save($data);
+
             $result = [
                 'code'  =>  '200',
                 'msg'   =>  $result['Msg'],
