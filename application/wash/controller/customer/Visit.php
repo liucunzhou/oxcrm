@@ -85,7 +85,7 @@ class Visit extends Backend
             $member->commit();
             $data = [];
             $data['active_status'] = $params['status'];
-            $data['color'] = $params['color'];
+            $data['color'] = $params['color'] ? $params['color'] : '';
             $allocate->save($data);
 
             ### 添加下次回访提醒

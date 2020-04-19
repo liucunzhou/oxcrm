@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
     <link rel="stylesheet" href="/assets/style/ox-common.css?1" media="all">
+    <link rel="stylesheet" href="/assets/style/jquery-ui.min.css" media="all">
+    <link rel="stylesheet" href="/assets/lib/jquery-2.1.4.min.js" media="all">
+    <script src="/assets/layui/layui.js"></script>
+    <link rel="stylesheet" href="/assets/lib/jquery-ui.min.js" media="all">
 </head>
 <body>
 <div class="layui-fluid">
@@ -58,7 +62,7 @@
                         </select>
                         <div class="layui-btn">追加</div>
                         -->
-                        <table class="layui-table">
+                        <table class="layui-table rule-list">
                             <tr>
                                 <td><input type="checkbox" name="rule[]" value="department-1" title="主管审核" lay-skin="primary"></td>
                             </tr>
@@ -121,19 +125,16 @@
         </div>
     </div>
 </div>
-<script src="/assets/layui/layui.js"></script>
-<script>
-    layui.config({
-        base: '/assets/' //静态资源所在路径
-    }).extend({
-        index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function () {
-        var $ = layui.jquery
-            ,form = layui.form;
 
+<script>
+$(function(){
+    $(".rule-list tr").sortable();
+
+    layui.use('form', function() {
+        var form = layui.form;
         form.render(null, 'component-form-group');
         /* 监听提交 */
-        form.on('submit(form-submit)', function(data){
+        form.on('submit(form-submit)', function (data) {
             var url = data.form.action;
             var params = data.field;
             $.post(url, params, function (res) {
@@ -148,6 +149,7 @@
             return false;
         });
     });
+});
 </script>
 </body>
 </html>

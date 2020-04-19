@@ -192,8 +192,8 @@ class Visit extends Base
             $member->commit();
             $data = [];
             $data['active_status'] = $request['status'];
-            $data['color'] = $request['color'];
-            $allocate->save($data);
+            $data['color'] = $request['color'] ? $request['color'] : '';
+            $res = $allocate->save($data);
 
             ### 添加下次回访提醒
             if ($request['next_visit_time'] > 0) {
