@@ -134,7 +134,7 @@
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="block layui-center" title="编辑客户信息">{$row.zone|default='--'}</a></td>
                     <td>
                         <div class="width-hotel">
-                            <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="block layui-center" title="编辑客户信息">{$row.hotel_text|default='--'}</a>
+                            <a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/create', ['id'=>$row['id']])}" class="block layui-center" title="$row.hotel_text">{$row.hotel_text|default='--'}</a>
                         </div>
                     </td>
                     <td>{$row.source_text}</td>
