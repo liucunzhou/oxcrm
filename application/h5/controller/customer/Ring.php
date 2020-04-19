@@ -63,7 +63,9 @@ class Ring extends Base
             $result = [
                 'code'  =>  '200',
                 'msg'   =>  '获取手机号成功',
-                'data'  =>  $customer->$request['type']
+                'data'  =>  [
+                    'mobile'    =>  $customer[$request['type']]
+                ]
             ];
         } else {
             $result = [
