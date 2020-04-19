@@ -305,3 +305,19 @@ h4 {
 .bg-unvisited {
     color: #ff0000!important;
 }
+
+.layui-input-flex {
+    display: flex;
+}
+
+.layui-input-flex input {
+    flex: 1;
+}
+
+.layui-input-flex input:nth-child(2) {
+    margin: 0 12px;
+}
+
+.layui-input-flex input:last-child {
+    margin-right: 0;
+}

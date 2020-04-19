@@ -44,13 +44,13 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"addAuth", "text"=>"添加功能"])}
+                            <a class="layui-btn layui-btn-sm {:auth('/index/organization.audit/create')}" lay-event="create">添加审核规则</a>
                         </div>
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"editAuth", "text"=>"编辑", "atype"=>"edit"])}
-                            {:button(["event"=>"deleteAuth", "text"=>"删除", "atype"=>"delete"])}
+                            <a class="layui-btn layui-btn-sm {:auth('/index/organization.audit/edit')}" lay-event="edit">编辑</a>
+                            <a class="layui-btn layui-btn-sm {:auth('/index/organization.audit/delete')}" lay-event="delete">删除</a>
                         </div>
                     </script>
                 </div>
@@ -75,26 +75,19 @@
             height: 'full-100',
             defaultToolbar: ['filter'],
             toolbar: '#table-toolbar',
-            title: '模块管理',
+            title: '审核规则管理',
             cols: [[
                 {
                     "field": "id",
                     "title": "ID",
                     "width": 60
                 }, {
-                    "field": "parent_id",
-                    "title": "模块",
+                    "field": "company_id",
+                    "title": "公司",
                     "width": 100
                 }, {
                     "field": "title",
-                    "title": "事件"
-                }, {
-                    "field": "route",
-                    "title": "路由"
-                }, {
-                    "field": "is_menu",
-                    "title": "是否菜单",
-                    "width": 100
+                    "title": "规则名称"
                 }, {
                     "field": "is_valid",
                     "title": "状态",
@@ -103,7 +96,11 @@
                     "field": "sort",
                     "title": "排序",
                     "width": 80
-                }, {"field": "create_time", "title": "\u521b\u5efa\u65f6\u95f4", "width": 165}, {
+                }, {
+                    "field": "create_time",
+                    "title": "创建时间",
+                    "width": 165
+                }, {
                     "type": "tool",
                     "title": "操作",
                     "toolbar": "#table-tool",
@@ -121,12 +118,12 @@
             var checkStatus = table.checkStatus(obj.config.id);
             var url = '';
             switch (obj.event) {
-                case 'addAuth':
+                case 'create':
                     var data = checkStatus.data;
-                    url = '/index/organization.auth/addauth.html';
+                    url = '/index/organization.audit/create.html';
                     layer.open({
                         type: 2,
-                        title: '添加模块/事件',
+                        title: '添加审核规则',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'
@@ -140,23 +137,22 @@
         table.on('tool(table)', function (obj) {
             var id = obj.data.id;
             switch (obj.event) {
-                case 'editAuth':
-                    url = '/index/organization.auth/editauth.html?id=' + id;
+                case 'edit':
+                    url = '/index/organization.audit/edit.html?id=' + id;
                     layer.open({
                         type: 2,
-                        title: '编辑',
+                        title: '编辑审核规则',
                         content: url,
                         area: [width + 'px', height + 'px'],
                         offset: 'rb'
                     });
                     break;
-                case 'deleteAuth':
-                    if(id == undefined) {
-                        layer.msg("请选择要删除的事件");
+                case 'delete':
+                    if(!confirm("确定删除该审核规则")) {
                         return false;
                     }
 
-                    url = '/index/organization.auth/deleteAuth.html?id=' + id;
+                    url = '/index/organization.audit/delete.html?id=' + id;
                     $.post(url, {id:id}, function (res) {
                         if(res.code == '200') {
                             table.reload("table");

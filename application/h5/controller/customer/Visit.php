@@ -57,7 +57,6 @@ class Visit extends Base
 
         ### 获取用户基本信息
         $allocate = MemberAllocate::get($request['allocate_id']);
-
         if (empty($allocate)) {
             $result = [
                 'code'  => '200',
