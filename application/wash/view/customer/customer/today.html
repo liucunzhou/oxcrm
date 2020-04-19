@@ -114,7 +114,6 @@
                     <th>客资渠道</th>
                     <th>信息类型</th>
                     <th>回访状态</th>
-                    <th>备注</th>
                     <th>获取方式</th>
                     <th>分配时间</th>
                     <th>创建日期</th>
@@ -141,7 +140,6 @@
                     <td>{$row.source_text}</td>
                     <td>{$row.news_type}</td>
                     <td><a href="javascript:void(0);" data-action="{:url('/wash/customer.visit/edit', ['id'=>$row['id']])}" class="layui-center" data-width="40" title="快速回访">{$row.active_status}</a></td>
-                    <td></td>
                     <td>{$row.allocate_type}</td>
                     <td>{$row.create_time}</td>
                     <td>{$row.member_create_time}</td>
