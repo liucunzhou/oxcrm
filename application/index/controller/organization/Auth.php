@@ -34,6 +34,7 @@ class Auth extends Backend
                 $value['is_valid'] = $value['is_valid'] ? '在线' : '下线';
                 $value['is_menu'] = $value['is_menu'] ? '是' : '否';
             }
+
             $result = [
                 'code'  => 0,
                 'msg'   => '获取数据成功',
