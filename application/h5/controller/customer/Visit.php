@@ -79,10 +79,20 @@ class Visit extends Base
                     ->order('create_time desc')
                     ->paginate($request['limit'], false, $config);
 
+        if(empty($list))
+        {
+            $result = [
+                'code'  => '200',
+                'msg'   => '回访记录',
+                'data'  => []
+            ];
+            return json($result);
+        }
         foreach ($list as &$value) {
             $value['level'] = '重要客户';
             $value['status'] = $this->statusList[$value['status']]['title'];
             $value['realname'] = $users[$value['user_id']]['realname'];
+            $value['next_visit_time'] = date("Y-m-d",$value['next_visit_time']);
         }
 
         $result = [
