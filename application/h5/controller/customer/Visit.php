@@ -148,5 +148,38 @@ class Visit extends Base
     {
         $request = $this->request->param();
 
+        if (!empty($request['next_visit_time'])) {
+            $data['next_visit_time'] = strtotime($request['next_visit_time']);
+        } else {
+            $data['next_visit_time'] = 0;
+        }
+
+        if (!empty($request['status'])){
+            $data['status'] = $request['status'];
+        } else {
+            return json(['code'=>400,'msg'=>'状态']);
+        }
+
+        if (!empty($request['content'])){
+            $data['content'] = $request['content'];
+        } else {
+            return json(['code'=>400,'msg'=>'备注']);
+        }
+
+        $result1 = $this->model->save($data);
+
+        if( $result1 ){
+            $result = [
+                'code'  =>  '200',
+                'msg'   =>  '回访成功',
+                'data'  =>  ''
+            ];
+        } else {
+            $result = [
+                'code'  =>  '400',
+                'msg'   =>  '回访失败',
+            ];
+        }
+        return json($result);
     }
 }
