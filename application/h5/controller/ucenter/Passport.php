@@ -30,6 +30,7 @@ class Passport extends Controller
         $salt = 'hongsi';
         $data = $user->getData();
         unset($data['password']);
+        unset($user['password']);
 
         $token = JWT::encode($data, $salt);
         $arr = [
