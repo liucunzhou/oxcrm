@@ -202,28 +202,73 @@ class Customer extends Base
      */
     public function mine()
     {
-        $get = Request::param();
-        $get['limit'] = isset($get['limit']) ? $get['limit'] : 3;
-        $get['page'] = isset($get['page']) ? $get['page'] + 1 : 1;
+        $request = $this->request->param();
+        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
+        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
         $config = [
-            'page' => $get['page']
+            'page' => $request['page']
         ];
-        $map[] = ['user_id', '=', $get['user_id']];
+
+        $map = [];
+        $maps = [];
+        ###  管理者还是销售
+        if($this->role['auth_type'] > 0) {
+            ### 员工列表
+            if( isset($request['user_id']) && $request['user_id'] != 'all' ){
+//                $user_id = explode(',',$request['user_id']);
+                $map[] = ['user_id','in',$request['user_id']];
+                $maps[] = ['user_id','in',$request['user_id']];
+            }
+        } else {
+            $map[] = ['user_id', '=', $this->user['user_id']];
+            $maps[] = ['user_id', '=', $this->user['user_id']];
+        }
+        ### 当前选择跟进渠道
+        if(isset($request['active_status']) && is_numeric($request['active_status'])){
+            $map[] = ['active_status','=',$request['active_status']];
+        }
+        ### 获取方式
+        if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
+            $map[] = ['allocate_type','=',$request['allocate_type']];
+            $maps[] = ['allocate_type','=',$request['allocate_type']];
+        }
+        ### 时间区间
+        /*if( isset($request['range']) && $request['range'] == 'start_date' ){
+            $map[] = [];
+        }*/
+
         ##用户  权限   查询
         //$map = Search::customerMine($this->user, $get);
+        $model = $this->model->where($map);
 
         $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
-        $list = $this->model->where($map)->field($field)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+        $list = $model->field($field)->order('create_time desc,member_create_time desc')->paginate($request['limit'], false, $config);
+        $lists = $this->model->field('id,active_status')->where($maps)->select();
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
                 $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
+
+            $active_status = array_column($this->status,'id');
+            $count = array_count_values(array_column($lists->toArray(),"active_status"));
+            $wordCount = [];
+            foreach($active_status as $k => $v)
+            {
+                $sl = isset($count[$v])?$count[$v]:0;
+                $wordCount[] = [
+                    'id'=>$v,
+                    'title'=>$this->status[$v]['title'],
+                    'count'=>$sl,
+                ];
+            }
+
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'count' => $list->total(),
+                'count' => count($list),
+                'counts'=> $wordCount,
                 'data' => $list->getCollection(),
             ];
 

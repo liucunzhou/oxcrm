@@ -1,7 +1,25 @@
 <?php
-$arr = ['a', 'b', 'c', 'd'];
-// print_r($arr);
-$b = ['all'=>'全部'];
+$arr = [
+    [
+        'id'    => 100,
+        'name'  => '1',
+        'age'   => '1000',
+        'sex'   => 1
+    ],
+    [
+        'id'    => 101,
+        'name'  => '1',
+        'age'   => '1000',
+        'sex'   => 1
+    ],
+    [
+        'id'    => 102,
+        'name'  => '1',
+        'age'   => '1000',
+        'sex'   => 1
+    ]
+];
 
-$arr = $b + $arr;
-print_r($arr);
+$new = array_column($arr, 'id');
+
+print_r($new);
