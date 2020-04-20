@@ -210,15 +210,16 @@ class Customer extends Base
         ];
 
         $map = [];
-        $maps = [];
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && $request['user_id'] != 'all' && is_numeric($request['active_status'])){
+            if( isset($request['user_id']) && $request['user_id'] != 'all') {
 //                $user_id = explode(',',$request['user_id']);
-                $map[] = ['user_id','=',$request['user_id']];
-            } elseif (  isset($request['user_id']) && $request['user_id'] != 'all') {
-                $map[] = ['user_id','in',$request['user_id']];
+                if (is_numeric($request['active_status'])) {
+                    $map[] = ['user_id', '=', $request['user_id']];
+                } else {
+                    $map[] = ['user_id', 'in', $request['user_id']];
+                }
             }
         } else {
             $map[] = ['user_id', '=', $this->user['user_id']];
