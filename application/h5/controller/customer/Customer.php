@@ -269,12 +269,18 @@ class Customer extends Base
                     'count'=>$sl,
                 ];
             }
+            $count = [
+                 '0'=>  [
+                    'id'    =>  'all',
+                    'title' =>  '所有客资',
+                    'count' =>count($lists)
+                    ]
+            ];
 
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'count' => count($lists),
-                'counts'=> $wordCount,
+                'counts'=> $count + $wordCount,
                 'data' => $list->getCollection(),
             ];
 
