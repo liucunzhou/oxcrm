@@ -223,10 +223,15 @@ class Customer extends Base
             $map[] = ['user_id', '=', $this->user['user_id']];
             $maps[] = ['user_id', '=', $this->user['user_id']];
         }
+
+        ### 手机号筛选
+
+
         ### 当前选择跟进渠道
         if(isset($request['active_status']) && is_numeric($request['active_status'])){
             $map[] = ['active_status','=',$request['active_status']];
         }
+
         ### 获取方式
         if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
             $map[] = ['allocate_type','=',$request['allocate_type']];
@@ -251,6 +256,7 @@ class Customer extends Base
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
 
+            ###  出来列表页跟进状态
             $active_status = array_column($this->status,'id');
             $count = array_count_values(array_column($lists->toArray(),"active_status"));
             $wordCount = [];
@@ -267,7 +273,7 @@ class Customer extends Base
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'count' => count($list),
+                'count' => count($lists),
                 'counts'=> $wordCount,
                 'data' => $list->getCollection(),
             ];
@@ -283,5 +289,105 @@ class Customer extends Base
         }
         return json($result);
 
+    }
+
+    /**
+     * 客资公海
+     * Method seas
+     * @return mixed|\think\response\Json
+     */
+    public function seas()
+    {
+        $request = $this->request->param();
+        $config = [
+            'page' => $request['page']
+        ];
+        $map[] = ['is_sea', '=', '1'];
+        if (isset($request['source']) && $request['source'] > 0) {
+            $map[] = ['source_id', '=', $request['source']];
+        }
+
+        if (isset($request['staff']) && $request['staff'] > 0) {
+            $map[] = ['operate_id', '=', $request['staff']];
+        }
+
+        if (isset($request['city_id']) && $request['city_id'] > 0) {
+            $map[] = ['city_id', '=', $request['city_id']];
+        }
+
+        ###  默认隐藏失效、无效客资
+        $map[] = ['active_status', 'not in', [3, 4]];
+        if (isset($request['date_range']) && !empty($request['date_range'])) {
+            $range = explode('~', $request['date_range']);
+            $range[0] = trim($range[0]);
+            $range[1] = trim($range[1]);
+            $start = strtotime($range[0]);
+            $end = strtotime($range[1]);
+            $map[] = ['create_time', 'between', [$start, $end]];
+        }
+
+        ### 省市划分
+        if ($this->user['city_id'] > 0) {
+            $map[] = ['city_id', '=', $this->user['city_id']];
+        }
+
+        if (isset($request['keywords']) && strlen($request['keywords']) == 11) {
+
+            $map = [];
+            $mobiles = MobileRelation::getMobiles($request['keywords']);
+            if (!empty($mobiles)) {
+                $map[] = ['mobile', 'in', $mobiles];
+            } else {
+                $map[] = ['mobile', '=', $request['keywords']];
+            }
+            $where1[] = ['mobile', 'like', "%{$request['keywords']}%"];
+            $where2[] = ['mobile1', 'like', "%{$request['keywords']}%"];
+            $list = model('Member')->where($map)->whereOr($where1)->whereOr($where2)->order('create_time desc')->paginate($request['limit'], false, $config);
+
+        } else if (isset($request['keywords']) && !empty($request['keywords']) && strlen($request['keywords']) < 11) {
+
+            $map = [];
+            $map[] = ['mobile', 'like', "%{$request['keywords']}%"];
+            $list = model('Member')->where($map)->order('create_time desc')->paginate($request['limit'], false, $config);
+
+        } else if (isset($request['keywords']) && strlen($request['keywords']) > 11) {
+
+            $map = [];
+            $map[] = ['mobile', 'like', "%{$request['keywords']}%"];
+            $list = model('Member')->where($map)->order('create_time desc')->paginate($request['limit'], false, $config);
+
+        } else {
+
+            $list = model('Member')->where($map)->where('id', 'not in', function ($query) {
+                $map = [];
+                $map[] = ['user_id', '=', $this->user['id']];
+                $query->table('tk_member_allocate')->where($map)->field('member_id');
+            })->order('create_time desc')->paginate($request['limit'], false, $config);
+
+        }
+        $data = $list->getCollection()->toArray();
+        $users = User::getUsers();
+        foreach ($data as &$value) {
+            $value['operator'] = $users[$value['operate_id']]['realname'];
+            $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
+            $value['news_type'] = $this->newsTypes[$value['news_type']];
+            $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
+
+            if ($this->auth['is_show_alias'] == '1') {
+                $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+            } else {
+                $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
+            }
+        }
+        $result = [
+            'code' => 0,
+            'msg' => '获取数据成功',
+            'pages' => $list->lastPage(),
+            'count' => $list->total(),
+            'map' => $map,
+            'data' => $data
+        ];
+
+        return json($result);
     }
 }
