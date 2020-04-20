@@ -474,13 +474,12 @@ class Customer extends Base
             }
 
             if (isset($get['status']) && $get['status'] == 0) {
-                $order = 'create_time asc';
+                $order = 'create_time asc,id desc';
             } else {
-                $order = 'create_time desc';
+                $order = 'create_time desc,id desc';
             }
 
             $list = model('MemberAllocate')->where($map)->order($order)->paginate($get['limit'], false, $config);
-            $sql = model('MemberAllocate')->getLastSql();
             if (!empty($list)) {
                 $users = User::getUsers();
                 $data = $list->getCollection()->toArray();
@@ -519,8 +518,6 @@ class Customer extends Base
                     'data' => $data,
                     'map' => $map,
                     'keywords' => strlen($get['keywords']),
-                    'sql'   => $sql,
-                    'config' => $config
                 ];
             } else {
                 $result = [
