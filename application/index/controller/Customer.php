@@ -480,6 +480,7 @@ class Customer extends Base
             }
 
             $list = model('MemberAllocate')->where($map)->order($order)->paginate($get['limit'], false, $config);
+            $sql = model('MemberAllocate')->getLastSql();
             if (!empty($list)) {
                 $users = User::getUsers();
                 $data = $list->getCollection()->toArray();
@@ -518,7 +519,7 @@ class Customer extends Base
                     'data' => $data,
                     'map' => $map,
                     'keywords' => strlen($get['keywords']),
-                    'sql'   => model('MemberAllocate')->getLastSql(),
+                    'sql'   => $sql,
                     'config' => $config
                 ];
             } else {
