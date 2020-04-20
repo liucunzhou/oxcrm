@@ -453,6 +453,7 @@ class Customer extends Base
             $config = [
                 'page' => $get['page']
             ];
+
             $map = Search::customerMine($this->user, $get);
             if (isset($get['keywords']) && !empty($get['keywords'])) {
                 $get['keywords'] = trim($get['keywords']);
@@ -516,7 +517,8 @@ class Customer extends Base
                     'count' => $list->total(),
                     'data' => $data,
                     'map' => $map,
-                    'keywords' => strlen($get['keywords'])
+                    'keywords' => strlen($get['keywords']),
+                    'sql'   => model('MemberAllocate')->getLastSql()
                 ];
             } else {
                 $result = [
