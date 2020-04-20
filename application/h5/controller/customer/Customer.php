@@ -214,14 +214,14 @@ class Customer extends Base
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && $request['user_id'] != 'all' ){
+            if( isset($request['user_id']) && $request['user_id'] != 'all' && is_numeric($request['active_status'])){
 //                $user_id = explode(',',$request['user_id']);
+                $map[] = ['user_id','=',$request['user_id']];
+            } elseif (  isset($request['user_id']) && $request['user_id'] != 'all') {
                 $map[] = ['user_id','in',$request['user_id']];
-                $maps[] = ['user_id','in',$request['user_id']];
             }
         } else {
             $map[] = ['user_id', '=', $this->user['user_id']];
-            $maps[] = ['user_id', '=', $this->user['user_id']];
         }
 
         ### 手机号筛选
@@ -235,7 +235,6 @@ class Customer extends Base
         ### 获取方式
         if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
             $map[] = ['allocate_type','=',$request['allocate_type']];
-            $maps[] = ['allocate_type','=',$request['allocate_type']];
         }
         ### 时间区间
         /*if( isset($request['range']) && $request['range'] == 'start_date' ){
@@ -248,7 +247,14 @@ class Customer extends Base
 
         $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
         $list = $model->field($field)->order('create_time desc,member_create_time desc')->paginate($request['limit'], false, $config);
-        $lists = $this->model->field('id,active_status')->where($maps)->select();
+
+        ###  清除条件中的跟进状态条件
+        foreach ($map as $key=>$value){
+            if( $value['0'] == 'active_status' ){
+                unset($map[$key]);
+            }
+        }
+        $lists = $this->model->field('id,active_status')->where($map)->select();
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
