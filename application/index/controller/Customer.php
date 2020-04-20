@@ -518,7 +518,8 @@ class Customer extends Base
                     'data' => $data,
                     'map' => $map,
                     'keywords' => strlen($get['keywords']),
-                    'sql'   => model('MemberAllocate')->getLastSql()
+                    'sql'   => model('MemberAllocate')->getLastSql(),
+                    'config' => $config
                 ];
             } else {
                 $result = [
