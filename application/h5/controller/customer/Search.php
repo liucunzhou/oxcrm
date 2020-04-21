@@ -87,6 +87,7 @@ class Search extends Base
                 'items' => $rangeList
             ]
         ];
+        if(empty($userList)) unset($data['user_id']);
 
         $result = [
             'code'  => '200',
