@@ -48,15 +48,15 @@ class Search extends Base
                 'title' => '全部时间'
             ],
             [
-                'id'    => 'today',
+                'id'    => 'd',
                 'title' => '今天'
             ],
             [
-                'id'    => 'week',
+                'id'    => 'w',
                 'title' => '本周'
             ],
             [
-                'id'    => 'month',
+                'id'    => 'm',
                 'title' => '本月'
             ],
             [

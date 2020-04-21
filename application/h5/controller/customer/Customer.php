@@ -226,7 +226,9 @@ class Customer extends Base
         }
 
         ### 手机号筛选
-
+        /*if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
+            $map[] =  ['mobile', 'like', $request['mobile']];
+        }*/
 
         ### 当前选择跟进渠道
         if(isset($request['active_status']) && is_numeric($request['active_status'])){
@@ -255,7 +257,8 @@ class Customer extends Base
                 unset($map[$key]);
             }
         }
-        $lists = $this->model->field('id,active_status')->where($map)->select();
+        ###  去除跟进状态再查询
+        $lists = $this->model->where($map)->column('id,active_status');
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
@@ -263,14 +266,14 @@ class Customer extends Base
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
 
-            ###  出来列表页跟进状态
+            ###  根据跟进状态统计数据
             $active_status = array_column($this->status,'id');
-            $count = array_count_values(array_column($lists->toArray(),"active_status"));
-            $wordCount = [];
+            $count = array_count_values(array_column($lists,"active_status"));
+            $listCount = [];
             foreach($active_status as $k => $v)
             {
                 $sl = isset($count[$v])?$count[$v]:0;
-                $wordCount[] = [
+                $listCount[] = [
                     'id'=>$v,
                     'title'=>$this->status[$v]['title'],
                     'count'=>$sl,
@@ -287,7 +290,7 @@ class Customer extends Base
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'counts'=> $count + $wordCount,
+                'counts'=> $count + $listCount,
                 'data' => $list->getCollection(),
             ];
 
@@ -304,6 +307,89 @@ class Customer extends Base
 
     }
 
+    public function filters()
+    {
+        $request = $this->request->param();
+        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
+        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $config = [
+            'page' => $request['page']
+        ];
+
+        $map = [];
+        ###  管理者还是销售
+        if($this->role['auth_type'] > 0) {
+            ### 员工列表
+            if( isset($request['user_id']) && $request['user_id'] != 'all') {
+//                $user_id = explode(',',$request['user_id']);
+                if (is_numeric($request['active_status'])) {
+                    $map[] = ['user_id', '=', $request['user_id']];
+                } else {
+                    $map[] = ['user_id', 'in', $request['user_id']];
+                }
+            }
+        } else {
+            $map[] = ['user_id', '=', $this->user['user_id']];
+        }
+
+        ### 手机号筛选
+        /*if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
+            $map[] =  ['mobile', 'like', $request['mobile']];
+        }*/
+
+        ### 当前选择跟进渠道
+        if(isset($request['active_status']) && is_numeric($request['active_status'])){
+            $map[] = ['active_status','=',$request['active_status']];
+        }
+
+        ### 时间区间
+        /*if( isset($request['range']) && $request['range'] == 'start_date' ){
+            $map[] = [];
+        }*/
+
+        ##用户  权限   查询
+        //$map = Search::customerMine($this->user, $get);
+        $list = $this->model->where($map)->column('id,active_status');
+        if (!empty($list)) {
+            ###  根据跟进状态统计数据
+            $active_status = array_column($this->status,'id');
+            $count = array_count_values(array_column($list,"active_status"));
+            $listCount = [];
+            foreach($active_status as $k => $v)
+            {
+                $sl = isset($count[$v])?$count[$v]:0;
+                $listCount[] = [
+                    'id'=>$v,
+                    'title'=>$this->status[$v]['title'],
+                    'count'=>$sl,
+                ];
+            }
+            $count = [
+                '0'=>  [
+                    'id'    =>  'all',
+                    'title' =>  '所有客资',
+                    'count' =>count($list)
+                ]
+            ];
+
+            $result = [
+                'code' => 200,
+                'msg' => '获取数据成功',
+                'counts'=> $count + $listCount,
+                'data' => $list->getCollection(),
+            ];
+
+        } else {
+
+            $result = [
+                'code' => 200,
+                'msg' => '获取数据成功',
+                'count' => 0,
+                'data' => []
+            ];
+        }
+        return json($result);
+    }
     /**
      * 客资公海
      * Method seas
