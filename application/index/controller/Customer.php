@@ -453,6 +453,7 @@ class Customer extends Base
             $config = [
                 'page' => $get['page']
             ];
+
             $map = Search::customerMine($this->user, $get);
             if (isset($get['keywords']) && !empty($get['keywords'])) {
                 $get['keywords'] = trim($get['keywords']);
@@ -473,9 +474,9 @@ class Customer extends Base
             }
 
             if (isset($get['status']) && $get['status'] == 0) {
-                $order = 'create_time asc';
+                $order = 'create_time asc,id desc';
             } else {
-                $order = 'create_time desc';
+                $order = 'create_time desc,id desc';
             }
 
             $list = model('MemberAllocate')->where($map)->order($order)->paginate($get['limit'], false, $config);
@@ -516,7 +517,7 @@ class Customer extends Base
                     'count' => $list->total(),
                     'data' => $data,
                     'map' => $map,
-                    'keywords' => strlen($get['keywords'])
+                    'keywords' => strlen($get['keywords']),
                 ];
             } else {
                 $result = [
