@@ -170,11 +170,7 @@ class Customer extends Base
         return json($result);
     }
 
-    /**
-     * 客资详情
-     * Method member
-     * @return \think\response\Json
-     */
+    # 客资详情
     public function member()
     {
         $get = Request::param();
@@ -235,9 +231,9 @@ class Customer extends Base
         }
 
         ### 手机号筛选
-        /*if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
+        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
             $map[] =  ['mobile', 'like', $request['mobile']];
-        }*/
+        }
 
         ### 当前选择跟进渠道
         if(isset($request['active_status']) && is_numeric($request['active_status'])){
@@ -248,14 +244,14 @@ class Customer extends Base
         if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
             $map[] = ['allocate_type','=',$request['allocate_type']];
         }
-        ### 时间区间
-        /*if( isset($request['range']) && $request['range'] == 'start_date' ){
-            $map[] = [];
-        }*/
 
+        ### 时间区间
+        if( isset($request['range']) && !empty($request['range'])){
+            $range = format_date_range($request['range']);
+            $map[] = ['create_time', 'between', $range];
+        }
 
         $model = $this->model->where($map);
-
         $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
         $list = $model->field($field)->order('create_time desc,member_create_time desc')->paginate($request['limit'], false, $config);
 
@@ -281,18 +277,12 @@ class Customer extends Base
             ];
         }
         return json($result);
-
     }
 
-    /**
-     * 我的客资数据统计
-     * Method count
-     * @return \think\response\Json
-     */
+    # 我的客资顶部导航带数据
     public function count()
     {
         $request = $this->request->param();
-
         $map = [];
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
@@ -316,19 +306,20 @@ class Customer extends Base
         }
 
         ### 手机号筛选
-        /*if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
+        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
             $map[] =  ['mobile', 'like', $request['mobile']];
-        }*/
+        }
 
-        ### 当前选择跟进渠道
-        if(isset($request['active_status']) && is_numeric($request['active_status'])){
-            $map[] = ['active_status','=',$request['active_status']];
+        ### 获取方式
+        if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
+            $map[] = ['allocate_type','=',$request['allocate_type']];
         }
 
         ### 时间区间
-        /*if( isset($request['range']) && $request['range'] == 'start_date' ){
-            $map[] = [];
-        }*/
+        if( isset($request['range']) && !empty($request['range'])){
+            $range = format_date_range($request['range']);
+            $map[] = ['create_time', 'between', $range];
+        }
 
         $where = [];
         $where[] = ['type', '<>', 'wash'];
@@ -375,12 +366,8 @@ class Customer extends Base
         return json($result);
     }
 
-    /**
-     * 客资公海
-     * Method seas
-     * @return mixed|\think\response\Json
-     */
-    public function seas()
+    # 公海
+    public function sea()
     {
         $request = $this->request->param();
         $config = [
