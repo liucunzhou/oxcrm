@@ -216,16 +216,22 @@ class Customer extends Base
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && $request['user_id'] != 'all') {
-//                $user_id = explode(',',$request['user_id']);
-                if (is_numeric($request['active_status'])) {
-                    $map[] = ['user_id', '=', $request['user_id']];
+            if( isset($request['user_id']) && !empty($result['user_id'])) {
+                // $user_id = explode(',',$request['user_id']);
+                if ($request['user_id'] == 'all') {
+                    $map[] = ['user_id', 'in', $this->staffs];
+                } else if (is_numeric($request['user_id'])) {
+                    $map[] = ['user_id', '=', $this->user['id']];
                 } else {
                     $map[] = ['user_id', 'in', $request['user_id']];
                 }
+
+            }  else {
+                $map[] = ['user_id', '=', $this->user['id']];
             }
+
         } else {
-            $map[] = ['user_id', '=', $this->user['user_id']];
+            $map[] = ['user_id', '=', $this->user['id']];
         }
 
         ### 手机号筛选
@@ -247,21 +253,12 @@ class Customer extends Base
             $map[] = [];
         }*/
 
-        ##用户  权限   查询
-        //$map = Search::customerMine($this->user, $get);
+
         $model = $this->model->where($map);
 
         $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
         $list = $model->field($field)->order('create_time desc,member_create_time desc')->paginate($request['limit'], false, $config);
 
-        ###  清除条件中的跟进状态条件
-        foreach ($map as $key=>$value){
-            if( $value['0'] == 'active_status' ){
-                unset($map[$key]);
-            }
-        }
-        ###  去除跟进状态再查询
-        $lists = $this->model->where($map)->column('id,active_status');
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
@@ -269,31 +266,9 @@ class Customer extends Base
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
 
-            ###  根据跟进状态统计数据
-            $active_status = array_column($this->status,'id');
-            $count = array_count_values(array_column($lists,"active_status"));
-            $listCount = [];
-            foreach($active_status as $k => $v)
-            {
-                $sl = isset($count[$v])?$count[$v]:0;
-                $listCount[] = [
-                    'id'=>$v,
-                    'title'=>$this->status[$v]['title'],
-                    'count'=>$sl,
-                ];
-            }
-            $count = [
-                 '0'=>  [
-                    'id'    =>  'all',
-                    'title' =>  '所有客资',
-                    'count' =>count($lists)
-                    ]
-            ];
-
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'counts'=> $count + $listCount,
                 'data' => $list->getCollection(),
             ];
 
@@ -302,7 +277,6 @@ class Customer extends Base
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'count' => 0,
                 'data' => []
             ];
         }
@@ -310,6 +284,11 @@ class Customer extends Base
 
     }
 
+    /**
+     * 我的客资数据统计
+     * Method count
+     * @return \think\response\Json
+     */
     public function count()
     {
         $request = $this->request->param();
