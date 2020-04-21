@@ -27,17 +27,35 @@ class Search extends Base
         $statusList = $all + $statusList;
 
         ###  获取方式
-        $alls = ['all'=>'全部方式'];
-        $allocateTypeList = $this->allocateTypes;
+        $alls = [
+            0   => [
+                'id'    => 'all',
+                'title' => '全部方式'
+            ]
+        ];
+        $allocateTypeList = [];
+        foreach ($this->allocateTypes as $key=>$value) {
+            $allocateTypeList[] = [
+                'id'    => $key,
+                'title' => $value
+            ];
+        }
         $allocateTypeList = $alls + $allocateTypeList;
 
         ###  人员列表
         $userList = [];
         if ($this->role['auth_type'] > 0) {
             // 管理者
-            $fields = 'id,realname as title';
-            $users = ['all'=>'全部'];
+            $users = [
+                0 => [
+                    'id'    => 'all',
+                    'title' => '全部'
+                ]
+            ];
+            $fields = 'id,realname as title,nickname';
             $userList = User::getUsersInfoByDepartmentId($this->user['department_id'], false, $fields);
+            $userList = array_values($userList);
+            // print_r($userList);
             $userList = $users + $userList;
         }
 
@@ -87,7 +105,7 @@ class Search extends Base
                 'items' => $rangeList
             ]
         ];
-        if(empty($userList)) unset($data['user_id']);
+        // if(empty($userList)) unset($data['user_id']);
 
         $result = [
             'code'  => '200',
