@@ -26,6 +26,7 @@ class Customer extends Base
     protected $budgets = [];
     protected $scales = [];
     protected $model = null;
+    protected $staffs = [];
 
     protected function initialize()
     {
@@ -34,11 +35,13 @@ class Customer extends Base
         $this->sources = Source::getSources();
         $this->hotels = Store::getStoreList();
         $this->status = Intention::getIntentions();
-        // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
-
 
         $this->model = new MemberAllocate();
         $this->Membermodel = new Member();
+
+        if (isset($this->role['auth_type']) && $this->role['auth_type'] > 0) {
+            $this->staffs = User::getUsersByDepartmentId($this->user['department_id']);
+        }
     }
 
 
@@ -307,29 +310,30 @@ class Customer extends Base
 
     }
 
-    public function filters()
+    public function count()
     {
         $request = $this->request->param();
-        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
-        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
-        $config = [
-            'page' => $request['page']
-        ];
 
         $map = [];
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && $request['user_id'] != 'all') {
-//                $user_id = explode(',',$request['user_id']);
-                if (is_numeric($request['active_status'])) {
-                    $map[] = ['user_id', '=', $request['user_id']];
+            if( isset($request['user_id']) && !empty($result['user_id'])) {
+                // $user_id = explode(',',$request['user_id']);
+                if ($request['user_id'] == 'all') {
+                    $map[] = ['user_id', 'in', $this->staffs];
+                } else if (is_numeric($request['user_id'])) {
+                    $map[] = ['user_id', '=', $this->user['id']];
                 } else {
                     $map[] = ['user_id', 'in', $request['user_id']];
                 }
+
+            }  else {
+                $map[] = ['user_id', '=', $this->user['id']];
             }
+
         } else {
-            $map[] = ['user_id', '=', $this->user['user_id']];
+            $map[] = ['user_id', '=', $this->user['id']];
         }
 
         ### 手机号筛选
@@ -347,36 +351,38 @@ class Customer extends Base
             $map[] = [];
         }*/
 
-        ##用户  权限   查询
-        //$map = Search::customerMine($this->user, $get);
-        $list = $this->model->where($map)->column('id,active_status');
+        $where = [];
+        $where[] = ['type', '<>', 'wash'];
+        $field = "id,title,color";
+
+        $statusList = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
+        $list = $this->model->field('active_status,count(*) as count')->where($map)->group('active_status')->select();
         if (!empty($list)) {
-            ###  根据跟进状态统计数据
-            $active_status = array_column($this->status,'id');
-            $count = array_count_values(array_column($list,"active_status"));
-            $listCount = [];
-            foreach($active_status as $k => $v)
-            {
-                $sl = isset($count[$v])?$count[$v]:0;
-                $listCount[] = [
-                    'id'=>$v,
-                    'title'=>$this->status[$v]['title'],
-                    'count'=>$sl,
+            $list = $list->toArray();
+            $list = array_column($list,'count', 'active_status');
+            $data = [];
+            foreach ($statusList as $row) {
+                $amount = isset($list[$row->id]) ? $list[$row->id] : 0;
+                $data[] = [
+                    'id'        => $row->id,
+                    'title'     => $row->title,
+                    'count'    => $amount
                 ];
             }
-            $count = [
-                '0'=>  [
-                    'id'    =>  'all',
-                    'title' =>  '所有客资',
-                    'count' =>count($list)
+
+            $all = [
+                0 => [
+                    'id'    => 'all',
+                    'title' => '所有客资',
+                    'count' => array_sum($list)
                 ]
             ];
+            $data = $all + $data;
 
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'counts'=> $count + $listCount,
-                'data' => $list->getCollection(),
+                'data' => $data
             ];
 
         } else {
@@ -384,12 +390,12 @@ class Customer extends Base
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
-                'count' => 0,
                 'data' => []
             ];
         }
         return json($result);
     }
+
     /**
      * 客资公海
      * Method seas

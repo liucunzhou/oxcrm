@@ -33,7 +33,7 @@ class Search extends Base
 
         ###  人员列表
         $userList = [];
-        if ($this->role['auth_type'] != 0) {
+        if ($this->role['auth_type'] > 0) {
             // 管理者
             $fields = 'id,realname as title';
             $users = ['all'=>'全部'];
