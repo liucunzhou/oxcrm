@@ -15,10 +15,11 @@ class Base extends Controller
     protected $allocateTypes = [];
     public $user = [];
     public $role = [];
+    public $config = [];
     protected function initialize(){
         $config = config();
-        $crmConfig = $config['crm'];
-        $this->allocateTypes = $crmConfig['allocate_type_list'];
+        $this->config = $config['crm'];
+        $this->allocateTypes = $this->config['allocate_type_list'];
 
         $token = $this->request->header("token");
         if( empty($token) ){

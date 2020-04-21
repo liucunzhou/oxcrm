@@ -173,12 +173,12 @@ class Customer extends Base
     # 客资详情
     public function member()
     {
-        $get = Request::param();
-        $allocate = MemberAllocate::get($get['id']);
+        $request = $this->request->param();
+        $allocate = MemberAllocate::get($request['id']);
         ### 获取用户基本信息
-        $field = "id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,hotel_text,remark";
+        $field = "id,realname,mobile,mobile1,active_status,budget,budget_end,banquet_size,banquet_size_end,zone,source_text,wedding_date,hotel_text,remark";
         $customer = Member::field($field)->get($allocate->member_id);
-        $customer['next_visit_time'] = date('Y-m-s h:i:s', $allocate->next_visit_time);
+        $customer['next_visit_time'] = $allocate->next_visit_time ? date('Y-m-s h:i:s', $allocate->next_visit_time) : '';
         $customer['color'] = $customer['active_status'] ? $this->status[$customer['active_status']]['color'] : '#FF0000';
         $customer['active_status'] = $customer['active_status'] ? $this->status[$customer['active_status']]['title'] : "未跟进";
         if (!($this->auth['is_show_entire_mobile'] || !empty($allocate))) {
@@ -189,10 +189,38 @@ class Customer extends Base
         $result = [
             'code' => 200,
             'msg' => '客资详情',
-            'data' => $customer
+            'data' => [
+                'customer'  =>  $customer,
+                'level'     =>  $this->config['levels'],
+            ]
         ];
         return json($result);
     }
+    #  realname/budget,budget_end,banquet_size,banquet_size_end,zone,remark,level
+    public function doEdit()
+    {
+        $request = $this->request->param();
+        $allocate = MemberAllocate::get($request['id']);
+        $member = \app\api\model\Member::get($allocate->member_id);
+
+        $request['update_time'] = time();
+        $request['news_types'] = empty($request['news_types']) ? '' : implode(',', $request['news_types']);
+        $member->allowField(true)->save($request);;
+        $result = $allocate->allowField(true)->save($request);
+        if ($result) {
+            return json([
+                'code' => '200',
+                'msg' => '修改客资成功'
+            ]);
+        } else {
+            return json([
+                'code' => '500',
+                'msg' => '修改客资失败'
+            ]);
+        }
+
+    }
+
 
     /**
      * 我的客资
@@ -313,10 +341,8 @@ class Customer extends Base
             $map[] = ['user_id', '=', $this->user['id']];
         }
 
-        ### 手机号筛选
-        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
-            $map[] =  ['mobile', 'like', $request['mobile']];
-        }
+
+
 
         ### 获取方式
         if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
@@ -444,6 +470,7 @@ class Customer extends Base
             })->order('create_time desc')->paginate($request['limit'], false, $config);
 
         }
+
         $data = $list->getCollection()->toArray();
         $users = User::getUsers();
         foreach ($data as &$value) {

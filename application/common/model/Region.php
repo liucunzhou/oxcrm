@@ -1,4 +1,5 @@
 <?php
+
 namespace app\common\model;
 
 use think\Model;
@@ -12,14 +13,14 @@ class Region extends Model
     public static function getProvinceList()
     {
         $fields = 'id,pid,shortname,name,level,pinyin,code,zip_code';
-        $list = self::where(['level'=>1])->order('sort desc')->column($fields, 'id');
+        $list = self::where(['level' => 1])->order('sort desc')->column($fields, 'id');
         return $list;
     }
 
     public static function getCityList($provinceId = 0)
     {
         $map = [];
-        if($provinceId == 0) {
+        if ($provinceId == 0) {
             $map[] = ['is_valid', '=', 1];
         } else {
             $map[] = ['pid', '=', $provinceId];
@@ -38,11 +39,14 @@ class Region extends Model
         return $data;
     }
 
-    public static function getAreaList($cityId) {
+    public static function getAreaList($cityId, $fields = '')
+    {
         $map = [];
         $map[] = ['pid', '=', $cityId];
         $map[] = ['level', '=', '3'];
-        $fields = 'id,pid,shortname,name,level,pinyin,code,zip_code';
+        if (empty($fields)) {
+            $fields = 'id,pid,shortname,name,level,pinyin,code,zip_code';
+        }
         $list = self::where($map)->order('sort desc')->column($fields, 'id');
         return $list;
     }

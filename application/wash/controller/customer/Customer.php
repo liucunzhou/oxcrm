@@ -73,6 +73,7 @@ class Customer extends Backend
         $this->assign('cityList', $cityList);
     }
 
+
     /**
      * 显示资源列表
      *

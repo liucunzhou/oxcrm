@@ -45,7 +45,6 @@ class Visit extends Base
         $this->memberModel = new Member();
     }
 
-
     /**
      * 回访列表
      */
