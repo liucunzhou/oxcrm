@@ -210,6 +210,7 @@ class Customer extends Base
 
         $map = [];
         ###  管理者还是销售
+        /**
         if($this->role['auth_type'] > 0) {
             ### 员工列表
             if( isset($request['user_id']) && !empty($result['user_id'])) {
@@ -229,11 +230,7 @@ class Customer extends Base
         } else {
             $map[] = ['user_id', '=', $this->user['id']];
         }
-
-        ### 手机号筛选
-        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
-            $map[] =  ['mobile', 'like', $request['mobile']];
-        }
+         * **/
 
         ### 当前选择跟进渠道
         if(isset($request['active_status']) && is_numeric($request['active_status'])){
@@ -252,8 +249,20 @@ class Customer extends Base
         }
 
         $model = $this->model->where($map);
-        $field = "id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
-        $list = $model->field($field)->order('create_time desc,member_create_time desc')->paginate($request['limit'], false, $config);
+        ### 手机号筛选
+        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
+           $model->where('member_id', 'in', function ($query) use ($request) {
+                $query->table('tk_mobile')->where('mobile', '=', $request['mobile'])->field('member_id');
+           });
+        } else {
+            $model->where('member_id', 'in', function ($query) use ($request) {
+                $query->table('tk_mobile')->where('mobile', 'like', "%{$request['mobile']}%")->field('member_id');
+            });
+        }
+
+        $order = 'create_time desc,member_create_time desc';
+        $field = "id,user_id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
+        $list = $model->field($field)->order($order)->paginate($request['limit'], false, $config);
 
         if (!empty($list)) {
             foreach ($list as &$value) {
@@ -261,7 +270,6 @@ class Customer extends Base
                 $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
-
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
