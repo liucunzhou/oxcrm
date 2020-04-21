@@ -238,7 +238,6 @@ class Customer extends Base
 
         $map = [];
         ###  管理者还是销售
-        /**
         if($this->role['auth_type'] > 0) {
             ### 员工列表
             if( isset($request['user_id']) && !empty($result['user_id'])) {
@@ -258,7 +257,6 @@ class Customer extends Base
         } else {
             $map[] = ['user_id', '=', $this->user['id']];
         }
-         * **/
 
         ### 当前选择跟进渠道
         if(isset($request['active_status']) && is_numeric($request['active_status'])){
@@ -341,7 +339,17 @@ class Customer extends Base
             $map[] = ['user_id', '=', $this->user['id']];
         }
 
-
+        $model = $this->model->where($map);
+        ### 手机号筛选
+        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
+            $model->where('member_id', 'in', function ($query) use ($request) {
+                $query->table('tk_mobile')->where('mobile', '=', $request['mobile'])->field('member_id');
+            });
+        } else {
+            $model->where('member_id', 'in', function ($query) use ($request) {
+                $query->table('tk_mobile')->where('mobile', 'like', "%{$request['mobile']}%")->field('member_id');
+            });
+        }
 
 
         ### 获取方式
@@ -360,7 +368,7 @@ class Customer extends Base
         $field = "id,title,color";
 
         $statusList = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
-        $list = $this->model->field('active_status,count(*) as count')->where($map)->group('active_status')->select();
+        $list = $model->field('active_status,count(*) as count')->where($map)->group('active_status')->select();
         if (!empty($list)) {
             $list = $list->toArray();
             $list = array_column($list,'count', 'active_status');
