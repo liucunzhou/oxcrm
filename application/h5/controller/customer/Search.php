@@ -31,7 +31,6 @@ class Search extends Base
         $result = [
             'code'  => '200',
             'data'  =>  $data
-
         ];
         return json($result);
     }

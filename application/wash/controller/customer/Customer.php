@@ -46,6 +46,9 @@ class Customer extends Backend
 
         // 意向列表
         $allStatus = Intention::column('id,title,color');
+        //echo "<pre>";
+        // print_r($allStatus);
+        // exit;
         $this->assign('allStatus', $allStatus);
 
         // 用户列表

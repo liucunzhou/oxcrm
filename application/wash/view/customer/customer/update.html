@@ -321,7 +321,7 @@
                         <td class="text-center">{$row.create_time}</td>
                         <td class="text-center">
                             <{if $row.active_status > 0}>
-                                {$allStatus[$row.active_status]}
+                                {$allStatus[$row.active_status]['title']}
                             <{else /}>
                                 未跟进
                             <{/if}>
