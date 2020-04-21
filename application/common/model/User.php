@@ -107,8 +107,12 @@ class User extends Model
         return $users;
     }
 
-    public static function getUsersInfoByDepartmentId($departmentId, $withTrashed=true)
+    public static function getUsersInfoByDepartmentId($departmentId, $withTrashed=true, $fields = '')
     {
+        if(empty($fields)) {
+            $fields = 'id,role_id,department_id,nickname,realname';
+        }
+
         $departments = Department::getTree($departmentId);
         if(empty($departments)) return false;
         $map = [];
@@ -119,9 +123,9 @@ class User extends Model
         }
 
         if($withTrashed) {
-            $users = self::withTrashed()->where($map)->column('id,role_id,department_id,nickname,realname');
+            $users = self::withTrashed()->where($map)->column($fields);
         } else {
-            $users = self::where($map)->column('id,role_id,department_id,nickname,realname');
+            $users = self::where($map)->column($fields);
         }
 
         return $users;
