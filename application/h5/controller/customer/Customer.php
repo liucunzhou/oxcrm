@@ -339,6 +339,18 @@ class Customer extends Base
             $map[] = ['user_id', '=', $this->user['id']];
         }
 
+
+        ### 获取方式
+        if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
+            $map[] = ['allocate_type','=',$request['allocate_type']];
+        }
+
+        ### 时间区间
+        if( isset($request['range']) && !empty($request['range'])){
+            $range = format_date_range($request['range']);
+            $map[] = ['create_time', 'between', $range];
+        }
+
         $model = $this->model->where($map);
         ### 手机号筛选
         if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
@@ -351,17 +363,6 @@ class Customer extends Base
             });
         }
 
-
-        ### 获取方式
-        if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
-            $map[] = ['allocate_type','=',$request['allocate_type']];
-        }
-
-        ### 时间区间
-        if( isset($request['range']) && !empty($request['range'])){
-            $range = format_date_range($request['range']);
-            $map[] = ['create_time', 'between', $range];
-        }
 
         $where = [];
         $where[] = ['type', '<>', 'wash'];
