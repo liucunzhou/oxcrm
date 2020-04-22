@@ -7,7 +7,6 @@ use app\h5\controller\Base;
 use app\common\model\Member;
 use app\common\model\MemberVisit;
 use app\common\model\MemberAllocate;
-use think\Db;
 
 class Enter extends Base
 {
@@ -17,6 +16,7 @@ class Enter extends Base
 
     protected function initialize()
     {
+        parent::initialize();
         $this->model = new MemberEnter();
         $this->memberModel = new Member();
     }
@@ -25,7 +25,7 @@ class Enter extends Base
     public function index()
     {
         $request = $this->request->param();
-        $allocate = MemberAllocte::get($request['id']);
+        $allocate = MemberAllocate::get($request['id']);
 
         $map = [];
         $map[] = ['user_id', '=', $this->user['id']];
@@ -35,7 +35,9 @@ class Enter extends Base
             $result = [
                 'code'  =>   '200',
                 'msg'   =>   '获取成功',
-                'data'  =>  $list
+                'data'  =>  [
+                    'enter' =>  $list
+                ]
             ];
         } else {
             $result = [
