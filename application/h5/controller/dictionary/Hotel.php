@@ -25,6 +25,7 @@ class Hotel extends Base
                 'hotelList' => $hotelList
             ]
         ];
-        return $result;
+
+        return json($result);
     }
 }
