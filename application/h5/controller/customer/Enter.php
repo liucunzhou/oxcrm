@@ -49,23 +49,20 @@ class Enter extends Base
     }
 
     # id = 客资分批ID
-    # member_visit_id = 回访id
     public function doCreate()
     {
         $request = $this->request->param();
         $allocate = MemberAllocate::get($request['id']);
-        $member = Member::get($allocate->member_id);
-        $member->startTrans();
-        $model = new MemberVisit();
-        ### 保存回访信息
-        $model->status = $request['status'];
-        $model->member_allocate_id = $allocate->id;
-        $model->member_id = $allocate->member_id;
-        $model->user_id = $this->user['id'];
-        $result = $model->save($request);
+        unset($request['id']);
+        $model = new MemberEnter();
 
-        ## 更近 回访记录里的进店状态
-        $result2 = MemberVisit::where('id', '=', $request['member_visit_id'])->save(['is_into_store'=>1]);
+        ### 保存回访信息
+        $request['status'] = 0;
+        $request['member_allocate_id'] = $allocate->id;
+        $request['member_id'] = $allocate->member_id;
+        $request['user_id'] = $this->user['id'];
+        $result = $model->allowField(true)->save($request);
+
         if( $result ){
             $result = [
                 'code'  =>   '200',
@@ -80,20 +77,41 @@ class Enter extends Base
         return json($result);
     }
 
+    public function edit()
+    {
+        $intoStatusList = $this->config['into_status_list'];
+        $result = [
+            'code'  =>  '200',
+            'msg'   =>  '进店状态',
+            'data'  =>  [
+                'into_status_list'  =>  $intoStatusList
+            ]
+        ];
+
+        return json($result);
+    }
+
     public function doEdit()
     {
         $request = $this->request->param();
         $model = new MemberEnter();
-        $result = $model->save($request);
+        $enter = $model->where('id', '=', $request['id'])->find();
+        $allocateId = $enter->member_allocate_id;
+        $result = $enter->save($request);
+
         if( $result ){
+            if ($request['status'] == 1) {
+                MemberAllocate::where('id', '=', $allocateId);
+            }
+
             $result = [
                 'code'  =>   '200',
-                'msg'   =>    '插入成功'
+                'msg'   =>    '编辑成功'
             ];
         } else {
             $result = [
                 'code'  =>   '400',
-                'msg'   =>    '插入失败'
+                'msg'   =>    '编辑失败'
             ];
         }
         return json($result);
