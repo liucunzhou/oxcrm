@@ -6,7 +6,6 @@ use app\common\model\MemberEnter;
 use app\common\model\Store;
 use app\h5\controller\Base;
 use app\common\model\Member;
-use app\common\model\MemberVisit;
 use app\common\model\MemberAllocate;
 
 class Enter extends Base
@@ -31,13 +30,13 @@ class Enter extends Base
         $map = [];
         $map[] = ['user_id', '=', $this->user['id']];
         $map[] = ['member_id', '=', $allocate->member_id];
-        $list = $this->model->where($map)->order('create_time desc')->select();
-        if( $list ){
+        $enterList = $this->model->where($map)->order('create_time desc')->select();
+        if( $enterList ){
             $result = [
                 'code'  =>   '200',
                 'msg'   =>   '获取成功',
                 'data'  =>  [
-                    'enter' =>  $list
+                    'list' =>  $enterList
                 ]
             ];
         } else {
