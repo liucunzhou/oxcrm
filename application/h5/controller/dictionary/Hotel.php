@@ -15,8 +15,13 @@ class Hotel extends Base
 
     public function index()
     {
+        $request = $this->request->param();
+        $map = [];
+        if( !empty($request['title']) ){
+            $map[] = ['title' ,'like','%'.$request['title'].'%'];
+        }
         $field = 'id,title';
-        $hotelList = $this->model->field($field)->order('sort desc')->select();
+        $hotelList = $this->model->where($map)->field($field)->order('sort desc')->select();
 
         $result = [
             'code'  => '200',

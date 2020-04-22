@@ -10,6 +10,8 @@ return [
     // 分配类型
     'allocate_type_list' => $allocateTypes,
 
+    'news_type_list'    => $newsTypes,
+
     'levels' => [
         999 => [
             'title' => '非常重要',

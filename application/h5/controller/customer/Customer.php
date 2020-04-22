@@ -196,6 +196,7 @@ class Customer extends Base
         ];
         return json($result);
     }
+
     #  realname/budget,budget_end,banquet_size,banquet_size_end,zone,remark,level
     public function doEdit()
     {
@@ -204,8 +205,8 @@ class Customer extends Base
         $member = \app\api\model\Member::get($allocate->member_id);
 
         $request['update_time'] = time();
-        $request['news_types'] = empty($request['news_types']) ? '' : implode(',', $request['news_types']);
-        $member->allowField(true)->save($request);;
+//        $request['news_types'] = empty($request['news_types']) ? '' : implode(',', $request['news_types']);
+        $member->allowField(true)->save($request);
         $result = $allocate->allowField(true)->save($request);
         if ($result) {
             return json([
