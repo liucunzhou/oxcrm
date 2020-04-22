@@ -3,6 +3,7 @@
 namespace app\h5\controller\customer;
 
 use app\common\model\MemberEnter;
+use app\common\model\Store;
 use app\h5\controller\Base;
 use app\common\model\Member;
 use app\common\model\MemberVisit;
@@ -79,11 +80,18 @@ class Enter extends Base
 
     public function edit()
     {
+        $request = $this->request->param();
+        $field = "id,store_id,subscribe_time,real_time,next_time,status,remark,create_time";
+        $details = $this->model->where('id' ,'=' ,$request['id'])->field($field)->find();
+        $store = Store::getStore($details->store_id);
+        $details['store_id'] = $store['title'];
+
         $intoStatusList = $this->config['into_status_list'];
         $result = [
             'code'  =>  '200',
             'msg'   =>  '进店状态',
             'data'  =>  [
+                'details'           =>  $details,
                 'into_status_list'  =>  $intoStatusList
             ]
         ];
@@ -94,8 +102,7 @@ class Enter extends Base
     public function doEdit()
     {
         $request = $this->request->param();
-        $model = new MemberEnter();
-        $enter = $model->where('id', '=', $request['id'])->find();
+        $enter = $this->model->where('id', '=', $request['id'])->find();
         $allocateId = $enter->member_allocate_id;
         $result = $enter->save($request);
 
