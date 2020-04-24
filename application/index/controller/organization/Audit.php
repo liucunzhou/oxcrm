@@ -1,13 +1,16 @@
 <?php
 namespace app\index\controller\organization;
 
+use app\common\model\AuthGroup;
 use app\common\model\Brand;
 use app\index\controller\Backend;
-use think\response\Json;
 
 class Audit extends Backend
 {
     protected $brands = [];
+    protected $staffs = [];
+    protected $roles = [];
+    protected $sequence = [];
 
     protected function initialize()
     {
@@ -17,6 +20,50 @@ class Audit extends Backend
         ## brands
         $this->brands = Brand::getBrands();
         $this->assign('brands', $this->brands);
+
+        ## 员工列表
+        $this->staffs = \app\common\model\User::getUsers(false);
+        $this->assign('staffs', $this->staffs);
+
+        ## 角色列表
+        $this->roles = AuthGroup::getRoles();
+        $this->assign('roles', $this->roles);
+
+        ## 审核全局列表
+        $this->sequence = [
+            'source' => [
+                'id'    => 'source',
+                'title' => '客服渠道',
+                'type'  => 'staff'
+            ],
+            'coo' => [
+                'id'    => 'coo',
+                'title' => '运营总监',
+                'type'  => 'role'
+
+            ],
+            'assistant' => [
+                'id'    => 'assistant',
+                'title' => '行政助理',
+                'type'  => 'staff'
+            ],
+            'ceo' => [
+                'id'    => 'ceo',
+                'title' => '总经理',
+                'type'  => 'staff'
+            ],
+            'cashier' => [
+                'id'    => 'cashier',
+                'title' => '出纳',
+                'type'  => 'staff'
+            ],
+            'accounting' => [
+                'id'    => 'accounting',
+                'title' => '会计',
+                'type'  => 'staff'
+            ],
+        ];
+        $this->assign('sequence', $this->sequence);
     }
 
     // 规则列表
@@ -65,7 +112,12 @@ class Audit extends Backend
             return json($result);
         }
 
-        $this->model->content = json_encode($request['rule']);
+        $content = [];
+        foreach ($request['rule'] as $row) {
+            isset($request[$row]) && $content[$row] = $request[$row];
+        }
+
+        $this->model->content = json_encode($content);
         $row = $this->model->allowField(true)->save($request);
         if($row) {
             $result = [
@@ -84,19 +136,62 @@ class Audit extends Backend
 
     public function edit($id)
     {
+
         $map = [];
         $map[] = ['id', '=', $id];
         $data = $this->model->where($map)->find();
         $this->assign('data', $data);
 
-        $rules = json_decode($data['content'], true);
-        $this->assign('rules', $rules);
+        $selected = [];
+        $csequence = json_decode($data->content, true);
+        foreach ($csequence as $key=>$row) {
+            $selected[$key] = [
+                'id'    => $this->sequence[$key]['id'],
+                'title' => $this->sequence[$key]['title'],
+                'type'  => $this->sequence[$key]['type'],
+                'items'  => $row
+            ];
+        }
+        // print_r($selected);
+        $this->assign('selected', $selected);
 
         return $this->fetch();
     }
 
     public function doEdit()
     {
-        return josn([]);
+        $request = $this->request->param();
+        if(empty($request['company_id'])) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '请选择所属公司'
+            ];
+            return json($result);
+        }
+
+        $where = [];
+        $where['id'] = $request['id'];
+        $audit = $this->model->where($where)->find();
+
+        $content = [];
+        foreach ($request['rule'] as $row) {
+            isset($request[$row]) && $content[$row] = $request[$row];
+        }
+
+        $audit->content = json_encode($content);
+        $row = $audit->allowField(true)->save($request);
+        if($row) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '添加审核规则成功'
+            ];
+        } else {
+            $result = [
+                'code'  => '500',
+                'msg'   => '添加审核规则失败'
+            ];
+        }
+
+        return json($result);
     }
 }

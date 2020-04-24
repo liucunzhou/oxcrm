@@ -29,6 +29,7 @@ class Region extends Base
          foreach ($cityList as $key=>$value) {
              $fields = 'id,pid,shortname as title';
              $row = \app\common\model\Region::getAreaList($key,$fields);
+             $row = array_values($row);
 
              $data[] = [
                  'id'       => $key,

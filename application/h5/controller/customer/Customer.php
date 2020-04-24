@@ -280,7 +280,7 @@ class Customer extends Base
            $model->where('member_id', 'in', function ($query) use ($request) {
                 $query->table('tk_mobile')->where('mobile', '=', $request['mobile'])->field('member_id');
            });
-        } else {
+        } else if (isset($request['mobile']) && strlen($request['mobile']) < 11){
             $model->where('member_id', 'in', function ($query) use ($request) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$request['mobile']}%")->field('member_id');
             });
@@ -357,22 +357,22 @@ class Customer extends Base
             $model->where('member_id', 'in', function ($query) use ($request) {
                 $query->table('tk_mobile')->where('mobile', '=', $request['mobile'])->field('member_id');
             });
-        } else {
+        } else if (isset($request['mobile']) && strlen($request['mobile']) < 11){
             $model->where('member_id', 'in', function ($query) use ($request) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$request['mobile']}%")->field('member_id');
             });
         }
 
-
-        $where = [];
-        $where[] = ['type', '<>', 'wash'];
-        $field = "id,title,color";
-
-        $statusList = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
         $list = $model->field('active_status,count(*) as count')->where($map)->group('active_status')->select();
         if (!empty($list)) {
             $list = $list->toArray();
             $list = array_column($list,'count', 'active_status');
+
+            $where = [];
+            $where[] = ['type', '<>', 'wash'];
+            $field = "id,title,color";
+            $statusList = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
+
             $data = [];
             foreach ($statusList as $row) {
                 $amount = isset($list[$row->id]) ? $list[$row->id] : 0;

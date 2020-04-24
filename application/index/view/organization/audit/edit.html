@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css?2" media="all">
     <link rel="stylesheet" href="/assets/style/ox-common.css?1" media="all">
     <link rel="stylesheet" href="/assets/style/jquery-ui.min.css" media="all">
-    <script src="/assets/layui/layui.js"></script>
+    <script src="/assets/layui/layui.js?2"></script>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/lib/jquery-ui.min.js"></script>
 </head>
@@ -19,13 +19,6 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post" action="/index/organization.audit/doCreate.html" lay-filter="component-form-group">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">规则名称</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="title" value="{$data[title]}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
                 <div class="layui-form-item">
                     <label class="layui-form-label">所属公司</label>
                     <div class="layui-input-block">
@@ -48,38 +41,63 @@
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">规则项目</label>
-                    <div class="layui-input-block layui-input-flex">
+                    <div class="layui-input-block ">
                         <table class="layui-table rule-list">
+                            <{foreach name="selected" item="row"}>
+                                <tr>
+                                    <td><input type="checkbox" name="rule[]" value="{$row.id}" title="{$row.title}" lay-skin="primary" checked></td>
+                                    <td>
+                                        <{if $row.type=='staff'}>
+                                        <select name="{$row.id}" multiple class="layui-select" lay-search>
+                                            <option value="">指定审核人员</option>
+                                            <{foreach name="staffs" item="value"}>
+                                                <{if in_array($value.id, $row['items'])}>
+                                                    <option value="{$value.id}" selected>{$value.realname}</option>
+                                                <{else /}>
+                                                    <option value="{$value.id}">{$value.realname}</option>
+                                                <{/if}>
+                                            <{/foreach}>
+                                        </select>
+                                        <{else /}>
+                                        <select name="{$row.id}" multiple class="layui-select" lay-search>
+                                            <option value="">指定审核角色</option>
+                                            <{foreach name="roles" item="value"}>
+                                                <{if in_array($value.id, $row['items'])}>
+                                                    <option value="{$value.id}" selected>{$value.title}</option>
+                                                <{else /}>
+                                                    <option value="{$value.id}">{$value.title}</option>
+                                                <{/if}>
+                                            <{/foreach}>
+                                        </select>
+                                        <{/if}>
+                                    </td>
+                                </tr>
+                            <{/foreach}>
+
+                            <{foreach name="unselected" item="row"}>
                             <tr>
-                                <td><input type="checkbox" name="rule[]" value="department-1" title="主管审核" lay-skin="primary"></td>
+                                <td><input type="checkbox" name="rule[]" value="{$row.id}" title="{$row.title}" lay-skin="primary"></td>
+                                <td>
+                                    <{if $row.type=='staff'}>
+                                    <select name="{$row.id}" multiple class="layui-select" lay-search>
+                                        <option value="">指定审核人员</option>
+                                        <{foreach name="staffs" item="value"}>
+                                        <option value="{$value.id}">{$value.realname}</option>
+                                        <{/foreach}>
+                                    </select>
+                                    <{else /}>
+                                    <select name="{$row.id}" multiple class="layui-select" lay-search>
+                                        <option value="">指定审核角色</option>
+                                        <{foreach name="roles" item="value"}>
+                                        <option value="{$value.id}">{$value.title}</option>
+                                        <{/foreach}>
+                                    </select>
+                                    <{/if}>
+                                </td>
                             </tr>
-                            <tr>
-                                <td><input type="checkbox" name="rule[]" value="department-2" title="大区审核" lay-skin="primary"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="rule[]" value="source" title="渠道审核" lay-skin="primary"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="rule[]" value="pint" title="积点审核" lay-skin="primary"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="rule[]" value="finance" title="财务" lay-skin="primary"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="rule[]" value="accounting" title="会计" lay-skin="primary"></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="rule[]" value="cashier" title="出纳" lay-skin="primary"></td>
-                            </tr>
+                            <{/foreach}>
+
                         </table>
-
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">审核列表</label>
-                    <div class="layui-input-block">
-
                     </div>
                 </div>
 
