@@ -11,6 +11,7 @@ use think\Request;
 
 class Base extends Controller
 {
+    protected $model = null;
     // 分配类型
     protected $allocateTypes = [];
     public $user = [];
