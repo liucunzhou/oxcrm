@@ -1,0 +1,44 @@
+<{if !$led->isEmpty()}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">
+            Led业务
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="240">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="text-center">是否二销</th>
+                <th class="text-center">Led类型</th>
+                <th class="text-center">Led数量</th>
+                <th class="text-center">价格小计</th>
+                <th class="text-left">备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="led" item="row"}>
+            <tr>
+                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-center">{$ledList[$row['led_id']]['title']}</th>
+                <th class="text-center">{$row['led_amount']}</th>
+                <th class="text-center">{$row['led_price']}</th>
+                <th class="text-left">{$row['led_remark']}</th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>

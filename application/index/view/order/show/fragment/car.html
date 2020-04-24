@@ -1,0 +1,56 @@
+<{if !$car->isEmpty()}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">
+            婚车业务
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="240">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="text-center">是否二销</th>
+                <th class="text-center">是否主车</th>
+                <th class="text-center">型号</th>
+                <th class="text-center">数量</th>
+                <th class="text-center">价格</th>
+                <th class="text-center">服务时间</th>
+                <th class="text-center">服务距离</th>
+                <th class="text-center">联系人</th>
+                <th class="text-center">电话</th>
+                <th class="text-center">接车时间</th>
+                <th class="text-center">接车地点</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="car" item="row"}>
+            <tr>
+                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-center">{$row.is_master?'主车':'跟车'}</th>
+                <th class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</th>
+                <th class="text-center">{$row['car_amount']}</th>
+                <th class="text-center">{$row['car_price']}</th>
+                <th class="text-center">{$row['service_hour']}</th>
+                <th class="text-center">{$row['service_distance']}</th>
+                <th class="text-center">{$row['car_contact']}</th>
+                <th class="text-center">{$row['car_mobile']}</th>
+                <th class="text-center">{$row['arrive_time']}</th>
+                <th class="text-center">{$row['arrive_address']}</th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>

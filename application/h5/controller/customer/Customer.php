@@ -201,13 +201,16 @@ class Customer extends Base
     public function doEdit()
     {
         $request = $this->request->param();
-        $allocate = MemberAllocate::get($request['id']);
-        $member = \app\api\model\Member::get($allocate->member_id);
-
-        $request['update_time'] = time();
-//        $request['news_types'] = empty($request['news_types']) ? '' : implode(',', $request['news_types']);
-        $member->allowField(true)->save($request);
+        $memberAllocate = new MemberAllocate();
+        $allocate = $memberAllocate->where('id', '=', $request['id'])->find();
+        unset($request['id']);
         $result = $allocate->allowField(true)->save($request);
+
+        $memberModel = new Member();
+        $member = $memberModel->where('id', '=', $allocate->member_id)->find();
+        // $request['news_types'] = empty($request['news_types']) ? '' : implode(',', $request['news_types']);
+        $member->allowField(true)->save($request);
+
         if ($result) {
             return json([
                 'code' => '200',

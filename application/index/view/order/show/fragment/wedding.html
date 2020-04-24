@@ -1,10 +1,11 @@
-<{if !$wedding->isEmpty()}>
+<{if !empty($wedding)}>
 <div class="layui-card">
     <div class="layui-card-header">
-        婚庆基本信息
+        <div class="layui-card-header-left">婚庆基本信息</div>
     </div>
-    <div class="layui-card-body">
-        <table class="layui-table">
+
+    <div class="layui-card-body no-padding no-margin">
+        <table class="layui-table no-padding no-margin">
             <colgroup>
                 <col width="120">
                 <col width="120">
@@ -17,30 +18,29 @@
                 <col>
             </colgroup>
             <thead>
-                <tr>
-                    <th>婚庆总金额</th>
-                    <th>套餐</th>
-                    <th>套餐金额</th>
-                    <th>仪式堂</th>
-                    <th>仪式堂价格</th>
-                    <th>是否研发产品</th>
-                    <th>研发产品编号</th>
-                    <th>其他</th>
-                    <th>备注</th>
-                </tr>
+            <tr>
+                <th class="text-center">婚庆总金额</th>
+                <th class="text-center">套餐</th>
+                <th class="text-center">套餐金额</th>
+                <th class="text-center">仪式堂</th>
+                <th class="text-center">仪式堂价格</th>
+                <th class="text-center">研发产品编号</th>
+                <th class="text-center">其他金额</th>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>{$wedding.wedding_total}</td>
-                    <td>{$wedding.wedding_package_id}</td>
-                    <td>{$wedding.wedding_package_price}</td>
-                    <td>{$wedding.wedding_ritual_id}</td>
-                    <td>{$wedding.wedding_ritual_hall}</td>
-                    <td>{$wedding.is_new_product}</td>
-                    <td>{$wedding.new_product_no}</td>
-                    <td>{$wedding.wedding_other}</td>
-                    <td>{$wedding.wedding_remark}</td>
-                </tr>
+            <tr>
+                <td class="text-center">{$wedding.wedding_total}</td>
+                <td class="text-center">{$wedding.wedding_package_id}</td>
+                <td class="text-center">{$wedding.wedding_package_price|default='-'}</td>
+                <td class="text-center">{$rituals[$wedding.wedding_ritual_id]['title']}</td>
+                <td class="text-center">{$wedding.wedding_ritual_hall|default='-'}</td>
+                <td class="text-center">{$wedding.new_product_no|default='-'}</td>
+                <td class="text-center">{$wedding.wedding_other}</td>
+            </tr>
+            <tr>
+                <td colspan="7" class="td-remark">备注: {$wedding.wedding_remark|default='-'}</td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -49,9 +49,6 @@
 
 <{if !$weddingOrders->isEmpty()}>
 <div class="layui-card">
-    <div class="layui-card-header">
-        婚庆二销信息
-    </div>
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
             <colgroup>
@@ -59,140 +56,31 @@
                 <col width="150">
                 <col width="150">
                 <col width="150">
-                <col width="150">
                 <col>
+                <col width="240">
             </colgroup>
             <thead>
+            <tr class="no-border">
+                <td colspan="7">
+                    婚庆二销信息
+                </td>
+            </tr>
             <tr>
-                <th>订单号</th>
-                <th>订单金额</th>
-                <th>明细</th>
-                <th>-</th>
-                <th>审核状态</th>
-                <th>操作</th>
+                <th class="text-center">
+                    <a class="lay-right" href="javascript:void(0);" title="查看二销明细" data-action="{:url('order/showWeddingDetails', ['id'=>$row['id']])}">
+                    订单号
+                    </a>
+                </th>
+                <th class="text-center">订单金额</th>
+                <th class="text-left">备注</th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="weddingOrders" item="row"}>
-                <tr>
-                    <td>{$row['wedding_order_no']}</td>
-                    <td>{$row['wedding_totals']}</td>
-                    <td>
-                        <a class="lay-right" href="javascript:void(0);" data-title="查看二销明细" data-action="{:url('order/showWeddingDetails', ['id'=>$row['id']])}">查看</a>
-                    </td>
-                    <td>-</td>
-                    <td>{$confirmStatusList[$row['check_wedding_suborder_status']]}</td>
-                    <td>
-                        <div class="layui-btn-group">
-                            <a href="javascript:void(0);" class="{:auth('order/editWeddingSuborder')} layui-btn layui-btn-xs lay-right" data-title="编辑婚庆二销信息" data-action="{:url('order/editWeddingSuborder', ['id'=>$row['id']])}">编辑</a>
-                            <a href="javascript:void(0);" class="{:auth('order/deleteWeddingSuborder')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api" data-action="{:auth('order/deleteWeddingSuborder', ['id'=>$row['id']])}">删除</a>
-                            <a href="javascript:void(0);" class="{:auth('order/confirmWeddingSuborder')} layui-btn layui-btn-xs lay-right" data-title="审核婚庆二销信息" data-action="{:url('order/confirmWeddingSuborder', ['id'=>$row['id']])}">审核</a>
-                        </div>
-                    </td>
-                </tr>
-            <{/foreach}>
-            </tbody>
-        </table>
-    </div>
-</div>
-<{/if}>
-
-<{if !$weddingReceivables->isEmpty()}>
-<!--婚庆收款信息-->
-<div class="layui-card">
-    <div class="layui-card-header">婚庆收款信息</div>
-    <div class="layui-card-body">
-        <div class="layui-form-item">
-            <table class="layui-table no-padding no-margin">
-                <colgroup>
-                    <col width="150">
-                    <col width="150">
-                    <col width="150">
-                    <col width="150">
-                    <col width="150">
-                    <col width="240">
-                    <col>
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>收款日期</th>
-                        <th>收款编号</th>
-                        <th>收款方式</th>
-                        <th>收款性质</th>
-                        <th>收款金额</th>
-                        <th>创建日期</th>
-                        <th>备注</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <{foreach name="weddingReceivables" item="row"}>
-                        <tr>
-                            <td>{$row.wedding_income_date}</td>
-                            <td>{$row.wedding_receivable_no}</td>
-                            <td>{$row.wedding_income_payment}</td>
-                            <td>{$row.wedding_income_type}</td>
-                            <td>{$row.weddding_income_item_price}</td>
-                            <td>{$row.create_time}</td>
-                            <td>{$row.remark}</td>
-                        </tr>
-                    <{/foreach}>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<{/if}>
-
-<{if !$weddingPayments->isEmpty()}>
-<!--婚庆付款信息-->
-<div class="layui-card">
-    <div class="layui-card-header">婚庆付款信息</div>
-    <div class="layui-card-body no-margin no-padding">
-        <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="240">
-                <col>
-            </colgroup>
-            <thead>
             <tr>
-                <th>申请日期</th>
-                <th>款项性质</th>
-                <th>付款金额</th>
-                <th>收款名称</th>
-                <th>收款账号</th>
-                <th>审核状态</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <{foreach name="weddingPayments" item="row"}>
-            <tr>
-                <th>{$row['wedding_apply_pay_date']}</th>
-                <th>{$paymentTypes[$row['wedding_pay_type']]}</th>
-                <th>{$row['wedding_pay_item_price']}</th>
-                <th>{$row['wedding_pay_to_company']}</th>
-                <th>{$row['wedding_pay_to_account']}</th>
-                <th>
-                    {$confirmStatusList[$row['check_status_payment_account']]}
-                    -
-                    {$confirmStatusList[$row['check_status_payment_fiance']]}
-                    -
-                    {$confirmStatusList[$row['check_status_payment_cashier']]}
-                </th>
-                <th>
-                    <div class="layui-btn-group">
-                        <a href="javascript:void(0);" class="{:auth('order/editWeddingPayment')} layui-btn layui-btn-xs lay-right" data-action="{:url('order/editWeddingPayment', ['id'=>$row['id']])}">编辑</a>
-                        <a href="javascript:void(0);" class="{:auth('order/deleteWeddingPayment')} layui-btn layui-btn-danger layui-btn-xs lay-delete-api" data-action="{:url('order/deleteWeddingPayment', ['id'=>$row['id']])}">删除</a>
-                        <a href="javascript:void(0);" class="{:auth('order/checkWeddingPaymentAccounting')} layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-会计审核" data-action="{:url('order/checkWeddingPaymentAccounting', ['id'=>$row['id']])}">会计审核</a>
-                        <a href="javascript:void(0);" class="{:auth('order/checkWeddingPaymentFiance')} layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-财务审核" data-action="{:url('order/checkWeddingPaymentFiance', ['id'=>$row['id']])}">财务审核</a>
-                        <a href="javascript:void(0);" class="{:auth('order/checkWeddingPaymentCashier')} layui-btn layui-btn-xs lay-right" data-title="一站式婚庆付款-出纳审核" data-action="{:url('order/checkWeddingPaymentCashier', ['id'=>$row['id']])}">出纳审核</a>
-                    </div>
-                </th>
+                <td class="text-center">{$row['wedding_order_no']}</td>
+                <td class="text-center">{$row['wedding_totals']}</td>
+                <td class="text-left">{$row.sub_wedding_remark}</td>
             </tr>
             <{/foreach}>
             </tbody>

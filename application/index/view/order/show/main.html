@@ -2,50 +2,55 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>查看订单信息</title>
+    <title>更新订单信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/order.css?{:rand(10000,100000)}" media="all">
     <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
-    <style>
-        .layui-form-label {
-            width: 6em;
-        }
-        .layui-form-label-normal{
-            width: 80px;
-        }
-
-        .no-padding{
-            padding: 0!important;
-        }
-
-        .no-margin{
-            margin: 0!important;
-        }
-
-        .layui-table td, .layui-table th{
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-    </style>
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/ox-common.js?{:rand(1000000,199999999)}"></script>
 </head>
 <body>
+<!--创建、编辑订单-->
 <div class="layui-fluid">
-    <!--合同基本信息-->
-    <{include file="order/show/fragment/contract" /}>
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px; background-color: #f4f4f4;">
+            <!--合同基本信息-->
+            <{include file="order/edit/fragment/contract" /}>
+
+            <!--婚宴基本信息-->
+            <{include file="order/edit/fragment/banquet" /}>
+
+            <!--婚庆基本信息-->
+            <{include file="order/edit/fragment/wedding" /}>
+
+            <!--婚车业务-->
+            <{include file="order/edit/fragment/car" /}>
+
+            <!--酒水业务-->
+            <{include file="order/edit/fragment/wine" /}>
+
+            <!--喜糖业务-->
+            <{include file="order/edit/fragment/sugar" /}>
+
+            <{include file="order/edit/fragment/light" /}>
+
+            <{include file="order/edit/fragment/dessert" /}>
+
+            <{include file="order/edit/fragment/led" /}>
+
+            <{include file="order/edit/fragment/3d" /}>
+
+            <{include file="order/edit/fragment/money" /}>
 
 
-    <!--婚宴基本信息-->
-    <{include file="order/show/fragment/banquet" /}>
-
-    <!--婚庆基本信息-->
-    <{include file="order/show/fragment/wedding" /}>
-
-    <div class="layui-space10" style="height: 30px;"></div>
-
+            <div class="layui-space10" style="height: 20px;"></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

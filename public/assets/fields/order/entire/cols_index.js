@@ -11,7 +11,8 @@ var _cols = [[
         "field": "salesman",
         "title": "签单销售",
         "align": "center",
-        "width": 120
+        "width": 120,
+        "event" : "showOrder"
     },
     {
         "field": "sign_date",

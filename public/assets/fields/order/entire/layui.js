@@ -41,11 +41,8 @@ layui.config({
                 } else {
                     $("#advance-search").addClass("layui-hide");
                 }
-
                 break;
-
         }
-        ;
     });
 
     //监听行工具事件

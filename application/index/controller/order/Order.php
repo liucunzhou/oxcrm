@@ -538,69 +538,7 @@ class Order extends Backend
     # 查看订单信息
     public function showOrder()
     {
-        $get = Request::param();
-        if (empty($get['id'])) return false;
-        $order = \app\common\model\Order::get($get['id'])->getData();
-        $order = $this->formatOrderDate($order);
-        $this->assign('data', $order);
-
-        #### 获取婚宴订单信息
-        $where = [];
-        $where['order_id'] = $get['id'];
-        $banquet = OrderBanquet::where($where)->field('id', true)->find();
-        $this->assign('banquet', $banquet);
-
-        #### 获取婚宴二销订单信息
-        $where = [];
-        $where['order_id'] = $get['id'];
-        $banquetOrders = OrderBanquetSuborder::where($where)->select();
-        $this->assign('banquetOrders', $banquetOrders);
-        #### 获取婚宴收款信息
-        $banquetReceivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-        $this->assign('banquetReceivables', $banquetReceivables);
-        #### 获取婚宴付款信息
-        $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-        $this->assign('banquetPayments', $banquetPayments);
-
-        #### 获取婚庆订单信息
-        $where = [];
-        $where['order_id'] = $get['id'];
-        $wedding = OrderWedding::where($where)->field('id', true)->find();
-        if(!empty($wedding)) {
-            $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-            if (!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-            $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-            #### 获取婚宴二销订单信息
-            $where = [];
-            $where['order_id'] = $get['id'];
-            $weddingOrders = OrderWeddingSuborder::where($where)->select();
-            $this->assign('weddingOrders', $weddingOrders);
-        }
-        $this->assign('wedding', $wedding);
-        #### 获取婚庆收款信息
-        $weddingReceivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
-        $this->assign('weddingReceivables', $weddingReceivables);
-        #### 获取婚庆付款信息
-        $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-        $this->assign('weddingPayments', $weddingPayments);
-
-        ##　获取客资分配信息
-        $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
-        $this->assign('allocate', $allocate);
-
-        ## 获取客户信息
-        $member = Member::get($order['member_id']);
-        $this->assign('member', $member);
-
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
-
-        ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
-        $this->assign('salesmans', $salesmans);
-
-        return $this->fetch('order/show/main');
+        return $this->editOrder();
     }
 
 

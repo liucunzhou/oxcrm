@@ -155,6 +155,13 @@ class Audit extends Backend
         // print_r($selected);
         $this->assign('selected', $selected);
 
+        $unselected = [];
+        foreach ($this->sequence as $key=>$row) {
+            if(!isset($csequence[$key])) {
+                $unselected[$key] = $row;
+            }
+        }
+        $this->assign('unselected', $unselected);
         return $this->fetch();
     }
 

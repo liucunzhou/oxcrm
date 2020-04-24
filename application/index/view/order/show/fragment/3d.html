@@ -1,0 +1,57 @@
+<{if !$d3->isEmpty()}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">
+            3D业务
+        </div>
+
+
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="240">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="text-center">是否二销</th>
+                <th class="text-center">3D类型</th>
+                <th class="text-center">3D数量</th>
+                <th class="text-center">价格小计</th>
+                <th class="text-left">备注</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="d3" item="row"}>
+            <tr>
+                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-center">{$d3List[$row['d3_id']]['title']}</th>
+                <th class="text-center">{$row['d3_amount']}</th>
+                <th class="text-center">{$row['d3_price']}</th>
+                <th class="text-left">{$row['d3_remark']}</th>
+                <th class="text-right">
+                    <div>
+                        <a href="javascript:void(0);"
+                           class="btn-edit-solid layui-right-side"
+                           data-action="{:url('/index/order.d3/edit', ['id'=>$row['id']])}">编辑</a>
+                        <a href="javascript:void(0);"
+                           class="btn-delete-solid lay-delete-api"
+                           data-action="{:url('/index/order.d3/delete', ['id'=>$row['id']])}">删除</a>
+                    </div>
+                </th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>

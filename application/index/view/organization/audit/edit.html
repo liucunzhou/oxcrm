@@ -18,7 +18,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" method="post" action="/index/organization.audit/doCreate.html" lay-filter="component-form-group">
+            <form class="layui-form" method="post" action="/index/organization.audit/doEdit.html" lay-filter="component-form-group">
                 <div class="layui-form-item">
                     <label class="layui-form-label">所属公司</label>
                     <div class="layui-input-block">
@@ -133,7 +133,7 @@
 
 <script>
 $(function(){
-    $(".rule-list tr").sortable();
+    $(".rule-list tbody").sortable();
 
     layui.use('form', function() {
         var form = layui.form;

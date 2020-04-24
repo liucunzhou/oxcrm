@@ -1,0 +1,48 @@
+<{if !$dessert->isEmpty()}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">点心业务</div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="240">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="text-center">是否二销</th>
+                <th class="text-center">点心类型</th>
+                <th class="text-center">点心数量</th>
+                <th class="text-center">价格小计</th>
+                <th class="text-center">联系人</th>
+                <th class="text-center">电话</th>
+                <th class="text-center">联系地址</th>
+                <th class="text-left">备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="dessert" item="row"}>
+            <tr>
+                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-center">{$dessertList[$row.dessert_id]['title']}</th>
+                <th class="text-center">{$row['dessert_amount']}</th>
+                <th class="text-center">{$row['dessert_price']}</th>
+                <th class="text-center">{$row['dessert_contact']}</th>
+                <th class="text-center">{$row['dessert_mobile']}</th>
+                <th class="text-center">{$row['dessert_address']}</th>
+                <th class="text-left">{$row['dessert_remark']}</th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>

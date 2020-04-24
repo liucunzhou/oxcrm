@@ -1,0 +1,50 @@
+<{if !$wine->isEmpty()}>
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">
+            酒水业务
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-table no-padding no-margin">
+            <colgroup>
+                <col width="100">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col width="150">
+                <col>
+                <col width="240">
+            </colgroup>
+            <thead>
+            <tr>
+                <th class="text-center">是否二销</th>
+                <th class="text-center">酒水类型</th>
+                <th class="text-center">酒水数量</th>
+                <th class="text-center">价格小计</th>
+                <th class="text-center">联系人</th>
+                <th class="text-center">电话</th>
+                <th class="text-center">联系地址</th>
+                <th class="text-left">备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach name="wine" item="row"}>
+            <tr>
+                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-center">{$wineList[$row['wine_id']]['title']}</th>
+                <th class="text-center">{$row['wine_amount']}</th>
+                <th class="text-center">{$row['wine_price']}</th>
+                <th class="text-center">{$row['wine_contact']}</th>
+                <th class="text-center">{$row['wine_mobile']}</th>
+                <th class="text-center">{$row['wine_address']}</th>
+                <th class="text-left">{$row['wine_remark']}</th>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<{/if}>
