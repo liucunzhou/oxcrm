@@ -390,7 +390,7 @@ class Order extends Base
                 // 获取角色
                 foreach ($row as $v)
                 {
-                    $user =
+                    $user = User::getRoleManager($v, $this->user);
                     $managerList[] = [
                         'id'        => $user['id'],
                         'realname'  => $user['realname'],
