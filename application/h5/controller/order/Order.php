@@ -8,6 +8,7 @@ use app\common\model\MemberAllocate;
 use app\common\model\OrderBanquet;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderConfirm;
 use app\common\model\OrderHotelItem;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
@@ -303,6 +304,8 @@ class Order extends Base
             $row['d3_id'] = $this->d3List[$row['id']]['title'];
         }
 
+        #### 获取审核进度
+
         $result = [
             'code'  =>  '200',
             'msg'   =>  '获取成功',
@@ -354,76 +357,6 @@ class Order extends Base
 
         return json($$result);
 
-    }
-
-    # comnpany_id
-    public function getConfirmSequence()
-    {
-        $param = $this->request->param();
-        $audit = \app\common\model\Audit::where('company_id', '=', $param['company_id'])->find();
-        if(empty($audit)) {
-            $result = [
-                'code'  => '400',
-                'msg'   => '尚未设置审核顺序'
-            ];
-            return json($result);
-        }
-
-        if(empty($audit->content)) {
-            $result = [
-                'code'  => '400',
-                'msg'   => '尚未设置审核顺序'
-            ];
-            return json($result);
-        }
-
-        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
-        $staffs = User::getUsers(false);
-        ## 审核全局列表
-        $sequence = $this->config['check_sequence'];
-        $auth = json_decode($audit->content, true);
-        $confirmList = [];
-        foreach ($auth as $key=>$row) {
-            $managerList = [];
-            $type = $sequence[$key]['type'];
-            if($type == 'role') {
-                // 获取角色
-                foreach ($row as $v)
-                {
-                    $user = User::getRoleManager($v, $this->user);
-                    $managerList[] = [
-                        'id'        => $user['id'],
-                        'realname'  => $user['realname'],
-                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
-                    ];
-                }
-            } else {
-                foreach ($row as $v) {
-                    if(!isset($staffs[$v])) continue;
-                    $user = $staffs[$v];
-                    $managerList[] = [
-                        'id'        => $user['id'],
-                        'realname'  => $user['realname'],
-                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
-                    ];
-                }
-            }
-            $confirmList[] = [
-                'id'    => $key,
-                'title' => $sequence[$key]['title'],
-                'managerList'   => $managerList
-            ];
-        }
-
-        $result = [
-            'code'  => '200',
-            'msg'   => '获取数据成功',
-            'data'  => [
-                'confirmList'   => $confirmList
-            ]
-        ];
-
-        return json($result);
     }
 
     # 创建订单逻辑
@@ -548,8 +481,6 @@ class Order extends Base
             $d3Model->allowField(true)->save($param);
             echo $d3Model->getLastSql();
         }
-
-
 
         return json(['code' => '200', 'msg' => '创建成功', 'redirect'=> 'tab']);
     }
