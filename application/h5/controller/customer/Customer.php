@@ -428,7 +428,7 @@ class Customer extends Base
         $map[] = ['is_sea', '=', '1'];
         ###  默认隐藏失效、无效客资
         $map[] = ['active_status', 'not in', [3, 4]];
-        $fields = "id,realname,mobile,active_status,hotel_text,zone,create_time";
+        $fields = "id,realname,mobile,active_status,banquet_size,banquet_size_end,budget,budget_end,hotel_text,zone,create_time";
         $member = $member->field($fields)->where($map);
 
         ### 手机号筛选
