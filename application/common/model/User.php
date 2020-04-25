@@ -146,6 +146,19 @@ class User extends Model
         }
     }
 
+    public static function getRoleManager($roleId, $user) {
+        $department = Department::getDepartment($user['department_id']);
+        $path = explode('-',$department['path']);
+        $departments = array_filter($path);
+
+        $where = [];
+        $where[] = ['role_id', '=', $roleId];
+        $where[] = ['department_id', 'in', $departments];
+        $user = self::where($where)->find();
+
+        return $user;
+    }
+
     public static function updateCache($id)
     {
         self::getUser($id, true);

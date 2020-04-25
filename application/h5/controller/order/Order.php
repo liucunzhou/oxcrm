@@ -201,15 +201,20 @@ class Order extends Base
             $order = [];
         }
 
+        $member = \app\api\model\Member::where('id', '=', $order->member_id)->find();
+
+
         #### 获取婚宴订单信息
         $where = [];
         $where['order_id'] = $param['id'];
         $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
+        if(empty($banquet)) $banquet = [];
 
         #### 酒店服务项目
         $where = [];
         $where['order_id'] = $param['id'];
         $hotelItem = \app\common\model\OrderHotelItem::where($where)->order('id desc')->find();
+        if (empty($hotelItem)) $hotelItem = [];
 
         #### 获取婚宴二销订单信息
         $where = [];
@@ -222,11 +227,12 @@ class Order extends Base
         #### 获取婚宴付款信息
         $banquetPaymentList = \app\common\model\OrderBanquetPayment::where('order_id', '=', $param['id'])->select();
 
-
         #### 获取婚庆订单信息
         $where = [];
         $where['order_id'] = $param['id'];
         $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
+        if(empty($wedding)) $wedding = [];
+
         #### 获取婚宴二销订单信息
         $where = [];
         $where['order_id'] = $param['id'];
@@ -358,7 +364,12 @@ class Order extends Base
                 // 获取角色
                 foreach ($row as $v)
                 {
-
+                    $user =
+                    $managerList[] = [
+                        'id'        => $user['id'],
+                        'realname'  => $user['realname'],
+                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
                 }
             } else {
                 foreach ($row as $v) {
