@@ -454,7 +454,7 @@ class Customer extends Base
             'code' => 0,
             'msg' => '获取数据成功',
             'data' => [
-                'sealist'   =>  $list
+                'sealist'   =>  $list->getCollection()
             ]
         ];
 
