@@ -334,7 +334,7 @@ class Search
 
     public static function order(&$user, &$get)
     {
-        if (isset($get['complete']) && $get['complete'] >= 0) {
+        if (isset($get['complete']) && $get['complete'] == 100) {
             $map[] = ['complete', '=', $get['complete']];
         }
 
