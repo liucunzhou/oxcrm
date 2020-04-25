@@ -22,8 +22,6 @@ class Order extends Base
     protected $brands = [];
     protected $hotels = [];
 
-
-
     protected function initialize()
     {
         parent::initialize();
@@ -95,7 +93,7 @@ class Order extends Base
     {
         $param = $this->request->param();
         $param['limit'] = isset($param['limit']) ? $param['limit'] : 3;
-        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
+        $param['page'] = isset($param['page']) ? (int)$param['page'] + 1 : 1;
         $config = [
             'page' => $param['page']
         ];
@@ -106,7 +104,7 @@ class Order extends Base
         }
 
         ## 签约公司
-        if( isset($param['company_id']) && $param['company_id'] != 'all' ){
+        if( isset($param['company_id']) && $param['company_id'] > 0 ){
             $map[] = ['company_id','=',$param['company_id']];
         }
 
@@ -330,21 +328,65 @@ class Order extends Base
     public function getConfirmSequence()
     {
         $param = $this->request->param();
-        $audit = Audit::where('company_id', '=', $param['company_id'])->find();
+        $audit = \app\common\model\Audit::where('company_id', '=', $param['company_id'])->find();
         if(empty($audit)) {
             $result = [
                 'code'  => '400',
                 'msg'   => '尚未设置审核顺序'
             ];
+            return json($result);
         }
 
+        if(empty($audit->content)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '尚未设置审核顺序'
+            ];
+            return json($result);
+        }
+
+        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
+        $staffs = User::getUsers(false);
         ## 审核全局列表
         $sequence = $this->config['check_sequence'];
-
         $auth = json_decode($audit->content, true);
-        foreach ($auth as $key=>&$row) {
-            $row['title'] = $sequence[$row->id]['title'];
+        $confirmList = [];
+        foreach ($auth as $key=>$row) {
+            $managerList = [];
+            $type = $sequence[$key]['type'];
+            if($type == 'role') {
+                // 获取角色
+                foreach ($row as $v)
+                {
+
+                }
+            } else {
+                foreach ($row as $v) {
+                    if(!isset($staffs[$v])) continue;
+                    $user = $staffs[$v];
+                    $managerList[] = [
+                        'id'        => $user['id'],
+                        'realname'  => $user['realname'],
+                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            }
+            $confirmList[] = [
+                'id'    => $key,
+                'title' => $sequence[$key]['title'],
+                'managerList'   => $managerList
+            ];
         }
+
+        $result = [
+            'code'  => '200',
+            'msg'   => '获取数据成功',
+            'data'  => [
+                'confirmList'   => $confirmList
+            ]
+        ];
+
+        return json($result);
     }
 
     # 创建订单逻辑
