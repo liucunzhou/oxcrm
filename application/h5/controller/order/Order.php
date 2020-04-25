@@ -14,7 +14,6 @@ use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
 use app\common\model\User;
 use app\common\model\Search;
-use function PHPSTORM_META\map;
 
 class Order extends Base
 {
@@ -120,7 +119,7 @@ class Order extends Base
         } else {
             $map[] = ['salesman', '=', $this->user['id']];
         }
-        $fields = "id,contract_no,company_id,news_type,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
         $list = $this->model->where($map)->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
 
         if (!$list->isEmpty()) {
@@ -255,7 +254,7 @@ class Order extends Base
                 'banquetSuborderList'   =>  $banquetSuborderList,
                 'banquetReceivableList' =>  $banquetReceivableList,
                 'banquetPaymentList'    =>  $banquetPaymentList,
-                'hoteItem'              =>  $hotelItem,
+                'hotelItem'              =>  $hotelItem,
                 'wedding'               =>  $wedding,
                 'weddingSuborderList'   =>  $weddingSuborderList,
                 'weddingReceivableList' =>  $weddingReceivableList,
@@ -277,23 +276,25 @@ class Order extends Base
     public function createOrder()
     {
         $param = $this->request->param();
-        if (empty($param['id'])) return false;
 
         $allocate = MemberAllocate::get($param['id']);
 
-        $member = Member::get($param['member_id']);
+        $fields = "id,realname,mobile,source_id,source_text";
+        $member = Member::field($fields)->get($allocate['member_id']);
 
-        ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
 
-        ## 签约公司
-        $this->brands;
+        $result = [
+            'code'  =>  '200',
+            'msg'   =>  '获取成功',
+            'data'  =>  [
+                'member'                =>  $member,          ## 客资信息
+                'companyList'           =>  $this->brands,    ##签约公司列表
+                'newsTypeList'          =>  $this->config['news_type_list'],    ## 订单类型
+                'cooperationModeList'   =>  $this->config['cooperation_mode'],  ## 合同模式
+            ]
+        ];
 
-        ## 酒店列表
-        $this->hotels;
-
-        ## 订单类型
-        $newsTypes = $this->config['news_type_list'];
+        return json($$result);
 
     }
 

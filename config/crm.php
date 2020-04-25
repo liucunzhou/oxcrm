@@ -4,7 +4,7 @@ $newsTypes = ['婚宴信息', '婚庆信息', '一站式','婚纱摄影','婚车
 $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
 $payments = [1=>'支付宝-g', 2=>'支付宝-s', 3=>'微信-g', 4=>'微信-s', 5=>'银行汇款-g', 6=>'银行汇款-s', 7=>'直付酒店', 8=>'现金', 9=>'POS机', 10=>'其他'];
 $suborderTypes = ['否', '婚宴二销', '婚庆二销'];
-$checkStatusList = ['待审核', '已通过', '已驳回'];
+$checkStatusList = ['待审核','审核中', '审核驳回','审核通过', '已完成'];
 $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
 $check_sequence = [
@@ -48,6 +48,8 @@ return [
     'news_type_list'    => $newsTypes,
 
     'cooperation_mode'  =>  $cooperationModes,
+
+    'check_status'   =>  $checkStatusList,
 
     'levels' => [
         999 => [
