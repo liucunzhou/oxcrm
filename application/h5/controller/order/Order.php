@@ -21,6 +21,14 @@ class Order extends Base
     protected $staffs = [];
     protected $brands = [];
     protected $hotels = [];
+    protected $carList = [];
+    protected $sugarList = [];
+    protected $wineList = [];
+    protected $lightList = [];
+    protected $dessertList = [];
+    protected $ledList = [];
+    protected $d3List = [];
+
 
     protected function initialize()
     {
@@ -38,8 +46,6 @@ class Order extends Base
         ## 酒店列表
         $this->hotels = \app\common\model\Store::getStoreList();
 
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
 
         ## 获取套餐列表
         $packages = \app\common\model\Package::getList();
@@ -50,8 +56,6 @@ class Order extends Base
         ## 酒店服务项目
         $banquetHoteItems = \app\common\model\BanquetHotelItem::getList();
 
-        ## 酒店服务项目
-        $cars = \app\common\model\Car::getList();
 
         ## 供应商列表
         $this->suppliers = \app\common\model\Supplier::getList();
@@ -63,24 +67,24 @@ class Order extends Base
         $this->weddingCategories = \app\common\model\WeddingCategory::getList();
 
         ## 汽车列表
-        $carList = \app\common\model\Car::getList();
+        $this->carList = \app\common\model\Car::getList();
 
         ## 酒水列表
-        $wineList = \app\common\model\Wine::getList();
+        $this->wineList = \app\common\model\Wine::getList();
 
         ## 喜糖列表
-        $sugarList = \app\common\model\Sugar::getList();
+        $this->sugarList = \app\common\model\Sugar::getList();
         ## 灯光列表
-        $lightList = \app\common\model\Light::getList();
+        $this->lightList = \app\common\model\Light::getList();
 
         ## 点心列表
-        $dessertList = \app\common\model\Dessert::getList();
+        $this->dessertList = \app\common\model\Dessert::getList();
 
         ## led列表
-        $ledList = \app\common\model\Led::getList();
+        $this->ledList = \app\common\model\Led::getList();
 
         ## 3d列表
-        $d3List = \app\common\model\D3::getList();
+        $this->d3List = \app\common\model\D3::getList();
 
         if (isset($this->role['auth_type']) && $this->role['auth_type'] > 0) {
             $this->staffs = User::getUsersByDepartmentId($this->user['department_id']);
@@ -241,36 +245,57 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $carList = \app\common\model\OrderCar::where($where)->select();
+        foreach ( $carList as $key=>&$row ) {
+            $row['car_id'] = $this->carList[$row['id']]['title'];
+        }
 
         #### 喜糖
         $where = [];
         $where['order_id'] = $param['id'];
         $sugarList = \app\common\model\OrderSugar::where($where)->select();
+        foreach ( $sugarList as $key=>&$row ) {
+            $row['sugar_id'] = $this->sugarList[$row['id']]['title'];
+        }
 
         #### 酒水
         $where = [];
         $where['order_id'] = $param['id'];
         $wineList = \app\common\model\OrderWine::where($where)->select();
+        foreach ( $wineList as $key=>&$row ) {
+            $row['wine_id'] = $this->wineList[$row['id']]['title'];
+        }
 
         #### 灯光
         $where = [];
         $where['order_id'] = $param['id'];
         $lightList = \app\common\model\OrderLight::where($where)->select();
+        foreach ( $lightList as $key=>&$row ) {
+            $row['light_id'] = $this->lightList[$row['id']]['title'];
+        }
 
         #### 点心
         $where = [];
         $where['order_id'] = $param['id'];
         $dessertList = \app\common\model\OrderDessert::where($where)->select();
+        foreach ( $dessertList as $key=>&$row ) {
+            $row['desser_id'] = $this->dessertList[$row['id']]['title'];
+        }
 
         #### LED
         $where = [];
         $where['order_id'] = $param['id'];
         $ledList = \app\common\model\OrderLed::where($where)->select();
+        foreach ( $ledList as $key=>&$row ) {
+            $row['led_id'] = $this->ledList[$row['id']]['title'];
+        }
 
         #### 3D
         $where = [];
         $where['order_id'] = $param['id'];
         $d3List = \app\common\model\OrderD3::where($where)->select();
+        foreach ( $carList as $key=>&$row ) {
+            $row['d3_id'] = $this->d3List[$row['id']]['title'];
+        }
 
         $result = [
             'code'  =>  '200',
