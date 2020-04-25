@@ -205,8 +205,7 @@ class Order extends Base
             $order = [];
         }
 
-        $member = \app\api\model\Member::where('id', '=', $order->member_id)->find();
-
+        $member = Member::field('realname,mobile,source_text')->where('id','=',$order->member_id)->find();
 
         #### 获取婚宴订单信息
         $where = [];
@@ -253,6 +252,7 @@ class Order extends Base
         $carList = \app\common\model\OrderCar::where($where)->select();
         foreach ( $carList as $key=>&$row ) {
             $row['car_id'] = $this->carList[$row['id']]['title'];
+            $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
         }
 
         #### 喜糖
@@ -308,11 +308,12 @@ class Order extends Base
             'msg'   =>  '获取成功',
             'data'  =>  [
                 'order'                 =>  $order,
+                'member'                =>  $member,
                 'banquet'               =>  $banquet,
                 'banquetSuborderList'   =>  $banquetSuborderList,
                 'banquetReceivableList' =>  $banquetReceivableList,
                 'banquetPaymentList'    =>  $banquetPaymentList,
-                'hotelItem'              =>  $hotelItem,
+                'hotelItem'             =>  $hotelItem,
                 'wedding'               =>  $wedding,
                 'weddingSuborderList'   =>  $weddingSuborderList,
                 'weddingReceivableList' =>  $weddingReceivableList,
