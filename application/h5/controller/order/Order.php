@@ -99,6 +99,23 @@ class Order extends Base
             'page' => $param['page']
         ];
 
+        ##  审核状态
+        if( isset($param['check_status']) && $param['check_status'] != 'all' ){
+            $map[] = ['check_status','=',$param['check_status']];
+        }
+
+        ## 签约公司
+        if( isset($param['company_id']) && $param['company_id'] != 'all' ){
+            $map[] = ['company_id','=',$param['company_id']];
+        }
+
+        ## 时间类型
+        if( isset($param['range']) && !empty($param['range'])){
+            $column = !empty($param['range_type']) ? $param['range_type'] : 'create_time';
+            $range = format_date_range($param['range']);
+            $map[] = [$column, 'between', $range];
+        }
+
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
@@ -119,9 +136,20 @@ class Order extends Base
         } else {
             $map[] = ['salesman', '=', $this->user['id']];
         }
-        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
-        $list = $this->model->where($map)->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
 
+
+        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $list = $this->model->where($map);
+
+        if( isset( $param['keywords'] ) && !empty($param['keywords']) ) {
+            if(is_numeric($param['keywords'])) {
+                $list->where('bride_mobile|bridegroom_mobile','like',"%{$param['keywords']}%");
+            } else {
+                $list->where('bride|bridegroom','like',"%{$param['keywords']}%");
+            }
+        }
+
+        $list = $list->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
         if (!$list->isEmpty()) {
             $list = $list->getCollection()->toArray();
             $newsTypes = $this->config['news_type_list'];
