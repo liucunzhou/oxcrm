@@ -6,6 +6,8 @@ use app\common\model\Budget;
 use app\common\model\Intention;
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
+use app\common\model\MemberApply;
+use app\common\model\Mobile;
 use app\common\model\Source;
 use app\common\model\Store;
 use app\common\model\User;
@@ -417,96 +419,88 @@ class Customer extends Base
     public function sea()
     {
         $request = $this->request->param();
+        $request['limit'] = isset($request['limit']) ? $request['limit'] : 5;
+        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
         $config = [
             'page' => $request['page']
         ];
+        $member = new Member();
         $map[] = ['is_sea', '=', '1'];
-        if (isset($request['source']) && $request['source'] > 0) {
-            $map[] = ['source_id', '=', $request['source']];
-        }
-
-        if (isset($request['staff']) && $request['staff'] > 0) {
-            $map[] = ['operate_id', '=', $request['staff']];
-        }
-
-        if (isset($request['city_id']) && $request['city_id'] > 0) {
-            $map[] = ['city_id', '=', $request['city_id']];
-        }
-
         ###  默认隐藏失效、无效客资
         $map[] = ['active_status', 'not in', [3, 4]];
-        if (isset($request['date_range']) && !empty($request['date_range'])) {
-            $range = explode('~', $request['date_range']);
-            $range[0] = trim($range[0]);
-            $range[1] = trim($range[1]);
-            $start = strtotime($range[0]);
-            $end = strtotime($range[1]);
-            $map[] = ['create_time', 'between', [$start, $end]];
+        $fields = "id,realname,mobile,active_status,hotel_text,zone,create_time";
+        $member = $member->field($fields)->where($map);
+
+        ### 手机号筛选
+        if (  isset($request['keywords']) && strlen($request['keywords']) == 11  ) {
+            $mobile = $request['keywords'];
+            $member = $member->where('id', '=', function ($query) use ($mobile) {
+                $query->table('tk_mobile')->where('mobile', '=', $mobile)->field('member_id');
+            });
+        } else if ( isset($request['keywords']) && strlen($request['keywords']) < 11 ) {
+            $mobile = $request['keywords'];
+            $member = $member->where('id', 'in', function ($query) use ($mobile) {
+                $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
+            });
         }
+        $list = $member->order('create_time desc')->paginate($request['limit'], false, $config);
 
-        ### 省市划分
-        if ($this->user['city_id'] > 0) {
-            $map[] = ['city_id', '=', $this->user['city_id']];
-        }
-
-        if (isset($request['keywords']) && strlen($request['keywords']) == 11) {
-
-            $map = [];
-            $mobiles = MobileRelation::getMobiles($request['keywords']);
-            if (!empty($mobiles)) {
-                $map[] = ['mobile', 'in', $mobiles];
-            } else {
-                $map[] = ['mobile', '=', $request['keywords']];
-            }
-            $where1[] = ['mobile', 'like', "%{$request['keywords']}%"];
-            $where2[] = ['mobile1', 'like', "%{$request['keywords']}%"];
-            $list = model('Member')->where($map)->whereOr($where1)->whereOr($where2)->order('create_time desc')->paginate($request['limit'], false, $config);
-
-        } else if (isset($request['keywords']) && !empty($request['keywords']) && strlen($request['keywords']) < 11) {
-
-            $map = [];
-            $map[] = ['mobile', 'like', "%{$request['keywords']}%"];
-            $list = model('Member')->where($map)->order('create_time desc')->paginate($request['limit'], false, $config);
-
-        } else if (isset($request['keywords']) && strlen($request['keywords']) > 11) {
-
-            $map = [];
-            $map[] = ['mobile', 'like', "%{$request['keywords']}%"];
-            $list = model('Member')->where($map)->order('create_time desc')->paginate($request['limit'], false, $config);
-
-        } else {
-
-            $list = model('Member')->where($map)->where('id', 'not in', function ($query) {
-                $map = [];
-                $map[] = ['user_id', '=', $this->user['id']];
-                $query->table('tk_member_allocate')->where($map)->field('member_id');
-            })->order('create_time desc')->paginate($request['limit'], false, $config);
-
-        }
-
-        $data = $list->getCollection()->toArray();
-        $users = User::getUsers();
-        foreach ($data as &$value) {
-            $value['operator'] = $users[$value['operate_id']]['realname'];
+        foreach ($list as &$value) {
             $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
-            $value['news_type'] = $this->newsTypes[$value['news_type']];
             $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
 
-            if ($this->auth['is_show_alias'] == '1') {
-                $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
-            } else {
-                $value['source_text'] = $this->sources[$value['source_id']] ? $this->sources[$value['source_id']]['title'] : $value['source_text'];
-            }
         }
         $result = [
             'code' => 0,
             'msg' => '获取数据成功',
-            'pages' => $list->lastPage(),
-            'count' => $list->total(),
-            'map' => $map,
-            'data' => $data
+            'data' => [
+                'sealist'   =>  $list
+            ]
         ];
 
         return json($result);
+    }
+
+    # 客资申请
+    public function doApply()
+    {
+        $ids = $this->request->param('ids');
+        $ids = explode(',', $ids);
+        if (empty($ids)) {
+            return json([
+                'code' => '500',
+                'msg' => '申请的客资不能为空'
+            ]);
+        }
+
+        $count = count($ids);
+        $success = 0;
+        foreach ($ids as $id) {
+            $allocate = MemberAllocate::getAllocate($this->user['id'], $id);
+            if (!empty($allocate)) continue;
+
+            $Model = new MemberApply();
+            $map = [];
+            $map[] = ['user_id', '=', $this->user['id']];
+            $map[] = ['member_id', '=', $id];
+            $map[] = ['apply_status', '=', 0];
+            $apply = $Model->where($map)->find();
+            if (!empty($apply)) continue;
+
+            $data['user_id'] = $this->user['id'];
+            $data['member_id'] = $id;
+            $data['apply_status'] = 0;
+            $data['create_time'] = time();
+            $res = $Model->insert($data);
+            if ($res) $success = $success + 1;
+        }
+
+        $fail = $count - $success;
+        $data = [
+            'code'  =>  '200',
+            'msg'   =>  "申请成功{$success}条,失败{$fail}条"
+        ];
+
+        return json($data);
     }
 }

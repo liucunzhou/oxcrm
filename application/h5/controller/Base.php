@@ -49,7 +49,6 @@ class Base extends Controller
             ];
             return json($arr);
         }
-
         if($this->user['role_id'] > 0) {
             $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
         }
