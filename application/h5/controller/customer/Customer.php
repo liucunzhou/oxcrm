@@ -217,13 +217,6 @@ class Customer extends Base
             ]);
         }
 
-        if (empty($param['realname'])) {
-            return json([
-                'code' => '400',
-                'msg' => '客户姓名不能为空',
-            ]);
-        }
-
         if (empty($param['city_id'])) {
             return json([
                 'code' => '400',
