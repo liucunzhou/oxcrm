@@ -6,6 +6,40 @@ $payments = [1=>'支付宝-g', 2=>'支付宝-s', 3=>'微信-g', 4=>'微信-s', 5
 $suborderTypes = ['否', '婚宴二销', '婚庆二销'];
 $checkStatusList = ['待审核', '已通过', '已驳回'];
 
+$check_sequence = [
+    'source' => [
+        'id'    => 'source',
+        'title' => '客服渠道',
+        'type'  => 'staff'
+    ],
+    'coo' => [
+        'id'    => 'coo',
+        'title' => '运营总监',
+        'type'  => 'role'
+
+    ],
+    'assistant' => [
+        'id'    => 'assistant',
+        'title' => '行政助理',
+        'type'  => 'staff'
+    ],
+    'ceo' => [
+        'id'    => 'ceo',
+        'title' => '总经理',
+        'type'  => 'staff'
+    ],
+    'cashier' => [
+        'id'    => 'cashier',
+        'title' => '出纳',
+        'type'  => 'staff'
+    ],
+    'accounting' => [
+        'id'    => 'accounting',
+        'title' => '会计',
+        'type'  => 'staff'
+    ],
+];
+
 return [
     // 分配类型
     'allocate_type_list' => $allocateTypes,
@@ -49,4 +83,6 @@ return [
             'title' =>  '改期'
         ]
     ],
+
+    'check_sequence'    => $check_sequence
 ];

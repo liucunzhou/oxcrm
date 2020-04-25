@@ -2,6 +2,7 @@
 
 namespace app\index\controller\order;
 
+use app\common\model\Audit;
 use app\common\model\BanquetHall;
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
@@ -538,7 +539,22 @@ class Order extends Backend
     # 查看订单信息
     public function showOrder()
     {
-        return $this->editOrder();
+        $request = $this->request->param();
+        $this->editOrder();
+
+        $order = $this->model->where('id', '=', $request['id'])->find();
+        $audit = Audit::where('company_id', '=', $order->company_id)->find();
+
+        $config = config();
+        $sequences = $config['crm']['check_sequence'];
+
+        $sequence = json_decode($audit->content, true);
+        foreach ($sequence as $key=>&$row) {
+            $row['title'] = $sequences[$key]['title'];
+        }
+        $this->assign('sequence', $sequence);
+
+        return $this->fetch('order/show/main');
     }
 
 
