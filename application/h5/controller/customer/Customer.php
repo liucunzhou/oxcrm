@@ -159,7 +159,9 @@ class Customer extends Base
                 'count' => $list->total(),
                 'data' => $list->getCollection(),
             ];
+
         } else {
+
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
@@ -222,7 +224,9 @@ class Customer extends Base
                 'msg' => '修改客资失败'
             ]);
         }
+
     }
+
 
     /**
      * 我的客资
@@ -294,7 +298,7 @@ class Customer extends Base
 
         if (!empty($list)) {
             foreach ($list as &$value) {
-                $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#f7b55f';
+                $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
                 $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);;
                 $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
             }
