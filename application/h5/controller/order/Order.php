@@ -5,11 +5,16 @@ namespace app\h5\controller\order;
 
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
+use app\common\model\OrderBanquet;
+use app\common\model\OrderBanquetReceivables;
+use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderHotelItem;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
 use app\common\model\User;
 use app\common\model\Search;
+use function PHPSTORM_META\map;
 
 class Order extends Base
 {
@@ -25,7 +30,6 @@ class Order extends Base
         $this->model = new \app\common\model\Order();
 
         // 获取系统来源,酒店列表,意向状态
-
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
 
         $this->sources = \app\common\model\Source::getSources();
@@ -86,7 +90,7 @@ class Order extends Base
 
     }
 
-    ##  salesman  order
+    ##
     public function index()
     {
         $param = $this->request->param();
@@ -116,24 +120,156 @@ class Order extends Base
         } else {
             $map[] = ['salesman', '=', $this->user['id']];
         }
+        $fields = "id,contract_no,company_id,news_type,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $list = $this->model->where($map)->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
 
-        $list = $this->model->where($map)->order('id desc')->paginate($param['limit'], false, $config);
-        $users = \app\common\model\User::getUsers();
+        if (!$list->isEmpty()) {
+            $list = $list->getCollection()->toArray();
+            $newsTypes = $this->config['news_type_list'];
+            $cooperationMode = $this->config['cooperation_mode'];
 
-        foreach ($list as $key => &$value) {
-            !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
-            !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);
-            $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            foreach ($list as $key => &$value) {
+                $value['company_id'] = $this->brands[$value['company_id']]['title'];
+                $value['news_type'] = $newsTypes[$value['news_type']];
+                $value['cooperation_mode'] = isset($cooperationMode[$value['cooperation_mode']]) ? $cooperationMode[$value['cooperation_mode']] : '-';
+                $value['status'] = '待审核';
+                $value['sign_date'] = substr($value['sign_date'], 0, 10);
+                $value['event_date'] = substr($value['event_date'], 0, 10);
+                $value['bridegroom_mobile'] = isset($value['bridegroom_mobile']) ? substr_replace($value['bridegroom_mobile'], '***', 3, 3) : '-';
+                $value['bride_mobile'] = isset($value['bride_mobile']) ? substr_replace($value['bride_mobile'], '***', 3, 3) : '-';
+            }
+        } else {
+            $list = [];
         }
 
         $result = [
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
-                'order'     =>  $list,
-                'count'     =>  $list->total()
+                'orderlist'     =>  $list,
             ]
         ];
+        return json($result);
+    }
+
+    ##
+    public function detail()
+    {
+        $param = $this->request->param();
+        $fields = "id,contract_no,company_id,news_type,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $order = $this->model->where('id','=',$param['id'])->field($fields)->find();
+        if( !$order->isEmpty() ) {
+            $order = $order->toArray();
+            $newsTypes = $this->config['news_type_list'];
+            $cooperationMode = $this->config['cooperation_mode'];
+            $order['contract_no'] = isset($order['contract_no']) ? $order['contract_no'] : '-';
+            $order['company_id'] = $this->brands[$order['company_id']]['title'];
+            $order['news_type'] = $newsTypes[$order['news_type']];
+            $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
+            $order['status'] = '待审核';
+            $order['sign_date'] = substr($order['sign_date'], 0, 10);
+            $order['event_date'] = substr($order['event_date'], 0, 10);
+            $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
+            $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
+        } else {
+            $order = [];
+        }
+
+        #### 获取婚宴订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
+
+        #### 酒店服务项目
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $hotelItem = \app\common\model\OrderHotelItem::where($where)->order('id desc')->find();
+
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $banquetSuborderList = \app\common\model\OrderBanquetSuborder::where($where)->select();
+
+        #### 获取婚宴收款信息
+        $banquetReceivableList = \app\common\model\OrderBanquetReceivables::where('order_id', '=', $param['id'])->select();
+
+        #### 获取婚宴付款信息
+        $banquetPaymentList = \app\common\model\OrderBanquetPayment::where('order_id', '=', $param['id'])->select();
+
+
+        #### 获取婚庆订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $weddingSuborderList = \app\common\model\OrderWeddingSuborder::where($where)->select();
+
+        #### 获取婚宴收款信息
+        $weddingReceivableList = \app\common\model\OrderWeddingReceivables::where('order_id', '=', $param['id'])->select();
+        #### 获取婚庆付款信息
+        $weddingPaymentList = \app\common\model\OrderWeddingPayment::where('order_id', '=', $param['id'])->select();
+
+        #### 婚车
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $carList = \app\common\model\OrderCar::where($where)->select();
+
+        #### 喜糖
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $sugarList = \app\common\model\OrderSugar::where($where)->select();
+
+        #### 酒水
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $wineList = \app\common\model\OrderWine::where($where)->select();
+
+        #### 灯光
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $lightList = \app\common\model\OrderLight::where($where)->select();
+
+        #### 点心
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $dessertList = \app\common\model\OrderDessert::where($where)->select();
+
+        #### LED
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $ledList = \app\common\model\OrderLed::where($where)->select();
+
+        #### 3D
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $d3List = \app\common\model\OrderD3::where($where)->select();
+
+        $result = [
+            'code'  =>  '200',
+            'msg'   =>  '获取成功',
+            'data'  =>  [
+                'order'                 =>  $order,
+                'banquet'               =>  $banquet,
+                'banquetSuborderList'   =>  $banquetSuborderList,
+                'banquetReceivableList' =>  $banquetReceivableList,
+                'banquetPaymentList'    =>  $banquetPaymentList,
+                'hoteItem'              =>  $hotelItem,
+                'wedding'               =>  $wedding,
+                'weddingSuborderList'   =>  $weddingSuborderList,
+                'weddingReceivableList' =>  $weddingReceivableList,
+                'weddingPaymentList'    =>  $weddingPaymentList,
+                'carList'               =>  $carList,
+                'wineList'              =>  $wineList,
+                'sugarList'             =>  $sugarList,
+                'dessertList'           =>  $dessertList,
+                'lightList'             =>  $lightList,
+                'ledList'               =>  $ledList,
+                'd3List'                =>  $d3List
+            ]
+        ];
+
         return json($result);
     }
 
