@@ -182,7 +182,7 @@ class Order extends Base
     public function detail()
     {
         $param = $this->request->param();
-        $fields = "id,contract_no,company_id,news_type,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,remark";
         $order = $this->model->where('id','=',$param['id'])->field($fields)->find();
         if( !$order->isEmpty() ) {
             $order = $order->toArray();
