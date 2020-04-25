@@ -447,7 +447,7 @@ class Customer extends Base
 
         }
         $result = [
-            'code' => 0,
+            'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
                 'sealist'   =>  $list->getCollection()
