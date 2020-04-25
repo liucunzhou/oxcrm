@@ -20,34 +20,61 @@
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px; background-color: #f4f4f4;">
             <!--合同基本信息-->
-            <{include file="order/edit/fragment/contract" /}>
+            <{include file="order/show/fragment/contract" /}>
 
             <!--婚宴基本信息-->
-            <{include file="order/edit/fragment/banquet" /}>
+            <{include file="order/show/fragment/banquet" /}>
 
             <!--婚庆基本信息-->
-            <{include file="order/edit/fragment/wedding" /}>
+            <{include file="order/show/fragment/wedding" /}>
 
             <!--婚车业务-->
-            <{include file="order/edit/fragment/car" /}>
+            <{include file="order/show/fragment/car" /}>
 
             <!--酒水业务-->
-            <{include file="order/edit/fragment/wine" /}>
+            <{include file="order/show/fragment/wine" /}>
 
             <!--喜糖业务-->
-            <{include file="order/edit/fragment/sugar" /}>
+            <{include file="order/show/fragment/sugar" /}>
 
-            <{include file="order/edit/fragment/light" /}>
+            <{include file="order/show/fragment/light" /}>
 
-            <{include file="order/edit/fragment/dessert" /}>
+            <{include file="order/show/fragment/dessert" /}>
 
-            <{include file="order/edit/fragment/led" /}>
+            <{include file="order/show/fragment/led" /}>
 
-            <{include file="order/edit/fragment/3d" /}>
+            <{include file="order/show/fragment/3d" /}>
 
-            <{include file="order/edit/fragment/money" /}>
+            <{include file="order/show/fragment/money" /}>
 
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <div class="layui-card-header-left">
+                        审批
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <ul class="layui-timeline">
+                        <{foreach name="sequence" item="value"}>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis"></i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">{$value.title}</h3>
+                                <p>已审核</p>
+                            </div>
+                        </li>
+                        <{/foreach}>
+                    </ul>
 
+                    <div class="layui-input-flex">
+                        <div class="layui-btn-group">
+                            <div class="layui-btn">通过</div>
+                            <div class="layui-btn layui-btn-danger">驳回</div>
+                        </div>
+                        <input type="text" name="content" value="" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
             <div class="layui-space10" style="height: 20px;"></div>
         </div>
     </div>

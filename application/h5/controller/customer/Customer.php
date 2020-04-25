@@ -157,9 +157,7 @@ class Customer extends Base
                 'count' => $list->total(),
                 'data' => $list->getCollection(),
             ];
-
         } else {
-
             $result = [
                 'code' => 200,
                 'msg' => '获取数据成功',
@@ -222,9 +220,7 @@ class Customer extends Base
                 'msg' => '修改客资失败'
             ]);
         }
-
     }
-
 
     /**
      * 我的客资

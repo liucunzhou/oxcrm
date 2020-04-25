@@ -30,39 +30,8 @@ class Audit extends Backend
         $this->assign('roles', $this->roles);
 
         ## 审核全局列表
-        $this->sequence = [
-            'source' => [
-                'id'    => 'source',
-                'title' => '客服渠道',
-                'type'  => 'staff'
-            ],
-            'coo' => [
-                'id'    => 'coo',
-                'title' => '运营总监',
-                'type'  => 'role'
-
-            ],
-            'assistant' => [
-                'id'    => 'assistant',
-                'title' => '行政助理',
-                'type'  => 'staff'
-            ],
-            'ceo' => [
-                'id'    => 'ceo',
-                'title' => '总经理',
-                'type'  => 'staff'
-            ],
-            'cashier' => [
-                'id'    => 'cashier',
-                'title' => '出纳',
-                'type'  => 'staff'
-            ],
-            'accounting' => [
-                'id'    => 'accounting',
-                'title' => '会计',
-                'type'  => 'staff'
-            ],
-        ];
+        $config = config();
+        $this->sequence = $config['crm']['check_sequence'];
         $this->assign('sequence', $this->sequence);
     }
 
