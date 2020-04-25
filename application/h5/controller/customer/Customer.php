@@ -224,6 +224,13 @@ class Customer extends Base
             ]);
         }
 
+        if (empty($param['city_id'])) {
+            return json([
+                'code' => '400',
+                'msg' => '请选择城市',
+            ]);
+        }
+
 
         $param['mobile'] = trim($param['mobile']);
         $len = strlen($param['mobile']);
@@ -294,7 +301,7 @@ class Customer extends Base
             if(!empty($param['mobile1'])) {
                 $mobileModel->insert(['mobile'=>$param['mobile1'], 'member_id'=>$memberId]);
             }
-            $result = ['code' => 0, 'msg' => '添加客资成功'];
+            $result = ['code' => '200', 'msg' => '添加客资成功'];
         } else {
             $result = ['code' => '500', 'msg' => '添加客资失败, 请重试'];
         }
