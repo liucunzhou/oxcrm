@@ -137,4 +137,60 @@ class Search extends Base
         return json($result);
     }
 
+    public function type()
+    {
+        $typeList = [
+            [
+                'id'    =>  'banquet',
+                'title' =>  '婚宴信息'
+            ],
+            [
+                'id'    =>  'wedding',
+                'title' =>  '婚庆信息'
+            ],
+            [
+                'id'    =>  'car',
+                'title' =>  '婚车信息'
+            ],
+            [
+                'id'    =>  'hotel_item',
+                'title' =>  '酒店消费项目'
+            ],
+            [
+                'id'    =>  'sugar',
+                'title' =>  '喜糖'
+            ],
+            [
+                'id'    =>  'wine',
+                'title' =>  '酒水'
+            ],
+            [
+                'id'    =>  'dessert',
+                'title' =>  '糕点'
+            ],
+            [
+                'id'    =>  'light',
+                'title' =>  '灯光'
+            ],
+            [
+                'id'    =>  'led',
+                'title' =>  'Led'
+            ],
+            [
+                'id'    =>  'd3',
+                'title' =>  '3D'
+            ]
+        ];
+
+        $result = [
+            'code'  =>  '200',
+            'msg'   =>  '获取信息成功',
+            'data'  =>  [
+                'typeList'  =>  $typeList
+            ]
+        ];
+
+        return json($result);
+    }
+
 }
