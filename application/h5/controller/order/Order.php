@@ -14,6 +14,7 @@ use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
 use app\common\model\User;
 use app\common\model\Search;
+use app\index\controller\organization\Audit;
 
 class Order extends Base
 {
@@ -310,7 +311,6 @@ class Order extends Base
         $fields = "id,realname,mobile,source_id,source_text";
         $member = Member::field($fields)->get($allocate['member_id']);
 
-
         $result = [
             'code'  =>  '200',
             'msg'   =>  '获取成功',
@@ -324,6 +324,27 @@ class Order extends Base
 
         return json($$result);
 
+    }
+
+    # comnpany_id
+    public function getConfirmSequence()
+    {
+        $param = $this->request->param();
+        $audit = Audit::where('company_id', '=', $param['company_id'])->find();
+        if(empty($audit)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '尚未设置审核顺序'
+            ];
+        }
+
+        ## 审核全局列表
+        $sequence = $this->config['check_sequence'];
+
+        $auth = json_decode($audit->content, true);
+        foreach ($auth as $key=>&$row) {
+            $row['title'] = $sequence[$row->id]['title'];
+        }
     }
 
     # 创建订单逻辑
