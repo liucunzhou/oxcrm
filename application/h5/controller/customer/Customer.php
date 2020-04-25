@@ -199,6 +199,109 @@ class Customer extends Base
         return json($result);
     }
 
+    # 新增客资
+    public function doCreate()
+    {
+        $param = $this->request->param();
+        if (empty($param['source_id'])) {
+            return json([
+                'code' => '400',
+                'msg' => '请选择渠道',
+            ]);
+        }
+
+        if (empty($param['mobile'])) {
+            return json([
+                'code' => '400',
+                'msg' => '手机号不能为空',
+            ]);
+        }
+
+        if (empty($param['realname'])) {
+            return json([
+                'code' => '400',
+                'msg' => '客户姓名不能为空',
+            ]);
+        }
+
+
+        $param['mobile'] = trim($param['mobile']);
+        $len = strlen($param['mobile']);
+        if ($len != 11) {
+            return json([
+                'code' => '400',
+                'msg' => '请输入正确的手机号',
+            ]);
+        }
+
+        $param['mobile1'] = trim($param['mobile1']);
+        $len = strlen($param['mobile1']);
+        if (!empty($param['mobile1']) && $len != 11) {
+            return json([
+                'code' => '400',
+                'msg' => '请输入正确的其他手机号',
+            ]);
+        }
+
+        $model = new Member();
+        $model->member_no = date('YmdHis') . rand(100, 999);
+        ### 验证手机号唯一性
+        if(empty($param['mobile1'])) {
+            $originMember = $model::checkFromMobileSet($param['mobile'], false);
+            if ($originMember) {
+                return json([
+                    'code' => '400',
+                    'msg' => $param['mobile'] . '手机号已经存在',
+                ]);
+            }
+        } else {
+            $originMember1 = $model::checkFromMobileSet($param['mobile'], false);
+            $originMember2 = $model::checkFromMobileSet($param['mobile1'], false);
+            if ($originMember1 || $originMember2) {
+                return json([
+                    'code' => '400',
+                    'msg' => $param['mobile'] . '手机号已经存在',
+                ]);
+            }
+        }
+
+        ### 同步来源名称
+        if (isset($param['source_id']) && $param['source_id'] > 0) {
+            $param['source_text'] = $this->sources[$param['source_id']]['title'];
+            $model->source_text = $this->sources[$param['source_id']]['title'];
+        }
+
+        ### 基本信息入库
+        $model->is_sea = 1;
+        if(in_array($this->user['role_id'], [5,6,8,26])) {
+            // 代表来源登陆手机端，会进入派单组公海
+            $param['add_source'] = 1;
+        }
+
+        $model->operate_id = $this->user['id'];
+        $result1 = $model->allowField(true)->save($param);
+
+        ### 新添加客资要加入到分配列表中
+        $param['operate_id'] = $this->user['id'];
+        $param['allocate_type'] = 3;
+        MemberAllocate::insertAllocateData($this->user['id'], $model->id, $param);
+
+        if ($result1) {
+            $memberId = $model->id;
+            $mobileModel = new Mobile();
+            $mobileModel->insert(['mobile'=>$param['mobile'],'member_id'=>$memberId]);
+            ### 将手机号1添加到手机号库
+            if(!empty($param['mobile1'])) {
+                $mobileModel->insert(['mobile'=>$param['mobile1'], 'member_id'=>$memberId]);
+            }
+            $result = ['code' => 0, 'msg' => '添加客资成功'];
+        } else {
+            $result = ['code' => '500', 'msg' => '添加客资失败, 请重试'];
+        }
+
+        return json($result);
+    }
+
     #  realname/budget,budget_end,banquet_size,banquet_size_end,zone,remark,level
     public function doEdit()
     {
@@ -210,7 +313,6 @@ class Customer extends Base
 
         $memberModel = new Member();
         $member = $memberModel->where('id', '=', $allocate->member_id)->find();
-        // $param['news_types'] = empty($param['news_types']) ? '' : implode(',', $param['news_types']);
         $member->allowField(true)->save($param);
 
         if ($result) {
@@ -226,7 +328,6 @@ class Customer extends Base
         }
 
     }
-
 
     /**
      * 我的客资
@@ -477,19 +578,19 @@ class Customer extends Base
             $allocate = MemberAllocate::getAllocate($this->user['id'], $id);
             if (!empty($allocate)) continue;
 
-            $Model = new MemberApply();
+            $model = new MemberApply();
             $map = [];
             $map[] = ['user_id', '=', $this->user['id']];
             $map[] = ['member_id', '=', $id];
             $map[] = ['apply_status', '=', 0];
-            $apply = $Model->where($map)->find();
+            $apply = $model->where($map)->find();
             if (!empty($apply)) continue;
 
             $data['user_id'] = $this->user['id'];
             $data['member_id'] = $id;
             $data['apply_status'] = 0;
             $data['create_time'] = time();
-            $res = $Model->insert($data);
+            $res = $model->insert($data);
             if ($res) $success = $success + 1;
         }
 
