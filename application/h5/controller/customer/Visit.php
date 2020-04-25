@@ -49,15 +49,15 @@ class Visit extends Base
      * 回访列表
      */
     public function detailList() {
-        $request = $this->request->param();
-        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
-        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 3;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
-            'page' => $request['page']
+            'page' => $param['page']
         ];
 
         ### 获取用户基本信息
-        $allocate = MemberAllocate::get($request['allocate_id']);
+        $allocate = MemberAllocate::get($param['allocate_id']);
         if (empty($allocate)) {
             $result = [
                 'code'  => '400',
@@ -76,7 +76,7 @@ class Visit extends Base
         $list = $this->model->where($map)
                     ->field($field)
                     ->order('create_time desc')
-                    ->paginate($request['limit'], false, $config);
+                    ->paginate($param['limit'], false, $config);
 
         if(empty($list))
         {
@@ -147,33 +147,33 @@ class Visit extends Base
     ## 添加回访记录
     public function doCreate()
     {
-        $request = $this->request->param();
+        $param = $this->request->param();
 
-        if (!empty($request['next_visit_time'])) {
-            $data['next_visit_time'] = strtotime($request['next_visit_time']);
+        if (!empty($param['next_visit_time'])) {
+            $data['next_visit_time'] = strtotime($param['next_visit_time']);
         } else {
             $data['next_visit_time'] = 0;
         }
 
-        if (empty($request['status'])){
+        if (empty($param['status'])){
             return json(['code'=>'400','msg'=>'状态']);
         }
 
-        if (empty($request['content'])){
+        if (empty($param['content'])){
             return json(['code'=>'400','msg'=>'备注']);
         }
 
-        $allocate = MemberAllocate::get($request['allocate_id']);
+        $allocate = MemberAllocate::get($param['allocate_id']);
         $member = Member::get($allocate->member_id);
         $member->startTrans();
         $model = new MemberVisit();
         ### 保存回访信息
-        if (!empty($request['next_visit_time'])) {
-            $request['next_visit_time'] = strtotime($request['next_visit_time']);
+        if (!empty($param['next_visit_time'])) {
+            $param['next_visit_time'] = strtotime($param['next_visit_time']);
         } else {
-            $request['next_visit_time'] = 0;
+            $param['next_visit_time'] = 0;
         }
-        $model->status = $request['status'];
+        $model->status = $param['status'];
         $model->member_allocate_id = $allocate->id;
         $model->member_id = $allocate->member_id;
         $model->member_no = $member->member_no;
@@ -181,26 +181,26 @@ class Visit extends Base
         $model->visit_no = md5($visitNo);
         $model->clienter_no = $this->user['user_no'];
         $model->user_id = $this->user['id'];
-        $result1 = $model->save($request);
+        $result1 = $model->save($param);
 
-        $member->active_status = $request['status'];
+        $member->active_status = $param['status'];
         $member->visit_amount = ['inc', 1];
         $result2 = $member->save();
 
         if ($result1 && $result2) {
             $member->commit();
             $data = [];
-            $data['active_status'] = $request['status'];
-            $data['color'] = $request['color'] ? $request['color'] : '';
+            $data['active_status'] = $param['status'];
+            $data['color'] = $param['color'] ? $param['color'] : '';
             $res = $allocate->save($data);
 
             ### 添加下次回访提醒
-            if ($request['next_visit_time'] > 0) {
+            if ($param['next_visit_time'] > 0) {
                 $Notice = new Notice();
                 $from = 0;
                 $to = $this->user['id'];
                 $content = '预约回访提醒';
-                $Notice->appendNotice('visit', $from, $to, $request['next_visit_time'], $content);
+                $Notice->appendNotice('visit', $from, $to, $param['next_visit_time'], $content);
             }
             ### 记录log日志
             OperateLog::appendTo($model);

@@ -21,13 +21,13 @@ class Ring extends Base
             return json($result);
         }
 
-        $request = $this->request->param();
+        $param = $this->request->param();
         $rongModel = new Rong();
         $MemberAllocate = new MemberAllocate();
 
         ###  查询分配表数据
-        $customer = $MemberAllocate->where('id','=',$request['id'])->field('id,member_id,mobile,mobile1')->find();
-        $result = $rongModel->call($this->user['mobile'], $customer->$request['type']);
+        $customer = $MemberAllocate->where('id','=',$param['id'])->field('id,member_id,mobile,mobile1')->find();
+        $result = $rongModel->call($this->user['mobile'], $customer->$param['type']);
         if($result['Flag'] == 1) {
             $data = [];
             $data['user_id'] = $this->user['id'];
@@ -55,15 +55,15 @@ class Ring extends Base
 
     public function toCall()
     {
-        $request = $this->request->param();
+        $param = $this->request->param();
         $MemberAllocate = new MemberAllocate();
-        $customer = $MemberAllocate->where('id','=',$request['id'])->field('id,mobile,mobile1')->find();
+        $customer = $MemberAllocate->where('id','=',$param['id'])->field('id,mobile,mobile1')->find();
         if( !empty($customer) ){
             $result = [
                 'code'  =>  '200',
                 'msg'   =>  '获取手机号成功',
                 'data'  =>  [
-                    'mobile'    =>  $customer[$request['type']]
+                    'mobile'    =>  $customer[$param['type']]
                 ]
             ];
         } else {

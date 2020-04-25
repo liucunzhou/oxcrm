@@ -89,24 +89,24 @@ class Order extends Base
     ##  salesman  order
     public function index()
     {
-        $request = $this->request->param();
-        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
-        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 3;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
-            'page' => $request['page']
+            'page' => $param['page']
         ];
 
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && !empty($result['user_id'])) {
-                // $user_id = explode(',',$request['user_id']);
-                if ($request['user_id'] == 'all') {
+            if( isset($param['user_id']) && !empty($param['user_id'])) {
+
+                if ($param['user_id'] == 'all') {
                     $map[] = ['salesman', 'in', $this->staffs];
-                } else if (is_numeric($request['user_id'])) {
+                } else if (is_numeric($param['user_id'])) {
                     $map[] = ['salesman', '=', $this->user['id']];
                 } else {
-                    $map[] = ['salesman', 'in', $request['user_id']];
+                    $map[] = ['salesman', 'in', $param['user_id']];
                 }
 
             }  else {
@@ -117,7 +117,7 @@ class Order extends Base
             $map[] = ['salesman', '=', $this->user['id']];
         }
 
-        $list = $this->model->where($map)->order('id desc')->paginate($request['limit'], false, $config);
+        $list = $this->model->where($map)->order('id desc')->paginate($param['limit'], false, $config);
         $users = \app\common\model\User::getUsers();
 
         foreach ($list as $key => &$value) {
@@ -127,7 +127,7 @@ class Order extends Base
         }
 
         $result = [
-            'code' => 0,
+            'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
                 'order'     =>  $list,
@@ -140,12 +140,12 @@ class Order extends Base
     # 创建订单视图
     public function createOrder()
     {
-        $request = $this->request->param();
-        if (empty($request['id'])) return false;
+        $param = $this->request->param();
+        if (empty($param['id'])) return false;
 
-        $allocate = MemberAllocate::get($request['id']);
+        $allocate = MemberAllocate::get($param['id']);
 
-        $member = Member::get($request['member_id']);
+        $member = Member::get($param['member_id']);
 
         ## 获取销售列表
         $salesmans = User::getUsersByRole(8);
@@ -164,42 +164,42 @@ class Order extends Base
     # 创建订单逻辑
     public function doCreateOrder()
     {
-        $request = Request::param();
+        $param = Request::param();
         $OrderModel = new \app\common\model\Order();
-        $OrderModel->allowField(true)->save($request);
-        $request['order_id'] = $OrderModel->id;
-        $request['operate_id'] = $this->user['id'];
+        $OrderModel->allowField(true)->save($param);
+        $param['order_id'] = $OrderModel->id;
+        $param['operate_id'] = $this->user['id'];
         ## banquet message
-        if (!empty($request['wedding_total'])) {
+        if (!empty($param['wedding_total'])) {
             $BanquetModel = new OrderBanquet();
-            $BanquetModel->allowField(true)->save($request);
+            $BanquetModel->allowField(true)->save($param);
         }
 
         ## wedding message
-        if (!empty($request['banquet_totals'])) {
+        if (!empty($param['banquet_totals'])) {
             $weddingModel = new OrderWedding();
             // get wedding devices
-            $weddingModel->allowField(true)->save($request);
+            $weddingModel->allowField(true)->save($param);
         }
 
         ## 婚车主车
-        if (!empty($request['master_car_id'])) {
+        if (!empty($param['master_car_id'])) {
             $row = [];
             $row['operate_id'] = $this->user['id'];
-            $row['order_id'] = $request['order_id'];
-            $row['company_id'] = $request['car_company_id'];
+            $row['order_id'] = $param['order_id'];
+            $row['company_id'] = $param['car_company_id'];
             $row['is_master'] = 1;
             $row['is_suborder'] = 0;
-            $row['car_id'] = $request['master_car_id'];
-            $row['car_price'] = $request['master_car_price'];
-            $row['car_amount'] = $request['master_car_amount'];
-            $row['service_hour'] = $request['service_hour'];
-            $row['service_distance'] = $request['service_distance'];
-            $row['car_contact'] = $request['car_contact'];
-            $row['car_mobile'] = $request['car_mobile'];
-            $row['arrive_time'] = $request['arrive_time'];
-            $row['arrive_address'] = $request['arrive_address'];
-            $row['car_remark'] = $request['master_car_remark'];
+            $row['car_id'] = $param['master_car_id'];
+            $row['car_price'] = $param['master_car_price'];
+            $row['car_amount'] = $param['master_car_amount'];
+            $row['service_hour'] = $param['service_hour'];
+            $row['service_distance'] = $param['service_distance'];
+            $row['car_contact'] = $param['car_contact'];
+            $row['car_mobile'] = $param['car_mobile'];
+            $row['arrive_time'] = $param['arrive_time'];
+            $row['arrive_address'] = $param['arrive_address'];
+            $row['car_remark'] = $param['master_car_remark'];
             $row['create_time'] = time();
             $row['salesman'] = $row['car_salesman'];
             $row['company_id'] = $row['car_company_id'];
@@ -209,23 +209,23 @@ class Order extends Base
         }
 
         ## 婚车跟车
-        if (!empty($request['slave_car_id'])) {
+        if (!empty($param['slave_car_id'])) {
             $row = [];
             $row['operate_id'] = $this->user['id'];
-            $row['order_id'] = $request['order_id'];
-            $row['company_id'] = $request['car_company_id'];
+            $row['order_id'] = $param['order_id'];
+            $row['company_id'] = $param['car_company_id'];
             $row['is_master'] = 0;
             $row['is_suborder'] = 0;
-            $row['car_id'] = $request['slave_car_id'];
-            $row['car_price'] = $request['slave_car_price'];
-            $row['car_amount'] = $request['slave_car_amount'];
-            $row['service_hour'] = $request['service_hour'];
-            $row['service_distance'] = $request['service_distance'];
-            $row['car_contact'] = $request['car_contact'];
-            $row['car_mobile'] = $request['car_mobile'];
-            $row['arrive_time'] = $request['arrive_time'];
-            $row['arrive_address'] = $request['arrive_address'];
-            $row['car_remark'] = $request['slave_car_remark'];
+            $row['car_id'] = $param['slave_car_id'];
+            $row['car_price'] = $param['slave_car_price'];
+            $row['car_amount'] = $param['slave_car_amount'];
+            $row['service_hour'] = $param['service_hour'];
+            $row['service_distance'] = $param['service_distance'];
+            $row['car_contact'] = $param['car_contact'];
+            $row['car_mobile'] = $param['car_mobile'];
+            $row['arrive_time'] = $param['arrive_time'];
+            $row['arrive_address'] = $param['arrive_address'];
+            $row['car_remark'] = $param['slave_car_remark'];
             $row['create_time'] = time();
             $row['salesman'] = $row['car_salesman'];
             $row['company_id'] = $row['car_company_id'];
@@ -235,52 +235,52 @@ class Order extends Base
         }
 
         ## 喜糖
-        if (!empty($request['sugar_id'])) {
+        if (!empty($param['sugar_id'])) {
             $sugarModel = new OrderSugar();
             // get wedding devices
-            $request['salesman']= $request['sugar_salesman'];
-            $sugarModel->allowField(true)->save($request);
+            $param['salesman']= $param['sugar_salesman'];
+            $sugarModel->allowField(true)->save($param);
         }
 
 
         ## 酒水
-        if (!empty($request['wine_id'])) {
+        if (!empty($param['wine_id'])) {
             $wineModel = new OrderWine();
             // get wedding devices
-            $request['salesman'] = $request['wine_salesman'];
-            $wineModel->allowField(true)->save($request);
+            $param['salesman'] = $param['wine_salesman'];
+            $wineModel->allowField(true)->save($param);
         }
 
         ## 灯光
-        if (!empty($request['light_id'])) {
+        if (!empty($param['light_id'])) {
             $lightModel = new OrderLight();
             // get wedding devices
-            $request['salesman']= $request['light_salesman'];
-            $lightModel->allowField(true)->save($request);
+            $param['salesman']= $param['light_salesman'];
+            $lightModel->allowField(true)->save($param);
         }
 
         ## 点心
-        if (!empty($request['dessert_id'])) {
+        if (!empty($param['dessert_id'])) {
             $dessertModel = new OrderDessert();
             // get wedding devices
-            $request['salesman'] = $request['dessert_salesman'];
-            $dessertModel->allowField(true)->save($request);
+            $param['salesman'] = $param['dessert_salesman'];
+            $dessertModel->allowField(true)->save($param);
         }
 
         ## led
-        if (!empty($request['led_id'])) {
+        if (!empty($param['led_id'])) {
             $ledModel = new OrderLed();
             // get wedding devices
-            $request['salesman'] = $request['led_salesman'];
-            $ledModel->allowField(true)->save($request);
+            $param['salesman'] = $param['led_salesman'];
+            $ledModel->allowField(true)->save($param);
         }
 
         ## 3D
-        if (!empty($request['d3_id'])) {
+        if (!empty($param['d3_id'])) {
             $d3Model = new OrderD3();
             // get wedding devices
-            $request['salesman'] = $request['d3_salesman'];
-            $d3Model->allowField(true)->save($request);
+            $param['salesman'] = $param['d3_salesman'];
+            $d3Model->allowField(true)->save($param);
             echo $d3Model->getLastSql();
         }
 

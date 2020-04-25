@@ -19,9 +19,9 @@ class Usercenter extends Base
     ###  个人信息
     public function index()
     {
-        $request = $this->request->param();
+        $param = $this->request->param();
         ###  个人信息
-        $usersCenter = User::getUser($request['id']);
+        $usersCenter = User::getUser($param['id']);
         ###  个人权限
         $data = AuthGroup::getAuthGroup($usersCenter['role_id']);
         $usersCenter['title'] = $data['title'];
@@ -42,14 +42,14 @@ class Usercenter extends Base
      */
     public function doRepassword()
     {
-        $request = $this->request->param();
-        $user = User::get($request['id']);
-        $post['password'] = md5($request['password']);
+        $param = $this->request->param();
+        $user = User::get($param['id']);
+        $post['password'] = md5($param['password']);
 
         if ($user['password'] != $post['password']) {
             return json(['code'=>'400', 'msg'=>'请输入原密码']);
         }
-        $user->password = md5($request['newpassword']);
+        $user->password = md5($param['newpassword']);
         $result = $user->save();
 
         if($result) {

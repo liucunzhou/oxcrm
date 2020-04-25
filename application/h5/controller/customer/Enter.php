@@ -24,8 +24,8 @@ class Enter extends Base
     # id = 客资分配id
     public function index()
     {
-        $request = $this->request->param();
-        $allocate = MemberAllocate::get($request['id']);
+        $param = $this->request->param();
+        $allocate = MemberAllocate::get($param['id']);
 
         $map = [];
         $map[] = ['user_id', '=', $this->user['id']];
@@ -54,17 +54,17 @@ class Enter extends Base
     # id = 客资分批ID
     public function doCreate()
     {
-        $request = $this->request->param();
-        $allocate = MemberAllocate::get($request['id']);
-        unset($request['id']);
+        $param = $this->request->param();
+        $allocate = MemberAllocate::get($param['id']);
+        unset($param['id']);
         $model = new MemberEnter();
 
         ### 保存回访信息
-        $request['status'] = 0;
-        $request['member_allocate_id'] = $allocate->id;
-        $request['member_id'] = $allocate->member_id;
-        $request['user_id'] = $this->user['id'];
-        $result = $model->allowField(true)->save($request);
+        $param['status'] = 0;
+        $param['member_allocate_id'] = $allocate->id;
+        $param['member_id'] = $allocate->member_id;
+        $param['user_id'] = $this->user['id'];
+        $result = $model->allowField(true)->save($param);
 
         if( $result ){
             $result = [
@@ -82,9 +82,9 @@ class Enter extends Base
 
     public function edit()
     {
-        $request = $this->request->param();
+        $param = $this->request->param();
         $field = "id,store_id,subscribe_time,real_time,next_time,status,remark,create_time";
-        $details = $this->model->where('id' ,'=' ,$request['id'])->field($field)->find();
+        $details = $this->model->where('id' ,'=' ,$param['id'])->field($field)->find();
         $store = Store::getStore($details->store_id);
         $details['store_id'] = $store['title'];
 
@@ -103,13 +103,13 @@ class Enter extends Base
 
     public function doEdit()
     {
-        $request = $this->request->param();
-        $enter = $this->model->where('id', '=', $request['id'])->find();
+        $param = $this->request->param();
+        $enter = $this->model->where('id', '=', $param['id'])->find();
         $allocateId = $enter->member_allocate_id;
-        $result = $enter->save($request);
+        $result = $enter->save($param);
 
         if( $result ){
-            if ($request['status'] == 1) {
+            if ($param['status'] == 1) {
                 MemberAllocate::where('id', '=', $allocateId);
             }
 

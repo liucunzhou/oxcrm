@@ -118,7 +118,7 @@ class Customer extends Base
             ];
         }
 
-        return xjson($result);
+        return json($result);
     }
 
     /**
@@ -128,25 +128,25 @@ class Customer extends Base
      */
     public function today()
     {
-        $request = $this->request->param();
-        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
-        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 3;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
-            'page' => $request['page']
+            'page' => $param['page']
         ];
 
         $map[] = ['active_status', 'not in', [2, 3, 4]];
         $tomorrow = strtotime('tomorrow');
-        if (!isset($request['next_visit_time']) || empty($request['next_visit_time'])) {
+        if (!isset($param['next_visit_time']) || empty($param['next_visit_time'])) {
             $map[] = ['next_visit_time', '>', 0];
             $map[] = ['next_visit_time', 'between', [0, $tomorrow]];
         } else {
-            $request['next_visit_time'] = strtotime($request['next_visit_time']);
-            $map[] = ['next_visit_time', 'between', [$request['next_visit_time'], $tomorrow]];
+            $param['next_visit_time'] = strtotime($param['next_visit_time']);
+            $map[] = ['next_visit_time', 'between', [$param['next_visit_time'], $tomorrow]];
         }
 
         $field = 'id,realname,mobile,active_status,member_id,create_time';
-        $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($request['limit'], false, $config);
+        $list = $this->model->where($map)->field($field)->order('next_visit_time desc')->paginate($param['limit'], false, $config);
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
@@ -175,8 +175,8 @@ class Customer extends Base
     # 客资详情
     public function member()
     {
-        $request = $this->request->param();
-        $allocate = MemberAllocate::get($request['id']);
+        $param = $this->request->param();
+        $allocate = MemberAllocate::get($param['id']);
         ### 获取用户基本信息
         $field = "id,realname,mobile,mobile1,active_status,budget,budget_end,banquet_size,banquet_size_end,zone,source_text,wedding_date,hotel_text,remark";
         $customer = Member::field($field)->get($allocate->member_id);
@@ -202,16 +202,16 @@ class Customer extends Base
     #  realname/budget,budget_end,banquet_size,banquet_size_end,zone,remark,level
     public function doEdit()
     {
-        $request = $this->request->param();
+        $param = $this->request->param();
         $memberAllocate = new MemberAllocate();
-        $allocate = $memberAllocate->where('id', '=', $request['id'])->find();
-        unset($request['id']);
-        $result = $allocate->allowField(true)->save($request);
+        $allocate = $memberAllocate->where('id', '=', $param['id'])->find();
+        unset($param['id']);
+        $result = $allocate->allowField(true)->save($param);
 
         $memberModel = new Member();
         $member = $memberModel->where('id', '=', $allocate->member_id)->find();
-        // $request['news_types'] = empty($request['news_types']) ? '' : implode(',', $request['news_types']);
-        $member->allowField(true)->save($request);
+        // $param['news_types'] = empty($param['news_types']) ? '' : implode(',', $param['news_types']);
+        $member->allowField(true)->save($param);
 
         if ($result) {
             return json([
@@ -235,25 +235,25 @@ class Customer extends Base
      */
     public function mine()
     {
-        $request = $this->request->param();
-        $request['limit'] = isset($request['limit']) ? $request['limit'] : 3;
-        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 3;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
-            'page' => $request['page']
+            'page' => $param['page']
         ];
 
         $map = [];
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && !empty($result['user_id'])) {
-                // $user_id = explode(',',$request['user_id']);
-                if ($request['user_id'] == 'all') {
+            if( isset($param['user_id']) && !empty($param['user_id'])) {
+                // $user_id = explode(',',$param['user_id']);
+                if ($param['user_id'] == 'all') {
                     $map[] = ['user_id', 'in', $this->staffs];
-                } else if (is_numeric($request['user_id'])) {
+                } else if (is_numeric($param['user_id'])) {
                     $map[] = ['user_id', '=', $this->user['id']];
                 } else {
-                    $map[] = ['user_id', 'in', $request['user_id']];
+                    $map[] = ['user_id', 'in', $param['user_id']];
                 }
 
             }  else {
@@ -265,36 +265,36 @@ class Customer extends Base
         }
 
         ### 当前选择跟进渠道
-        if(isset($request['active_status']) && is_numeric($request['active_status'])){
-            $map[] = ['active_status','=',$request['active_status']];
+        if(isset($param['active_status']) && is_numeric($param['active_status'])){
+            $map[] = ['active_status','=',$param['active_status']];
         }
 
         ### 获取方式
-        if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
-            $map[] = ['allocate_type','=',$request['allocate_type']];
+        if( isset($param['allocate_type']) && is_numeric($param['allocate_type']) ){
+            $map[] = ['allocate_type','=',$param['allocate_type']];
         }
 
         ### 时间区间
-        if( isset($request['range']) && !empty($request['range'])){
-            $range = format_date_range($request['range']);
+        if( isset($param['range']) && !empty($param['range'])){
+            $range = format_date_range($param['range']);
             $map[] = ['create_time', 'between', $range];
         }
 
         $model = $this->model->where($map);
         ### 手机号筛选
-        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
-           $model->where('member_id', 'in', function ($query) use ($request) {
-                $query->table('tk_mobile')->where('mobile', '=', $request['mobile'])->field('member_id');
+        if( isset($param['mobile']) && strlen($param['mobile']) == 11 ){
+           $model->where('member_id', 'in', function ($query) use ($param) {
+                $query->table('tk_mobile')->where('mobile', '=', $param['mobile'])->field('member_id');
            });
-        } else if (isset($request['mobile']) && strlen($request['mobile']) < 11){
-            $model->where('member_id', 'in', function ($query) use ($request) {
-                $query->table('tk_mobile')->where('mobile', 'like', "%{$request['mobile']}%")->field('member_id');
+        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11){
+            $model->where('member_id', 'in', function ($query) use ($param) {
+                $query->table('tk_mobile')->where('mobile', 'like', "%{$param['mobile']}%")->field('member_id');
             });
         }
 
         $order = 'create_time desc,member_create_time desc';
         $field = "id,user_id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
-        $list = $model->field($field)->order($order)->paginate($request['limit'], false, $config);
+        $list = $model->field($field)->order($order)->paginate($param['limit'], false, $config);
 
         if (!empty($list)) {
             foreach ($list as &$value) {
@@ -322,19 +322,18 @@ class Customer extends Base
     # 我的客资顶部导航带数据
     public function count()
     {
-        $request = $this->request->param();
+        $param = $this->request->param();
         $map = [];
         ###  管理者还是销售
         if($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($request['user_id']) && !empty($result['user_id'])) {
-                // $user_id = explode(',',$request['user_id']);
-                if ($request['user_id'] == 'all') {
+            if( isset($param['user_id']) && !empty($param['user_id'])) {
+                if ($param['user_id'] == 'all') {
                     $map[] = ['user_id', 'in', $this->staffs];
-                } else if (is_numeric($request['user_id'])) {
+                } else if (is_numeric($param['user_id'])) {
                     $map[] = ['user_id', '=', $this->user['id']];
                 } else {
-                    $map[] = ['user_id', 'in', $request['user_id']];
+                    $map[] = ['user_id', 'in', $param['user_id']];
                 }
 
             }  else {
@@ -345,27 +344,26 @@ class Customer extends Base
             $map[] = ['user_id', '=', $this->user['id']];
         }
 
-
         ### 获取方式
-        if( isset($request['allocate_type']) && is_numeric($request['allocate_type']) ){
-            $map[] = ['allocate_type','=',$request['allocate_type']];
+        if( isset($param['allocate_type']) && is_numeric($param['allocate_type']) ){
+            $map[] = ['allocate_type','=',$param['allocate_type']];
         }
 
         ### 时间区间
-        if( isset($request['range']) && !empty($request['range'])){
-            $range = format_date_range($request['range']);
+        if( isset($param['range']) && !empty($param['range'])){
+            $range = format_date_range($param['range']);
             $map[] = ['create_time', 'between', $range];
         }
 
         $model = $this->model->where($map);
         ### 手机号筛选
-        if( isset($request['mobile']) && strlen($request['mobile']) == 11 ){
-            $model->where('member_id', 'in', function ($query) use ($request) {
-                $query->table('tk_mobile')->where('mobile', '=', $request['mobile'])->field('member_id');
+        if( isset($param['mobile']) && strlen($param['mobile']) == 11 ){
+            $model->where('member_id', 'in', function ($query) use ($param) {
+                $query->table('tk_mobile')->where('mobile', '=', $param['mobile'])->field('member_id');
             });
-        } else if (isset($request['mobile']) && strlen($request['mobile']) < 11){
-            $model->where('member_id', 'in', function ($query) use ($request) {
-                $query->table('tk_mobile')->where('mobile', 'like', "%{$request['mobile']}%")->field('member_id');
+        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11){
+            $model->where('member_id', 'in', function ($query) use ($param) {
+                $query->table('tk_mobile')->where('mobile', 'like', "%{$param['mobile']}%")->field('member_id');
             });
         }
 
@@ -418,11 +416,11 @@ class Customer extends Base
     # 公海
     public function sea()
     {
-        $request = $this->request->param();
-        $request['limit'] = isset($request['limit']) ? $request['limit'] : 5;
-        $request['page'] = isset($request['page']) ? $request['page'] + 1 : 1;
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 5;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
-            'page' => $request['page']
+            'page' => $param['page']
         ];
         $member = new Member();
         $map[] = ['is_sea', '=', '1'];
@@ -432,18 +430,18 @@ class Customer extends Base
         $member = $member->field($fields)->where($map);
 
         ### 手机号筛选
-        if (  isset($request['keywords']) && strlen($request['keywords']) == 11  ) {
-            $mobile = $request['keywords'];
+        if (  isset($param['keywords']) && strlen($param['keywords']) == 11  ) {
+            $mobile = $param['keywords'];
             $member = $member->where('id', '=', function ($query) use ($mobile) {
                 $query->table('tk_mobile')->where('mobile', '=', $mobile)->field('member_id');
             });
-        } else if ( isset($request['keywords']) && strlen($request['keywords']) < 11 ) {
-            $mobile = $request['keywords'];
+        } else if ( isset($param['keywords']) && strlen($param['keywords']) < 11 ) {
+            $mobile = $param['keywords'];
             $member = $member->where('id', 'in', function ($query) use ($mobile) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
             });
         }
-        $list = $member->order('create_time desc')->paginate($request['limit'], false, $config);
+        $list = $member->order('create_time desc')->paginate($param['limit'], false, $config);
 
         foreach ($list as &$value) {
             $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
