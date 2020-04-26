@@ -109,10 +109,24 @@ class Search extends Base
 
         $result = [
             'code'  => '200',
-            'data'  =>  $data
+            'msg'   => '获取数据成功',
+            'data'  => $data
         ];
 
         return json($result);
+    }
+
+    public function newsType()
+    {
+        $newsTypeList = $this->config['news_type_list'];
+
+        $result = [
+            'code'  => '200',
+            'msg'   => '获取数据成功',
+            'data'  => [
+                'newsTypeList'  => $newsTypeList
+            ]
+        ];
     }
 
 }

@@ -217,10 +217,17 @@ class Customer extends Base
             ]);
         }
 
+        if (empty($param['realname'])) {
+            return json([
+                'code' => '400',
+                'msg' => '客户姓名不能为空',
+            ]);
+        }
+
         if (empty($param['city_id'])) {
             return json([
                 'code' => '400',
-                'msg' => '请选择城市',
+                'msg' => '请',
             ]);
         }
 
@@ -280,14 +287,16 @@ class Customer extends Base
 
         $model->operate_id = $this->user['id'];
         $result1 = $model->allowField(true)->save($param);
-
-        ### 新添加客资要加入到分配列表中
-        $param['operate_id'] = $this->user['id'];
-        $param['allocate_type'] = 3;
-        MemberAllocate::insertAllocateData($this->user['id'], $model->id, $param);
-
+        echo $model->getLastSql();
+        exit;
         if ($result1) {
             $memberId = $model->id;
+
+            ### 新添加客资要加入到分配列表中
+            $param['operate_id'] = $this->user['id'];
+            $param['allocate_type'] = 3;
+            MemberAllocate::insertAllocateData($this->user['id'], $memberId, $param);
+
             $mobileModel = new Mobile();
             $mobileModel->insert(['mobile'=>$param['mobile'],'member_id'=>$memberId]);
             ### 将手机号1添加到手机号库
