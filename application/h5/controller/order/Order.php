@@ -544,4 +544,49 @@ class Order extends Base
 
         return json(['code' => '200', 'msg' => '创建成功', 'redirect'=> 'tab']);
     }
+
+    public function edit()
+    {
+        $param = $this->request->param();
+
+        $order = \app\common\model\Order::get($param['id']);
+
+        $result = [
+            'code'    =>    '200',
+            'msg'     =>    '获取信息成功',
+            'data'    =>    [
+                'order' =>  $order
+            ]
+        ];
+
+        return json($result);
+    }
+
+    public function doEdit()
+    {
+        $param = $this->request->param();
+
+        if( isset($param['id']) || empty($param['id'])) {
+            $result = [
+                'code'    =>    '400',
+                'msg'     =>    '缺少必要参数'
+            ];
+
+            return json($result);
+        }
+
+        $request = $this->model->save($param);
+        if( $request ) {
+            $result = [
+                'code'    =>    '200',
+                'msg'     =>    '编辑成功'
+            ];
+        } else {
+            $result = [
+                'code'    =>    '400',
+                'msg'     =>    '编辑失败'
+            ];
+        }
+        return json($result);
+    }
 }
