@@ -227,7 +227,7 @@ class Customer extends Base
         if (empty($param['city_id'])) {
             return json([
                 'code' => '400',
-                'msg' => '请',
+                'msg' => '选择',
             ]);
         }
 

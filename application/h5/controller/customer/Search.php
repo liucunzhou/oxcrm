@@ -118,17 +118,28 @@ class Search extends Base
 
     public function newsType()
     {
+        $arr = [];
         $newsTypeList = $this->config['news_type_list'];
-        $arr = [
-            -1 => '请选择'
+        foreach ($newsTypeList as $key=>$value) {
+            $arr[] = [
+                'id'    => $key,
+                'title' => $value
+            ];
+        }
+
+        $all = [
+           'all' => [
+               'id'     => 'all',
+               'title'  => '请选择'
+           ]
         ];
-        $newsTypeList = $arr + $newsTypeList;
+        $arr = $all + $arr;
 
         $result = [
             'code'  => '200',
             'msg'   => '获取数据成功',
             'data'  => [
-                'newsTypeList'  => $newsTypeList
+                'newsTypeList'  => $arr
             ]
         ];
 
