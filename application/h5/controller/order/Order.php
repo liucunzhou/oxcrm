@@ -591,6 +591,21 @@ class Order extends Base
         } else {
             $order['salesman_realname'] = '-';
         }
+        if(!empty($order->company_id)) {
+            $order['company_title'] = $this->brands[$order->company_id]['title'];
+        } else {
+            $order['company_title'] = '-';
+        }
+        if(!empty($order->news_type)) {
+            $order['news_type_title'] = $this->config['news_type_list'];
+        }
+
+        if(!empty($order->cooperation_mode)) {
+            $order['cooperation_mode_title'] = $this->config['cooperation_mode'];
+        } else {
+            $order['cooperation_mode_title'] = '-';
+        }
+
         $result = [
             'code'    =>    '200',
             'msg'     =>    '获取信息成功',
