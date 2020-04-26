@@ -624,7 +624,7 @@ class Order extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['order'], true);
-        if( isset($param['id']) || empty($param['id'])) {
+        if( !isset($param['id']) || empty($param['id'])) {
             $result = [
                 'code'    =>    '400',
                 'msg'     =>    '缺少必要参数'
