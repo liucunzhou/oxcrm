@@ -469,6 +469,12 @@ class Order extends Base
 
         ];
 
+        ## 获取套餐列表
+        $packageList = \app\common\model\Package::getList();
+
+        ## 获取仪式列表
+        $ritualList = \app\common\model\Ritual::getList();
+
         $result = [
             'code' => '200',
             'msg' => '获取成功',
@@ -479,6 +485,9 @@ class Order extends Base
                 'companyList' => array_values($this->brands),    ##签约公司列表
                 'newsTypeList' => array_values($this->config['news_type_list']),    ## 订单类型
                 'cooperationModeList' => array_values($this->config['cooperation_mode']),  ## 合同模式
+
+                'packageList'  => array_values($packageList),
+                'ritualList'  => array_values($ritualList),
 
                 'carList' => array_values($this->carList),
                 'wineList' => array_values($this->wineList),
