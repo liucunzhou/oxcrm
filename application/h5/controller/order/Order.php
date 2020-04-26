@@ -362,9 +362,7 @@ class Order extends Base
                 'cooperationModeList'   =>  $this->config['cooperation_mode'],  ## 合同模式
             ]
         ];
-
         return json($$result);
-
     }
 
     # 创建订单逻辑
