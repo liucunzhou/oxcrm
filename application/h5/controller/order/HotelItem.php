@@ -52,7 +52,7 @@ class HotelItem extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['hotelItem'], true);
-        if(empty(!$param['id'])) {
+        if(!empty($param['id'])) {
             $where = [];
             $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
