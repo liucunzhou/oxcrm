@@ -120,6 +120,7 @@ class Confirm extends Base
         $orderConfirm = new OrderConfirm();
         $confirmRs = $orderConfirm->where($where)->column('id,status,content','confirm_item_id');
 
+        $isEdit = 0;
         $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
         $staffs = User::getUsers(false);
         ## 审核全局列表
@@ -129,7 +130,6 @@ class Confirm extends Base
         foreach ($auth as $key=>$row) {
             $managerList = [];
             $type = $sequence[$key]['type'];
-
             if($type == 'role') {
                 // 获取角色
                 foreach ($row as $v)
@@ -162,6 +162,7 @@ class Confirm extends Base
                         $status = '审核通过';
                         break;
                     case 2:
+                        $isEdit = 1;
                         $status = '审核驳回';
                         break;
                     default:
@@ -186,7 +187,8 @@ class Confirm extends Base
             'code'  => '200',
             'msg'   => '获取数据成功',
             'data'  => [
-                'confirmList'   => $confirmList
+                'confirmList'   => $confirmList,
+                'isEdit'        => $isEdit
             ]
         ];
 
