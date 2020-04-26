@@ -303,7 +303,7 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $d3List = \app\common\model\OrderD3::where($where)->select();
-        foreach ( $carList as $key=>&$row ) {
+        foreach ( $d3List as $key=>&$row ) {
             $row['d3_id'] = $this->d3List[$row['id']]['title'];
             $row['edit']    = 1;
         }
