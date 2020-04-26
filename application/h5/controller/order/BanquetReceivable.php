@@ -1,6 +1,6 @@
 <?php
 
-namespace app\index\controller\order;
+namespace app\h5\controller\order;
 
 use app\common\model\OrderBanquetReceivables;
 use app\h5\controller\Base;

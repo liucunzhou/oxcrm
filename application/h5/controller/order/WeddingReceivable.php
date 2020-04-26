@@ -1,6 +1,5 @@
 <?php
-
-namespace app\index\controller\order;
+namespace app\h5\controller\order;
 
 use app\common\model\OrderWeddingReceivables;
 use app\h5\controller\Base;
