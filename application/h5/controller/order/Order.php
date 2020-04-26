@@ -315,96 +315,114 @@ class Order extends Base
             'msg'   =>  '获取成功',
             'data'  =>  [
                 'order'                 =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.order/edit',
                     'api'       => '/h5/order.order/doEdit',
                     'json'      => $order,
                     'edit'      => 1,
                 ],
                 'member'    =>  [
+                    'picker'    => '',
                     'read'      => '',
                     'api'       => '',
                     'json'      => $member,
                     'edit'      => 0,
                 ],
                 'banquet'   =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.banquet/edit',
                     'api'       => '/h5/order.banquet/doEdit',
                     'json'      => $banquet,
                     'edit'      => 1,
                 ],
                 'banquetSuborderList'   =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.banquet_suborder/edit',
                     'api'       => '/h5/order.banquet_suborder/doEdit',
                     'array'     => $banquetSuborderList
                 ],
                 'banquetReceivableList' =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.banquet_receivable/edit',
                     'api'       => '/h5/order.banquet_receivable/doEdit',
                     'array'     => $banquetReceivableList
                 ],
                 'banquetPaymentList'    =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.banquet_payment/edit',
                     'api'       => '/h5/order.banquet_payment/doEdit',
                     'array'     => $banquetPaymentList
                 ],
                 'hotelItem'             =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.hotel_item/edit',
                     'api'       => '/h5/order.hotel_item/doEdit',
                     'json'      => $hotelItem,
                     'edit'      => 1,
                 ],
                 'wedding'               =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.wedding/edit',
                     'api'       => '/h5/order.wedding/doEdit',
                     'json'      => $wedding,
                     'edit'      => 1,
                 ],
                 'weddingSuborderList'   =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.wedding_suborder/edit',
                     'api'       => '/h5/order.wedding_suborder/doEdit',
                     'array'     => $weddingSuborderList
                 ],
                 'weddingReceivableList' =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.wedding_receivable/edit',
                     'api'       => '/h5/order.wedding_receivable/doEdit',
                     'array'     => $weddingReceivableList
                 ],
                 'weddingPaymentList'    =>  [
+                    'picker'    => '',
                     'read'      => '/h5/order.wedding_payment/edit',
                     'api'       => '/h5/order.wedding_payment/doEdit',
                     'array'     => $weddingPaymentList
                 ],
                 'carList'               =>  [
+                    'picker'    => '/h5/dictionary.car/getList',
                     'read'      => '/h5/order.car/edit',
                     'api'       => '/h5/order.car/doEdit',
                     'array'     => $carList
                 ],
                 'wineList'              =>  [
+                    'picker'    => '/h5/dictionary.wine/getList',
                     'read'      => '/h5/order.wine/edit',
                     'api'       => '/h5/order.wine/doEdit',
                     'array'     => $wineList
                 ],
                 'sugarList'             =>  [
+                    'picker'    => '/h5/dictionary.sugar/getList',
                     'read'      => '/h5/order.sugar/edit',
                     'api'       => '/h5/order.sugar/doEdit',
                     'array'     => $sugarList
                 ],
                 'dessertList'           =>  [
+                    'picker'    => '/h5/dictionary.dessert/getList',
                     'read'      => '/h5/order.dessert/edit',
                     'api'       => '/h5/order.dessert/doEdit',
                     'array'     => $dessertList
                 ],
                 'lightList'             =>  [
+                    'picker'    => '/h5/dictionary.light/getList',
                     'read'      => '/h5/order.light/edit',
                     'api'       => '/h5/order.light/doEdit',
                     'array'     => $lightList
                 ],
                 'ledList'               =>  [
+                    'picker'    => '/h5/dictionary.led/getList',
                     'read'      => '/h5/order.led/edit',
                     'api'       => '/h5/order.led/doEdit',
                     'array'     => $ledList
                 ],
                 'd3List'                =>  [
+                    'picker'    => '/h5/dictionary.d3/getList',
                     'read'      => '/h5/order.d3/edit',
                     'api'       => '/h5/order.d3/doEdit',
                     'array'     => $d3List
