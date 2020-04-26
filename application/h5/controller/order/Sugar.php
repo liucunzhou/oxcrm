@@ -48,7 +48,7 @@ class Sugar extends Base
             $where = [];
             $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
-            $result = $model->save($param);
+            $result = $model->allowField(true)->save($param);
         } else {
             $result = $this->model->allowField(true)->save($param);
         }
