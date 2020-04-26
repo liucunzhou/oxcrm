@@ -29,7 +29,8 @@ class HotelItem extends Base
     {
         $where = [];
         $where[] = ['id', '=', $id];
-        $data = $this->model->where($where)->find();
+        $field = 'id,order_id,weeding_room,part,champagne,tea,cake,cake_amount,champagne_amount,part_amount';
+        $data = $this->model->fields($field)->where($where)->find();
 
         if($data) {
             $result = [
