@@ -287,8 +287,6 @@ class Customer extends Base
 
         $model->operate_id = $this->user['id'];
         $result1 = $model->allowField(true)->save($param);
-        echo $model->getLastSql();
-        exit;
         if ($result1) {
             $memberId = $model->id;
 

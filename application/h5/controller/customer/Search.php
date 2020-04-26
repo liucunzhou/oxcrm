@@ -127,6 +127,8 @@ class Search extends Base
                 'newsTypeList'  => $newsTypeList
             ]
         ];
+
+        return json($result);
     }
 
 }
