@@ -8,8 +8,16 @@ use app\common\model\MemberAllocate;
 use app\common\model\OrderBanquet;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderCar;
 use app\common\model\OrderConfirm;
+use app\common\model\OrderD3;
+use app\common\model\OrderDessert;
 use app\common\model\OrderHotelItem;
+use app\common\model\OrderLed;
+use app\common\model\OrderLight;
+use app\common\model\OrderSugar;
+use app\common\model\OrderWedding;
+use app\common\model\OrderWine;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
@@ -362,7 +370,7 @@ class Order extends Base
     # 创建订单逻辑
     public function doCreateOrder()
     {
-        $param = Request::param();
+        $param = $this->request->param();
         $OrderModel = new \app\common\model\Order();
         $OrderModel->allowField(true)->save($param);
         $param['order_id'] = $OrderModel->id;
