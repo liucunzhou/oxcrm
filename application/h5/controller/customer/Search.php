@@ -128,7 +128,7 @@ class Search extends Base
         }
 
         $all = [
-           'all' => [
+           0 => [
                'id'     => 'all',
                'title'  => '请选择'
            ]
