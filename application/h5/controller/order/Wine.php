@@ -22,7 +22,7 @@ class Wine extends Base
         $data = $this->model->where($where)->field($fields)->order('id desc')->find();
         if(!empty($data)) {
             $row = \app\common\model\Wine::get($data->wine_id);
-            $data['wine_title'] = $row->title;
+            $data['title'] = $row->title;
             $result = [
                 'code' => '200',
                 'msg' => '获取信息成功',

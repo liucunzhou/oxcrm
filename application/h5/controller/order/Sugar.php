@@ -22,7 +22,7 @@ class Sugar extends Base
         $data = $this->model->where($where)->field($fields)->find();
         if(!empty($data)) {
             $row = \app\common\model\Sugar::get($data->sugar_id);
-            $data['sugar_title'] = $row->title;
+            $data['title'] = $row->title;
             $result = [
                 'code' => '200',
                 'msg' => '获取信息成功',

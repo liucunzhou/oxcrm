@@ -23,7 +23,7 @@ class D3 extends Base
         $data = $this->model->where($where)->field($fields)->find();
         if(!empty($data)) {
             $row = \app\common\model\D3::get($data->d3_id);
-            $data['d3_title'] = $row->title;
+            $data['title'] = $row->title;
             $result = [
                 'code' => '200',
                 'msg' => '获取信息成功',
