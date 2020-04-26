@@ -17,9 +17,9 @@ class Wedding extends Base
 
     public function edit($id)
     {
+        $fields = "*";
         $where = [];
         $where[] = ['id', '=', $id];
-        $fields = "*";
         $data = $this->model->field($fields)->where($where)->find();
         if($data) {
             $result = [

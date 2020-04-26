@@ -30,7 +30,7 @@ class HotelItem extends Base
     {
         $where = [];
         $where[] = ['id', '=', $id];
-        $data = $this->model->where($where)->order('id desc')->find();
+        $data = $this->model->where($where)->find();
 
         if($data) {
             $result = [

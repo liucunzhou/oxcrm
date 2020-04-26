@@ -42,16 +42,16 @@ class BanquetPayment extends Base
 
     public function doEdit()
     {
-        $request = $this->request->param();
-        if(!empty($request['id'])) {
+        $param = $this->request->param();
+        if(!empty($param['id'])) {
             $action = '更新';
-            $model = OrderBanquetPayment::get($request['id']);
+            $model = OrderBanquetPayment::get($param['id']);
         } else {
             $action = '添加';
             $model = new OrderBanquetPayment();
         }
 
-        $result = $model->save($request);
+        $result = $model->save($param);
         if($result) {
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
