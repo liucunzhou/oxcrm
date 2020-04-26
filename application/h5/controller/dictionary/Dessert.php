@@ -21,7 +21,7 @@ class Dessert extends Base
             'code'  =>  '200',
             'msg'   =>  '获取信息成功',
             'data'  =>  [
-                'dessertList'  => $list
+                'pickerList'  => $list
             ]
         ];
 

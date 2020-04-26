@@ -21,7 +21,7 @@ class Light extends Base
             'code'  =>  '200',
             'msg'   =>  '获取信息成功',
             'data'  =>  [
-                'lightList'  => $list
+                'pickerList'  => $list
             ]
         ];
 

@@ -21,7 +21,7 @@ class Wine extends Base
             'code'  =>  '200',
             'msg'   =>  '获取信息成功',
             'data'  =>  [
-                'wineList'  => $list
+                'pickerList'  => $list
             ]
         ];
 

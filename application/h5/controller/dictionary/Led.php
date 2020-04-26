@@ -21,7 +21,7 @@ class Led extends Base
             'code'  =>  '200',
             'msg'   =>  '获取信息成功',
             'data'  =>  [
-                'ledList'  => $list
+                'pickerList'  => $list
             ]
         ];
 
