@@ -35,15 +35,15 @@ class D3 extends Base
 
     public function doEdit()
     {
-        $params = $this->request->param();
-
-        if(!empty($params['id'])) {
+        $param = $this->request->param();
+        $param = json_decode($param['d3List'], true);
+        if(!empty($param['id'])) {
             $where = [];
-            $where[] = ['id', '=', $params['id']];
+            $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
-            $result = $model->save($params);
+            $result = $model->save($param);
         } else {
-            $result = $this->model->allowField(true)->save($params);
+            $result = $this->model->allowField(true)->save($param);
         }
 
         if($result) {

@@ -582,7 +582,7 @@ class Order extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-
+        $param = json_decode($param['order'], true);
         if( isset($param['id']) || empty($param['id'])) {
             $result = [
                 'code'    =>    '400',

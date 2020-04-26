@@ -16,10 +16,10 @@ class HotelItem extends Base
 
     public function create()
     {
-        $params = $this->request->param();
+        $param = $this->request->param();
         $order = new \app\common\model\Order();
         $where = [];
-        $where['id'] = $params['id'];
+        $where['id'] = $param['id'];
         $row = $order->where($where)->find();
         $this->assign('order', $row);
 
@@ -51,15 +51,15 @@ class HotelItem extends Base
 
     public function doEdit()
     {
-        $params = $this->request->param();
-
-        if(empty(!$params['id'])) {
+        $param = $this->request->param();
+        $param = json_decode($param['hotelItem'], true);
+        if(empty(!$param['id'])) {
             $where = [];
-            $where[] = ['id', '=', $params['id']];
+            $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
-            $result = $model->save($params);
+            $result = $model->save($param);
         } else {
-            $result = $this->model->allowField(true)->save($params);
+            $result = $this->model->allowField(true)->save($param);
         }
 
         if($result) {
