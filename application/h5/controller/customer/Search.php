@@ -128,12 +128,13 @@ class Search extends Base
         }
 
         $all = [
-           'all' => [
+           '-1' => [
                'id'     => 'all',
                'title'  => '请选择'
            ]
         ];
         $arr = $all + $arr;
+
 
         $result = [
             'code'  => '200',
@@ -142,7 +143,6 @@ class Search extends Base
                 'newsTypeList'  => $arr
             ]
         ];
-
         return json($result);
     }
 
