@@ -446,8 +446,8 @@ class Order extends Base
             'msg'   =>  '获取成功',
             'data'  =>  [
                 'member'                =>  $member,          ## 客资信息
-                'companyList'           =>  $this->brands,    ##签约公司列表
-                'newsTypeList'          =>  $this->config['news_type_list'],    ## 订单类型
+                'companyList'           =>  array_values($this->brands),    ##签约公司列表
+                'newsTypeList'          =>  array_values($this->config['news_type_list']),    ## 订单类型
                 'cooperationModeList'   =>  $this->config['cooperation_mode'],  ## 合同模式
             ]
         ];
@@ -596,8 +596,8 @@ class Order extends Base
             'msg'     =>    '获取信息成功',
             'data'    =>    [
                 'order'                 =>  $order,
-                'companyList'           =>  $this->brands,    ##签约公司列表
-                'newsTypeList'          =>  $this->config['news_type_list'],    ## 订单类型
+                'companyList'           =>  array_values($this->brands),    ##签约公司列表
+                'newsTypeList'          =>  array_values($this->config['news_type_list']),    ## 订单类型
                 'cooperationModeList'   =>  $this->config['cooperation_mode'],  ## 合同模式
             ]
         ];
