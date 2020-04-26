@@ -135,6 +135,7 @@ class Search extends Base
         ];
         $arr = $all + $arr;
 
+
         $result = [
             'code'  => '200',
             'msg'   => '获取数据成功',
@@ -142,8 +143,6 @@ class Search extends Base
                 'newsTypeList'  => $arr
             ]
         ];
-
         return json($result);
     }
-
 }

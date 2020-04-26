@@ -55,17 +55,6 @@ class Order extends Base
         ## 酒店列表
         $this->hotels = \app\common\model\Store::getStoreList();
 
-
-        ## 获取套餐列表
-        $packages = \app\common\model\Package::getList();
-
-        ## 获取仪式列表
-        $rituals = \app\common\model\Ritual::getList();
-
-        ## 酒店服务项目
-        $banquetHoteItems = \app\common\model\BanquetHotelItem::getList();
-
-
         ## 供应商列表
         $this->suppliers = \app\common\model\Supplier::getList();
 
