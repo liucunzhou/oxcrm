@@ -19,15 +19,23 @@ class Wine extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,wine_id,order_id,wine_amount,wine_price,wine_remark";
-        $order = $this->model->where($where)->field($fields)->order('id desc')->find();
-
-        $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取信息成功',
-            'data'  =>  [
-                'wineList'  => $order
-            ]
-        ];
+        $data = $this->model->where($where)->field($fields)->order('id desc')->find();
+        if(!empty($data)) {
+            $row = \app\common\model\Wine::get($data->wine_id);
+            $data['wine_title'] = $row->title;
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功',
+                'data' => [
+                    'wineList' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功'
+            ];
+        }
 
         return json($result);
     }

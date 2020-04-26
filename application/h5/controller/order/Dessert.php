@@ -20,15 +20,23 @@ class Dessert extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,dessert_id,order_id,dessert_amount,dessert_price,dessert_remark";
-        $order = $this->model->where($where)->field($fields)->order('id desc')->find();
-
-        $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取信息成功',
-            'data'  =>  [
-                'dessertList'  => $order
-            ]
-        ];
+        $data = $this->model->where($where)->field($fields)->find();
+        if(!empty($data)) {
+            $row = \app\common\model\Dessert::get($data->dessert_id);
+            $data['dessert_title'] = $row->title;
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功',
+                'data' => [
+                    'dessertList' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功'
+            ];
+        }
 
         return json($result);
     }

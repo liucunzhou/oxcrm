@@ -19,15 +19,23 @@ class Led extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,led_id,order_id,led_amount,led_price,led_remark";
-        $order = $this->model->where($where)->field($fields)->order('id desc')->find();
-
-        $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取信息成功',
-            'data'  =>  [
-                'ledList'  => $order
-            ]
-        ];
+        $data = $this->model->where($where)->field($fields)->find();
+        if(!empty($data)) {
+            $row = \app\common\model\Led::get($data->led_id);
+            $data['led_title'] = $row->title;
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功',
+                'data' => [
+                    'ledList' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功'
+            ];
+        }
 
         return json($result);
     }

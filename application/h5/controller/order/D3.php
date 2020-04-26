@@ -20,15 +20,23 @@ class D3 extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,d3_id,order_id,d3_amount,d3_price,d3_remark";
-        $order = $this->model->where($where)->field($fields)->order('id desc')->find();
-
-        $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取信息成功',
-            'data'  =>  [
-                'd3List'  => $order
-            ]
-        ];
+        $data = $this->model->where($where)->field($fields)->find();
+        if(!empty($data)) {
+            $row = \app\common\model\D3::get($data->d3_id);
+            $data['d3_title'] = $row->title;
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功',
+                'data' => [
+                    'd3List' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功'
+            ];
+        }
 
         return json($result);
     }

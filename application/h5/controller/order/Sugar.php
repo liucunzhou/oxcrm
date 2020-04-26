@@ -19,15 +19,23 @@ class Sugar extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,sugar_id,order_id,sugar_amount,sugar_price,sugar_remark";
-        $order = $this->model->where($where)->field($fields)->order('id desc')->find();
-
-        $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取信息成功',
-            'data'  =>  [
-                'sugarList'  => $order
-            ]
-        ];
+        $data = $this->model->where($where)->field($fields)->find();
+        if(!empty($data)) {
+            $row = \app\common\model\Sugar::get($data->sugar_id);
+            $data['sugar_title'] = $row->title;
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功',
+                'data' => [
+                    'sugarList' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功'
+            ];
+        }
 
         return json($result);
     }

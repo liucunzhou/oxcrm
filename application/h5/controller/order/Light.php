@@ -19,15 +19,23 @@ class Light extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,light_id,order_id,light_amount,light_price,light_remark";
-        $order = $this->model->where($where)->field($fields)->order('id desc')->find();
-
-        $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取信息成功',
-            'data'  =>  [
-                'lightList'  => $order
-            ]
-        ];
+        $data = $this->model->where($where)->field($fields)->find();
+        if(!empty($data)) {
+            $row = \app\common\model\Light::get($data->light_id);
+            $data['light_title'] = $row->title;
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功',
+                'data' => [
+                    'lightList' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => '获取信息成功'
+            ];
+        }
 
         return json($result);
     }
