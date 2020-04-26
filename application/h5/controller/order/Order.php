@@ -44,25 +44,8 @@ class Order extends Base
         parent::initialize();
         $this->model = new \app\common\model\Order();
 
-        // 获取系统来源,酒店列表,意向状态
-        $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
-
-        $this->sources = \app\common\model\Source::getSources();
-
         ## 获取所有品牌、公司
         $this->brands = \app\common\model\Brand::getBrands();
-
-        ## 酒店列表
-        $this->hotels = \app\common\model\Store::getStoreList();
-
-        ## 供应商列表
-        $this->suppliers = \app\common\model\Supplier::getList();
-
-        ## 婚庆设备列表
-        $this->weddingDevices = \app\common\model\WeddingDevice::getList();
-
-        ## 婚庆二销分类列表
-        $this->weddingCategories = \app\common\model\WeddingCategory::getList();
 
         ## 汽车列表
         $this->carList = \app\common\model\Car::getList();
@@ -72,6 +55,7 @@ class Order extends Base
 
         ## 喜糖列表
         $this->sugarList = \app\common\model\Sugar::getList();
+
         ## 灯光列表
         $this->lightList = \app\common\model\Light::getList();
 
@@ -101,26 +85,26 @@ class Order extends Base
         ];
 
         ##  审核状态
-        if( isset($param['check_status']) && $param['check_status'] != 'all' ){
-            $map[] = ['check_status','=',$param['check_status']];
+        if (isset($param['check_status']) && $param['check_status'] != 'all') {
+            $map[] = ['check_status', '=', $param['check_status']];
         }
 
         ## 签约公司
-        if( isset($param['company_id']) && $param['company_id'] > 0 ){
-            $map[] = ['company_id','=',$param['company_id']];
+        if (isset($param['company_id']) && $param['company_id'] > 0) {
+            $map[] = ['company_id', '=', $param['company_id']];
         }
 
         ## 时间类型
-        if( isset($param['range']) && !empty($param['range'])){
+        if (isset($param['range']) && !empty($param['range'])) {
             $column = !empty($param['range_type']) ? $param['range_type'] : 'create_time';
             $range = format_date_range($param['range']);
             $map[] = [$column, 'between', $range];
         }
 
         ###  管理者还是销售
-        if($this->role['auth_type'] > 0) {
+        if ($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($param['user_id']) && !empty($param['user_id'])) {
+            if (isset($param['user_id']) && !empty($param['user_id'])) {
 
                 if ($param['user_id'] == 'all') {
                     $map[] = ['salesman', 'in', $this->staffs];
@@ -130,7 +114,7 @@ class Order extends Base
                     $map[] = ['salesman', 'in', $param['user_id']];
                 }
 
-            }  else {
+            } else {
                 $map[] = ['salesman', '=', $this->user['id']];
             }
 
@@ -142,11 +126,11 @@ class Order extends Base
         $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
         $list = $this->model->where($map);
 
-        if( isset( $param['keywords'] ) && !empty($param['keywords']) ) {
-            if(is_numeric($param['keywords'])) {
-                $list->where('bride_mobile|bridegroom_mobile','like',"%{$param['keywords']}%");
+        if (isset($param['keywords']) && !empty($param['keywords'])) {
+            if (is_numeric($param['keywords'])) {
+                $list->where('bride_mobile|bridegroom_mobile', 'like', "%{$param['keywords']}%");
             } else {
-                $list->where('bride|bridegroom','like',"%{$param['keywords']}%");
+                $list->where('bride|bridegroom', 'like', "%{$param['keywords']}%");
             }
         }
 
@@ -174,7 +158,7 @@ class Order extends Base
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
-                'orderlist'     =>  $list,
+                'orderlist' => $list,
             ]
         ];
         return json($result);
@@ -185,8 +169,8 @@ class Order extends Base
     {
         $param = $this->request->param();
         $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,remark";
-        $order = $this->model->where('id','=',$param['id'])->field($fields)->find();
-        if( !$order->isEmpty() ) {
+        $order = $this->model->where('id', '=', $param['id'])->field($fields)->find();
+        if (!$order->isEmpty()) {
             $order = $order->toArray();
             $newsTypes = $this->config['news_type_list'];
             $cooperationMode = $this->config['cooperation_mode'];
@@ -203,13 +187,13 @@ class Order extends Base
             $order = [];
         }
 
-        $member = Member::field('realname,mobile,source_text')->where('id','=',$order->member_id)->find();
+        $member = Member::field('realname,mobile,source_text')->where('id', '=', $order->member_id)->find();
 
         #### 获取婚宴订单信息
         $where = [];
         $where['order_id'] = $param['id'];
         $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
-        if(empty($banquet)) $banquet = [];
+        if (empty($banquet)) $banquet = [];
 
         #### 酒店服务项目
         $where = [];
@@ -232,7 +216,7 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
-        if(empty($wedding)) $wedding = [];
+        if (empty($wedding)) $wedding = [];
 
         #### 获取婚宴二销订单信息
         $where = [];
@@ -248,184 +232,184 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $carList = \app\common\model\OrderCar::where($where)->select();
-        foreach ( $carList as $key=>&$row ) {
+        foreach ($carList as $key => &$row) {
             $row['car_id'] = $this->carList[$row['id']]['title'];
             $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### 喜糖
         $where = [];
         $where['order_id'] = $param['id'];
         $sugarList = \app\common\model\OrderSugar::where($where)->select();
-        foreach ( $sugarList as $key=>&$row ) {
+        foreach ($sugarList as $key => &$row) {
             $row['sugar_id'] = $this->sugarList[$row['id']]['title'];
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### 酒水
         $where = [];
         $where['order_id'] = $param['id'];
         $wineList = \app\common\model\OrderWine::where($where)->select();
-        foreach ( $wineList as $key=>&$row ) {
+        foreach ($wineList as $key => &$row) {
             $row['wine_id'] = $this->wineList[$row['id']]['title'];
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### 灯光
         $where = [];
         $where['order_id'] = $param['id'];
         $lightList = \app\common\model\OrderLight::where($where)->select();
-        foreach ( $lightList as $key=>&$row ) {
+        foreach ($lightList as $key => &$row) {
             $row['light_id'] = $this->lightList[$row['id']]['title'];
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### 点心
         $where = [];
         $where['order_id'] = $param['id'];
         $dessertList = \app\common\model\OrderDessert::where($where)->select();
-        foreach ( $dessertList as $key=>&$row ) {
+        foreach ($dessertList as $key => &$row) {
             $row['desser_id'] = $this->dessertList[$row['id']]['title'];
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### LED
         $where = [];
         $where['order_id'] = $param['id'];
         $ledList = \app\common\model\OrderLed::where($where)->select();
-        foreach ( $ledList as $key=>&$row ) {
+        foreach ($ledList as $key => &$row) {
             $row['led_id'] = $this->ledList[$row['id']]['title'];
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### 3D
         $where = [];
         $where['order_id'] = $param['id'];
         $d3List = \app\common\model\OrderD3::where($where)->select();
-        foreach ( $d3List as $key=>&$row ) {
+        foreach ($d3List as $key => &$row) {
             $row['d3_id'] = $this->d3List[$row['id']]['title'];
-            $row['edit']    = 1;
+            $row['edit'] = 1;
         }
 
         #### 获取审核进度
 
         $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取成功',
-            'data'  =>  [
-                'order'                 =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.order/edit',
-                    'api'       => '/h5/order.order/doEdit',
-                    'json'      => $order,
-                    'edit'      => 1,
+            'code' => '200',
+            'msg' => '获取成功',
+            'data' => [
+                'order' => [
+                    'picker' => '',
+                    'read' => '/h5/order.order/edit',
+                    'api' => '/h5/order.order/doEdit',
+                    'json' => $order,
+                    'edit' => 1,
                 ],
-                'member'    =>  [
-                    'picker'    => '',
-                    'read'      => '',
-                    'api'       => '',
-                    'json'      => $member,
-                    'edit'      => 0,
+                'member' => [
+                    'picker' => '',
+                    'read' => '',
+                    'api' => '',
+                    'json' => $member,
+                    'edit' => 0,
                 ],
-                'banquet'   =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.banquet/edit',
-                    'api'       => '/h5/order.banquet/doEdit',
-                    'json'      => $banquet,
-                    'edit'      => 1,
+                'banquet' => [
+                    'picker' => '',
+                    'read' => '/h5/order.banquet/edit',
+                    'api' => '/h5/order.banquet/doEdit',
+                    'json' => $banquet,
+                    'edit' => 1,
                 ],
-                'banquetSuborderList'   =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.banquet_suborder/edit',
-                    'api'       => '/h5/order.banquet_suborder/doEdit',
-                    'array'     => $banquetSuborderList
+                'banquetSuborderList' => [
+                    'picker' => '',
+                    'read' => '/h5/order.banquet_suborder/edit',
+                    'api' => '/h5/order.banquet_suborder/doEdit',
+                    'array' => $banquetSuborderList
                 ],
-                'banquetReceivableList' =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.banquet_receivable/edit',
-                    'api'       => '/h5/order.banquet_receivable/doEdit',
-                    'array'     => $banquetReceivableList
+                'banquetReceivableList' => [
+                    'picker' => '',
+                    'read' => '/h5/order.banquet_receivable/edit',
+                    'api' => '/h5/order.banquet_receivable/doEdit',
+                    'array' => $banquetReceivableList
                 ],
-                'banquetPaymentList'    =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.banquet_payment/edit',
-                    'api'       => '/h5/order.banquet_payment/doEdit',
-                    'array'     => $banquetPaymentList
+                'banquetPaymentList' => [
+                    'picker' => '',
+                    'read' => '/h5/order.banquet_payment/edit',
+                    'api' => '/h5/order.banquet_payment/doEdit',
+                    'array' => $banquetPaymentList
                 ],
-                'hotelItem'             =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.hotel_item/edit',
-                    'api'       => '/h5/order.hotel_item/doEdit',
-                    'json'      => $hotelItem,
-                    'edit'      => 1,
+                'hotelItem' => [
+                    'picker' => '',
+                    'read' => '/h5/order.hotel_item/edit',
+                    'api' => '/h5/order.hotel_item/doEdit',
+                    'json' => $hotelItem,
+                    'edit' => 1,
                 ],
-                'wedding'               =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.wedding/edit',
-                    'api'       => '/h5/order.wedding/doEdit',
-                    'json'      => $wedding,
-                    'edit'      => 1,
+                'wedding' => [
+                    'picker' => '',
+                    'read' => '/h5/order.wedding/edit',
+                    'api' => '/h5/order.wedding/doEdit',
+                    'json' => $wedding,
+                    'edit' => 1,
                 ],
-                'weddingSuborderList'   =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.wedding_suborder/edit',
-                    'api'       => '/h5/order.wedding_suborder/doEdit',
-                    'array'     => $weddingSuborderList
+                'weddingSuborderList' => [
+                    'picker' => '',
+                    'read' => '/h5/order.wedding_suborder/edit',
+                    'api' => '/h5/order.wedding_suborder/doEdit',
+                    'array' => $weddingSuborderList
                 ],
-                'weddingReceivableList' =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.wedding_receivable/edit',
-                    'api'       => '/h5/order.wedding_receivable/doEdit',
-                    'array'     => $weddingReceivableList
+                'weddingReceivableList' => [
+                    'picker' => '',
+                    'read' => '/h5/order.wedding_receivable/edit',
+                    'api' => '/h5/order.wedding_receivable/doEdit',
+                    'array' => $weddingReceivableList
                 ],
-                'weddingPaymentList'    =>  [
-                    'picker'    => '',
-                    'read'      => '/h5/order.wedding_payment/edit',
-                    'api'       => '/h5/order.wedding_payment/doEdit',
-                    'array'     => $weddingPaymentList
+                'weddingPaymentList' => [
+                    'picker' => '',
+                    'read' => '/h5/order.wedding_payment/edit',
+                    'api' => '/h5/order.wedding_payment/doEdit',
+                    'array' => $weddingPaymentList
                 ],
-                'carList'               =>  [
-                    'picker'    => '/h5/dictionary.car/getList',
-                    'read'      => '/h5/order.car/edit',
-                    'api'       => '/h5/order.car/doEdit',
-                    'array'     => $carList
+                'carList' => [
+                    'picker' => '/h5/dictionary.car/getList',
+                    'read' => '/h5/order.car/edit',
+                    'api' => '/h5/order.car/doEdit',
+                    'array' => $carList
                 ],
-                'wineList'              =>  [
-                    'picker'    => '/h5/dictionary.wine/getList',
-                    'read'      => '/h5/order.wine/edit',
-                    'api'       => '/h5/order.wine/doEdit',
-                    'array'     => $wineList
+                'wineList' => [
+                    'picker' => '/h5/dictionary.wine/getList',
+                    'read' => '/h5/order.wine/edit',
+                    'api' => '/h5/order.wine/doEdit',
+                    'array' => $wineList
                 ],
-                'sugarList'             =>  [
-                    'picker'    => '/h5/dictionary.sugar/getList',
-                    'read'      => '/h5/order.sugar/edit',
-                    'api'       => '/h5/order.sugar/doEdit',
-                    'array'     => $sugarList
+                'sugarList' => [
+                    'picker' => '/h5/dictionary.sugar/getList',
+                    'read' => '/h5/order.sugar/edit',
+                    'api' => '/h5/order.sugar/doEdit',
+                    'array' => $sugarList
                 ],
-                'dessertList'           =>  [
-                    'picker'    => '/h5/dictionary.dessert/getList',
-                    'read'      => '/h5/order.dessert/edit',
-                    'api'       => '/h5/order.dessert/doEdit',
-                    'array'     => $dessertList
+                'dessertList' => [
+                    'picker' => '/h5/dictionary.dessert/getList',
+                    'read' => '/h5/order.dessert/edit',
+                    'api' => '/h5/order.dessert/doEdit',
+                    'array' => $dessertList
                 ],
-                'lightList'             =>  [
-                    'picker'    => '/h5/dictionary.light/getList',
-                    'read'      => '/h5/order.light/edit',
-                    'api'       => '/h5/order.light/doEdit',
-                    'array'     => $lightList
+                'lightList' => [
+                    'picker' => '/h5/dictionary.light/getList',
+                    'read' => '/h5/order.light/edit',
+                    'api' => '/h5/order.light/doEdit',
+                    'array' => $lightList
                 ],
-                'ledList'               =>  [
-                    'picker'    => '/h5/dictionary.led/getList',
-                    'read'      => '/h5/order.led/edit',
-                    'api'       => '/h5/order.led/doEdit',
-                    'array'     => $ledList
+                'ledList' => [
+                    'picker' => '/h5/dictionary.led/getList',
+                    'read' => '/h5/order.led/edit',
+                    'api' => '/h5/order.led/doEdit',
+                    'array' => $ledList
                 ],
-                'd3List'                =>  [
-                    'picker'    => '/h5/dictionary.d3/getList',
-                    'read'      => '/h5/order.d3/edit',
-                    'api'       => '/h5/order.d3/doEdit',
-                    'array'     => $d3List
+                'd3List' => [
+                    'picker' => '/h5/dictionary.d3/getList',
+                    'read' => '/h5/order.d3/edit',
+                    'api' => '/h5/order.d3/doEdit',
+                    'array' => $d3List
                 ]
             ]
         ];
@@ -441,14 +425,70 @@ class Order extends Base
         $fields = "id,realname,mobile,source_id,source_text";
         $member = Member::field($fields)->get($allocate['member_id']);
 
+        $moduleList = [
+            [
+                'id'    => 'banquet',
+                'title' => '婚宴'
+            ],
+            [
+                'id'    => 'wedding',
+                'title' => '婚庆'
+            ],
+            [
+                'id'    => 'hotelItem',
+                'title' => '酒店服务项目'
+            ],
+            [
+                'id'    => 'car',
+                'title' => '婚车'
+            ],
+            [
+                'id'    => 'sugar',
+                'title' => '喜糖'
+            ],
+            [
+                'id'    => 'wine',
+                'title' => '酒水'
+            ],
+            [
+                'id'    => 'dessert',
+                'title' => '糕点'
+            ],
+            [
+                'id'    => 'light',
+                'title' => '灯光'
+            ],
+            [
+                'id'    => 'led',
+                'title' => 'LED'
+            ],
+            [
+                'id'    => 'd3',
+                'title' => '3D'
+            ],
+
+        ];
+
         $result = [
-            'code'  =>  '200',
-            'msg'   =>  '获取成功',
-            'data'  =>  [
-                'member'                =>  $member,          ## 客资信息
-                'companyList'           =>  array_values($this->brands),    ##签约公司列表
-                'newsTypeList'          =>  array_values($this->config['news_type_list']),    ## 订单类型
-                'cooperationModeList'   =>  array_values($this->config['cooperation_mode']),  ## 合同模式
+            'code' => '200',
+            'msg' => '获取成功',
+            'data' => [
+                'member' => $member,          ## 客资信息
+                'moduleList' => $moduleList,
+
+                'companyList' => array_values($this->brands),    ##签约公司列表
+                'newsTypeList' => array_values($this->config['news_type_list']),    ## 订单类型
+                'cooperationModeList' => array_values($this->config['cooperation_mode']),  ## 合同模式
+
+                'carList' => array_values($this->carList),
+                'wineList' => array_values($this->wineList),
+                'sugarList' => array_values($this->sugarList),
+                'dessertList' => array_values($this->dessertList),
+                'lightList' => array_values($this->lightList),
+                'ledList' => array_values($this->ledList),
+                'd3List' => array_values($this->d3List),
+
+                'payments'  => $this->config['payments'],
             ]
         ];
         return json($result);
@@ -531,7 +571,7 @@ class Order extends Base
         if (!empty($param['sugar_id'])) {
             $sugarModel = new OrderSugar();
             // get wedding devices
-            $param['salesman']= $param['sugar_salesman'];
+            $param['salesman'] = $param['sugar_salesman'];
             $sugarModel->allowField(true)->save($param);
         }
 
@@ -548,7 +588,7 @@ class Order extends Base
         if (!empty($param['light_id'])) {
             $lightModel = new OrderLight();
             // get wedding devices
-            $param['salesman']= $param['light_salesman'];
+            $param['salesman'] = $param['light_salesman'];
             $lightModel->allowField(true)->save($param);
         }
 
@@ -577,7 +617,7 @@ class Order extends Base
             echo $d3Model->getLastSql();
         }
 
-        return json(['code' => '200', 'msg' => '创建成功', 'redirect'=> 'tab']);
+        return json(['code' => '200', 'msg' => '创建成功', 'redirect' => 'tab']);
     }
 
     public function edit()
@@ -585,35 +625,35 @@ class Order extends Base
         $param = $this->request->param();
         $fields = 'id,company_id,news_type,contract_no,sign_date,event_date,hotel_id,hotel_text,cooperation_mode,score,banquet_hall_name,recommend_salesman,remark,bridegroom,bridegroom_mobile,bride,bride_mobile,salesman';
         $order = \app\common\model\Order::field($fields)->get($param['id']);
-        if(!empty($order->salesman)) {
+        if (!empty($order->salesman)) {
             $staff = User::getUser($order->salesman);
             $order['salesman_realname'] = $staff['realname'];
         } else {
             $order['salesman_realname'] = '-';
         }
-        if(!empty($order->company_id)) {
+        if (!empty($order->company_id)) {
             $order['company_title'] = $this->brands[$order->company_id]['title'];
         } else {
             $order['company_title'] = '-';
         }
-        if(!empty($order->news_type)) {
+        if (!empty($order->news_type)) {
             $order['news_type_title'] = $this->config['news_type_list'][$order->news_type];
         }
 
-        if(!empty($order->cooperation_mode)) {
+        if (!empty($order->cooperation_mode)) {
             $order['cooperation_mode_title'] = $this->config['cooperation_mode'][$order->cooperation_mode];
         } else {
             $order['cooperation_mode_title'] = '-';
         }
 
         $result = [
-            'code'    =>    '200',
-            'msg'     =>    '获取信息成功',
-            'data'    =>    [
-                'order'                 =>  $order,
-                'companyList'           =>  array_values($this->brands),    ##签约公司列表
-                'newsTypeList'          =>  array_values($this->config['news_type_list']),    ## 订单类型
-                'cooperationModeList'   =>  array_values($this->config['cooperation_mode']),  ## 合同模式
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'order' => $order,
+                'companyList' => array_values($this->brands),    ##签约公司列表
+                'newsTypeList' => array_values($this->config['news_type_list']),    ## 订单类型
+                'cooperationModeList' => array_values($this->config['cooperation_mode']),  ## 合同模式
             ]
         ];
 
@@ -624,25 +664,25 @@ class Order extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['order'], true);
-        if( !isset($param['id']) || empty($param['id'])) {
+        if (!isset($param['id']) || empty($param['id'])) {
             $result = [
-                'code'    =>    '400',
-                'msg'     =>    '缺少必要参数'
+                'code' => '400',
+                'msg' => '缺少必要参数'
             ];
             return json($result);
         }
 
         $order = $this->model->where('id', '=', $param['id'])->find();
         $rs = $order->allowField(true)->save($param);
-        if( $rs ) {
+        if ($rs) {
             $result = [
-                'code'    =>    '200',
-                'msg'     =>    '编辑成功'
+                'code' => '200',
+                'msg' => '编辑成功'
             ];
         } else {
             $result = [
-                'code'    =>    '400',
-                'msg'     =>    '编辑失败'
+                'code' => '400',
+                'msg' => '编辑失败'
             ];
         }
         return json($result);
