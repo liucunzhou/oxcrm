@@ -308,76 +308,94 @@ class Order extends Base
             'msg'   =>  '获取成功',
             'data'  =>  [
                 'order'                 =>  [
+                    'read'      => '/h5/order.order/edit',
                     'api'       => '/h5/order.order/doEdit',
                     'json'      => $order
                 ],
                 'member'    =>  [
+                    'read'      => '',
                     'api'       => '',
                     'json'      => $member,
                 ],
                 'banquet'   =>  [
-                    'api'   => '/h5/order.banquet/doEdit',
-                    'json'  => $banquet,
+                    'read'      => '/h5/order.banquet/edit',
+                    'api'       => '/h5/order.banquet/doEdit',
+                    'json'      => $banquet,
                 ],
                 'banquetSuborderList'   =>  [
-                    'api'   => '/h5/order.banquet_suborder/doEdit',
-                    'array'  => $banquetSuborderList
+                    'read'      => '/h5/order.banquet_suborder/edit',
+                    'api'       => '/h5/order.banquet_suborder/doEdit',
+                    'array'     => $banquetSuborderList
                 ],
                 'banquetReceivableList' =>  [
-                    'api'   => '/h5/order.banquet_receivable/doEdit',
-                    'array'  => $banquetReceivableList
+                    'read'      => '/h5/order.banquet_receivable/edit',
+                    'api'       => '/h5/order.banquet_receivable/doEdit',
+                    'array'     => $banquetReceivableList
                 ],
                 'banquetPaymentList'    =>  [
-                    'api'   => '/h5/order.banquet_payment/doEdit',
-                    'array'  => $banquetPaymentList
+                    'read'      => '/h5/order.banquet_payment/edit',
+                    'api'       => '/h5/order.banquet_payment/doEdit',
+                    'array'     => $banquetPaymentList
                 ],
                 'hotelItem'             =>  [
-                    'api'   => '/h5/order.hotel_item/doEdit',
-                    'json'  => $hotelItem
+                    'read'      => '/h5/order.hotel_item/edit',
+                    'api'       => '/h5/order.hotel_item/doEdit',
+                    'json'      => $hotelItem
                 ],
                 'wedding'               =>  [
-                    'api'   => '/h5/order.wedding/doEdit',
-                    'json'  => $wedding
+                    'read'      => '/h5/order.wedding/edit',
+                    'api'       => '/h5/order.wedding/doEdit',
+                    'json'      => $wedding
                 ],
                 'weddingSuborderList'   =>  [
-                    'api'   => '/h5/order.wedding_suborder/doEdit',
-                    'array'  => $weddingSuborderList
+                    'read'      => '/h5/order.wedding_suborder/edit',
+                    'api'       => '/h5/order.wedding_suborder/doEdit',
+                    'array'     => $weddingSuborderList
                 ],
                 'weddingReceivableList' =>  [
-                    'api'   => '/h5/order.wedding_receivable/doEdit',
-                    'array'  => $weddingReceivableList
+                    'read'      => '/h5/order.wedding_receivable/edit',
+                    'api'       => '/h5/order.wedding_receivable/doEdit',
+                    'array'     => $weddingReceivableList
                 ],
                 'weddingPaymentList'    =>  [
-                    'api'   => '/h5/order.wedding_payment/doEdit',
-                    'array'  => $weddingPaymentList
+                    'read'      => '/h5/order.wedding_payment/edit',
+                    'api'       => '/h5/order.wedding_payment/doEdit',
+                    'array'     => $weddingPaymentList
                 ],
                 'carList'               =>  [
-                    'api'   => '/h5/order.car/doEdit',
-                    'array'  => $carList
+                    'read'      => '/h5/order.car/edit',
+                    'api'       => '/h5/order.car/doEdit',
+                    'array'     => $carList
                 ],
                 'wineList'              =>  [
-                    'api'   => '/h5/order.wine/doEdit',
-                    'array'  => $wineList
+                    'read'      => '/h5/order.wine/edit',
+                    'api'       => '/h5/order.wine/doEdit',
+                    'array'     => $wineList
                 ],
                 'sugarList'             =>  [
-                    'api'   => '/h5/order.sugar/doEdit',
-                    'array'  => $sugarList
+                    'read'      => '/h5/order.sugar/edit',
+                    'api'       => '/h5/order.sugar/doEdit',
+                    'array'     => $sugarList
                 ],
                 'dessertList'           =>  [
-                    'api'   => '/h5/order.dessert/doEdit',
-                    'array'  => $dessertList
+                    'read'      => '/h5/order.dessert/edit',
+                    'api'       => '/h5/order.dessert/doEdit',
+                    'array'     => $dessertList
                 ],
                 'lightList'             =>  [
-                    'api'   => '/h5/order.light/doEdit',
-                    'array'  => $lightList
+                    'read'      => '/h5/order.light/edit',
+                    'api'       => '/h5/order.light/doEdit',
+                    'array'     => $lightList
                 ],
                 'ledList'               =>  [
-                    'api'   => '/h5/order.led/doEdit',
-                    'array'  => $ledList
+                    'read'      => '/h5/order.led/edit',
+                    'api'       => '/h5/order.led/doEdit',
+                    'array'     => $ledList
                 ],
                 'd3List'                =>  [
-                    'api'   => '/h5/order.d3/doEdit',
-                    'array'  => $d3List
+                    'read'      => '/h5/order.d3/edit',
+                    'api'       => '/h5/order.d3/doEdit',
+                    'array'     => $d3List
                 ]
             ]
         ];
