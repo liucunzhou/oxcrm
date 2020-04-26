@@ -119,6 +119,10 @@ class Search extends Base
     public function newsType()
     {
         $newsTypeList = $this->config['news_type_list'];
+        $arr = [
+            -1 => '请选择'
+        ];
+        $newsTypeList = $arr + $newsTypeList;
 
         $result = [
             'code'  => '200',

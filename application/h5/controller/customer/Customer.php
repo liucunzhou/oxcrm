@@ -287,9 +287,9 @@ class Customer extends Base
 
         $model->operate_id = $this->user['id'];
         $result1 = $model->allowField(true)->save($param);
+
         if ($result1) {
             $memberId = $model->id;
-
             ### 新添加客资要加入到分配列表中
             $param['operate_id'] = $this->user['id'];
             $param['allocate_type'] = 3;
