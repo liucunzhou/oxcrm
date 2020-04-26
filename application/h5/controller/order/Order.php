@@ -437,9 +437,7 @@ class Order extends Base
     public function createOrder()
     {
         $param = $this->request->param();
-
         $allocate = MemberAllocate::get($param['id']);
-
         $fields = "id,realname,mobile,source_id,source_text";
         $member = Member::field($fields)->get($allocate['member_id']);
 
@@ -585,12 +583,22 @@ class Order extends Base
     public function edit()
     {
         $param = $this->request->param();
-        $order = \app\common\model\Order::get($param['id']);
+        $fields = 'id,company_id,news_type,contract_no,sign_date,event_date,hotel_id,hotel_text,cooperation_mode,score,banquet_hall_name,recommend_salesman,remark,bridegroom,bridegroom_mobile,bride,bride_mobile,salesman';
+        $order = \app\common\model\Order::field($fields)->get($param['id']);
+        if(!empty($order->salesman)) {
+            $staff = User::getUser($order->salesman);
+            $order['salesman_realname'] = $staff['realname'];
+        } else {
+            $order['salesman_realname'] = '-';
+        }
         $result = [
             'code'    =>    '200',
             'msg'     =>    '获取信息成功',
             'data'    =>    [
-                'order' =>  $order
+                'order'                 =>  $order,
+                'companyList'           =>  $this->brands,    ##签约公司列表
+                'newsTypeList'          =>  $this->config['news_type_list'],    ## 订单类型
+                'cooperationModeList'   =>  $this->config['cooperation_mode'],  ## 合同模式
             ]
         ];
 
