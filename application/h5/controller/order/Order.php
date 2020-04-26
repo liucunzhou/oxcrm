@@ -609,7 +609,7 @@ class Order extends Base
             return json($result);
         }
 
-        $rs = $this->model->save($param);
+        $rs = $this->model->allowField(true)->save($param);
         if( $rs ) {
             $result = [
                 'code'    =>    '200',

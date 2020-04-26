@@ -56,7 +56,7 @@ class HotelItem extends Base
             $where = [];
             $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
-            $result = $model->save($param);
+            $result = $model->allowField(true)->save($param);
         } else {
             $result = $this->model->allowField(true)->save($param);
         }
@@ -64,7 +64,7 @@ class HotelItem extends Base
         if($result) {
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
         } else {
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
         }
 
         return json($arr);
