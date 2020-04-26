@@ -597,11 +597,11 @@ class Order extends Base
             $order['company_title'] = '-';
         }
         if(!empty($order->news_type)) {
-            $order['news_type_title'] = $this->config['news_type_list'];
+            $order['news_type_title'] = $this->config['news_type_list'][$order->news_type];
         }
 
         if(!empty($order->cooperation_mode)) {
-            $order['cooperation_mode_title'] = $this->config['cooperation_mode'];
+            $order['cooperation_mode_title'] = $this->config['cooperation_mode'][$order->cooperation_mode];
         } else {
             $order['cooperation_mode_title'] = '-';
         }
