@@ -1,0 +1,73 @@
+<?php
+
+namespace app\index\controller\order;
+
+use app\common\model\OrderHotelItem;
+use app\h5\controller\Base;
+
+class HotelItem extends Base
+{
+    protected $model = null;
+    public function initialize()
+    {
+        parent::initialize();
+        $this->model = new OrderHotelItem();
+    }
+
+    public function create()
+    {
+        $params = $this->request->param();
+        $order = new \app\common\model\Order();
+        $where = [];
+        $where['id'] = $params['id'];
+        $row = $order->where($where)->find();
+        $this->assign('order', $row);
+
+        return $this->fetch();
+    }
+
+    public function edit($id)
+    {
+        $where = [];
+        $where[] = ['id', '=', $id];
+        $data = $this->model->where($where)->order('id desc')->find();
+
+        if($data) {
+            $result = [
+                'code' => '200',
+                'msg' => '获取数据成功',
+                'data' => [
+                    'detail' => $data
+                ]
+            ];
+        } else {
+            $result = [
+                'code' => '400',
+                'msg' => '获取数据失败'
+            ];
+        }
+        return json($result);
+    }
+
+    public function doEdit()
+    {
+        $params = $this->request->param();
+
+        if(empty(!$params['id'])) {
+            $where = [];
+            $where[] = ['id', '=', $params['id']];
+            $model = $this->model->where($where)->find();
+            $result = $model->save($params);
+        } else {
+            $result = $this->model->allowField(true)->save($params);
+        }
+
+        if($result) {
+            $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
+        } else {
+            $arr = ['code'=>'200', 'msg'=>'编辑基本信息失败'];
+        }
+
+        return json($arr);
+    }
+}

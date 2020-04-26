@@ -145,5 +145,4 @@ class Search extends Base
         ];
         return json($result);
     }
-
 }
