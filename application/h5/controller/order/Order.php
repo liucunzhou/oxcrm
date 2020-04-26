@@ -251,6 +251,7 @@ class Order extends Base
         foreach ( $carList as $key=>&$row ) {
             $row['car_id'] = $this->carList[$row['id']]['title'];
             $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
+            $row['edit']    = 1;
         }
 
         #### 喜糖
@@ -259,6 +260,7 @@ class Order extends Base
         $sugarList = \app\common\model\OrderSugar::where($where)->select();
         foreach ( $sugarList as $key=>&$row ) {
             $row['sugar_id'] = $this->sugarList[$row['id']]['title'];
+            $row['edit']    = 1;
         }
 
         #### 酒水
@@ -267,6 +269,7 @@ class Order extends Base
         $wineList = \app\common\model\OrderWine::where($where)->select();
         foreach ( $wineList as $key=>&$row ) {
             $row['wine_id'] = $this->wineList[$row['id']]['title'];
+            $row['edit']    = 1;
         }
 
         #### 灯光
@@ -275,6 +278,7 @@ class Order extends Base
         $lightList = \app\common\model\OrderLight::where($where)->select();
         foreach ( $lightList as $key=>&$row ) {
             $row['light_id'] = $this->lightList[$row['id']]['title'];
+            $row['edit']    = 1;
         }
 
         #### 点心
@@ -283,6 +287,7 @@ class Order extends Base
         $dessertList = \app\common\model\OrderDessert::where($where)->select();
         foreach ( $dessertList as $key=>&$row ) {
             $row['desser_id'] = $this->dessertList[$row['id']]['title'];
+            $row['edit']    = 1;
         }
 
         #### LED
@@ -291,14 +296,16 @@ class Order extends Base
         $ledList = \app\common\model\OrderLed::where($where)->select();
         foreach ( $ledList as $key=>&$row ) {
             $row['led_id'] = $this->ledList[$row['id']]['title'];
+            $row['edit']    = 1;
         }
 
         #### 3D
         $where = [];
         $where['order_id'] = $param['id'];
         $d3List = \app\common\model\OrderD3::where($where)->select();
-        foreach ( $carList as $key=>&$row ) {
+        foreach ( $d3List as $key=>&$row ) {
             $row['d3_id'] = $this->d3List[$row['id']]['title'];
+            $row['edit']    = 1;
         }
 
         #### 获取审核进度
@@ -310,17 +317,20 @@ class Order extends Base
                 'order'                 =>  [
                     'read'      => '/h5/order.order/edit',
                     'api'       => '/h5/order.order/doEdit',
-                    'json'      => $order
+                    'json'      => $order,
+                    'edit'      => 1,
                 ],
                 'member'    =>  [
                     'read'      => '',
                     'api'       => '',
                     'json'      => $member,
+                    'edit'      => 0,
                 ],
                 'banquet'   =>  [
                     'read'      => '/h5/order.banquet/edit',
                     'api'       => '/h5/order.banquet/doEdit',
                     'json'      => $banquet,
+                    'edit'      => 1,
                 ],
                 'banquetSuborderList'   =>  [
                     'read'      => '/h5/order.banquet_suborder/edit',
@@ -340,12 +350,14 @@ class Order extends Base
                 'hotelItem'             =>  [
                     'read'      => '/h5/order.hotel_item/edit',
                     'api'       => '/h5/order.hotel_item/doEdit',
-                    'json'      => $hotelItem
+                    'json'      => $hotelItem,
+                    'edit'      => 1,
                 ],
                 'wedding'               =>  [
                     'read'      => '/h5/order.wedding/edit',
                     'api'       => '/h5/order.wedding/doEdit',
-                    'json'      => $wedding
+                    'json'      => $wedding,
+                    'edit'      => 1,
                 ],
                 'weddingSuborderList'   =>  [
                     'read'      => '/h5/order.wedding_suborder/edit',
@@ -423,7 +435,7 @@ class Order extends Base
                 'cooperationModeList'   =>  $this->config['cooperation_mode'],  ## 合同模式
             ]
         ];
-        return json($$result);
+        return json($result);
     }
 
     # 创建订单逻辑
