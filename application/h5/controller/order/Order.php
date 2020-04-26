@@ -537,9 +537,7 @@ class Order extends Base
     public function edit()
     {
         $param = $this->request->param();
-
         $order = \app\common\model\Order::get($param['id']);
-
         $result = [
             'code'    =>    '200',
             'msg'     =>    '获取信息成功',
@@ -560,12 +558,11 @@ class Order extends Base
                 'code'    =>    '400',
                 'msg'     =>    '缺少必要参数'
             ];
-
             return json($result);
         }
 
-        $request = $this->model->save($param);
-        if( $request ) {
+        $rs = $this->model->save($param);
+        if( $rs ) {
             $result = [
                 'code'    =>    '200',
                 'msg'     =>    '编辑成功'
