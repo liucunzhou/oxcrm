@@ -78,7 +78,7 @@ class Customer extends Base
             }
         }
 
-        $list = $this->model->where($map)->order('create_time desc,member_create_time desc')->paginate($get['limit'], false, $config);
+        $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
         if (!empty($list)) {
             $users = User::getUsers();
             $data = $list->getCollection()->toArray();
