@@ -21,7 +21,9 @@ class Upload extends Base
             $result = [
                 'code'  => '200',
                 'msg'   => '上传成功',
-                'image' => $baseUrl.'/'.$info->getPathname()
+                'data' => [
+                    'url' =>$baseUrl.'/'.$info->getPathname()
+                ]
             ];
         } else {
             $result = [
