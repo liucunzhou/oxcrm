@@ -28,7 +28,7 @@ class Intention extends Model
             ]
         ];
 
-        array_unshift($data, $item);
+        $data = $item + $data;
         return $data;
     }
 

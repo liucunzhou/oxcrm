@@ -39,6 +39,7 @@ class Visit extends Base
         $this->sources = Source::getSources();
         $this->hotels = Store::getStoreList();
         $this->statusList = Intention::getIntentions();
+        // print_r($this->statusList);
         // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
 
         $this->model = new MemberVisit();
@@ -65,7 +66,6 @@ class Visit extends Base
             ];
             return json($result);
         }
-
         $users = User::getUsers(false);
 
         $map = [];
@@ -76,6 +76,7 @@ class Visit extends Base
                     ->field($field)
                     ->order('create_time desc')
                     ->paginate($param['limit'], false, $config);
+        // echo $this->model->getLastSql();
 
         if(empty($list))
         {
@@ -86,8 +87,12 @@ class Visit extends Base
             ];
             return json($result);
         }
+
         foreach ($list as &$value) {
             $value['level'] = '重要客户';
+            // $value['s'] = $value['status'];
+            // $value['s1'] = $this->statusList;
+
             $value['status'] = $this->statusList[$value['status']]['title'];
             $value['realname'] = $users[$value['user_id']]['realname'];
             $value['next_visit_time'] = date("Y-m-d",$value['next_visit_time']);
