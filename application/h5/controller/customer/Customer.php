@@ -602,11 +602,18 @@ class Customer extends Base
         }
 
         $fail = $count - $success;
-        $data = [
-            'code'  =>  '200',
-            'msg'   =>  "申请成功{$success}条,失败{$fail}条"
-        ];
+        if ($fail > 0) {
+            $result = [
+                'code' => '200',
+                'msg' => "申请成功"
+            ];
+        } else {
+            $result = [
+                'code' => '200',
+                'msg' => "已经有此客资"
+            ];
+        }
 
-        return json($data);
+        return json($result);
     }
 }

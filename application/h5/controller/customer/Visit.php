@@ -71,7 +71,6 @@ class Visit extends Base
         $map = [];
         $map[] = ['member_id','=',$allocate['member_id']];
         $field = "status,create_time,next_visit_time,user_id,content,is_into_store";
-
         ### 根据分配表的数据查询回访记录
         $list = $this->model->where($map)
                     ->field($field)
