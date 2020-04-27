@@ -507,126 +507,200 @@ class Order extends Base
     public function doCreateOrder()
     {
         $param = $this->request->param();
+        $allocate = MemberAllocate::get($param['id']);
+        $member = \app\api\model\Member::get($allocate->member_id);
+
+        $orderData = json_decode($param['order'], true);
+        $orderData['member_id'] = $member->id;
+        $orderData['realname']  = $member->realname;
+        $orderData['mobile']  = $member->mobile;
+        $orderData['source_id'] = $member->source_id;
+        $orderData['source_text'] = $member->source_text;
+        $orderData['operate_id'] = $this->user['id'];
+        $orderData['user_id'] = $this->user['id'];
         $OrderModel = new \app\common\model\Order();
-        $OrderModel->allowField(true)->save($param);
-        $param['order_id'] = $OrderModel->id;
-        $param['operate_id'] = $this->user['id'];
+        $result = $OrderModel->allowField(true)->save($orderData);
+        if(!$result) return json(['code' => '400', 'msg' => '创建失败']);
+
         ## banquet message
-        if (!empty($param['wedding_total'])) {
+        if (!empty($param['banquet'])) {
+            $data = json_decode($param['banquet'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
             $BanquetModel = new OrderBanquet();
-            $BanquetModel->allowField(true)->save($param);
+            $BanquetModel->allowField(true)->save($data);
         }
 
         ## wedding message
-        if (!empty($param['banquet_totals'])) {
+        if (!empty($param['hotelItem'])) {
+            $data = json_decode($param['hotelItem'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
             $weddingModel = new OrderWedding();
-            // get wedding devices
-            $weddingModel->allowField(true)->save($param);
+            $weddingModel->allowField(true)->save($data);
         }
 
         ## 婚车主车
-        if (!empty($param['master_car_id'])) {
+        if (!empty($param['car'])) {
+            $carData = json_decode($param['car'], true);
             $row = [];
-            $row['operate_id'] = $this->user['id'];
-            $row['order_id'] = $param['order_id'];
-            $row['company_id'] = $param['car_company_id'];
+            $row['company_id'] = $carData['car_company_id'];
             $row['is_master'] = 1;
             $row['is_suborder'] = 0;
-            $row['car_id'] = $param['master_car_id'];
-            $row['car_price'] = $param['master_car_price'];
-            $row['car_amount'] = $param['master_car_amount'];
-            $row['service_hour'] = $param['service_hour'];
-            $row['service_distance'] = $param['service_distance'];
-            $row['car_contact'] = $param['car_contact'];
-            $row['car_mobile'] = $param['car_mobile'];
-            $row['arrive_time'] = $param['arrive_time'];
-            $row['arrive_address'] = $param['arrive_address'];
-            $row['car_remark'] = $param['master_car_remark'];
-            $row['create_time'] = time();
-            $row['salesman'] = $row['car_salesman'];
-            $row['company_id'] = $row['car_company_id'];
-
+            $row['car_id'] = $carData['master_car_id'];
+            $row['car_price'] = $carData['master_car_price'];
+            $row['car_amount'] = $carData['master_car_amount'];
+            $row['service_hour'] = $carData['service_hour'];
+            $row['service_distance'] = $carData['service_distance'];
+            $row['car_contact'] = $carData['car_contact'];
+            $row['car_mobile'] = $carData['car_mobile'];
+            $row['arrive_time'] = $carData['arrive_time'];
+            $row['arrive_address'] = $carData['arrive_address'];
+            $row['car_remark'] = $carData['master_car_remark'];
+            $row['salesman'] = $carData['car_salesman'];
+            $row['company_id'] = $carData['car_company_id'];
+            $row['order_id'] = $OrderModel->id;
+            $row['operate_id'] = $this->user['id'];
+            $row['user_id'] = $this->user['id'];
             $carModel = new OrderCar();
             $carModel->allowField(true)->save($row);
         }
 
         ## 婚车跟车
-        if (!empty($param['slave_car_id'])) {
+        if (!empty($param['car'])) {
+            $carData = json_decode($param['car'], true);
             $row = [];
-            $row['operate_id'] = $this->user['id'];
-            $row['order_id'] = $param['order_id'];
-            $row['company_id'] = $param['car_company_id'];
+            $row['order_id'] = $carData['order_id'];
+            $row['company_id'] = $carData['car_company_id'];
             $row['is_master'] = 0;
             $row['is_suborder'] = 0;
-            $row['car_id'] = $param['slave_car_id'];
-            $row['car_price'] = $param['slave_car_price'];
-            $row['car_amount'] = $param['slave_car_amount'];
-            $row['service_hour'] = $param['service_hour'];
-            $row['service_distance'] = $param['service_distance'];
-            $row['car_contact'] = $param['car_contact'];
-            $row['car_mobile'] = $param['car_mobile'];
-            $row['arrive_time'] = $param['arrive_time'];
-            $row['arrive_address'] = $param['arrive_address'];
-            $row['car_remark'] = $param['slave_car_remark'];
+            $row['car_id'] = $carData['slave_car_id'];
+            $row['car_price'] = $carData['slave_car_price'];
+            $row['car_amount'] = $carData['slave_car_amount'];
+            $row['service_hour'] = $carData['service_hour'];
+            $row['service_distance'] = $carData['service_distance'];
+            $row['car_contact'] = $carData['car_contact'];
+            $row['car_mobile'] = $carData['car_mobile'];
+            $row['arrive_time'] = $carData['arrive_time'];
+            $row['arrive_address'] = $carData['arrive_address'];
+            $row['car_remark'] = $carData['slave_car_remark'];
             $row['create_time'] = time();
-            $row['salesman'] = $row['car_salesman'];
-            $row['company_id'] = $row['car_company_id'];
-
+            $row['salesman'] = $carData['car_salesman'];
+            $row['company_id'] = $carData['car_company_id'];
+            $row['order_id'] = $OrderModel->id;
+            $row['operate_id'] = $this->user['id'];
+            $row['user_id'] = $this->user['id'];
             $carModel = new OrderCar();
             $carModel->allowField(true)->save($row);
         }
 
         ## 喜糖
-        if (!empty($param['sugar_id'])) {
+        if (!empty($param['sugar'])) {
+            $data = json_decode($param['sugar'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+
             $sugarModel = new OrderSugar();
-            // get wedding devices
-            $param['salesman'] = $param['sugar_salesman'];
-            $sugarModel->allowField(true)->save($param);
+            $data['salesman'] = $data['sugar_salesman'];
+            $sugarModel->allowField(true)->save($data);
         }
 
 
         ## 酒水
-        if (!empty($param['wine_id'])) {
+        if (!empty($param['wine'])) {
+            $data = json_decode($param['wine'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+
             $wineModel = new OrderWine();
-            // get wedding devices
             $param['salesman'] = $param['wine_salesman'];
-            $wineModel->allowField(true)->save($param);
+            $wineModel->allowField(true)->save($data);
         }
 
         ## 灯光
-        if (!empty($param['light_id'])) {
+        if (!empty($param['light'])) {
+            $data = json_decode($param['wine'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+
             $lightModel = new OrderLight();
-            // get wedding devices
-            $param['salesman'] = $param['light_salesman'];
-            $lightModel->allowField(true)->save($param);
+            $data['salesman'] = $data['light_salesman'];
+            $lightModel->allowField(true)->save($data);
         }
 
         ## 点心
-        if (!empty($param['dessert_id'])) {
+        if (!empty($param['dessert'])) {
+            $data = json_decode($param['desset'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+
             $dessertModel = new OrderDessert();
-            // get wedding devices
-            $param['salesman'] = $param['dessert_salesman'];
-            $dessertModel->allowField(true)->save($param);
+            $data['salesman'] = $data['dessert_salesman'];
+            $dessertModel->allowField(true)->save($data);
         }
 
         ## led
-        if (!empty($param['led_id'])) {
+        if (!empty($param['led'])) {
+            $data = json_decode($param['led'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+
             $ledModel = new OrderLed();
-            // get wedding devices
-            $param['salesman'] = $param['led_salesman'];
-            $ledModel->allowField(true)->save($param);
+            $data['salesman'] = $data['led_salesman'];
+            $ledModel->allowField(true)->save($data);
         }
 
         ## 3D
-        if (!empty($param['d3_id'])) {
+        if (!empty($param['d3'])) {
+            $data = json_decode($param['wine'], true);
+            $data['order_id'] = $OrderModel->id;
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+
             $d3Model = new OrderD3();
-            // get wedding devices
-            $param['salesman'] = $param['d3_salesman'];
-            $d3Model->allowField(true)->save($param);
-            echo $d3Model->getLastSql();
+            $data['salesman'] = $data['d3_salesman'];
+            $d3Model->allowField(true)->save($data);
         }
 
-        return json(['code' => '200', 'msg' => '创建成功', 'redirect' => 'tab']);
+        ## 收款信息
+        if (!empty($param['income'])) {
+
+            $income = json_decode($param['income'], true);
+            if($orderData['news_type'] == '2' || $orderData['news_type'] == '0'){
+                // 婚宴收款
+                $data = [];
+                $data['banquet_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_item_price'] = $income['income_item_price'];
+                $data['banquet_income_remark'] = $income['income_remark'];
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+
+                $receivableModel = new OrderBanquetReceivables();
+                $receivableModel->allowField(true)->save($data);
+            } else {
+                // 婚庆收款
+                $data = [];
+                $data['wedding_receivable_no'] = $income['receivable_no'];
+                $data['wedding_income_item_price'] = $income['income_item_price'];
+                $data['wedding_income_remark'] = $income['income_remark'];
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+
+                $receivableModel = new OrderBanquetReceivables();
+                $receivableModel->allowField(true)->save($data);
+            }
+        }
+
+        return json(['code' => '200', 'msg' => '创建成功']);
     }
 
     public function edit()
