@@ -518,6 +518,7 @@ class Order extends Base
         $orderData['source_text'] = $member->source_text;
         $orderData['operate_id'] = $this->user['id'];
         $orderData['user_id'] = $this->user['id'];
+        $orderData['salesman'] = $this->user['id'];
         $OrderModel = new \app\common\model\Order();
         $result = $OrderModel->allowField(true)->save($orderData);
         if(!$result) return json(['code' => '400', 'msg' => '创建失败']);
