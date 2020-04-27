@@ -50,7 +50,7 @@ class Visit extends Base
      */
     public function detailList() {
         $param = $this->request->param();
-        $param['limit'] = isset($param['limit']) ? $param['limit'] : 3;
+        $param['limit'] = 100;
         $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
             'page' => $param['page']
