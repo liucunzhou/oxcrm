@@ -21,9 +21,11 @@ class Intention extends Model
     {
         $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,color,is_valid', 'id');
         $item =  [
-            'id'    => 0,
-            'title' => '未跟进',
-            'is_valid' => 1
+            0 => [
+                'id'    => 0,
+                'title' => '未跟进',
+                'is_valid' => 1
+            ]
         ];
 
         array_unshift($data, $item);
