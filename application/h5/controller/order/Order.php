@@ -204,6 +204,9 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $banquetSuborderList = \app\common\model\OrderBanquetSuborder::where($where)->select();
+        foreach ($banquetSuborderList as &$row) {
+            $row['edit'] = 1;
+        }
 
         #### 获取婚宴收款信息
         $banquetReceivableList = \app\common\model\OrderBanquetReceivables::where('order_id', '=', $param['id'])->select();
@@ -221,6 +224,9 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $weddingSuborderList = \app\common\model\OrderWeddingSuborder::where($where)->select();
+        foreach ($weddingSuborderList as &$row) {
+            $row['edit'] = 1;
+        }
 
         #### 获取婚宴收款信息
         $weddingReceivableList = \app\common\model\OrderWeddingReceivables::where('order_id', '=', $param['id'])->select();
