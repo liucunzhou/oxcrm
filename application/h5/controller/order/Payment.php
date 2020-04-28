@@ -50,7 +50,7 @@ class Payment extends Base
                 'pay_type_text'   => $payTypeList[$row->banquet_pay_type],
                 'apply_pay_date'   => $row->banquet_apply_pay_date,
                 'pay_real_date'  => $row->banquet_pay_real_date,
-                'payment_remark' => $row->banquet_pay_remark,
+                'payment_remark' => $row->banquet_payment_remark,
                 'pay_category' => $param['pay_category']
             ];
         } else {
@@ -61,7 +61,7 @@ class Payment extends Base
                 'pay_type_text'   => $payTypeList[$row->wedding_pay_type],
                 'apply_pay_date'   => $row->wedding_apply_pay_date,
                 'pay_real_date'  => $row->wedding_pay_real_date,
-                'payment_remark' => $row->remark,
+                'payment_remark' => $row->wedding_payment_remark,
                 'pay_category' => $param['pay_category']
             ];
         }
@@ -105,7 +105,7 @@ class Payment extends Base
                 'banquet_pay_type'   => $param['pay_type'],
                 'banquet_apply_pay_date'   => $param['apply_pay_date'],
                 // 'pay_real_date'  => $row->banquet_pay_real_date,
-                'banquet_payment_remark' => $param['pay_remark']
+                'banquet_payment_remark' => $param['payment_remark']
             ];
         } else {
             $data = [
@@ -114,7 +114,7 @@ class Payment extends Base
                 'wedding_pay_type'   => $param['pay_type'],
                 'wedding_apply_pay_date'   => $param['apply_pay_date'],
                 // 'pay_real_date'  => $row->wedding_pay_real_date,
-                'remark' => $param['pay_remark']
+                'wedding_payment_remark' => $param['payment_remark']
             ];
         }
         $rs = $row->allowField(true)->save($data);
