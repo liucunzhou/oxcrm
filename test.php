@@ -1,82 +1,14 @@
 <?php
-$content = '{"source":["179"],"coo":["6"],"assistant":["289","565"],"ceo":["575"],"cashier":["717"],"accounting":["587"]}';
-$arr = json_decode($content, true);
+$json = '{"1":{"id":1,"title":"跟进中","is_valid":1},"2":{"id":2,"title":"成单客户","is_valid":1},"3":{"id":3,"title":"失效客户","is_valid":1},"4":{"id":4,"title":"无效客户","is_valid":1},"5":{"id":5,"title":"有效客户","is_valid":1},"6":{"id":6,"title":"意向客户","is_valid":1}}';
+$arr = json_decode($json, true);
+print_r($arr);
 
-$first = array_shift($arr);
-print_r($first);
-exit;
-
-$payments = [
-    [
-        'id'    => 1,
-        'title' =>'支付宝-g',
-    ],
-    [
-        'id'    => 2,
-        'title' => '支付宝-s'
-    ],
-    [
-        'id'    => 3,
-        'title' => '微信-g'
-    ],
-    [
-        'id'    => 4,
-        'title' => '微信-s'
-    ],
-    [
-        'id'    => 5,
-        'title' => '银行汇款-g'
-    ],
-    [
-        'id'    => 6,
-        'title' => '银行汇款-s'
-    ],
-    [
-        'id'    => 7,
-        'title' => '直付酒店'
-    ],
-    [
-        'id'    => 8,
-        'title' => '现金'
-    ],
-    [
-        'id'    => 9,
-        'title' => 'POS机'
-    ],
-    [
-        'id'    => 10,
-        'title' => '其他'
-    ]
+$item =  [
+    'id'    => 0,
+    'title' => '未跟进',
+    'is_valid' => 1
 ];
 
-$payments = array_column($payments, 'title', 'id');
-print_r($payments);
+array_unshift($arr, $item);
 
-$table = [
-    'header'    => [
-        [
-            'field' => '',
-            'title' => '',
-            'width' => '',
-            'sort'  => ''
-        ]
-    ],
-    'body'      => [
-
-    ]
-];
-
-$arr = [
-    'field' => [
-        'id'        => '',
-        'title'     => '',
-        'type'      => 'text',
-        'value'     => '',
-        'default'   => '0',
-        'source'    => '',
-        'validate'  => 'require',
-        'error'     => '',
-        'is_submit' => '',
-        'relation'  => ''
-    ],
-];
+print_r($arr);

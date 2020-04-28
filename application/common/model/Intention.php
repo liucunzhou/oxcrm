@@ -35,7 +35,6 @@ class Intention extends Model
         ];
 
         array_unshift($data, $item);
-        
         return $data;
     }
 
