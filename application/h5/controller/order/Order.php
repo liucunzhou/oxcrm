@@ -293,7 +293,7 @@ class Order extends Base
 
         #### 合同金额
         $contractPrice = [
-            'id'    => $order->id,
+            'id'    => $orderId,
             'totals'    => $order->totals,
             'earnest_money_date'    => $order->earnest_money_date,
             'earnest_money' => $order->earnest_money,
