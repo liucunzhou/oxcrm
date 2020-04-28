@@ -117,7 +117,6 @@ class Order extends Base
             } else {
                 $map[] = ['salesman', '=', $this->user['id']];
             }
-
         } else {
             $map[] = ['salesman', '=', $this->user['id']];
         }
@@ -168,7 +167,7 @@ class Order extends Base
     public function detail()
     {
         $param = $this->request->param();
-        $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,remark";
+        $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,totals,earnest_money_date,earnest_money,middle_money_date,middle_money,tail_money_date,tail_money,remark";
         $order = $this->model->where('id', '=', $param['id'])->field($fields)->find();
         if (!$order->isEmpty()) {
             $order = $order->toArray();
@@ -186,7 +185,6 @@ class Order extends Base
         } else {
             $order = [];
         }
-
         $member = Member::field('realname,mobile,source_text')->where('id', '=', $order->member_id)->find();
 
         #### 获取婚宴订单信息
@@ -292,12 +290,91 @@ class Order extends Base
             $row['edit'] = 1;
         }
 
-        #### 获取审核进度
+        #### 合同金额
+        $contractPrice = [
+            'totals'    => $order->totals,
+            'earnest_money_date'    => $order->earnest_money_date,
+            'earnest_money' => $order->earnest_money,
+            'middle_money_date' => $order->middle_money_date,
+            'middle_money'  => $order->middle_money,
+            'tail_money_date'   => $order->tail_money_date,
+            'tail_money'    => $order->tail_money
+        ];
 
+        #### 支付方式列表
+        $paymentConfig = $this->config['payments'];
+        $paymentConfig = array_column($paymentConfig, 'title', 'id');
+
+        #### 支付性质
+        $paymentTypes = $this->config['payment_type_list'];
+        $paymentTypes = array_column($paymentTypes, 'title', 'id');
+
+        #### 合成收款信息
+        $incomeList = [];
+        foreach ($banquetReceivableList as $key=>$value) {
+            $incomeList[] = [
+                'id'    => $value['id'],
+                'receivable_no' => $value['banquet_receivable_no'],
+                'income_category'   => '婚宴',
+                'income_payment'    => $paymentConfig[$value['banquet_income_payment']],
+                'income_type'   => $paymentTypes[$value['banquet_income_type']],
+                'income_date'   => $value['banquet_income_date'],
+                'income_real_date'  => $value['banquet_income_real_date'],
+                'income_item_price'  => $value['banquet_income_item_price'],
+                'income_remark' => $value['banquet_income_remark'],
+                'edit'  => 1
+            ];
+        }
+        foreach ($weddingReceivableList as $key=>$value) {
+            $incomeList[] = [
+                'id'    => $value['id'],
+                'receivable_no' => $value['wedding_receivable_no'],
+                'income_category'   => '婚庆',
+                'income_payment'    => $paymentConfig[$value['wedding_income_payment']],
+                'income_type'   => $paymentTypes[$value['wedding_income_type']],
+                'income_date'   => $value['wedding_income_date'],
+                'income_real_date'  => $value['wedding_income_real_date'],
+                'income_item_price'  => $value['wedding_income_item_price'],
+                'income_remark' => $value['remark'],
+                'edit'  => 1
+            ];
+        }
+
+        #### 合成付款信息
+        $paymentList = [];
+        foreach ($banquetPaymentList as $key=>$value) {
+            $paymentList[] = [
+                'id'    => $value['id'],
+                'payment_no' => $value['banquet_payment_no'],
+                'pay_category'   => '婚宴',
+                'pay_type'   => $paymentTypes[$value['banquet_pay_type']],
+                'apply_pay_date'   => $value['banquet_apply_pay_date'],
+                'pay_real_date'  => $value['banquet_pay_real_date'],
+                'pay_item_price'  => $value['banquet_pay_item_date'],
+                'payment_remark' => $value['banquet_pay_remark'],
+                'edit'  => 1
+            ];
+        }
+        foreach ($weddingPaymentList as $key=>$value) {
+            $paymentList[] = [
+                'id'    => $value['id'],
+                'payment_no' => $value['wedding_payment_no'],
+                'pay_category'   => '婚庆',
+                'pay_type'   => $paymentTypes[$value['wedding_pay_type']],
+                'apply_pay_date'   => $value['wedding_apply_pay_date'],
+                'pay_real_date'  => $value['wedding_pay_real_date'],
+                'pay_item_price'  => $value['wedding_pay_item_date'],
+                'payment_remark' => $value['wedding_pay_remark'],
+                'edit'  => 1
+            ];
+        }
+
+        #### 获取审核进度
         $result = [
             'code' => '200',
             'msg' => '获取成功',
             'data' => [
+                'edit'  => 1,
                 'order' => [
                     'picker' => '',
                     'read' => '/h5/order.order/edit',
@@ -325,18 +402,6 @@ class Order extends Base
                     'api' => '/h5/order.banquet_suborder/doEdit',
                     'array' => $banquetSuborderList
                 ],
-                'banquetReceivableList' => [
-                    'picker' => '',
-                    'read' => '/h5/order.banquet_receivable/edit',
-                    'api' => '/h5/order.banquet_receivable/doEdit',
-                    'array' => $banquetReceivableList
-                ],
-                'banquetPaymentList' => [
-                    'picker' => '',
-                    'read' => '/h5/order.banquet_payment/edit',
-                    'api' => '/h5/order.banquet_payment/doEdit',
-                    'array' => $banquetPaymentList
-                ],
                 'hotelItem' => [
                     'picker' => '',
                     'read' => '/h5/order.hotel_item/edit',
@@ -356,18 +421,6 @@ class Order extends Base
                     'read' => '/h5/order.wedding_suborder/edit',
                     'api' => '/h5/order.wedding_suborder/doEdit',
                     'array' => $weddingSuborderList
-                ],
-                'weddingReceivableList' => [
-                    'picker' => '',
-                    'read' => '/h5/order.wedding_receivable/edit',
-                    'api' => '/h5/order.wedding_receivable/doEdit',
-                    'array' => $weddingReceivableList
-                ],
-                'weddingPaymentList' => [
-                    'picker' => '',
-                    'read' => '/h5/order.wedding_payment/edit',
-                    'api' => '/h5/order.wedding_payment/doEdit',
-                    'array' => $weddingPaymentList
                 ],
                 'carList' => [
                     'picker' => '/h5/dictionary.car/getList',
@@ -410,6 +463,28 @@ class Order extends Base
                     'read' => '/h5/order.d3/edit',
                     'api' => '/h5/order.d3/doEdit',
                     'array' => $d3List
+                ],
+                // 合同收款信息
+                'contractPrice' => [
+                    'picker' => '',
+                    'read' => '/h5/order.order/edit',
+                    'api' => '/h5/order.order/doEdit',
+                    'json' => $contractPrice,
+                    'edit' => 1,
+                ],
+                // 订单收款信息
+                'incomeList'    => [
+                    'picker' => '',
+                    'read' => '/h5/order.income/edit',
+                    'api' => '/h5/order.income/doEdit',
+                    'array' => $incomeList
+                ],
+                // 订单付款信息
+                'paymentList'   => [
+                    'picker' => '',
+                    'read' => '/h5/order.payment/edit',
+                    'api' => '/h5/order.payment/doEdit',
+                    'json' => $paymentList,
                 ]
             ]
         ];
@@ -701,6 +776,15 @@ class Order extends Base
             }
         }
 
+        // 根据公司创建审核流程
+        $companyId = $orderData['company_id'];
+        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
+        // 审核流程
+        $sequence = json_decode($audit->content, true);
+        $auditConfig = $this->config['check_sequence'];
+
+        $auditConfig['type'] == 'staff';
+
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
@@ -755,6 +839,7 @@ class Order extends Base
             ];
             return json($result);
         }
+
 
         $order = $this->model->where('id', '=', $param['id'])->find();
         $rs = $order->allowField(true)->save($param);

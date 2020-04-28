@@ -1,11 +1,51 @@
 <?php
-echo 'today:'.date('Y-m-d H:i:s', strtotime('today'));
-echo "\n";
-echo 'yesterday:'.date('Y-m-d H:i:s', strtotime('yesterday'));
-echo "\n";
-echo 'tomorrow:'.date('Y-m-d H:i:s', strtotime('tomorrow'));
+$content = '{"source":["179"],"coo":["6"],"assistant":["289","565"],"ceo":["575"],"cashier":["717"],"accounting":["587"]}';
+$arr = json_decode($content, true);
 
-echo "\n";
-echo 'week:'.date('Y-m-d H:i:s', strtotime('last sunday') + 86400);
-echo "\n";
-echo 'month:'.date('Y-m-d H:i:s', strtotime(date('Y-m-01')));
+$first = array_shift($arr);
+
+$payments = [
+    [
+        'id'    => 1,
+        'title' =>'支付宝-g',
+    ],
+    [
+        'id'    => 2,
+        'title' => '支付宝-s'
+    ],
+    [
+        'id'    => 3,
+        'title' => '微信-g'
+    ],
+    [
+        'id'    => 4,
+        'title' => '微信-s'
+    ],
+    [
+        'id'    => 5,
+        'title' => '银行汇款-g'
+    ],
+    [
+        'id'    => 6,
+        'title' => '银行汇款-s'
+    ],
+    [
+        'id'    => 7,
+        'title' => '直付酒店'
+    ],
+    [
+        'id'    => 8,
+        'title' => '现金'
+    ],
+    [
+        'id'    => 9,
+        'title' => 'POS机'
+    ],
+    [
+        'id'    => 10,
+        'title' => '其他'
+    ]
+];
+
+$payments = array_column($payments, 'title', 'id');
+print_r($payments);
