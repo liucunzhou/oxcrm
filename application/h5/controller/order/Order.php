@@ -538,14 +538,16 @@ class Order extends Base
                             'id'        => 'incomeAppend',
                             'title'     => '收款',
                             'read'      => '/h5/order.income/create',
-                            'api'       => '/h5/order.income/doCreate'
+                            'api'       => '/h5/order.income/doCreate',
+                            'items'     => []
                         ],
 
                         [
                             'id'        => 'paymentAppend',
                             'title'     => '付款',
                             'read'      => '/h5/order.payment/create',
-                            'api'       => '/h5/order.payment/doCreate'
+                            'api'       => '/h5/order.payment/doCreate',
+                            'items'     => []
                         ],
                     ]
                 ]
