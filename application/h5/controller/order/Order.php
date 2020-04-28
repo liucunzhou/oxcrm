@@ -521,23 +521,27 @@ class Order extends Base
                             'title' => '二销',
                             'items' => [
                                 [
-                                    'id'    => 'banquet',
-                                    'title' => '婚宴二销'
+                                    'id'    => 'banquetSuborder',
+                                    'title' => '婚宴二销',
+                                    'api' => '/h5/order.banquet_suborder/doCreate'
                                 ],
                                 [
-                                    'id'    => 'wedding',
-                                    'title' => '婚庆二销'
+                                    'id'    => 'weddingSuborder',
+                                    'title' => '婚庆二销',
+                                    'api' => '/h5/order.wedding_suborder/doCreate'
                                 ],
                             ]
                         ],
                         [
-                            'id'        => 'income',
-                            'title'     => '收款'
+                            'id'        => 'incomeAppend',
+                            'title'     => '收款',
+                            'api'       => '/h5/order.income/doCreate'
                         ],
 
                         [
-                            'id'        => 'income',
-                            'title'     => '付款'
+                            'id'        => 'paymentAppend',
+                            'title'     => '付款',
+                            'api'       => '/h5/order.payment/doCreate'
                         ],
                     ]
                 ]
