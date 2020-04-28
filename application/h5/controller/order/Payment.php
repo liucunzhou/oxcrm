@@ -5,7 +5,7 @@ use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderWeddingPayment;
 use app\h5\controller\Base;
 
-class pay extends Base
+class Payment extends Base
 {
     protected function initialize()
     {
