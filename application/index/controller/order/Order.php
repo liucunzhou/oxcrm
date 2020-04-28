@@ -566,28 +566,6 @@ class Order extends Backend
             'page' => $get['page']
         ];
         $map = Search::order($this->user, $get);
-        ## 关联审核状态
-        if($statusField == 'index') {
-
-        } else if ($statusField == 'complete') {
-
-        } else {
-            $statuses = [
-                'check_status_source',
-                'check_status_score',
-                'check_status_contract_fiance',
-                'check_status_receivables_cashier',
-                'check_status_payment_account',
-                'check_status_payment_fiance',
-                'check_status_payment_cashier'
-            ];
-
-            foreach ($statuses as $value) {
-                if (isset($get[$value])) {
-                    $map[] = [$value, '=', $get[$value]];
-                }
-            }
-        }
 
         if($statusField == 'check_status_score') {
             $map[] = ['score', '<>', ''];
@@ -597,44 +575,12 @@ class Order extends Backend
         $data = $list->getCollection();
 
         $users = \app\common\model\User::getUsers();
-        $halls = BanquetHall::getBanquetHalls();
-
-        if ($statusField == 'index') {
-            $statusTexts = ['待审核', '已通过', '已驳回'];
-            foreach ($data as $key => &$value) {
-                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
-                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
-                $value['check_status_source'] = $statusTexts[$value['check_status_source']];
-                $value['check_status_score'] = $statusTexts[$value['check_status_score']];
-                $value['check_status_contract_fiance'] = $statusTexts[$value['check_status_contract_fiance']];
-                $value['check_status_receivables_cashier'] = $statusTexts[$value['check_status_receivables_cashier']];
-                $value['check_status_payment_account'] = $statusTexts[$value['check_status_payment_account']];
-                $value['check_status_payment_fiance'] = $statusTexts[$value['check_status_payment_fiance']];
-                $value['check_status_payment_cashier'] = $statusTexts[$value['check_status_payment_cashier']];
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
-        } else if($statusField == 'complete') {
-            foreach ($data as $key => &$value) {
-                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
-                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
-        } else {
-            $statusTexts = ['待审核', '已通过', '已驳回'];
-            foreach ($data as $key => &$value) {
-                $statusIndex = $value[$statusField];
-                $value['confirm_status'] = $statusTexts[$statusIndex];
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['banquet_hall_id'] = isset($halls[$value['banquet_hall_id']]) ? $halls[$value['banquet_hall_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
+        foreach ($data as $key => &$value) {
+            !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+            !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
+            $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+            $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+            $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
         }
         $count = $list->total();
 
