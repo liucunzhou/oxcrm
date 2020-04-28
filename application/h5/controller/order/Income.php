@@ -25,7 +25,6 @@ class Income extends Base
     public function edit()
     {
         $param = $this->request->param();
-        $param = $param['incomeList'];
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetReceivables();
         } else {
@@ -88,6 +87,7 @@ class Income extends Base
     public function doEdit()
     {
         $param = $this->request->param();
+        $param = $param['incomeList'];
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetReceivables();
         } else {
