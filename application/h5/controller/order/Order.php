@@ -508,8 +508,31 @@ class Order extends Base
                     'edit' => 1,
                 ],
                 'addItems'      => [
-                    'edit' => 1,
-                    ''
+                    'edit'  => 1,
+                    'addItems' => [
+                        [
+                            'id'    => 'suborder',
+                            'title' => '二销',
+                            'items' => [
+                                [
+                                    'id'    => 'banquet',
+                                    'title' => '婚宴二销'
+                                ],
+                                [
+                                    'id'    => 'wedding',
+                                    'title' => '婚庆二销'
+                                ],
+                            ]
+                        ],
+                        [
+                            'id'        => 'income',
+                            'title'     => '收款'
+                        ],
+                        [
+                            'id'        => 'income',
+                            'title'     => '付款'
+                        ],
+                    ]
                 ]
             ]
         ];
