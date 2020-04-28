@@ -23,7 +23,7 @@ class Contract extends Base
             'code'  => '200',
             'msg'   => '获取订单信息成功',
             'data'  => [
-                'order' => $order
+                'contractPrice' => $order
             ]
         ];
         return json($result);

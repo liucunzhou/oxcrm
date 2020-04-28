@@ -471,14 +471,15 @@ class Order extends Base
                     'picker' => '/h5/dictionary.led/getList',
                     'read' => '/h5/order.led/edit',
                     'api' => '/h5/order.led/doEdit',
-                    'array' => $ledList
+                    'array' => $ledList,
                 ],
                 'd3List' => [
                     'id'  => $orderId,
                     'picker' => '/h5/dictionary.d3/getList',
                     'read' => '/h5/order.d3/edit',
                     'api' => '/h5/order.d3/doEdit',
-                    'array' => $d3List
+                    'array' => $d3List,
+                    'edit' => 1,
                 ],
                 // 合同收款信息
                 'contractPrice' => [
@@ -504,6 +505,11 @@ class Order extends Base
                     'read' => '/h5/order.payment/edit',
                     'api' => '/h5/order.payment/doEdit',
                     'json' => $paymentList,
+                    'edit' => 1,
+                ],
+                'addItems'      => [
+                    'edit' => 1,
+                    ''
                 ]
             ]
         ];
