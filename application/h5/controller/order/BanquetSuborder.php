@@ -18,7 +18,8 @@ class BanquetSuborder extends Base
     # 编辑婚宴子合同
     public function edit($id)
     {
-        $data = OrderBanquetSuborder::get($id);
+        $fields = "create_time,update_time,delete_time";
+        $data = OrderBanquetSuborder::field($fields, true)->get($id);
         if($data) {
             $result = [
                 'code' => '200',
@@ -40,6 +41,7 @@ class BanquetSuborder extends Base
     public function doEdit()
     {
         $param = $this->request->param();
+        $param = json_decode($param['banquetSuborderList'], true);
         if(!empty($param['id'])) {
             $action = '更新';
             $model = OrderBanquetSuborder::get($param['id']);

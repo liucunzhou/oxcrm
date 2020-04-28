@@ -17,8 +17,8 @@ class WeddingSuborder extends Base
     # 编辑婚庆子合同
     public function edit($id)
     {
-        $fields = "*";
-        $data = OrderWeddingSuborder::field($fields)->get($id);
+        $fields = "create_time,update_time,delete_time";
+        $data = OrderWeddingSuborder::field($fields, true)->get($id);
         if($data) {
             $result = [
                 'code' => '200',
@@ -40,6 +40,7 @@ class WeddingSuborder extends Base
     public function doEdit()
     {
         $param = $this->request->param();
+        $param = json_decode($param['weddingSuborderList'], true);
         if(!empty($param['id'])) {
             $action = '更新';
             $model = OrderWeddingSuborder::get($param['id']);
