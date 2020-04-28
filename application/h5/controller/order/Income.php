@@ -66,8 +66,8 @@ class Income extends Base
         }
 
         $result = [
-            'code'  => '400',
-            'msg'   => '读取失败',
+            'code'  => '200',
+            'msg'   => '读取成功',
             'data'  => [
                 'income'   =>   $data
             ]

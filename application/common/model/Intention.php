@@ -19,16 +19,22 @@ class Intention extends Model
 
     public static function getIntentions($update=false)
     {
-        $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,color,is_valid', 'id');
+        $cacheKey = 'intentions';
+        $data = redis()->get($cacheKey);
+        if(empty($data) || $update) {
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
+            $json = json_encode($data);
+            $result = redis()->set($cacheKey, $json);
+        } else {
+            $data = json_decode($data, true);
+        }
         $item =  [
-            0 => [
-                'id'    => 0,
-                'title' => '未跟进',
-                'is_valid' => 1
-            ]
+            'id'    => 0,
+            'title' => '未跟进',
+            'is_valid' => 1
         ];
 
-        $data = $item + $data;
+        array_unshift($data, $item);
         return $data;
     }
 
