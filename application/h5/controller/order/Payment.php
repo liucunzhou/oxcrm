@@ -51,7 +51,7 @@ class Payment extends Base
                 'apply_pay_date'   => $row->banquet_apply_pay_date,
                 'pay_real_date'  => $row->banquet_pay_real_date,
                 'payment_remark' => $row->banquet_payment_remark,
-                'pay_category' => $param['pay_category']
+                'pay_category' => $param['income_category']
             ];
         } else {
             $data = [
@@ -62,7 +62,7 @@ class Payment extends Base
                 'apply_pay_date'   => $row->wedding_apply_pay_date,
                 'pay_real_date'  => $row->wedding_pay_real_date,
                 'payment_remark' => $row->wedding_payment_remark,
-                'pay_category' => $param['pay_category']
+                'pay_category' => $param['income_category']
             ];
         }
 
