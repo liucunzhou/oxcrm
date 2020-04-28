@@ -60,7 +60,7 @@ class Income extends Base
                 'income_type'   => $row->wedding_income_type,
                 'income_date'   => $row->wedding_income_date,
                 'income_real_date'  => $row->wedding_income_real_date,
-                'income_remark' => $row->wedding_income_remark,
+                'income_remark' => $row->remark,
                 'income_category' => $param['income_category']
             ];
         }
@@ -98,25 +98,25 @@ class Income extends Base
         if($param['income_category'] == '婚宴') {
             $data = [
                 'id'    => $param['id'],
-                'receivable_no' => $param['banquet_receivable_no'],
-                'income_payment'    => $param['banquet_income_payment'],
-                'income_type'   => $param['banquet_income_type'],
-                'income_date'   => $param['banquet_income_date'],
+                'banquet_receivable_no' => $param['receivable_no'],
+                'banquet_income_payment'    => $param['income_payment'],
+                'banquet_income_type'   => $param['income_type'],
+                'banquet_income_date'   => $param['income_date'],
                 // 'income_real_date'  => $row->banquet_income_real_date,
-                'income_remark' => $param['banquet_income_remark']
+                'banquet_income_remark' => $param['income_remark']
             ];
         } else {
             $data = [
                 'id'    => $param['id'],
-                'receivable_no' => $param['wedding_receivable_no'],
-                'income_payment'    => $param['wedding_income_payment'],
-                'income_type'   => $param['wedding_income_type'],
-                'income_date'   => $param['wedding_income_date'],
+                'wedding_receivable_no' => $param['receivable_no'],
+                'wedding_income_payment'    => $param['income_payment'],
+                'wedding_income_type'   => $param['income_type'],
+                'wedding_income_date'   => $param['income_date'],
                 // 'income_real_date'  => $row->wedding_income_real_date,
-                'income_remark' => $param['wedding_income_remark']
+                'remark' => $param['wedding_income_remark']
             ];
         }
-        $rs = $row->save($data);
+        $rs = $row->allowField(true)->save($data);
 
         if($rs) {
             $result = [
