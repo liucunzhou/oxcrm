@@ -504,7 +504,7 @@ class Order extends Base
                     'picker' => '',
                     'read' => '/h5/order.payment/edit',
                     'api' => '/h5/order.payment/doEdit',
-                    'json' => $paymentList,
+                    'array' => $paymentList,
                     'edit' => 1,
                 ],
                 'addItems'      => [
