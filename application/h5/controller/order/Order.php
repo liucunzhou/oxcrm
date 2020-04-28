@@ -484,8 +484,8 @@ class Order extends Base
                 'contractPrice' => [
                     'id'  => $orderId,
                     'picker' => '',
-                    'read' => '/h5/order.order/edit',
-                    'api' => '/h5/order.order/doEdit',
+                    'read' => '/h5/order.contract/edit',
+                    'api' => '/h5/order.contract/doEdit',
                     'json' => $contractPrice,
                     'edit' => 1,
                 ],
