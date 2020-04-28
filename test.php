@@ -3,6 +3,8 @@ $content = '{"source":["179"],"coo":["6"],"assistant":["289","565"],"ceo":["575"
 $arr = json_decode($content, true);
 
 $first = array_shift($arr);
+print_r($first);
+exit;
 
 $payments = [
     [
@@ -49,3 +51,32 @@ $payments = [
 
 $payments = array_column($payments, 'title', 'id');
 print_r($payments);
+
+$table = [
+    'header'    => [
+        [
+            'field' => '',
+            'title' => '',
+            'width' => '',
+            'sort'  => ''
+        ]
+    ],
+    'body'      => [
+
+    ]
+];
+
+$arr = [
+    'field' => [
+        'id'        => '',
+        'title'     => '',
+        'type'      => 'text',
+        'value'     => '',
+        'default'   => '0',
+        'source'    => '',
+        'validate'  => 'require',
+        'error'     => '',
+        'is_submit' => '',
+        'relation'  => ''
+    ],
+];
