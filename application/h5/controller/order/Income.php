@@ -122,7 +122,7 @@ class Income extends Base
                 'wedding_income_type'   => $param['income_type'],
                 'wedding_income_date'   => $param['income_date'],
                 // 'income_real_date'  => $row->wedding_income_real_date,
-                'remark' => $param['wedding_income_remark']
+                'remark' => $param['income_remark']
             ];
         }
         $rs = $row->allowField(true)->save($data);
