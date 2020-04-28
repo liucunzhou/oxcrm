@@ -294,13 +294,13 @@ class Order extends Base
         #### 合同金额
         $contractPrice = [
             'id'    => $orderId,
-            'totals'    => $order->totals,
-            'earnest_money_date'    => $order->earnest_money_date,
-            'earnest_money' => $order->earnest_money,
-            'middle_money_date' => $order->middle_money_date,
-            'middle_money'  => $order->middle_money,
-            'tail_money_date'   => $order->tail_money_date,
-            'tail_money'    => $order->tail_money
+            'totals'    => $order['totals'],
+            'earnest_money_date'    => $order['earnest_money_date'],
+            'earnest_money' => $order['earnest_money'],
+            'middle_money_date' => $order['middle_money_date'],
+            'middle_money'  => $order['middle_money'],
+            'tail_money_date'   => $order['tail_money_date'],
+            'tail_money'    => $order['tail_money']
         ];
 
         #### 支付方式列表
@@ -528,6 +528,7 @@ class Order extends Base
                             'id'        => 'income',
                             'title'     => '收款'
                         ],
+
                         [
                             'id'        => 'income',
                             'title'     => '付款'
