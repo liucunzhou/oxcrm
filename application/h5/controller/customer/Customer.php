@@ -16,6 +16,7 @@ use think\facade\Request;
 use app\common\model\Region;
 use app\common\model\MemberVisit;
 use app\common\model\MobileRelation;
+use think\Validate;
 
 class Customer extends Base
 {
@@ -203,24 +204,19 @@ class Customer extends Base
     public function doCreate()
     {
         $param = $this->request->param();
+        $res = $this->validate($param,'Customer');
+        if(true !== $res){
+            // 验证失败 输出错误信息
+            return json([
+                'code' => '400',
+                'msg' => $res,
+            ]);
+        }
+
         if (empty($param['source_id'])) {
             return json([
                 'code' => '400',
                 'msg' => '请选择渠道',
-            ]);
-        }
-
-        if (empty($param['mobile'])) {
-            return json([
-                'code' => '400',
-                'msg' => '手机号不能为空',
-            ]);
-        }
-
-        if (empty($param['realname'])) {
-            return json([
-                'code' => '400',
-                'msg' => '客户姓名不能为空',
             ]);
         }
 
@@ -231,24 +227,6 @@ class Customer extends Base
             ]);
         }
 
-
-        $param['mobile'] = trim($param['mobile']);
-        $len = strlen($param['mobile']);
-        if ($len != 11) {
-            return json([
-                'code' => '400',
-                'msg' => '请输入正确的手机号',
-            ]);
-        }
-
-        $param['mobile1'] = trim($param['mobile1']);
-        $len = strlen($param['mobile1']);
-        if (!empty($param['mobile1']) && $len != 11) {
-            return json([
-                'code' => '400',
-                'msg' => '请输入正确的其他手机号',
-            ]);
-        }
 
         $model = new Member();
         $model->member_no = date('YmdHis') . rand(100, 999);
