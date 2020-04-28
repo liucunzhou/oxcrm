@@ -25,7 +25,7 @@ class Payment extends Base
     public function edit()
     {
         $param = $this->request->param();
-        if($param['pay_category'] == '婚宴') {
+        if($param['payment_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
         } else {
             $model = new OrderWeddingPayment();
@@ -42,7 +42,7 @@ class Payment extends Base
         }
 
         $payTypeList = array_column($this->config['payment_type_list'], 'title', 'id');
-        if($param['pay_category'] == '婚宴') {
+        if($param['payment_category'] == '婚宴') {
             $data = [
                 'id'    => $row->id,
                 'payment_no' => $row->banquet_payment_no,
@@ -82,7 +82,7 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
-        if($param['pay_category'] == '婚宴') {
+        if($param['payment_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
         } else {
             $model = new OrderWeddingPayment();
@@ -98,7 +98,7 @@ class Payment extends Base
             return json($result);
         }
 
-        if($param['pay_category'] == '婚宴') {
+        if($param['payment_category'] == '婚宴') {
             $data = [
                 'id'    => $param['id'],
                 'banquet_payment_no' => $param['payment_no'],
