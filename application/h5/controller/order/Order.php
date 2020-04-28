@@ -523,11 +523,13 @@ class Order extends Base
                                 [
                                     'id'    => 'banquetSuborder',
                                     'title' => '婚宴二销',
+                                    'read' => '/h5/order.banquet_suborder/create',
                                     'api' => '/h5/order.banquet_suborder/doCreate'
                                 ],
                                 [
                                     'id'    => 'weddingSuborder',
                                     'title' => '婚庆二销',
+                                    'read' => '/h5/order.wedding_suborder/create',
                                     'api' => '/h5/order.wedding_suborder/doCreate'
                                 ],
                             ]
@@ -535,12 +537,14 @@ class Order extends Base
                         [
                             'id'        => 'incomeAppend',
                             'title'     => '收款',
+                            'read'      => '/h5/order.income/create',
                             'api'       => '/h5/order.income/doCreate'
                         ],
 
                         [
                             'id'        => 'paymentAppend',
                             'title'     => '付款',
+                            'read'      => '/h5/order.payment/create',
                             'api'       => '/h5/order.payment/doCreate'
                         ],
                     ]

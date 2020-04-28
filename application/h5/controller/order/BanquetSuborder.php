@@ -2,6 +2,7 @@
 
 namespace app\h5\controller\order;
 
+use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
 use app\h5\controller\Base;
 
@@ -13,6 +14,51 @@ class BanquetSuborder extends Base
     {
         parent::initialize();
         $this->model = new OrderBanquetSuborder();
+    }
+
+    # 编辑婚庆子合同
+    public function create()
+    {
+        $result = [
+            'code' => '200',
+            'msg' => '获取数据成功',
+            'data' => [
+                'incomePaymentList' => $this->config['payments']
+            ]
+        ];
+        return json($result);
+    }
+
+    # 编辑婚庆子合同
+    public function doCreate()
+    {
+        $this->model->startTrans();
+
+        $param = $this->request->param();
+        $param['order_id'] = $param['id'];
+        unset($param['id']);
+        $result1 = $this->model->allowField(true)->save($param);
+
+        $income = new OrderBanquetReceivables();
+        $param['banquet_income_type'] = 5;
+        $result2 = $income->allowField(true)->save($param);
+
+        if($result1 && $result2) {
+            $this->model->commit();
+            $result = [
+                'code' => '200',
+                'msg' => '添加婚宴二销成功'
+            ];
+        } else {
+            $this->model->rollback();
+            $result = [
+                'code' => '400',
+                'msg' => '添加婚宴二销失败'
+            ];
+        }
+
+
+        return json($result);
     }
 
     # 编辑婚宴子合同
