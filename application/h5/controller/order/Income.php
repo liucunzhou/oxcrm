@@ -87,7 +87,7 @@ class Income extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-        $param = $param['incomeList'];
+        $param = json_decode($param['incomeList'], true);
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetReceivables();
         } else {
