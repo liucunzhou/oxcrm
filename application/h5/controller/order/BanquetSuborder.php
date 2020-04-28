@@ -24,7 +24,7 @@ class BanquetSuborder extends Base
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
-                    'detail' => $data
+                    'banquetSuborderList' => $data
                 ]
             ];
         } else {

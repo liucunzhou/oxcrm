@@ -24,7 +24,7 @@ class WeddingSuborder extends Base
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
-                    'detail' => $data
+                    'weddingSuborderList' => $data
                 ]
             ];
         } else {
