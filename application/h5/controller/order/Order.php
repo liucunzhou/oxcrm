@@ -353,7 +353,7 @@ class Order extends Base
                 'apply_pay_date'   => $value['banquet_apply_pay_date'],
                 'pay_real_date'  => $value['banquet_pay_real_date'],
                 'pay_item_price'  => $value['banquet_pay_item_price'],
-                'payment_remark' => $value['banquet_pay_remark'],
+                'payment_remark' => $value['banquet_payment_remark'],
                 'edit'  => 1
             ];
         }
@@ -366,7 +366,7 @@ class Order extends Base
                 'apply_pay_date'   => $value['wedding_apply_pay_date'],
                 'pay_real_date'  => $value['wedding_pay_real_date'],
                 'pay_item_price'  => $value['wedding_pay_item_price'],
-                'payment_remark' => $value['wedding_pay_remark'],
+                'payment_remark' => $value['wedding_payment_remark'],
                 'edit'  => 1
             ];
         }
