@@ -38,6 +38,7 @@ class BanquetSuborder extends Base
         // 添加二销信息
         $suborder = json_decode($param['banquetSuborderList'], true);
         $suborder['order_id'] = $param['order_id'];
+        $suborder['salesman'] = $this->user['id'];
         $result1 = $this->model->allowField(true)->save($suborder);
 
         // 添加收款信息
