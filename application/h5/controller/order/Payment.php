@@ -27,7 +27,47 @@ class Payment extends Base
 
     public function doCreate()
     {
+        $param = $this->request->param();
+        $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
 
+        if($order->news_type == 1) {
+            $data = json_decode($param['paymentList'], true);
+            $payment['order_id'] = $param['order_id'];
+            $payment['user_id'] = $this->user['id'];
+            $payment['wedding_payment_no'] = $param['payment_no'];
+            $payment['wedding_pay_type'] = $data['pay_type'];
+            $payment['wedding_apply_pay_date'] = $data['apply_pay_date'];
+            $payment['wedding_pay_item_price'] = $data['pay_item_price'];
+            $payment['wedding_payment_remark'] = $param['payment_remark'];
+            $receivable = new OrderWeddingPayment();
+            $result2 = $receivable->allowField(true)->save($payment);
+        } else {
+            // 添加收款信息
+            $data = json_decode($param['paymentList'], true);
+            $payment['order_id'] = $param['order_id'];
+            $payment['user_id'] = $this->user['id'];
+            $payment['banquet_payment_no'] = $param['payment_no'];
+            $payment['banquet_pay_type'] = $data['pay_type'];
+            $payment['banquet_apply_pay_date'] = $data['apply_pay_date'];
+            $payment['banquet_pay_item_price'] = $data['pay_item_price'];
+            $payment['banquet_payment_remark'] = $param['payment_remark'];
+            $receivable = new OrderBanquetPayment();
+            $result2 = $receivable->allowField(true)->save($payment);
+        }
+
+        if($result2) {
+            $result = [
+                'code' => '200',
+                'msg' => '添加付款成功'
+            ];
+        } else {
+            $result = [
+                'code' => '400',
+                'msg' => '添加付款失败'
+            ];
+        }
+
+        return json($result);
     }
 
     public function edit()
