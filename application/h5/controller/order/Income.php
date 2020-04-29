@@ -18,7 +18,8 @@ class Income extends Base
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
-                'incomePaymentList' => $this->config['payments']
+                'incomePaymentList' => $this->config['payments'],
+                'incomeTypeList' => $this->config['payment_type_list']
             ]
         ];
         return json($result);
@@ -27,13 +28,27 @@ class Income extends Base
     public function doCreate()
     {
         $param = $this->request->param();
-        // 添加收款信息
-        $income = json_decode($param['banquet_incomeList'], true);
-        $income['order_id'] = $param['order_id'];
-        $income['banquet_income_type'] = 5;
-        $income['remark'] = $param['income_remark'];
-        $receivable = new OrderBanquetReceivables();
-        $result2 = $receivable->allowField(true)->save($income);
+        $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
+
+        if($order->news_type == 2) {
+            $income = json_decode($param['banquet_incomeList'], true);
+            $income['order_id'] = $param['order_id'];
+            $income['banquet_income_type'] = 5;
+            $income['remark'] = $param['income_remark'];
+            $receivable = new OrderBanquetReceivables();
+            $result2 = $receivable->allowField(true)->save($income);
+        } else {
+            // 添加收款信息
+            $data = json_decode($param['banquet_incomeList'], true);
+
+            $income['order_id'] = $param['order_id'];
+            $income['banquet_income_payment'] = $data['banquet_income_payment'];
+            $income['banquet_income_type'] = $data['banquet_income_type'];
+            $income['banquet_income_date'] = $data['banquet_income_date'];
+            $income['remark'] = $param['income_remark'];
+            $receivable = new OrderBanquetReceivables();
+            $result2 = $receivable->allowField(true)->save($income);
+        }
 
         if($result2) {
             $this->model->commit();
@@ -48,6 +63,8 @@ class Income extends Base
                 'msg' => '添加婚宴二销失败'
             ];
         }
+
+        return json($result);
     }
 
     public function edit()

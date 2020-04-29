@@ -18,7 +18,8 @@ class Payment extends Base
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
-                'incomePaymentList' => $this->config['payments']
+                'incomePaymentList' => $this->config['payments'],
+                'incomeTypeList' => $this->config['payment_type_list']
             ]
         ];
         return json($result);
