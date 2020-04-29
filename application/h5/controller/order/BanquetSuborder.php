@@ -44,6 +44,7 @@ class BanquetSuborder extends Base
         $income = json_decode($param['banquet_incomeList'], true);
         $income['order_id'] = $param['order_id'];
         $income['banquet_income_type'] = 5;
+        $income['remark'] = $param['income_remark'];
         $receivable = new OrderBanquetReceivables();
         $result2 = $receivable->allowField(true)->save($income);
 

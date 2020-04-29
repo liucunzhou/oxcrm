@@ -329,7 +329,7 @@ class Order extends Base
                 'income_date'   => $value['banquet_income_date'],
                 'income_real_date'  => $value['banquet_income_real_date'],
                 'income_item_price'  => $value['banquet_income_item_price'],
-                'income_remark' => $value['banquet_income_remark'],
+                'income_remark' => $value['remark'],
                 'edit'  => 1
             ];
         }
