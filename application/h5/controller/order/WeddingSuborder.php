@@ -34,25 +34,28 @@ class WeddingSuborder extends Base
         $this->model->startTrans();
 
         $param = $this->request->param();
-        $param['order_id'] = $param['id'];
-        unset($param['id']);
-        $result1 = $this->model->allowField(true)->save($param);
+        $suborder = json_decode($param['weddingSuborderList'], true);
+        $suborder['order_id'] = $param['order_id'];
+        $result1 = $this->model->allowField(true)->save($suborder);
 
-        $income = new OrderWeddingReceivables();
-        $param['wedding_income_type'] = 5;
-        $result2 = $income->allowField(true)->save($param);
+        $income = json_decode($param['wedding_incomeList'], true);
+        $income['order_id'] = $param['order_id'];
+        $income['wedding_income_type'] = 5;
+        $income['remark'] = $param['income_remark'];
+        $receivable = new OrderWeddingReceivables();
+        $result2 = $receivable->allowField(true)->save($income);
 
         if($result1 && $result2) {
             $this->model->commit();
             $result = [
                 'code' => '200',
-                'msg' => '添加婚宴二销成功'
+                'msg' => '添加婚庆二销成功'
             ];
         } else {
             $this->model->rollback();
             $result = [
                 'code' => '400',
-                'msg' => '添加婚宴二销失败'
+                'msg' => '添加婚庆二销失败'
             ];
         }
 
