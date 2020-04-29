@@ -35,13 +35,17 @@ class BanquetSuborder extends Base
         $this->model->startTrans();
 
         $param = $this->request->param();
-        $param['order_id'] = $param['id'];
-        unset($param['id']);
-        $result1 = $this->model->allowField(true)->save($param);
+        // 添加二销信息
+        $suborder = json_decode($param['banquetSuborderList'], true);
+        $suborder['order_id'] = $param['order_id'];
+        $result1 = $this->model->allowField(true)->save($suborder);
 
-        $income = new OrderBanquetReceivables();
-        $param['banquet_income_type'] = 5;
-        $result2 = $income->allowField(true)->save($param);
+        // 添加收款信息
+        $income = json_decode($param['banquet_incomeList'], true);
+        $income['order_id'] = $param['order_id'];
+        $income['banquet_income_type'] = 5;
+        $receivable = new OrderBanquetReceivables();
+        $result2 = $receivable->allowField(true)->save($income);
 
         if($result1 && $result2) {
             $this->model->commit();
