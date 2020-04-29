@@ -14,12 +14,40 @@ class Income extends Base
 
     public function create()
     {
-
+        $result = [
+            'code' => '200',
+            'msg' => '获取数据成功',
+            'data' => [
+                'incomePaymentList' => $this->config['payments']
+            ]
+        ];
+        return json($result);
     }
 
     public function doCreate()
     {
+        $param = $this->request->param();
+        // 添加收款信息
+        $income = json_decode($param['banquet_incomeList'], true);
+        $income['order_id'] = $param['order_id'];
+        $income['banquet_income_type'] = 5;
+        $income['remark'] = $param['income_remark'];
+        $receivable = new OrderBanquetReceivables();
+        $result2 = $receivable->allowField(true)->save($income);
 
+        if($result2) {
+            $this->model->commit();
+            $result = [
+                'code' => '200',
+                'msg' => '添加婚宴二销成功'
+            ];
+        } else {
+            $this->model->rollback();
+            $result = [
+                'code' => '400',
+                'msg' => '添加婚宴二销失败'
+            ];
+        }
     }
 
     public function edit()

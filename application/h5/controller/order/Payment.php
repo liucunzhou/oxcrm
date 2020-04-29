@@ -14,7 +14,14 @@ class Payment extends Base
 
     public function create()
     {
-
+        $result = [
+            'code' => '200',
+            'msg' => '获取数据成功',
+            'data' => [
+                'incomePaymentList' => $this->config['payments']
+            ]
+        ];
+        return json($result);
     }
 
     public function doCreate()
