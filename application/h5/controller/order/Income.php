@@ -30,18 +30,21 @@ class Income extends Base
         $param = $this->request->param();
         $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
 
-        if($order->news_type == 2) {
-            $income = json_decode($param['banquet_incomeList'], true);
+        if($order->news_type == 1) {
+            $data = json_decode($param['banquet_incomeList'], true);
             $income['order_id'] = $param['order_id'];
-            $income['banquet_income_type'] = 5;
+            $income['user_id'] = $this->user['id'];
+            $income['wedding_income_payment'] = $data['banquet_income_payment'];
+            $income['wedding_income_type'] = $data['banquet_income_type'];
+            $income['wedding_income_date'] = $data['banquet_income_date'];
             $income['remark'] = $param['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
         } else {
             // 添加收款信息
             $data = json_decode($param['banquet_incomeList'], true);
-
             $income['order_id'] = $param['order_id'];
+            $income['user_id'] = $this->user['id'];
             $income['banquet_income_payment'] = $data['banquet_income_payment'];
             $income['banquet_income_type'] = $data['banquet_income_type'];
             $income['banquet_income_date'] = $data['banquet_income_date'];
@@ -51,13 +54,11 @@ class Income extends Base
         }
 
         if($result2) {
-            $this->model->commit();
             $result = [
                 'code' => '200',
                 'msg' => '添加婚宴二销成功'
             ];
         } else {
-            $this->model->rollback();
             $result = [
                 'code' => '400',
                 'msg' => '添加婚宴二销失败'

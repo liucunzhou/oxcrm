@@ -44,6 +44,7 @@ class BanquetSuborder extends Base
         // 添加收款信息
         $income = json_decode($param['banquet_incomeList'], true);
         $income['order_id'] = $param['order_id'];
+        $income['user_id'] = $this->user['id'];
         $income['banquet_income_type'] = 5;
         $income['remark'] = $param['income_remark'];
         $receivable = new OrderBanquetReceivables();
@@ -103,6 +104,7 @@ class BanquetSuborder extends Base
         }
 
         $model->startTrans();
+        $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
         if($result1) {
             $model->commit();

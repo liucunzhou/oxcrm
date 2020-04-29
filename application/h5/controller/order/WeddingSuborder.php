@@ -41,6 +41,7 @@ class WeddingSuborder extends Base
 
         $income = json_decode($param['wedding_incomeList'], true);
         $income['order_id'] = $param['order_id'];
+        $income['user_id'] = $this->user['id'];
         $income['wedding_income_type'] = 5;
         $income['remark'] = $param['income_remark'];
         $receivable = new OrderWeddingReceivables();
@@ -97,8 +98,10 @@ class WeddingSuborder extends Base
             $action = '添加';
             $model = new OrderWeddingSuborder();
         }
+
         $model->startTrans();
         $model->wedding_items = json_encode($param['items']);
+        $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
         if($result1) {
             $model->commit();
