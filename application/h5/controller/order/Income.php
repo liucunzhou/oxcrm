@@ -56,12 +56,12 @@ class Income extends Base
         if($result2) {
             $result = [
                 'code' => '200',
-                'msg' => '添加婚宴二销成功'
+                'msg' => '添加收款成功'
             ];
         } else {
             $result = [
                 'code' => '400',
-                'msg' => '添加婚宴二销失败'
+                'msg' => '添加收款失败'
             ];
         }
 
