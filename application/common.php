@@ -111,7 +111,7 @@ if(!function_exists('create_order_confirm')) {
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
                 $data['confirm_user_id'] = $row;
-                $data['user_id'] = $this->user['id'];
+                $data['user_id'] = $userId;
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
                 $data['is_checked'] = 0;
