@@ -990,7 +990,7 @@ class Order extends Base
                 $data['banquet_income_payment'] = $income['income_payment'];
                 $data['banquet_income_type'] = 1;
                 $data['banquet_income_item_price'] = $income['income_item_price'];
-                $data['banquet_income_remark'] = $income['income_remark'];
+                $data['remark'] = $income['income_remark'];
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -1007,7 +1007,7 @@ class Order extends Base
                 $data['wedding_income_payment'] = $income['income_payment'];
                 $data['wedding_income_type'] = 1;
                 $data['wedding_income_item_price'] = $income['income_item_price'];
-                $data['wedding_income_remark'] = $income['income_remark'];
+                $data['remark'] = $income['income_remark'];
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
