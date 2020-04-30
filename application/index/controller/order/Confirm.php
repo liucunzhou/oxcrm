@@ -178,6 +178,7 @@ class Confirm extends Backend
     {
         $get = $this->request->param();
         $orderConfirm = $this->model->where('id', '=', $get['confirm_id'])->find();
+        $this->assign('confirm', $orderConfirm);
 
         $get['id'] = $orderConfirm->order_id;
         if (empty($get['id'])) return false;
@@ -345,25 +346,44 @@ class Confirm extends Backend
             $value['sign_date'] = $order->sign_date;
             $value['event_date'] = $order->event_date;
         }
-
         return $list;
     }
 
     # 来源-积分-合同审核确认，执行逻辑
-    public function doConfirm()
+    public function doAccepte()
     {
-        $params = Request::param();
+        $param = $this->request->param();
 
         ## 获取订单信息
-        $order = \app\common\model\Order::get($params['id']);
-
-        $result = $order->save($params);
+        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $confirm->content = $param['content'];
+        $confirm->status = 1;
+        $result = $confirm->save();
         if($result) {
+            create_order_confirm($confirm->orderId, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
         }
 
         return json($json);
+    }
+
+    public function doReject()
+    {
+        $param = $this->request->param();
+
+        ## 获取订单信息
+        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $confirm->content = $param['content'];
+        $confirm->status = 2;
+        $result = $confirm->save();
+        if($result) {
+            create_order_confirm($confirm->orderId, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
+            $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
+        } else {
+            $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
+        }
+
     }
 }

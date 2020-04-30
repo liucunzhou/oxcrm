@@ -69,10 +69,10 @@
 
                     <div class="layui-input-flex">
                         <div class="layui-btn-group">
-                            <div class="layui-btn">通过</div>
-                            <div class="layui-btn layui-btn-danger">驳回</div>
+                            <div class="layui-btn layui-btn-confirm" data-aciton="/index/order.confirm/doAccepte/id/{$confirm.id}">通过</div>
+                            <div class="layui-btn layui-btn-confirm layui-btn-danger" data-aciton="/index/order.confirm/doReject/id/{$confirm.id}">驳回</div>
                         </div>
-                        <input type="text" name="content" value="" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="content" id="content" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -80,5 +80,26 @@
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $(".layui-btn-confirm").click(function(){
+            if(!confirm("确认提交审核结果么?")) {
+                return false;
+            }
+            var content = $("#content");
+            var url = $(this).attr("data-aciton");
+            if($(this).hasClass("layui-btn-danger") && content=='') {
+                layer.msg('请输入驳回原因');
+                return false;
+            }
+
+            $.post(url, {content:content}, function(res) {
+                if(res.code == '200'){
+                    window.location.reload();
+                }
+            })
+        });
+    })
+</script>
 </body>
 </html>
