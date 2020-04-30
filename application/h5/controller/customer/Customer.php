@@ -82,7 +82,6 @@ class Customer extends Base
         if (!empty($list)) {
             $users = User::getUsers();
             $data = $list->getCollection()->toArray();
-
             foreach ($data as &$value) {
                 $value['operator'] = $users[$value['operate_id']]['realname'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];

@@ -169,23 +169,27 @@ class Order extends Base
         $param = $this->request->param();
         $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,totals,earnest_money_date,earnest_money,middle_money_date,middle_money,tail_money_date,tail_money,remark";
         $order = $this->model->where('id', '=', $param['id'])->field($fields)->find();
-        if (!$order->isEmpty()) {
-            $orderId = $order->id;
-            $order = $order->toArray();
-            $newsTypes = $this->config['news_type_list'];
-            $cooperationMode = $this->config['cooperation_mode'];
-            $order['contract_no'] = isset($order['contract_no']) ? $order['contract_no'] : '-';
-            $order['company_id'] = $this->brands[$order['company_id']]['title'];
-            $order['news_type'] = $newsTypes[$order['news_type']];
-            $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
-            $order['status'] = '待审核';
-            $order['sign_date'] = substr($order['sign_date'], 0, 10);
-            $order['event_date'] = substr($order['event_date'], 0, 10);
-            $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
-            $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
-        } else {
-            $order = [];
+        if (empty($order)) {
+            $result = [
+                'code' => '200',
+                'msg' => '订单不存在'
+            ];
+            return json($result);
         }
+
+        $orderId = $order->id;
+        $order = $order->getData();
+        $newsTypes = $this->config['news_type_list'];
+        $cooperationMode = $this->config['cooperation_mode'];
+        $order['contract_no'] = isset($order['contract_no']) ? $order['contract_no'] : '-';
+        $order['company_id'] = $this->brands[$order['company_id']]['title'];
+        $order['news_type'] = $newsTypes[$order['news_type']];
+        $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
+        $order['status'] = '待审核';
+        $order['sign_date'] = substr($order['sign_date'], 0, 10);
+        $order['event_date'] = substr($order['event_date'], 0, 10);
+        $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
+        $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
         $member = Member::field('realname,mobile,source_text')->where('id', '=', $order->member_id)->find();
 
         #### 获取婚宴订单信息
@@ -238,7 +242,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $carList = \app\common\model\OrderCar::where($where)->select();
         foreach ($carList as $key => &$row) {
-            $row['car_id'] = $this->carList[$row['id']]['title'];
+            $row['car_id'] = $this->carList[$row['car_id']]['title'];
             $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
             $row['edit'] = 1;
         }
@@ -248,7 +252,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $sugarList = \app\common\model\OrderSugar::where($where)->select();
         foreach ($sugarList as $key => &$row) {
-            $row['sugar_id'] = $this->sugarList[$row['id']]['title'];
+            $row['sugar_id'] = $this->sugarList[$row['sugar_id']]['title'];
             $row['edit'] = 1;
         }
 
@@ -257,7 +261,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $wineList = \app\common\model\OrderWine::where($where)->select();
         foreach ($wineList as $key => &$row) {
-            $row['wine_id'] = $this->wineList[$row['id']]['title'];
+            $row['wine_id'] = $this->wineList[$row['wine_id']]['title'];
             $row['edit'] = 1;
         }
 
@@ -266,7 +270,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $lightList = \app\common\model\OrderLight::where($where)->select();
         foreach ($lightList as $key => &$row) {
-            $row['light_id'] = $this->lightList[$row['id']]['title'];
+            $row['light_id'] = $this->lightList[$row['light_id']]['title'];
             $row['edit'] = 1;
         }
 
@@ -275,7 +279,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $dessertList = \app\common\model\OrderDessert::where($where)->select();
         foreach ($dessertList as $key => &$row) {
-            $row['desser_id'] = $this->dessertList[$row['id']]['title'];
+            $row['dessert_id'] = $this->dessertList[$row['dessert_id']]['title'];
             $row['edit'] = 1;
         }
 
@@ -284,7 +288,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $ledList = \app\common\model\OrderLed::where($where)->select();
         foreach ($ledList as $key => &$row) {
-            $row['led_id'] = $this->ledList[$row['id']]['title'];
+            $row['led_id'] = $this->ledList[$row['led_id']]['title'];
             $row['edit'] = 1;
         }
 
@@ -293,7 +297,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $d3List = \app\common\model\OrderD3::where($where)->select();
         foreach ($d3List as $key => &$row) {
-            $row['d3_id'] = $this->d3List[$row['id']]['title'];
+            $row['d3_id'] = $this->d3List[$row['d3_id']]['title'];
             $row['edit'] = 1;
         }
 
@@ -842,43 +846,8 @@ class Order extends Base
 
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
-        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
-
-        // 审核流程
-        $sequence = json_decode($audit->content, true);
-        $first = key($sequence);
-        $auditConfig = $this->config['check_sequence'];
-        if($auditConfig[$first]['type'] == 'staff') {
-            // 指定人员审核
-            foreach ($sequence[$first] as $row)
-            {
-                $data = [];
-                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
-                $data['company_id'] = $orderData['company_id'];
-                $data['confirm_item_id'] = $first;
-                $data['confirm_user_id'] = $row;
-                $data['user_id'] = $this->user['id'];
-                $data['order_id'] = $OrderModel->id;
-                $data['status'] = 0;
-                $orderConfirm = new OrderConfirm();
-                $orderConfirm->allowField(true)->save($data);
-            }
-        } else {
-            // 指定角色审核
-            foreach ($sequence[$first] as $row) {
-                $staff = User::getRoleManager($row, $this->user);
-                $data = [];
-                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
-                $data['company_id'] = $orderData['company_id'];
-                $data['confirm_item_id'] = $first;
-                $data['confirm_user_id'] = $staff->id;
-                $data['user_id'] = $this->user['id'];
-                $data['order_id'] = $OrderModel->id;
-                $data['status'] = 0;
-                $orderConfirm = new OrderConfirm();
-                $orderConfirm->allowField(true)->save($data);
-            }
-        }
+        $orderId = $OrderModel->id;
+        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id']);
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
@@ -907,7 +876,6 @@ class Order extends Base
         } else {
             $order['cooperation_mode_title'] = '-';
         }
-
         $result = [
             'code' => '200',
             'msg' => '获取信息成功',

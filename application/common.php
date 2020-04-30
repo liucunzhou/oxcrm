@@ -86,7 +86,8 @@ if(!function_exists('create_order_confirm')) {
             }
             $index = get_next_confirm_item($current, $sequence);
             if(is_null($index)) {
-
+                // 已审核完的状态可以添加审核
+                $index = key($sequence);
             } else {
                 $index = key($sequence);
             }
@@ -125,5 +126,7 @@ if(!function_exists('create_order_confirm')) {
                 $orderConfirm->allowField(true)->save($data);
             }
         }
+
+        return 1;
     }
 }
