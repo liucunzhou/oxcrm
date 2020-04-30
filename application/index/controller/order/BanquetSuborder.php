@@ -116,13 +116,13 @@ class BanquetSuborder extends Backend
         // tail_money = contact_money * 0.2 +  sum(wedding_totals) + sum(banquet_totals)
         $order = \app\common\model\Order::get($request['order_id']);
 
-        $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
-        $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
-        $order->tail_money = $order->contract_totals*0.2 + $banquetTotals + $weddingTotals;
-        $order->totals = $order->contract_totals + $banquetTotals + $weddingTotals;
-        $result2 = $order->save();
+        // $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
+        // $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
+        // $order->tail_money = $order->contract_totals*0.2 + $banquetTotals + $weddingTotals;
+        // $order->totals = $order->contract_totals + $banquetTotals + $weddingTotals;
+        // $result2 = $order->save();
 
-        if($result1 && $result2) {
+        if($result1) {
             ### 添加操作日志
             \app\common\model\OperateLog::appendTo($model);
             $model->commit();
