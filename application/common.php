@@ -111,9 +111,10 @@ if(!function_exists('create_order_confirm')) {
                 $orderConfirm->allowField(true)->save($data);
             }
         } else {
+            $user = \app\common\model\User::getUser($userId);
             // 指定角色审核
             foreach ($sequence[$index] as $row) {
-                $staff = \app\common\model\User::getRoleManager($row, $this->user);
+                $staff = \app\common\model\User::getRoleManager($row, $user);
                 $data = [];
                 $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
                 $data['company_id'] = $companyId;
