@@ -174,6 +174,28 @@ class Order extends Backend
         }
     }
 
+    // lk
+    public function lk()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            $get['company_id'] = 27;
+            $order = $this->_getOrderList($get, 'index');
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getColsFile('index');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/list/index');
+        }
+    }
+
     // 曼格纳
     public function mangena()
     {
