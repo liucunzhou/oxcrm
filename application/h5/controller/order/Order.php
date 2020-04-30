@@ -80,7 +80,6 @@ class Order extends Base
         if (isset($this->role['auth_type']) && $this->role['auth_type'] > 0) {
             $this->staffs = User::getUsersByDepartmentId($this->user['department_id']);
         }
-
     }
 
     ##
@@ -203,6 +202,8 @@ class Order extends Base
         $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
         $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
+        $staff = User::getUser($order['salesman']);
+        $order['salesman'] = $staff['realname'];
 
         #### 审核流程
         // $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();

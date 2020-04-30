@@ -91,43 +91,110 @@ class Confirm extends Backend
         $this->assign('weddingCategories', $this->weddingDevices);
     }
 
-    # 审核列表
+    # 誉思
     public function index()
     {
         if (Request::isAjax()) {
             $get = $this->request->param();
-            $config = [
-                'page' => $get['page']
-            ];
-
-            $get = Request::param();
-            $map['company_id'] = 25;
-            $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
-            $data = $list->getCollection();
-
-            $users = \app\common\model\User::getUsers();
-            foreach ($data as $key => &$value) {
-                !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
-                !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
-                $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-                $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
-                $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
-            }
+            $get['company_id'] = 24;
+            $list = $this->_getConfirmList($get);
 
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
-                'data' => $data,
+                'data' => $list->getCollection(),
                 'count' => $list->total()
             ];
             return json($result);
 
         } else {
-
-
-            $this->view->engine->layout(false);
             return $this->fetch('order/confirm/index');
         }
+    }
+
+    public function hs()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 26;
+            $list = $this->_getConfirmList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
+
+    public function lk()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 27;
+            $list = $this->_getConfirmList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
+
+    public function mangena()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 24;
+            $list = $this->_getConfirmList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
+
+    protected function _getConfirmList($get)
+    {
+        $config = [
+            'page' => $get['page']
+        ];
+        $map = [];
+        $map[] = ['company_id', '='. $get['company_id']];
+
+        $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+
+        /**
+        $users = \app\common\model\User::getUsers();
+        foreach ($data as $key => &$value) {
+            !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+            !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
+            $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+            $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+            $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+        }
+        **/
+
+
+        return $list;
     }
 
     # 来源-积分-合同审核确认，执行逻辑
