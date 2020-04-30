@@ -4,6 +4,8 @@ namespace app\h5\controller\order;
 
 
 use app\common\model\OrderBanquet;
+use app\common\model\Package;
+use app\common\model\Ritual;
 use app\h5\controller\Base;
 
 class Banquet extends Base
@@ -18,15 +20,20 @@ class Banquet extends Base
 
     public function edit($id)
     {
+        $fields = "create_time,delete_time,update_time";
         $where = [];
         $where[] = ['id', '=', $id];
-        $banquet = $this->model->where($where)->order('id desc')->find();
+        $banquet = $this->model->field($fields, true)->where($where)->order('id desc')->find();
+        $packageList = Package::getList();
+        $ritualList = Ritual::getList();
         if ($banquet) {
             $result = [
                 'code'  => '200',
                 'msg'   => '获取婚宴信息成功',
                 'data'  => [
-                    'detail'   => $banquet
+                    'detail'   => $banquet,
+                    'packageList' => $packageList,
+                    'ritualList' => $ritualList
                 ]
             ];
         } else {

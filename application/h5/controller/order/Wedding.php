@@ -16,16 +16,20 @@ class Wedding extends Base
 
     public function edit($id)
     {
-        $fields = "*";
+        $fields = "create_time,delete_time,update_time";
         $where = [];
         $where[] = ['id', '=', $id];
-        $data = $this->model->field($fields)->where($where)->find();
+        $data = $this->model->field($fields, true)->where($where)->find();
+        $packageList = Package::getList();
+        $ritualList = Ritual::getList();
         if($data) {
             $result = [
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
-                    'detail' => $data
+                    'detail' => $data,
+                    'packageList' => $packageList,
+                    'ritualList' => $ritualList
                 ]
             ];
         } else {
