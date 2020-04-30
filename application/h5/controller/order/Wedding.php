@@ -75,7 +75,7 @@ class Wedding extends Base
         if($result) {
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
         } else {
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
         }
 
         return json($arr);
