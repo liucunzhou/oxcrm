@@ -197,7 +197,7 @@ class Order extends Base
         $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
         $order['status'] = '待审核';
         $order['sign_date'] = $order['sign_date'] ? '' : substr($order['sign_date'], 0, 10);
-        $order['event_date'] = substr($order['event_date'], 0, 10);
+        $order['event_date'] = $order['event_date'] ? '' : substr($order['event_date'], 0, 10);
         $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
         $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
         $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
