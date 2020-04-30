@@ -196,27 +196,31 @@ class Order extends Base
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
 
         $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
-        $sequence = json_decode($audit->content, true);
-        #### 检测编辑和添加权限
-        if ($this->user['id'] == $order['user_id']) {
-            end($sequence);
-            $confirmItemId = key($sequence);
+        $sequence = empty($audit) ? [] : json_decode($audit->content, true);
+        if (!empty($sequence)) {
+            #### 检测编辑和添加权限
+            if ($this->user['id'] == $order['user_id']) {
+                end($sequence);
+                $confirmItemId = key($sequence);
 
-            // 获取审核状态
-            $where = [];
-            $where[] = ['order_id', '=', $order['id']];
-            $where[] = ['company_id', '=', $order['company_id']];
-            $where[] = ['user_id', '=', $this->user['id']];
-            $where[] = ['confirm_item_id', '=', $confirmItemId];
-            $where[] = ['status', '=', 3];
-            $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->select();
-            if (empty($confirmList)) {
-                $edit = 0;
+                // 获取审核状态
+                $where = [];
+                $where[] = ['order_id', '=', $order['id']];
+                $where[] = ['company_id', '=', $order['company_id']];
+                $where[] = ['user_id', '=', $this->user['id']];
+                $where[] = ['confirm_item_id', '=', $confirmItemId];
+                $where[] = ['status', '=', 3];
+                $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->find();
+                if (empty($confirmList)) {
+                    $edit = 0;
+                } else {
+                    $edit = 1;
+                }
             } else {
-                $edit = 1;
+
             }
         } else {
-
+            $edit = 0;
         }
 
         #### 获取用户信息
