@@ -178,7 +178,7 @@ class Order extends Base
         }
 
         $orderId = $order->id;
-        $companyId = $order->companyId;
+        $companyId = $order->company_id;
         $order = $order->getData();
         $newsTypes = $this->config['news_type_list'];
         $cooperationMode = $this->config['cooperation_mode'];
