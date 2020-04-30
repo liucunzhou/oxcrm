@@ -175,7 +175,7 @@
             var id = obj.data.id;
             switch (obj.event) {
                 case 'editOrder':
-                    url = '/index/order.confirm/read.html?id=' + id;
+                    url = '/index/order.order/showOrder.html?confirm_id=' + id;
                     top.layui.index.openTabsPage(url, '审核订单');
                     break;
             }

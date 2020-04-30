@@ -24,6 +24,7 @@ class Enter extends Base
     # id = 客资分配id
     public function index()
     {
+        print_r($this->user);
         $param = $this->request->param();
         $allocate = MemberAllocate::get($param['id']);
 
