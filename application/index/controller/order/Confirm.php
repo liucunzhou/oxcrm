@@ -316,7 +316,7 @@ class Confirm extends Backend
                 if (!empty($currentConfirm)) {
                     $cstatus = $currentConfirm->status;
                     $row['status'] = $this->confirmStatusList[$cstatus];
-                    $row['content'] = $row['content'];
+                    $row['content'] = $currentConfirm->content;
                 } else {
                     $row['status'] = '待审核';
                     $row['content'] = '';
@@ -362,13 +362,35 @@ class Confirm extends Backend
 
         ## 获取订单信息
         $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $data = $confirm->getData();
         $confirm->content = $param['content'];
         $confirm->status = 1;
+        $confirm->operate_id = $this->user['id'];
         $result = $confirm->save();
         if($result) {
             $newConfirm = new OrderConfirm();
             $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked'=>1]);
-            create_order_confirm($confirm->order_id, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
+
+            ## 获取当前配置
+            $where = [];
+            $where[] = ['company_id', '=', $confirm->company_id];
+            $where[] = ['timing', '=', $confirm->confirm_type];
+            $auditModel = new \app\common\model\Audit();
+            $audit = $auditModel->where($where)->find();
+            $sequence = json_decode($audit->content, true);
+            $current = $confirm->confirm_item_id;
+            $next_confirm_item_id = get_next_confirm_item($current, $sequence);
+            if(!is_null($next_confirm_item_id)) {
+                $data['is_checked'] = 0;
+                $data['status'] = 0;
+                $data['confirm_item_id'] = $next_confirm_item_id;
+                unset($data['create_time']);
+                unset($data['update_time']);
+                unset($data['delete_time']);
+                $newConfirm = new OrderConfirm();
+                $newConfirm->save($data);
+            }
+
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
