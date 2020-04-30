@@ -17,6 +17,7 @@ use app\common\model\OrderLed;
 use app\common\model\OrderLight;
 use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
+use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWine;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
@@ -784,6 +785,7 @@ class Order extends Base
         $member = \app\api\model\Member::get($allocate->member_id);
 
         $orderData = json_decode($param['order'], true);
+        $orderData['news_type'] = $orderData['newsType'];
         $orderData['member_id'] = $member->id;
         $orderData['realname'] = $member->realname;
         $orderData['mobile'] = $member->mobile;
@@ -980,9 +982,6 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
-            echo "\n信息类型:";
-            echo $orderData['news_type'];
-            print_r($income);
             if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
                 // 婚宴收款
                 $data = [];
@@ -998,16 +997,13 @@ class Order extends Base
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
-                echo "\neeeeeeeeeeeeeeeeeeeeeee\n";
-                print_r($data);
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
-                echo $receivableModel->getLastSql();
             } else {
                 // 婚庆收款
                 $data = [];
                 $data['wedding_receivable_no'] = $income['receivable_no'];
-                $data['banquet_income_date'] = time();
+                $data['wedding_income_date'] = time();
                 $data['wedding_income_payment'] = $income['income_payment'];
                 $data['wedding_income_type'] = $income['income_type'];
                 $data['wedding_income_item_price'] = $income['income_item_price'];
@@ -1018,10 +1014,8 @@ class Order extends Base
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
-                $receivableModel = new OrderBanquetReceivables();
+                $receivableModel = new OrderWeddingReceivables();
                 $receivableModel->allowField(true)->save($data);
-                echo "\n";
-                echo $receivableModel->getLastSql();
             }
         }
 
