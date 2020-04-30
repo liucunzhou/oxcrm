@@ -195,32 +195,50 @@ class Order extends Base
         $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
 
+        #### 审核流程
         $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
         $sequence = empty($audit) ? [] : json_decode($audit->content, true);
-        if (!empty($sequence)) {
-            #### 检测编辑和添加权限
-            if ($this->user['id'] == $order['user_id']) {
-                end($sequence);
-                $confirmItemId = key($sequence);
+        #### 检测编辑和添加权限
+        if ($this->user['id'] == $order['user_id']) {
+            // end($sequence);
+            // $confirmItemId = key($sequence);
 
-                // 获取审核状态
-                $where = [];
-                $where[] = ['order_id', '=', $order['id']];
-                $where[] = ['company_id', '=', $order['company_id']];
-                $where[] = ['user_id', '=', $this->user['id']];
-                $where[] = ['confirm_item_id', '=', $confirmItemId];
-                $where[] = ['status', '=', 3];
-                $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->find();
-                if (empty($confirmList)) {
-                    $edit = 0;
-                } else {
-                    $edit = 1;
-                }
+            // 获取审核状态
+            $where = [];
+            $where[] = ['order_id', '=', $order['id']];
+            $where[] = ['company_id', '=', $order['company_id']];
+            $where[] = ['user_id', '=', $this->user['id']];
+            // $where[] = ['confirm_item_id', '=', $confirmItemId];
+            $where[] = ['status', '=', 3];
+            $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
+            if (empty($confirmLast)) {
+                $edit = 0;
+                $orderEdit = 0;
             } else {
-
+                $edit = 1;
+                $orderEdit = 1;
             }
+
         } else {
-            $edit = 0;
+            end($sequence);
+            $confirmItemId = key($sequence);
+
+            $where = [];
+            $where[] = ['order_id', '=', $order['id']];
+            $where[] = ['company_id', '=', $order['company_id']];
+            $where[] = ['user_id', '=', $this->user['id']];
+            $where[] = ['status', '=', 3];
+            $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->select();
+            if ($confirmList->isEmpty()) {
+                $edit = 0;
+                $orderEdit = 1;
+            } else if ($confirmList[0]['confirm_item_id'] == $confirmItemId && $confirmList[0]['status']==2) {
+                $edit = 0;
+                $orderEdit = 1;
+            } else {
+                $edit = 0;
+                $orderEdit = 0;
+            }
         }
 
         #### 获取用户信息
@@ -243,7 +261,11 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $banquetSuborderList = \app\common\model\OrderBanquetSuborder::where($where)->select();
         foreach ($banquetSuborderList as &$row) {
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
             $row['receipt_img'] = empty($row['receipt_img']) ? [] : explode(',', $row['receipt_img']);
             $row['note_img'] = empty($row['note_img']) ? [] : explode(',', $row['note_img']);
         }
@@ -265,7 +287,11 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $weddingSuborderList = \app\common\model\OrderWeddingSuborder::where($where)->select();
         foreach ($weddingSuborderList as &$row) {
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
             $row['receipt_img'] = empty($row['receipt_img']) ? [] : explode(',', $row['receipt_img']);
             $row['note_img'] = empty($row['note_img']) ? [] : explode(',', $row['note_img']);
         }
@@ -282,7 +308,11 @@ class Order extends Base
         foreach ($carList as $key => &$row) {
             $row['car_id'] = $this->carList[$row['car_id']]['title'];
             $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### 喜糖
@@ -291,7 +321,11 @@ class Order extends Base
         $sugarList = \app\common\model\OrderSugar::where($where)->select();
         foreach ($sugarList as $key => &$row) {
             $row['sugar_id'] = $this->sugarList[$row['sugar_id']]['title'];
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### 酒水
@@ -300,7 +334,11 @@ class Order extends Base
         $wineList = \app\common\model\OrderWine::where($where)->select();
         foreach ($wineList as $key => &$row) {
             $row['wine_id'] = $this->wineList[$row['wine_id']]['title'];
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### 灯光
@@ -309,7 +347,11 @@ class Order extends Base
         $lightList = \app\common\model\OrderLight::where($where)->select();
         foreach ($lightList as $key => &$row) {
             $row['light_id'] = $this->lightList[$row['light_id']]['title'];
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### 点心
@@ -318,7 +360,11 @@ class Order extends Base
         $dessertList = \app\common\model\OrderDessert::where($where)->select();
         foreach ($dessertList as $key => &$row) {
             $row['dessert_id'] = $this->dessertList[$row['dessert_id']]['title'];
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### LED
@@ -327,7 +373,11 @@ class Order extends Base
         $ledList = \app\common\model\OrderLed::where($where)->select();
         foreach ($ledList as $key => &$row) {
             $row['led_id'] = $this->ledList[$row['led_id']]['title'];
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### 3D
@@ -336,19 +386,23 @@ class Order extends Base
         $d3List = \app\common\model\OrderD3::where($where)->select();
         foreach ($d3List as $key => &$row) {
             $row['d3_id'] = $this->d3List[$row['d3_id']]['title'];
-            $row['edit'] = 1;
+            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $row['edit'] = 1;
+            } else {
+                $row['edit'] = 0;
+            }
         }
 
         #### 合同金额
         $contractPrice = [
-            'id'    => $orderId,
-            'totals'    => $order['totals'],
-            'earnest_money_date'    => $order['earnest_money_date'],
+            'id' => $orderId,
+            'totals' => $order['totals'],
+            'earnest_money_date' => $order['earnest_money_date'],
             'earnest_money' => $order['earnest_money'],
             'middle_money_date' => $order['middle_money_date'],
-            'middle_money'  => $order['middle_money'],
-            'tail_money_date'   => $order['tail_money_date'],
-            'tail_money'    => $order['tail_money']
+            'middle_money' => $order['middle_money'],
+            'tail_money_date' => $order['tail_money_date'],
+            'tail_money' => $order['tail_money']
         ];
 
         #### 支付方式列表
@@ -361,69 +415,92 @@ class Order extends Base
 
         #### 合成收款信息
         $incomeList = [];
-        foreach ($banquetReceivableList as $key=>$value) {
+        foreach ($banquetReceivableList as $key => $value) {
+            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $value['edit'] = 1;
+            } else {
+                $value['edit'] = 0;
+            }
             $incomeList[] = [
-                'id'    => $value['id'],
+                'id' => $value['id'],
                 'receivable_no' => $value['banquet_receivable_no'],
-                'income_category'   => '婚宴',
-                'income_payment'    => $paymentConfig[$value['banquet_income_payment']],
-                'income_type'   => $paymentTypes[$value['banquet_income_type']],
-                'income_date'   => $value['banquet_income_date'],
-                'income_real_date'  => $value['banquet_income_real_date'],
-                'income_item_price'  => $value['banquet_income_item_price'],
+                'income_category' => '婚宴',
+                'income_payment' => $paymentConfig[$value['banquet_income_payment']],
+                'income_type' => $paymentTypes[$value['banquet_income_type']],
+                'income_date' => $value['banquet_income_date'],
+                'income_real_date' => $value['banquet_income_real_date'],
+                'income_item_price' => $value['banquet_income_item_price'],
                 'income_remark' => $value['remark'],
-                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
-                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit'  => 1
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit'  => $value['edit']
             ];
         }
-        foreach ($weddingReceivableList as $key=>$value) {
+        foreach ($weddingReceivableList as $key => $value) {
+            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $value['edit'] = 1;
+            } else {
+                $value['edit'] = 0;
+            }
+
             $incomeList[] = [
-                'id'    => $value['id'],
+                'id' => $value['id'],
                 'receivable_no' => $value['wedding_receivable_no'],
-                'income_category'   => '婚庆',
-                'income_payment'    => $paymentConfig[$value['wedding_income_payment']],
-                'income_type'   => $paymentTypes[$value['wedding_income_type']],
-                'income_date'   => $value['wedding_income_date'],
-                'income_real_date'  => $value['wedding_income_real_date'],
-                'income_item_price'  => $value['wedding_income_item_price'],
+                'income_category' => '婚庆',
+                'income_payment' => $paymentConfig[$value['wedding_income_payment']],
+                'income_type' => $paymentTypes[$value['wedding_income_type']],
+                'income_date' => $value['wedding_income_date'],
+                'income_real_date' => $value['wedding_income_real_date'],
+                'income_item_price' => $value['wedding_income_item_price'],
                 'income_remark' => $value['remark'],
-                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
-                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit'  => 1
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit'  => $value['edit']
             ];
         }
 
         #### 合成付款信息
         $paymentList = [];
-        foreach ($banquetPaymentList as $key=>$value) {
+        foreach ($banquetPaymentList as $key => $value) {
+            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $value['edit'] = 1;
+            } else {
+                $value['edit'] = 0;
+            }
+
             $paymentList[] = [
-                'id'    => $value['id'],
+                'id' => $value['id'],
                 'payment_no' => $value['banquet_payment_no'],
-                'pay_category'   => '婚宴',
-                'pay_type'   => $paymentTypes[$value['banquet_pay_type']],
-                'apply_pay_date'   => $value['banquet_apply_pay_date'],
-                'pay_real_date'  => $value['banquet_pay_real_date'],
-                'pay_item_price'  => $value['banquet_pay_item_price'],
+                'pay_category' => '婚宴',
+                'pay_type' => $paymentTypes[$value['banquet_pay_type']],
+                'apply_pay_date' => $value['banquet_apply_pay_date'],
+                'pay_real_date' => $value['banquet_pay_real_date'],
+                'pay_item_price' => $value['banquet_pay_item_price'],
                 'payment_remark' => $value['banquet_payment_remark'],
-                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
-                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit'  => 1
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit' => $value['edit']
             ];
         }
-        foreach ($weddingPaymentList as $key=>$value) {
+        foreach ($weddingPaymentList as $key => $value) {
+            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+                $value['edit'] = 1;
+            } else {
+                $value['edit'] = 0;
+            }
+
             $paymentList[] = [
-                'id'    => $value['id'],
+                'id' => $value['id'],
                 'payment_no' => $value['wedding_payment_no'],
-                'pay_category'   => '婚庆',
-                'pay_type'   => $paymentTypes[$value['wedding_pay_type']],
-                'apply_pay_date'   => $value['wedding_apply_pay_date'],
-                'pay_real_date'  => $value['wedding_pay_real_date'],
-                'pay_item_price'  => $value['wedding_pay_item_price'],
+                'pay_category' => '婚庆',
+                'pay_type' => $paymentTypes[$value['wedding_pay_type']],
+                'apply_pay_date' => $value['wedding_apply_pay_date'],
+                'pay_real_date' => $value['wedding_pay_real_date'],
+                'pay_item_price' => $value['wedding_pay_item_price'],
                 'payment_remark' => $value['wedding_payment_remark'],
-                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
-                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit'  => 1
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit' => $value['edit']
             ];
         }
 
@@ -432,9 +509,9 @@ class Order extends Base
             'code' => '200',
             'msg' => '获取成功',
             'data' => [
-                'edit'  => $edit,
+                'edit' => $orderEdit,
                 'order' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.order/edit',
                     'api' => '/h5/order.order/doEdit',
@@ -442,7 +519,7 @@ class Order extends Base
                     'edit' => $edit,
                 ],
                 'member' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '',
                     'api' => '',
@@ -450,7 +527,7 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'banquet' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.banquet/edit',
                     'api' => '/h5/order.banquet/doEdit',
@@ -458,7 +535,7 @@ class Order extends Base
                     'edit' => $edit,
                 ],
                 'banquetSuborderList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.banquet_suborder/edit',
                     'api' => '/h5/order.banquet_suborder/doEdit',
@@ -466,7 +543,7 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'hotelItem' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.hotel_item/edit',
                     'api' => '/h5/order.hotel_item/doEdit',
@@ -474,7 +551,7 @@ class Order extends Base
                     'edit' => $edit,
                 ],
                 'wedding' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.wedding/edit',
                     'api' => '/h5/order.wedding/doEdit',
@@ -482,7 +559,7 @@ class Order extends Base
                     'edit' => $edit,
                 ],
                 'weddingSuborderList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.wedding_suborder/edit',
                     'api' => '/h5/order.wedding_suborder/doEdit',
@@ -490,14 +567,14 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'carList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.car/getList',
                     'read' => '/h5/order.car/edit',
                     'api' => '/h5/order.car/doEdit',
                     'array' => $carList
                 ],
                 'wineList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.wine/getList',
                     'read' => '/h5/order.wine/edit',
                     'api' => '/h5/order.wine/doEdit',
@@ -505,14 +582,14 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'sugarList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.sugar/getList',
                     'read' => '/h5/order.sugar/edit',
                     'api' => '/h5/order.sugar/doEdit',
                     'array' => $sugarList
                 ],
                 'dessertList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.dessert/getList',
                     'read' => '/h5/order.dessert/edit',
                     'api' => '/h5/order.dessert/doEdit',
@@ -520,15 +597,15 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'lightList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.light/getList',
                     'read' => '/h5/order.light/edit',
                     'api' => '/h5/order.light/doEdit',
                     'array' => $lightList,
-                    'edit'  => 0,
+                    'edit' => 0,
                 ],
                 'ledList' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.led/getList',
                     'read' => '/h5/order.led/edit',
                     'api' => '/h5/order.led/doEdit',
@@ -536,7 +613,7 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'd3List' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '/h5/dictionary.d3/getList',
                     'read' => '/h5/order.d3/edit',
                     'api' => '/h5/order.d3/doEdit',
@@ -545,7 +622,7 @@ class Order extends Base
                 ],
                 // 合同收款信息
                 'contractPrice' => [
-                    'id'  => $orderId,
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.contract/edit',
                     'api' => '/h5/order.contract/doEdit',
@@ -553,37 +630,37 @@ class Order extends Base
                     'edit' => $edit,
                 ],
                 // 订单收款信息
-                'incomeList'    => [
-                    'id'  => $orderId,
+                'incomeList' => [
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.income/edit',
                     'api' => '/h5/order.income/doEdit',
                     'array' => $incomeList
                 ],
                 // 订单付款信息
-                'paymentList'   => [
-                    'id'  => $orderId,
+                'paymentList' => [
+                    'id' => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.payment/edit',
                     'api' => '/h5/order.payment/doEdit',
                     'array' => $paymentList,
                     'edit' => 0,
                 ],
-                'addItems'      => [
-                    'edit'  => $edit,
+                'addItems' => [
+                    'edit' => $edit,
                     'addItems' => [
                         [
-                            'id'    => 'suborder',
+                            'id' => 'suborder',
                             'title' => '二销',
                             'children' => [
                                 [
-                                    'id'    => 'banquetSuborder',
+                                    'id' => 'banquetSuborder',
                                     'title' => '婚宴二销',
                                     'read' => '/h5/order.banquet_suborder/create',
                                     'api' => '/h5/order.banquet_suborder/doCreate'
                                 ],
                                 [
-                                    'id'    => 'weddingSuborder',
+                                    'id' => 'weddingSuborder',
                                     'title' => '婚庆二销',
                                     'read' => '/h5/order.wedding_suborder/create',
                                     'api' => '/h5/order.wedding_suborder/doCreate'
@@ -591,19 +668,19 @@ class Order extends Base
                             ]
                         ],
                         [
-                            'id'        => 'incomeAppend',
-                            'title'     => '收款',
-                            'read'      => '/h5/order.income/create',
-                            'api'       => '/h5/order.income/doCreate',
-                            'children'     => []
+                            'id' => 'incomeAppend',
+                            'title' => '收款',
+                            'read' => '/h5/order.income/create',
+                            'api' => '/h5/order.income/doCreate',
+                            'children' => []
                         ],
 
                         [
-                            'id'        => 'paymentAppend',
-                            'title'     => '付款',
-                            'read'      => '/h5/order.payment/create',
-                            'api'       => '/h5/order.payment/doCreate',
-                            'children'     => []
+                            'id' => 'paymentAppend',
+                            'title' => '付款',
+                            'read' => '/h5/order.payment/create',
+                            'api' => '/h5/order.payment/doCreate',
+                            'children' => []
                         ],
                     ]
                 ]
@@ -623,43 +700,43 @@ class Order extends Base
 
         $moduleList = [
             [
-                'id'    => 'banquet',
+                'id' => 'banquet',
                 'title' => '婚宴'
             ],
             [
-                'id'    => 'wedding',
+                'id' => 'wedding',
                 'title' => '婚庆'
             ],
             [
-                'id'    => 'hotelItem',
+                'id' => 'hotelItem',
                 'title' => '酒店服务项目'
             ],
             [
-                'id'    => 'car',
+                'id' => 'car',
                 'title' => '婚车'
             ],
             [
-                'id'    => 'sugar',
+                'id' => 'sugar',
                 'title' => '喜糖'
             ],
             [
-                'id'    => 'wine',
+                'id' => 'wine',
                 'title' => '酒水'
             ],
             [
-                'id'    => 'dessert',
+                'id' => 'dessert',
                 'title' => '糕点'
             ],
             [
-                'id'    => 'light',
+                'id' => 'light',
                 'title' => '灯光'
             ],
             [
-                'id'    => 'led',
+                'id' => 'led',
                 'title' => 'LED'
             ],
             [
-                'id'    => 'd3',
+                'id' => 'd3',
                 'title' => '3D'
             ],
 
@@ -682,8 +759,8 @@ class Order extends Base
                 'newsTypeList' => array_values($this->config['news_type_list']),    ## 订单类型
                 'cooperationModeList' => array_values($this->config['cooperation_mode']),  ## 合同模式
 
-                'packageList'  => array_values($packageList),
-                'ritualList'  => array_values($ritualList),
+                'packageList' => array_values($packageList),
+                'ritualList' => array_values($ritualList),
 
                 'carList' => array_values($this->carList),
                 'wineList' => array_values($this->wineList),
@@ -693,7 +770,7 @@ class Order extends Base
                 'ledList' => array_values($this->ledList),
                 'd3List' => array_values($this->d3List),
 
-                'payments'  => $this->config['payments'],
+                'payments' => $this->config['payments'],
             ]
         ];
         return json($result);
@@ -708,19 +785,19 @@ class Order extends Base
 
         $orderData = json_decode($param['order'], true);
         $orderData['member_id'] = $member->id;
-        $orderData['realname']  = $member->realname;
-        $orderData['mobile']  = $member->mobile;
+        $orderData['realname'] = $member->realname;
+        $orderData['mobile'] = $member->mobile;
         $orderData['source_id'] = $member->source_id;
         $orderData['source_text'] = $member->source_text;
         $orderData['operate_id'] = $this->user['id'];
         $orderData['user_id'] = $this->user['id'];
         $orderData['salesman'] = $this->user['id'];
-        $orderData['image'] = empty($orderData['imageArray']) ? '': implode(',', $orderData['imageArray']);
-        $orderData['receipt_img'] = empty($orderData['receipt_imgArray']) ? '': implode(',', $orderData['receipt_imgArray']);
-        $orderData['note_img'] = empty($orderData['note_imgArray']) ? '': implode(',', $orderData['note_imgArray']);
+        $orderData['image'] = empty($orderData['imageArray']) ? '' : implode(',', $orderData['imageArray']);
+        $orderData['receipt_img'] = empty($orderData['receipt_imgArray']) ? '' : implode(',', $orderData['receipt_imgArray']);
+        $orderData['note_img'] = empty($orderData['note_imgArray']) ? '' : implode(',', $orderData['note_imgArray']);
         $OrderModel = new \app\common\model\Order();
         $result = $OrderModel->allowField(true)->save($orderData);
-        if(!$result) return json(['code' => '400', 'msg' => '创建失败']);
+        if (!$result) return json(['code' => '400', 'msg' => '创建失败']);
 
         ## banquet message
         if (!empty($param['banquet'])) {
@@ -783,7 +860,7 @@ class Order extends Base
         ## 婚车跟车
         if (!empty($param['car'])) {
             $carData = json_decode($param['car'], true);
-            if(!empty($carData['slave_car_id'])) {
+            if (!empty($carData['slave_car_id'])) {
                 $row = [];
                 $row['order_id'] = $carData['order_id'];
                 $row['company_id'] = $carData['car_company_id'];
@@ -903,7 +980,7 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
-            if($orderData['news_type'] == '2' || $orderData['news_type'] == '0'){
+            if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
                 // 婚宴收款
                 $data = [];
                 $data['banquet_receivable_no'] = $income['receivable_no'];
@@ -912,8 +989,8 @@ class Order extends Base
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
-                $data['receipt_img'] = empty($income['receipt_imgArray  ']) ? '': implode(',', $income['receipt_imgArray  ']);
-                $data['note_imgArray'] = empty($income['note_imgArray  ']) ? '': implode(',', $income['note_imgArray  ']);
+                $data['receipt_img'] = empty($income['receipt_imgArray  ']) ? '' : implode(',', $income['receipt_imgArray  ']);
+                $data['note_imgArray'] = empty($income['note_imgArray  ']) ? '' : implode(',', $income['note_imgArray  ']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
@@ -926,8 +1003,8 @@ class Order extends Base
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
-                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '': implode(',', $income['receipt_imgArray']);
-                $data['note_imgArray'] = empty($income['note_imgArray']) ? '': implode(',', $income['note_imgArray']);
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_imgArray'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
@@ -993,9 +1070,9 @@ class Order extends Base
         }
 
         $order = $this->model->where('id', '=', $param['id'])->find();
-        $param['image'] = empty($param['image_Array']) ? '': implode(',', $param['image_Array']);
-        $param['receipt_img'] = empty($param['receipt_imgArray']) ? '': implode(',', $param['receipt_imgArray']);
-        $param['note_imgArray'] = empty($param['note_imgArray']) ? '': implode(',', $param['note_imgArray']);
+        $param['image'] = empty($param['image_Array']) ? '' : implode(',', $param['image_Array']);
+        $param['receipt_img'] = empty($param['receipt_imgArray']) ? '' : implode(',', $param['receipt_imgArray']);
+        $param['note_imgArray'] = empty($param['note_imgArray']) ? '' : implode(',', $param['note_imgArray']);
         $rs = $order->allowField(true)->save($param);
 
         // id,user_id,create_time,module,controller,action,id,page,content
