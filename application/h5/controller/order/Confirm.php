@@ -107,6 +107,17 @@ class Confirm extends Base
         $where[] = ['user_id', '=', $this->user['id']];
         // $where[] = ['is_checked', '=', '0'];
         $orderConfirm = OrderConfirm::where($where)->order('id desc')->find();
+        if(empty($orderConfirm)) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '此单已锁',
+                'data'  => [
+                    'confirmList'   => []
+                ]
+            ];
+
+            return json($result);
+        }
 
         $where = [];
         $where[] = ['company_id', '=', $order->company_id];
