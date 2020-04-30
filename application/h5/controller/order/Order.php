@@ -143,7 +143,7 @@ class Order extends Base
         }
 
         $list = $list->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
-        echo $list->getLastSql();
+        echo $this->model->getLastSql();
         if (!$list->isEmpty()) {
             $list = $list->getCollection()->toArray();
             $newsTypes = $this->config['news_type_list'];
