@@ -304,12 +304,16 @@ class Confirm extends Backend
             $sequence = (array)json_decode($audit->content, true);
             foreach ($sequence as $key => &$row) {
                 $where = [];
-
                 $where[] = ['order_id', '=', $get['id']];
                 $where[] = ['company_id', '=', $order->company_id];
+                $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
                 $where[] = ['timing', '=', $orderConfirm->confirm_type];
+                $confirmModel = new OrderConfirm();
+                $currentConfirm = $confirmModel->where($where)->find();
+                $cstatus = $currentConfirm->status;
                 $row['title'] = $sequences[$key]['title'];
-                // $row['status'] = $sequence['']
+                $row['status'] = $this->confirmStatusList[$cstatus];
+                $row['content'] = $row['content'];
             }
             $this->assign('sequence', $sequence);
         }
