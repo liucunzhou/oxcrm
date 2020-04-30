@@ -107,7 +107,7 @@ if(!function_exists('create_order_confirm')) {
                 $data['user_id'] = $this->user['id'];
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
-                $orderConfirm = new OrderConfirm();
+                $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }
         } else {
@@ -120,10 +120,10 @@ if(!function_exists('create_order_confirm')) {
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
                 $data['confirm_user_id'] = $staff->id;
-                $data['user_id'] = $this->user['id'];
+                $data['user_id'] = $userId;
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
-                $orderConfirm = new OrderConfirm();
+                $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }
         }
