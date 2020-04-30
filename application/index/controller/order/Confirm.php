@@ -399,9 +399,10 @@ class Confirm extends Backend
                         $orderConfirm->allowField(true)->save($data);
                     }
                 } else {
+                    $user = \app\common\model\User::getUser($confirm->user_id);
                     // 指定角色审核
                     foreach ($sequence[$next_confirm_item_id] as $row) {
-                        $staff = \app\common\model\User::getRoleManager($row, $this->user);
+                        $staff = \app\common\model\User::getRoleManager($row, $user);
                         $data['is_checked'] = 0;
                         $data['status'] = 0;
                         $data['confirm_item_id'] = $next_confirm_item_id;
