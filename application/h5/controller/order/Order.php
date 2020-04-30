@@ -201,9 +201,6 @@ class Order extends Base
         $sequence = empty($audit) ? [] : json_decode($audit->content, true);
         #### 检测编辑和添加权限
         if ($this->user['id'] == $order['user_id']) {
-            // end($sequence);
-            // $confirmItemId = key($sequence);
-
             // 获取审核状态
             $where = [];
             $where[] = ['order_id', '=', $order['id']];
@@ -249,7 +246,11 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
-        if (empty($banquet)) $banquet = [];
+        if (empty($banquet)) {
+            $banquet = [];
+        } else {
+            $banquet['company_id'] = $this->brands[$banquet->company_id]['title'];
+        }
 
         #### 酒店服务项目
         $where = [];
@@ -281,7 +282,11 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
-        if (empty($wedding)) $wedding = [];
+        if (empty($wedding)) {
+            $wedding = [];
+        } else {
+            $wedding['company_id'] = $this->brands[$wedding->company_id]['title'];
+        }
 
         #### 获取婚宴二销订单信息
         $where = [];
