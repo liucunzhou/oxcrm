@@ -81,6 +81,7 @@ if(!function_exists('create_order_confirm')) {
         if($confirmList->isEmpty()) {
             ### 该员工、该订单、该承办公司第一次审核
             $index = key($sequence);
+            $confirmNO = date('YmdHis').mt_rand(10000,99999);
         } else {
             $where = [];
             $where[] = ['user_id', '=', $userId];
@@ -89,6 +90,7 @@ if(!function_exists('create_order_confirm')) {
             $where[] = ['confirm_type', '=', $confirmType];
             $where[] = ['is_checked', '=', 0];
             $confirmLast = \app\common\model\OrderConfirm::where($where)->order('id desc')->find();
+            $confirmNO = $confirmLast->confirm_no;
             $current = $confirmLast->confirm_item_id;
             $index = get_next_confirm_item($current, $sequence);
             if(is_null($index)) {
@@ -106,7 +108,7 @@ if(!function_exists('create_order_confirm')) {
             foreach ($sequence[$index] as $row)
             {
                 $data = [];
-                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['confirm_no'] =  $confirmNO;
                 $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
@@ -124,7 +126,7 @@ if(!function_exists('create_order_confirm')) {
             foreach ($sequence[$index] as $row) {
                 $staff = \app\common\model\User::getRoleManager($row, $user);
                 $data = [];
-                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['confirm_no'] =  $confirmNO;
                 $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
