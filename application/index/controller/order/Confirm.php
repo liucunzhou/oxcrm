@@ -184,13 +184,13 @@ class Confirm extends Backend
 
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
-            !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
-            !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
-            $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
-            $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+            $order = \app\common\model\Order::get($value['order_id']);
+            !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($order->bridegroom_mobile, '***', 3, 3);;
+            !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($order->bride_mobile, '***', 3, 3);;
             $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            $value['sign_date'] = $order->sign_date;
+            $value['event_date'] = $order->event_date;
         }
-
 
         return $list;
     }
