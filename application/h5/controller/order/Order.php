@@ -94,7 +94,7 @@ class Order extends Base
         ];
 
         ##  审核状态
-        if (isset($param['check_status']) && $param['check_status'] != 'all') {
+        if (isset($param['check_status']) && $param['check_status'] != 'all' && $param['check_status']!='') {
             $map[] = ['check_status', '=', $param['check_status']];
         }
 
@@ -143,7 +143,7 @@ class Order extends Base
         }
 
         $list = $list->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
-        echo $this->model->getLastSql();
+
         if (!$list->isEmpty()) {
             $list = $list->getCollection()->toArray();
             $newsTypes = $this->config['news_type_list'];
