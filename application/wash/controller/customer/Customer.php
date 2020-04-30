@@ -253,13 +253,18 @@ class Customer extends Backend
             }
         } else if (isset($params['mobile']) && !empty($params['mobile']) && strlen($params['mobile']) < 11) {
             $where[] = ['mobile', 'like', "%{$params['mobile']}%"];
-        } else if (isset($get['mobile']) && strlen($params['mobile']) > 11) {
+        } else if (isset($params['mobile']) && strlen($params['mobile']) > 11) {
             $where[] = ['mobile', '=', $params['mobile']];
         }
 
-        $start = strtotime('yesterday') + 86400;
-        $end = strtotime('tomorrow');
-        $where[] = ['create_time', 'between', [$start, $end]];
+        if (!isset($params['next_visit_time']) || empty($params['next_visit_time'])) {
+            $end = strtotime('tomorrow');
+            $where[] = ['create_time', 'between', [0, $end]];
+        } else {
+            $start = strtotime($params['next_visit_time']);
+            $end = strtotime('tomorrow');
+            $where[] = ['create_time', 'between', [$start, $end]];
+        }
 
         // 获取清洗组意向列表
         $tabs = Intention::getWash();

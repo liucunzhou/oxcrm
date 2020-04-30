@@ -37,7 +37,7 @@ class Customer extends Base
         // 获取系统来源,酒店列表,意向状态
         $this->sources = Source::getSources();
         $this->hotels = Store::getStoreList();
-        $this->status = Intention::getIntentions();
+        $this->status = array_values(Intention::getIntentions());
 
         $this->model = new MemberAllocate();
         $this->Membermodel = new Member();
@@ -82,7 +82,6 @@ class Customer extends Base
         if (!empty($list)) {
             $users = User::getUsers();
             $data = $list->getCollection()->toArray();
-
             foreach ($data as &$value) {
                 $value['operator'] = $users[$value['operate_id']]['realname'];
                 $value['user_realname'] = $users[$value['user_id']]['realname'];
@@ -142,8 +141,9 @@ class Customer extends Base
             $map[] = ['next_visit_time', '>', 0];
             $map[] = ['next_visit_time', 'between', [0, $tomorrow]];
         } else {
-            $param['next_visit_time'] = strtotime($param['next_visit_time']);
-            $map[] = ['next_visit_time', 'between', [$param['next_visit_time'], $tomorrow]];
+            $start = strtotime($param['next_visit_time']);
+            $end = $start + 86400;
+            $map[] = ['next_visit_time', 'between', [$start, $end]];
         }
 
         $field = 'id,realname,mobile,active_status,member_id,create_time';
@@ -212,21 +212,6 @@ class Customer extends Base
                 'msg' => $res,
             ]);
         }
-
-        if (empty($param['source_id'])) {
-            return json([
-                'code' => '400',
-                'msg' => '请选择渠道',
-            ]);
-        }
-
-        if (empty($param['city_id'])) {
-            return json([
-                'code' => '400',
-                'msg' => '选择',
-            ]);
-        }
-
 
         $model = new Member();
         $model->member_no = date('YmdHis') . rand(100, 999);
