@@ -24,7 +24,6 @@ class Enter extends Base
     # id = 客资分配id
     public function index()
     {
-        print_r($this->user);
         $param = $this->request->param();
         $allocate = MemberAllocate::get($param['id']);
 
@@ -32,7 +31,6 @@ class Enter extends Base
         $map[] = ['user_id', '=', $this->user['id']];
         $map[] = ['member_id', '=', $allocate->member_id];
         $enterList = $this->model->where($map)->order('create_time desc')->select();
-        echo $this->model->getLastSql();
         foreach ($enterList as &$v){
             $v['status'] = $this->config['into_status_list'][$v->status]['title'];
         }
