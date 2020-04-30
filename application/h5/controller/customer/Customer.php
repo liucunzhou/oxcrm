@@ -213,21 +213,6 @@ class Customer extends Base
             ]);
         }
 
-        if (empty($param['source_id'])) {
-            return json([
-                'code' => '400',
-                'msg' => '请选择渠道',
-            ]);
-        }
-
-        if (empty($param['city_id'])) {
-            return json([
-                'code' => '400',
-                'msg' => '选择',
-            ]);
-        }
-
-
         $model = new Member();
         $model->member_no = date('YmdHis') . rand(100, 999);
         ### 验证手机号唯一性
