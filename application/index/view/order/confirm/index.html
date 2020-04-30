@@ -43,7 +43,199 @@
 </script>
 <script src="/assets/layui/layui.js"></script>
 <script>
+    layui.config({
+        base: '/assets/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'table', 'laydate'], function () {
+        var $ = layui.jquery
+            ,table = layui.table
+            ,laydate = layui.laydate;
 
+        laydate.render({
+            elem: '#date_range',
+            type: 'date',
+            range: '~'
+        });
+
+        table.render({
+            elem: '#table'
+            ,url: tableRequestUrl
+            ,height: 'full-100'
+            ,defaultToolbar: ['filter']
+            // ,toolbar: '#table-toolbar'
+            ,toolbar: false
+            ,title: tableTitle
+            ,cols: [[
+                {
+                    "field": "tool",
+                    "title": "操作",
+                    "align": "center",
+                    "width": 140,
+                    "type": "tool",
+                    "toolbar": "#table-tool"
+                },
+                {
+                    "field": "user_id",
+                    "title": "签单销售",
+                    "align": "center",
+                    "width": 120,
+                    "event" : "showOrder"
+                },{
+                    "field": "status",
+                    "title": "审核状态",
+                    "align": "center",
+                    "width": 120,
+                    "event" : "showOrder"
+                },{
+                    "field": "sign_date",
+                    "title": "签约日期",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "event_date",
+                    "title": "举办日期",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "bridegroom",
+                    "title": "新郎姓名",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "bridegroom_mobile",
+                    "title": "新郎电话",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "bride",
+                    "title": "新娘姓名",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "bride_mobile",
+                    "title": "新娘电话",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "hotel_id",
+                    "title": "酒店名称",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "banquet_hall_id",
+                    "title": "宴会厅",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "create_time",
+                    "title": "创建时间",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "mobile",
+                    "title": "客户电话",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "source_id",
+                    "title": "渠道来源",
+                    "align": "center",
+                    "width": 120
+                },
+            ]]
+            ,page: true,
+            limit: 30,
+            limits: [20, 30]
+        });
+
+        var height = window.innerHeight;
+        var width = window.innerWidth * 0.6;
+        var url = '';
+        //头工具栏事件
+        table.on('toolbar(table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var url = '';
+            switch (obj.event) {
+                case "searchCustomer":
+                    if($("#advance-search").hasClass("layui-hide")) {
+                        $("#advance-search").removeClass("layui-hide");
+                    } else {
+                        $("#advance-search").addClass("layui-hide");
+                    }
+                    break;
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(table)', function (obj) {
+            var id = obj.data.id;
+            switch (obj.event) {
+                case 'editOrder':
+                    url = '/index/order.Order/editorder.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '编辑订单');
+                    break;
+
+                case 'sourceConfirm':
+                    url = '/index/order/sourceconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '来源审核');
+                    break;
+
+                case 'scoreConfirm':
+                    url = '/index/order/scoreconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '积分审核');
+                    break;
+
+                case 'fianceConfirm':
+                    url = '/index/order/fianceconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '财务订单审核');
+                    break;
+
+                case 'accountingPaymentConfirm':
+                    url = '/index/order/accountingpaymentconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '会计付款审核');
+                    break;
+
+                case 'cashierPaymentConfirm':
+                    url = '/index/order/cashierpaymentconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '出纳付款审核');
+                    break;
+
+                case 'fiancePaymentConfirm':
+                    url = '/index/order/fiancepaymentconfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '财务主管付款审核');
+                    break;
+
+                case 'cashierReceviablesConfirm':
+                    url = '/index/order/cashierReceivablesConfirm.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '出纳收款审核');
+                    break;
+
+                case 'showOrder':
+                    url = '/index/order.order/showorder.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '查看订单详情');
+                    break;
+
+                case 'checkResult':
+                    url = '/index/order/checkresult.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '查看审核结果');
+                    break;
+            }
+        });
+
+    });
 </script>
+<script src="/assets/fields/order/entire/{$colsfile}.js?{:rand(1000,10000)}"></script>
+<script src="/assets/fields/order/entire/layui.js?{:rand(1000,10000)}"></script>
 </body>
 </html>
