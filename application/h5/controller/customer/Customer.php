@@ -37,7 +37,7 @@ class Customer extends Base
         // 获取系统来源,酒店列表,意向状态
         $this->sources = Source::getSources();
         $this->hotels = Store::getStoreList();
-        $this->status = Intention::getIntentions();
+        $this->status = array_values(Intention::getIntentions());
 
         $this->model = new MemberAllocate();
         $this->Membermodel = new Member();

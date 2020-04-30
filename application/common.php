@@ -45,3 +45,85 @@ if(!function_exists('get_news_types')) {
         return implode(',', $texts);
     }
 }
+
+### 获取下一个审核顺序
+if(!function_exists('get_next_confirm_item')) {
+    function get_next_confirm_item($current, $sequence)
+    {
+        foreach ($sequence as $key => $value) {
+            next($sequence);
+            if ($key == $current) break;
+        }
+
+        return key($sequence);
+    }
+}
+
+### 创建审核顺序
+if(!function_exists('create_order_confirm')) {
+    function create_order_confirm($orderId, $companyId, $userId)
+    {
+        ### 审核流程
+        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
+        $sequence = json_decode($audit->content, true);
+
+        ### 获取当前订单，当前用户的审核流程
+        $where = [];
+        $where[] = ['user_id', '=', $userId];
+        $where[] = ['order_id', '=', $orderId];
+        $where[] = ['company_id', '=', $companyId];
+        $confirmList = \app\common\model\OrderConfirm::where($where)->order('id desc')->select();
+        if($confirmList->isEmpty()) {
+            ### 该员工、该订单、该承办公司第一次审核
+            $index = key($sequence);
+        } else {
+            $current = '';
+            foreach ($confirmList as $key=>$row) {
+                if ($row['status'] == 2) {
+                    return -1;
+                }
+                $current = $row['confirm_item_id'];
+            }
+            $index = get_next_confirm_item($current, $sequence);
+            if(is_null($index)) {
+
+            } else {
+                $index = key($sequence);
+            }
+        }
+
+        $config = config();
+        $auditConfig = $config['crm']['check_sequence'];
+        if($auditConfig[$index]['type'] == 'staff') {
+            // 指定人员审核
+            foreach ($sequence[$index] as $row)
+            {
+                $data = [];
+                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['company_id'] = $companyId;
+                $data['confirm_item_id'] = $index;
+                $data['confirm_user_id'] = $row;
+                $data['user_id'] = $this->user['id'];
+                $data['order_id'] = $orderId;
+                $data['status'] = 0;
+                $orderConfirm = new OrderConfirm();
+                $orderConfirm->allowField(true)->save($data);
+            }
+        } else {
+            // 指定角色审核
+            foreach ($sequence[$index] as $row) {
+                $staff = \app\common\model\User::getRoleManager($row, $this->user);
+                $data = [];
+                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['company_id'] = $companyId;
+                $data['confirm_item_id'] = $index;
+                $data['confirm_user_id'] = $staff->id;
+                $data['user_id'] = $this->user['id'];
+                $data['order_id'] = $orderId;
+                $data['status'] = 0;
+                $orderConfirm = new OrderConfirm();
+                $orderConfirm->allowField(true)->save($data);
+            }
+        }
+    }
+}

@@ -853,6 +853,7 @@ class Order extends Base
             foreach ($sequence[$first] as $row)
             {
                 $data = [];
+                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
                 $data['company_id'] = $orderData['company_id'];
                 $data['confirm_item_id'] = $first;
                 $data['confirm_user_id'] = $row;
@@ -867,6 +868,7 @@ class Order extends Base
             foreach ($sequence[$first] as $row) {
                 $staff = User::getRoleManager($row, $this->user);
                 $data = [];
+                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
                 $data['company_id'] = $orderData['company_id'];
                 $data['confirm_item_id'] = $first;
                 $data['confirm_user_id'] = $staff->id;
@@ -877,7 +879,6 @@ class Order extends Base
                 $orderConfirm->allowField(true)->save($data);
             }
         }
-
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
