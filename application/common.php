@@ -75,19 +75,18 @@ if(!function_exists('create_order_confirm')) {
         $where[] = ['user_id', '=', $userId];
         $where[] = ['order_id', '=', $orderId];
         $where[] = ['company_id', '=', $companyId];
+        $where[] = ['company_id', '=', $companyId];
 
         $confirmList = \app\common\model\OrderConfirm::where($where)->order('id desc')->select();
         if($confirmList->isEmpty()) {
             ### 该员工、该订单、该承办公司第一次审核
             $index = key($sequence);
         } else {
-            $current = '';
-            foreach ($confirmList as $key=>$row) {
-                if ($row['status'] == 2 && $row['is_checked']== 0) {
-                    return -1;
-                }
-                $current = $row['confirm_item_id'];
-            }
+            $where = [];
+            $where[] = ['user_id', '=', $userId];
+            $where[] = ['order_id', '=', $orderId];
+            $where[] = ['company_id', '=', $companyId];
+
             $index = get_next_confirm_item($current, $sequence);
             if(is_null($index)) {
                 // 已审核完的状态可以添加审核
