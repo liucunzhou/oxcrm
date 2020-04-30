@@ -715,9 +715,9 @@ class Order extends Base
         $orderData['operate_id'] = $this->user['id'];
         $orderData['user_id'] = $this->user['id'];
         $orderData['salesman'] = $this->user['id'];
-        $orderData['image'] = empty($orderData['image_Array']) ? '': implode(',', $orderData['image_Array']);
-        $orderData['receipt_img'] = empty($orderData['receipt_imgArray  ']) ? '': implode(',', $orderData['receipt_imgArray  ']);
-        $orderData['note_imgArray'] = empty($orderData['note_imgArray  ']) ? '': implode(',', $orderData['note_imgArray  ']);
+        $orderData['image'] = empty($orderData['imageArray']) ? '': implode(',', $orderData['imageArray']);
+        $orderData['receipt_img'] = empty($orderData['receipt_imgArray']) ? '': implode(',', $orderData['receipt_imgArray']);
+        $orderData['note_img'] = empty($orderData['note_imgArray']) ? '': implode(',', $orderData['note_imgArray']);
         $OrderModel = new \app\common\model\Order();
         $result = $OrderModel->allowField(true)->save($orderData);
         if(!$result) return json(['code' => '400', 'msg' => '创建失败']);
@@ -926,8 +926,8 @@ class Order extends Base
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
-                $data['receipt_img'] = empty($income['receipt_imgArray  ']) ? '': implode(',', $income['receipt_imgArray  ']);
-                $data['note_imgArray'] = empty($income['note_imgArray  ']) ? '': implode(',', $income['note_imgArray  ']);
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '': implode(',', $income['receipt_imgArray']);
+                $data['note_imgArray'] = empty($income['note_imgArray']) ? '': implode(',', $income['note_imgArray']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
@@ -994,8 +994,8 @@ class Order extends Base
 
         $order = $this->model->where('id', '=', $param['id'])->find();
         $param['image'] = empty($param['image_Array']) ? '': implode(',', $param['image_Array']);
-        $param['receipt_img'] = empty($param['receipt_imgArray  ']) ? '': implode(',', $param['receipt_imgArray  ']);
-        $param['note_imgArray'] = empty($param['note_imgArray  ']) ? '': implode(',', $param['note_imgArray  ']);
+        $param['receipt_img'] = empty($param['receipt_imgArray']) ? '': implode(',', $param['receipt_imgArray']);
+        $param['note_imgArray'] = empty($param['note_imgArray']) ? '': implode(',', $param['note_imgArray']);
         $rs = $order->allowField(true)->save($param);
 
         // id,user_id,create_time,module,controller,action,id,page,content
