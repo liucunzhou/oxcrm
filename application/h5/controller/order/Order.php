@@ -987,6 +987,7 @@ class Order extends Base
                 // 婚宴收款
                 $data = [];
                 $data['banquet_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_date'] = time();
                 $data['banquet_income_payment'] = $income['income_payment'];
                 $data['banquet_income_type'] = $income['income_type'];
                 $data['banquet_income_item_price'] = $income['income_item_price'];
@@ -997,6 +998,8 @@ class Order extends Base
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
+                echo "\neeeeeeeeeeeeeeeeeeeeeee\n";
+                print_r($data);
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
                 echo $receivableModel->getLastSql();
@@ -1004,6 +1007,7 @@ class Order extends Base
                 // 婚庆收款
                 $data = [];
                 $data['wedding_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_date'] = time();
                 $data['wedding_income_payment'] = $income['income_payment'];
                 $data['wedding_income_type'] = $income['income_type'];
                 $data['wedding_income_item_price'] = $income['income_item_price'];
