@@ -369,7 +369,7 @@ class Confirm extends Backend
         $result = $confirm->save();
         if($result) {
             $newConfirm = new OrderConfirm();
-            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked'=>1]);
+            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['status'=>1,'is_checked'=>1]);
 
             ## 获取当前配置
             $where = [];
