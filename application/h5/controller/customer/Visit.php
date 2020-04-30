@@ -38,7 +38,7 @@ class Visit extends Base
         // 获取系统来源,酒店列表,意向状态
         $this->sources = Source::getSources();
         $this->hotels = Store::getStoreList();
-        $this->statusList = array_values(Intention::getIntentions());
+        $this->statusList = Intention::getIntentions();
         // print_r($this->statusList);
         // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
 
