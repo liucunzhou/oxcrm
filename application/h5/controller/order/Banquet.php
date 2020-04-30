@@ -38,8 +38,8 @@ class Banquet extends Base
         $ritualList = Ritual::getList();
         $companyList = Brand::getBrands();
 
-        $data['package_title'] = $packageList[$data['banquet_package_id']]['title'];
-        $data['ritual_title'] = $ritualList[$data['banquet_ritual_id']]['title'];
+        $data['banquet_package_title'] = $packageList[$data['banquet_package_id']]['title'];
+        $data['banquet_ritual_title'] = $ritualList[$data['banquet_ritual_id']]['title'];
         $data['company_title'] = $companyList[$data['company_id']]['title'];
         if ($data) {
             $result = [
