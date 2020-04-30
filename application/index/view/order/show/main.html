@@ -67,6 +67,7 @@
                         <{/foreach}>
                     </ul>
 
+                    <{if $confirm.status == 0}>
                     <div class="layui-input-flex">
                         <div class="layui-btn-group">
                             <div class="layui-btn layui-btn-confirm" data-id="{$confirm.id}" data-action="/index/order.confirm/doAccepte">通过</div>
@@ -74,6 +75,7 @@
                         </div>
                         <input type="text" name="content" id="content" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
+                    <{/if}>
                 </div>
             </div>
             <div class="layui-space10" style="height: 20px;"></div>
