@@ -743,50 +743,57 @@ class Order extends Base
 
         ## 喜糖
         if (!empty($param['sugar'])) {
-            $data = json_decode($param['sugar'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
+            $sugar = json_decode($param['sugar'], true);
+            foreach ($sugar as $data) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
 
-            $sugarModel = new OrderSugar();
-            $data['salesman'] = $data['sugar_salesman'];
-            $sugarModel->allowField(true)->save($data);
+                $sugarModel = new OrderSugar();
+                $data['salesman'] = $data['sugar_salesman'];
+                $sugarModel->allowField(true)->save($data);
+            }
         }
 
         ## 酒水
         if (!empty($param['wine'])) {
-            $data = json_decode($param['wine'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
+            $wine = json_decode($param['wine'], true);
+            foreach ($wine as $data) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
 
-            $wineModel = new OrderWine();
-            $param['salesman'] = $param['wine_salesman'];
-            $wineModel->allowField(true)->save($data);
+                $wineModel = new OrderWine();
+                $param['salesman'] = $param['wine_salesman'];
+                $wineModel->allowField(true)->save($data);
+            }
         }
 
         ## 灯光
         if (!empty($param['light'])) {
-            $data = json_decode($param['wine'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
-
-            $lightModel = new OrderLight();
-            $data['salesman'] = $data['light_salesman'];
-            $lightModel->allowField(true)->save($data);
+            $light = json_decode($param['light'], true);
+            foreach ($light as $data) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $lightModel = new OrderLight();
+                $data['salesman'] = $data['light_salesman'];
+                $lightModel->allowField(true)->save($data);
+            }
         }
 
         ## 点心
         if (!empty($param['dessert'])) {
-            $data = json_decode($param['desset'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
+            $dessert = json_decode($param['dessert'], true);
+            foreach ($dessert as $data) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
 
-            $dessertModel = new OrderDessert();
-            $data['salesman'] = $data['dessert_salesman'];
-            $dessertModel->allowField(true)->save($data);
+                $dessertModel = new OrderDessert();
+                $data['salesman'] = $data['dessert_salesman'];
+                $dessertModel->allowField(true)->save($data);
+            }
         }
 
         ## led
@@ -803,19 +810,20 @@ class Order extends Base
 
         ## 3D
         if (!empty($param['d3'])) {
-            $data = json_decode($param['wine'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
+            $d3 = json_decode($param['d3'], true);
+            foreach ($d3 as $data) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
 
-            $d3Model = new OrderD3();
-            $data['salesman'] = $data['d3_salesman'];
-            $d3Model->allowField(true)->save($data);
+                $d3Model = new OrderD3();
+                $data['salesman'] = $data['d3_salesman'];
+                $d3Model->allowField(true)->save($data);
+            }
         }
 
         ## 收款信息
         if (!empty($param['income'])) {
-
             $income = json_decode($param['income'], true);
             if($orderData['news_type'] == '2' || $orderData['news_type'] == '0'){
                 // 婚宴收款
