@@ -411,8 +411,6 @@ class Confirm extends Backend
                         $orderConfirm->allowField(true)->save($data);
                     }
                 }
-                $newConfirm = new OrderConfirm();
-                $newConfirm->save($data);
             }
 
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
