@@ -187,7 +187,7 @@ class Order extends Base
         $order['news_type'] = $newsTypes[$order['news_type']];
         $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
         $order['status'] = '待审核';
-        $order['sign_date'] = substr($order['sign_date'], 0, 10);
+        $order['sign_date'] = $order['sign_date'] ? '' : substr($order['sign_date'], 0, 10);
         $order['event_date'] = substr($order['event_date'], 0, 10);
         $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
         $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
@@ -715,6 +715,9 @@ class Order extends Base
         $orderData['operate_id'] = $this->user['id'];
         $orderData['user_id'] = $this->user['id'];
         $orderData['salesman'] = $this->user['id'];
+        $orderData['image'] = empty($orderData['image_Array']) ? '': implode(',', $orderData['image_Array']);
+        $orderData['receipt_img'] = empty($orderData['receipt_imgArray  ']) ? '': implode(',', $orderData['receipt_imgArray  ']);
+        $orderData['note_imgArray'] = empty($orderData['note_imgArray  ']) ? '': implode(',', $orderData['note_imgArray  ']);
         $OrderModel = new \app\common\model\Order();
         $result = $OrderModel->allowField(true)->save($orderData);
         if(!$result) return json(['code' => '400', 'msg' => '创建失败']);
@@ -909,6 +912,8 @@ class Order extends Base
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray  ']) ? '': implode(',', $income['receipt_imgArray  ']);
+                $data['note_imgArray'] = empty($income['note_imgArray  ']) ? '': implode(',', $income['note_imgArray  ']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
@@ -921,6 +926,8 @@ class Order extends Base
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray  ']) ? '': implode(',', $income['receipt_imgArray  ']);
+                $data['note_imgArray'] = empty($income['note_imgArray  ']) ? '': implode(',', $income['note_imgArray  ']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
@@ -986,6 +993,9 @@ class Order extends Base
         }
 
         $order = $this->model->where('id', '=', $param['id'])->find();
+        $param['image'] = empty($param['image_Array']) ? '': implode(',', $param['image_Array']);
+        $param['receipt_img'] = empty($param['receipt_imgArray  ']) ? '': implode(',', $param['receipt_imgArray  ']);
+        $param['note_imgArray'] = empty($param['note_imgArray  ']) ? '': implode(',', $param['note_imgArray  ']);
         $rs = $order->allowField(true)->save($param);
 
         // id,user_id,create_time,module,controller,action,id,page,content
