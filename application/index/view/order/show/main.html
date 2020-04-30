@@ -69,8 +69,8 @@
 
                     <div class="layui-input-flex">
                         <div class="layui-btn-group">
-                            <div class="layui-btn layui-btn-confirm" data-action="/index/order.confirm/doAccepte/id/{$confirm.id}">通过</div>
-                            <div class="layui-btn layui-btn-confirm layui-btn-danger" data-action="/index/order.confirm/doReject/id/{$confirm.id}">驳回</div>
+                            <div class="layui-btn layui-btn-confirm" data-id="{$confirm.id}" data-action="/index/order.confirm/doAccepte">通过</div>
+                            <div class="layui-btn layui-btn-confirm layui-btn-danger" data-id="{$confirm.id}" data-action="/index/order.confirm/doReject">驳回</div>
                         </div>
                         <input type="text" name="content" id="content" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
@@ -86,6 +86,7 @@
             if(!confirm("确认提交审核结果么?")) {
                 return false;
             }
+            var id = $(this).attr("data-id");
             var content = $("#content").val();
             var url = $(this).attr("data-action");
             if($(this).hasClass("layui-btn-danger") && content=='') {
@@ -93,7 +94,7 @@
                 return false;
             }
 
-            $.post(url, {content:content}, function(res) {
+            $.post(url, {id:id,content:content}, function(res) {
                 if(res.code == '200'){
                     window.location.reload();
                 }
