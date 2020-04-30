@@ -83,7 +83,7 @@ if(!function_exists('create_order_confirm')) {
         } else {
             $current = '';
             foreach ($confirmList as $key=>$row) {
-                if ($row['status'] == 2) {
+                if ($row['status'] == 2 && $row['is_checked']== 0) {
                     return -1;
                 }
                 $current = $row['confirm_item_id'];

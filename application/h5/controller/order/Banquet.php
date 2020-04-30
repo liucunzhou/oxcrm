@@ -24,16 +24,20 @@ class Banquet extends Base
         $fields = "create_time,delete_time,update_time";
         $where = [];
         $where[] = ['id', '=', $id];
-        $banquet = $this->model->field($fields, true)->where($where)->order('id desc')->find();
+        $data = $this->model->field($fields, true)->where($where)->order('id desc')->find();
         $packageList = Package::getList();
         $ritualList = Ritual::getList();
         $companyList = Brand::getBrands();
-        if ($banquet) {
+
+        $data->package_title = $companyList[$data->banquet_package_id]['title'];
+        $data->ritual_title = $companyList[$data->banquet_ritual_id]['title'];
+        $data->company_title = $companyList[$data->company_id]['title'];
+        if ($data) {
             $result = [
                 'code'  => '200',
                 'msg'   => '获取婚宴信息成功',
                 'data'  => [
-                    'banquet'   => $banquet,
+                    'banquet'   => $data,
                     'packageList' => array_values($packageList),
                     'ritualList' => array_values($ritualList),
                     'companyList' =>  array_values($companyList)
