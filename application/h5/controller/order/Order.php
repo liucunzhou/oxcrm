@@ -131,7 +131,7 @@ class Order extends Base
         }
 
 
-        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile,check_status";
         $list = $this->model->where($map);
 
         if (isset($param['keywords']) && !empty($param['keywords'])) {
