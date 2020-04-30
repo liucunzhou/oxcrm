@@ -309,12 +309,18 @@ class Confirm extends Backend
                 $where[] = ['company_id', '=', $order->company_id];
                 $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
                 $where[] = ['confirm_type', '=', $orderConfirm->confirm_type];
+                $where[] = ['confirm_item_id', '=', $key];
                 $confirmModel = new OrderConfirm();
                 $currentConfirm = $confirmModel->where($where)->find();
-                $cstatus = $currentConfirm->status;
                 $row['title'] = $sequences[$key]['title'];
-                $row['status'] = $this->confirmStatusList[$cstatus];
-                $row['content'] = $row['content'];
+                if (!empty($currentConfirm)) {
+                    $cstatus = $currentConfirm->status;
+                    $row['status'] = $this->confirmStatusList[$cstatus];
+                    $row['content'] = $row['content'];
+                } else {
+                    $row['status'] = '待审核';
+                    $row['content'] = '';
+                }
             }
             $this->assign('sequence', $sequence);
         }
