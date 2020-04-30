@@ -187,7 +187,7 @@ class Confirm extends Backend
             $order = \app\common\model\Order::get($value['order_id']);
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($order->bridegroom_mobile, '***', 3, 3);;
             !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($order->bride_mobile, '***', 3, 3);;
-            $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+            $value['user_id'] = isset($users[$value['user_id']]) ? $users[$value['user_id']]['realname'] : '-';
             $value['sign_date'] = $order->sign_date;
             $value['event_date'] = $order->event_date;
         }
