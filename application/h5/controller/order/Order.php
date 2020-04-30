@@ -201,6 +201,9 @@ class Order extends Base
         $sequence = empty($audit) ? [] : json_decode($audit->content, true);
         #### 检测编辑和添加权限
         if ($this->user['id'] == $order['user_id']) {
+            end($sequence);
+            $confirmItemId = key($sequence);
+
             // 获取审核状态
             $where = [];
             $where[] = ['order_id', '=', $order['id']];

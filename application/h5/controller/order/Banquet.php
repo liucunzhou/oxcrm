@@ -31,7 +31,7 @@ class Banquet extends Base
                 'code'  => '200',
                 'msg'   => '获取婚宴信息成功',
                 'data'  => [
-                    'detail'   => $banquet,
+                    'banquet'   => $banquet,
                     'packageList' => $packageList,
                     'ritualList' => $ritualList
                 ]

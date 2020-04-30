@@ -27,7 +27,7 @@ class Wedding extends Base
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
-                    'detail' => $data,
+                    'wedding' => $data,
                     'packageList' => $packageList,
                     'ritualList' => $ritualList
                 ]
