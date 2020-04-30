@@ -194,6 +194,30 @@ class Order extends Base
         $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
 
+        $audit = \app\common\model\Audit::where('company_id', '=', $order['company_id'])->find();
+        $sequence = json_decode($audit->content, true);
+        #### 检测编辑和添加权限
+        if ($this->user['id'] == $order['user_id']) {
+            end($sequence);
+            $confirmItemId = key($sequence);
+
+            // 获取审核状态
+            $where = [];
+            $where[] = ['order_id', '=', $order['id']];
+            $where[] = ['company_id', '=', $order['company_id']];
+            $where[] = ['user_id', '=', $this->user['id']];
+            $where[] = ['confirm_item_id', '=', $confirmItemId];
+            $where[] = ['status', '=', 3];
+            $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->select();
+            if (empty($confirmList)) {
+                $edit = 0;
+            } else {
+                $edit = 1;
+            }
+        } else {
+
+        }
+
         #### 获取用户信息
         $member = Member::field('realname,mobile,source_text')->where('id', '=', $order->member_id)->find();
 
@@ -403,14 +427,14 @@ class Order extends Base
             'code' => '200',
             'msg' => '获取成功',
             'data' => [
-                'edit'  => 1,
+                'edit'  => $edit,
                 'order' => [
                     'id'  => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.order/edit',
                     'api' => '/h5/order.order/doEdit',
                     'json' => $order,
-                    'edit' => 1,
+                    'edit' => $edit,
                 ],
                 'member' => [
                     'id'  => $orderId,
@@ -426,14 +450,15 @@ class Order extends Base
                     'read' => '/h5/order.banquet/edit',
                     'api' => '/h5/order.banquet/doEdit',
                     'json' => $banquet,
-                    'edit' => 1,
+                    'edit' => $edit,
                 ],
                 'banquetSuborderList' => [
                     'id'  => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.banquet_suborder/edit',
                     'api' => '/h5/order.banquet_suborder/doEdit',
-                    'array' => $banquetSuborderList
+                    'array' => $banquetSuborderList,
+                    'edit' => 0,
                 ],
                 'hotelItem' => [
                     'id'  => $orderId,
@@ -441,7 +466,7 @@ class Order extends Base
                     'read' => '/h5/order.hotel_item/edit',
                     'api' => '/h5/order.hotel_item/doEdit',
                     'json' => $hotelItem,
-                    'edit' => 1,
+                    'edit' => $edit,
                 ],
                 'wedding' => [
                     'id'  => $orderId,
@@ -449,14 +474,15 @@ class Order extends Base
                     'read' => '/h5/order.wedding/edit',
                     'api' => '/h5/order.wedding/doEdit',
                     'json' => $wedding,
-                    'edit' => 1,
+                    'edit' => $edit,
                 ],
                 'weddingSuborderList' => [
                     'id'  => $orderId,
                     'picker' => '',
                     'read' => '/h5/order.wedding_suborder/edit',
                     'api' => '/h5/order.wedding_suborder/doEdit',
-                    'array' => $weddingSuborderList
+                    'array' => $weddingSuborderList,
+                    'edit' => 0,
                 ],
                 'carList' => [
                     'id'  => $orderId,
@@ -470,7 +496,8 @@ class Order extends Base
                     'picker' => '/h5/dictionary.wine/getList',
                     'read' => '/h5/order.wine/edit',
                     'api' => '/h5/order.wine/doEdit',
-                    'array' => $wineList
+                    'array' => $wineList,
+                    'edit' => 0,
                 ],
                 'sugarList' => [
                     'id'  => $orderId,
@@ -484,14 +511,16 @@ class Order extends Base
                     'picker' => '/h5/dictionary.dessert/getList',
                     'read' => '/h5/order.dessert/edit',
                     'api' => '/h5/order.dessert/doEdit',
-                    'array' => $dessertList
+                    'array' => $dessertList,
+                    'edit' => 0,
                 ],
                 'lightList' => [
                     'id'  => $orderId,
                     'picker' => '/h5/dictionary.light/getList',
                     'read' => '/h5/order.light/edit',
                     'api' => '/h5/order.light/doEdit',
-                    'array' => $lightList
+                    'array' => $lightList,
+                    'edit'  => 0,
                 ],
                 'ledList' => [
                     'id'  => $orderId,
@@ -499,6 +528,7 @@ class Order extends Base
                     'read' => '/h5/order.led/edit',
                     'api' => '/h5/order.led/doEdit',
                     'array' => $ledList,
+                    'edit' => 0,
                 ],
                 'd3List' => [
                     'id'  => $orderId,
@@ -506,7 +536,7 @@ class Order extends Base
                     'read' => '/h5/order.d3/edit',
                     'api' => '/h5/order.d3/doEdit',
                     'array' => $d3List,
-                    'edit' => 1,
+                    'edit' => 0,
                 ],
                 // 合同收款信息
                 'contractPrice' => [
@@ -515,7 +545,7 @@ class Order extends Base
                     'read' => '/h5/order.contract/edit',
                     'api' => '/h5/order.contract/doEdit',
                     'json' => $contractPrice,
-                    'edit' => 1,
+                    'edit' => $edit,
                 ],
                 // 订单收款信息
                 'incomeList'    => [
@@ -532,10 +562,10 @@ class Order extends Base
                     'read' => '/h5/order.payment/edit',
                     'api' => '/h5/order.payment/doEdit',
                     'array' => $paymentList,
-                    'edit' => 1,
+                    'edit' => 0,
                 ],
                 'addItems'      => [
-                    'edit'  => 1,
+                    'edit'  => $edit,
                     'addItems' => [
                         [
                             'id'    => 'suborder',
