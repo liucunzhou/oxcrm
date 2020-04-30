@@ -360,7 +360,8 @@ class Confirm extends Backend
         $confirm->status = 1;
         $result = $confirm->save();
         if($result) {
-            create_order_confirm($confirm->orderId, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
+            $this->model->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
+            create_order_confirm($confirm->order_id, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
@@ -378,12 +379,14 @@ class Confirm extends Backend
         $confirm->content = $param['content'];
         $confirm->status = 2;
         $result = $confirm->save();
+        $this->model->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
         if($result) {
-            create_order_confirm($confirm->orderId, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
+
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
         }
 
+        return json($json);
     }
 }
