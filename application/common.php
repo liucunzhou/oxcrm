@@ -75,6 +75,7 @@ if(!function_exists('create_order_confirm')) {
         $where[] = ['user_id', '=', $userId];
         $where[] = ['order_id', '=', $orderId];
         $where[] = ['company_id', '=', $companyId];
+
         $confirmList = \app\common\model\OrderConfirm::where($where)->order('id desc')->select();
         if($confirmList->isEmpty()) {
             ### 该员工、该订单、该承办公司第一次审核
@@ -110,6 +111,7 @@ if(!function_exists('create_order_confirm')) {
                 $data['user_id'] = $this->user['id'];
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
+                $data['is_checked'] = 0;
                 $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }
@@ -126,6 +128,7 @@ if(!function_exists('create_order_confirm')) {
                 $data['user_id'] = $userId;
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
+                $data['is_checked'] = 0;
                 $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }

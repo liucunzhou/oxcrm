@@ -1,6 +1,7 @@
 <?php
 namespace app\h5\controller\order;
 
+use app\common\model\Brand;
 use app\common\model\OrderWedding;
 use app\common\model\Package;
 use app\common\model\Ritual;
@@ -24,14 +25,16 @@ class Wedding extends Base
         $data = $this->model->field($fields, true)->where($where)->find();
         $packageList = Package::getList();
         $ritualList = Ritual::getList();
+        $companyList = Brand::getBrands();
         if($data) {
             $result = [
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
                     'wedding' => $data,
-                    'packageList' => $packageList,
-                    'ritualList' => $ritualList
+                    'packageList' => array_values($packageList),
+                    'ritualList' => array_values($ritualList),
+                    'companyList' =>  array_values($companyList)
                 ]
             ];
         } else {

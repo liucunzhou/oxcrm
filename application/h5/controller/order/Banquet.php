@@ -3,6 +3,7 @@
 namespace app\h5\controller\order;
 
 
+use app\common\model\Brand;
 use app\common\model\OrderBanquet;
 use app\common\model\Package;
 use app\common\model\Ritual;
@@ -26,14 +27,16 @@ class Banquet extends Base
         $banquet = $this->model->field($fields, true)->where($where)->order('id desc')->find();
         $packageList = Package::getList();
         $ritualList = Ritual::getList();
+        $companyList = Brand::getBrands();
         if ($banquet) {
             $result = [
                 'code'  => '200',
                 'msg'   => '获取婚宴信息成功',
                 'data'  => [
                     'banquet'   => $banquet,
-                    'packageList' => $packageList,
-                    'ritualList' => $ritualList
+                    'packageList' => array_values($packageList),
+                    'ritualList' => array_values($ritualList),
+                    'companyList' =>  array_values($companyList)
                 ]
             ];
         } else {
