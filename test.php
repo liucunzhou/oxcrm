@@ -1,4 +1,9 @@
 <?php
+$star = '';
+$arr = explode(',', $star);
+print_r([]);
+exit;
+
 $json = '{"source":["179"],"coo":["6"],"assistant":["289","565"],"ceo":["575"],"cashier":["717"],"accounting":["587"]}';
 
 function getNextConfirmItem($current='source', $sequence)

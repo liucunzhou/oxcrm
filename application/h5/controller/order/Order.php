@@ -167,8 +167,8 @@ class Order extends Base
     public function detail()
     {
         $param = $this->request->param();
-        $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,totals,earnest_money_date,earnest_money,middle_money_date,middle_money,tail_money_date,tail_money,remark";
-        $order = $this->model->where('id', '=', $param['id'])->field($fields)->find();
+        // $fields = "id,contract_no,score,company_id,news_type,banquet_hall_name,sign_date,event_date,hotel_text,cooperation_mode,bridegroom,salesman,recommend_salesman,bridegroom_mobile,bride,bride_mobile,totals,earnest_money_date,earnest_money,middle_money_date,middle_money,tail_money_date,tail_money,remark";
+        $order = $this->model->where('id', '=', $param['id'])->find();
         if (empty($order)) {
             $result = [
                 'code' => '200',
@@ -190,6 +190,11 @@ class Order extends Base
         $order['event_date'] = substr($order['event_date'], 0, 10);
         $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
         $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
+        $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
+        $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
+        $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
+
+        #### 获取用户信息
         $member = Member::field('realname,mobile,source_text')->where('id', '=', $order->member_id)->find();
 
         #### 获取婚宴订单信息
@@ -210,6 +215,8 @@ class Order extends Base
         $banquetSuborderList = \app\common\model\OrderBanquetSuborder::where($where)->select();
         foreach ($banquetSuborderList as &$row) {
             $row['edit'] = 1;
+            $row['receipt_img'] = empty($row['receipt_img']) ? [] : explode(',', $row['receipt_img']);
+            $row['note_img'] = empty($row['note_img']) ? [] : explode(',', $row['note_img']);
         }
 
         #### 获取婚宴收款信息
@@ -230,6 +237,8 @@ class Order extends Base
         $weddingSuborderList = \app\common\model\OrderWeddingSuborder::where($where)->select();
         foreach ($weddingSuborderList as &$row) {
             $row['edit'] = 1;
+            $row['receipt_img'] = empty($row['receipt_img']) ? [] : explode(',', $row['receipt_img']);
+            $row['note_img'] = empty($row['note_img']) ? [] : explode(',', $row['note_img']);
         }
 
         #### 获取婚宴收款信息
@@ -334,6 +343,8 @@ class Order extends Base
                 'income_real_date'  => $value['banquet_income_real_date'],
                 'income_item_price'  => $value['banquet_income_item_price'],
                 'income_remark' => $value['remark'],
+                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
                 'edit'  => 1
             ];
         }
@@ -348,6 +359,8 @@ class Order extends Base
                 'income_real_date'  => $value['wedding_income_real_date'],
                 'income_item_price'  => $value['wedding_income_item_price'],
                 'income_remark' => $value['remark'],
+                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
                 'edit'  => 1
             ];
         }
@@ -364,6 +377,8 @@ class Order extends Base
                 'pay_real_date'  => $value['banquet_pay_real_date'],
                 'pay_item_price'  => $value['banquet_pay_item_price'],
                 'payment_remark' => $value['banquet_payment_remark'],
+                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
                 'edit'  => 1
             ];
         }
@@ -377,6 +392,8 @@ class Order extends Base
                 'pay_real_date'  => $value['wedding_pay_real_date'],
                 'pay_item_price'  => $value['wedding_pay_item_price'],
                 'payment_remark' => $value['wedding_payment_remark'],
+                'receipt_img'   => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img'   => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
                 'edit'  => 1
             ];
         }
