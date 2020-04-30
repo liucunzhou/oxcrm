@@ -133,6 +133,7 @@ class Order extends Base
 
         $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
         $list = $this->model->where($map);
+        echo $this->model->getLastSql();
 
         if (isset($param['keywords']) && !empty($param['keywords'])) {
             if (is_numeric($param['keywords'])) {
