@@ -1083,6 +1083,7 @@ class Order extends Base
 
         // id,user_id,create_time,module,controller,action,id,page,content
         if ($rs) {
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income');
             $result = [
                 'code' => '200',
                 'msg' => '编辑成功'

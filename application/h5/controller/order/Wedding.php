@@ -62,7 +62,7 @@ class Wedding extends Base
     public function doEdit()
     {
         $params = $this->request->param();
-
+        $params = json_decode($params['wedding'], true);
         if(empty(!$params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];

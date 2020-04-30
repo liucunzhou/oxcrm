@@ -66,6 +66,7 @@ class Banquet extends Base
     {
         $params = $this->request->param();
 
+        $params = json_decode($params['banquet'], true);
         if (empty(!$params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];
