@@ -1022,7 +1022,7 @@ class Order extends Base
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
         $orderId = $OrderModel->id;
-        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id']);
+        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id'], 'income');
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
