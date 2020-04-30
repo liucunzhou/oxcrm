@@ -988,7 +988,7 @@ class Order extends Base
                 $data['banquet_receivable_no'] = $income['receivable_no'];
                 $data['banquet_income_date'] = time();
                 $data['banquet_income_payment'] = $income['income_payment'];
-                $data['banquet_income_type'] = $income['income_type'];
+                $data['banquet_income_type'] = 1;
                 $data['banquet_income_item_price'] = $income['income_item_price'];
                 $data['banquet_income_remark'] = $income['income_remark'];
                 $data['order_id'] = $OrderModel->id;
@@ -1005,7 +1005,7 @@ class Order extends Base
                 $data['wedding_receivable_no'] = $income['receivable_no'];
                 $data['wedding_income_date'] = time();
                 $data['wedding_income_payment'] = $income['income_payment'];
-                $data['wedding_income_type'] = $income['income_type'];
+                $data['wedding_income_type'] = 1;
                 $data['wedding_income_item_price'] = $income['income_item_price'];
                 $data['wedding_income_remark'] = $income['income_remark'];
                 $data['order_id'] = $OrderModel->id;
