@@ -105,8 +105,8 @@ class Confirm extends Base
         $where[] = ['order_id', '=', $param['id']];
         $where[] = ['company_id', '=', $order->company_id];
         $where[] = ['user_id', '=', $this->user['id']];
-        $where[] = ['is_checked', '=', '0'];
-        $orderConfirm = OrderConfirm::where($where)->find();
+        // $where[] = ['is_checked', '=', '0'];
+        $orderConfirm = OrderConfirm::where($where)->order('id desc')->find();
 
         $where = [];
         $where[] = ['company_id', '=', $order->company_id];

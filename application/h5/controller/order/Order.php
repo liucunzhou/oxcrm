@@ -19,6 +19,7 @@ use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWine;
+use app\common\model\Package;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
@@ -38,7 +39,8 @@ class Order extends Base
     protected $dessertList = [];
     protected $ledList = [];
     protected $d3List = [];
-
+    protected $packageList = [];
+    protected $ritualList = [];
 
     protected function initialize()
     {
@@ -47,6 +49,12 @@ class Order extends Base
 
         ## 获取所有品牌、公司
         $this->brands = \app\common\model\Brand::getBrands();
+
+        ## 套餐列表
+        $this->packageList = \app\common\model\Package::getList();
+
+        ## 套餐列表
+        $this->ritualList = \app\common\model\Ritual::getList();
 
         ## 汽车列表
         $this->carList = \app\common\model\Car::getList();
@@ -243,6 +251,8 @@ class Order extends Base
             $banquet = [];
         } else {
             $banquet['company_id'] = $this->brands[$banquet->company_id]['title'];
+            $banquet['banquet_package_title'] = $this->packageList[$banquet->banquet_package_id]['title'];
+            $banquet['banquet_ritual_title'] = $this->ritualList[$banquet->banquet_ritual_id]['title'];
         }
 
         #### 酒店服务项目
@@ -279,6 +289,8 @@ class Order extends Base
             $wedding = [];
         } else {
             $wedding['company_id'] = $this->brands[$wedding->company_id]['title'];
+            $banquet['wedding_package_title'] = $this->packageList[$banquet->wedding_package_id]['title'];
+            $banquet['wedding_ritual_title'] = $this->ritualList[$banquet->wedding_ritual_id]['title'];
         }
 
         #### 获取婚宴二销订单信息
