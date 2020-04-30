@@ -175,7 +175,7 @@
             var id = obj.data.id;
             switch (obj.event) {
                 case 'editOrder':
-                    url = '/index/order.order/showOrder.html?confirm_id=' + id;
+                    url = '/index/order.confirm/showOrder.html?confirm_id=' + id;
                     top.layui.index.openTabsPage(url, '审核订单');
                     break;
             }
@@ -183,7 +183,5 @@
 
     });
 </script>
-<script src="/assets/fields/order/entire/{$colsfile}.js?{:rand(1000,10000)}"></script>
-<script src="/assets/fields/order/entire/layui.js?{:rand(1000,10000)}"></script>
 </body>
 </html>
