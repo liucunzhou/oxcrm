@@ -384,6 +384,7 @@ class Confirm extends Backend
                 $data['is_checked'] = 0;
                 $data['status'] = 0;
                 $data['confirm_item_id'] = $next_confirm_item_id;
+                unset($data['id']);
                 unset($data['create_time']);
                 unset($data['update_time']);
                 unset($data['delete_time']);
