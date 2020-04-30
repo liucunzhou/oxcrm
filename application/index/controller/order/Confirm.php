@@ -381,13 +381,35 @@ class Confirm extends Backend
             $current = $confirm->confirm_item_id;
             $next_confirm_item_id = get_next_confirm_item($current, $sequence);
             if(!is_null($next_confirm_item_id)) {
-                $data['is_checked'] = 0;
-                $data['status'] = 0;
-                $data['confirm_item_id'] = $next_confirm_item_id;
+                $config = config();
+                $auditConfig = $config['crm']['check_sequence'];
                 unset($data['id']);
                 unset($data['create_time']);
                 unset($data['update_time']);
                 unset($data['delete_time']);
+                if($auditConfig[$next_confirm_item_id]['type'] == 'staff') {
+                    // 指定人员审核
+                    foreach ($sequence[$next_confirm_item_id] as $row)
+                    {
+                        $data['is_checked'] = 0;
+                        $data['status'] = 0;
+                        $data['confirm_item_id'] = $next_confirm_item_id;
+                        $data['confirm_user_id'] = $row;
+                        $orderConfirm = new \app\common\model\OrderConfirm();
+                        $orderConfirm->allowField(true)->save($data);
+                    }
+                } else {
+                    // 指定角色审核
+                    foreach ($sequence[$next_confirm_item_id] as $row) {
+                        $staff = \app\common\model\User::getRoleManager($row, $this->user);
+                        $data['is_checked'] = 0;
+                        $data['status'] = 0;
+                        $data['confirm_item_id'] = $next_confirm_item_id;
+                        $data['confirm_user_id'] = $staff->id;
+                        $orderConfirm = new \app\common\model\OrderConfirm();
+                        $orderConfirm->allowField(true)->save($data);
+                    }
+                }
                 $newConfirm = new OrderConfirm();
                 $newConfirm->save($data);
             }
