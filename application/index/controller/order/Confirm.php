@@ -411,6 +411,9 @@ class Confirm extends Backend
                         $orderConfirm->allowField(true)->save($data);
                     }
                 }
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>1]);
+            } else {
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>2]);
             }
 
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
@@ -432,7 +435,7 @@ class Confirm extends Backend
         $result = $confirm->save();
         $this->model->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
         if($result) {
-
+            \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>3]);
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];

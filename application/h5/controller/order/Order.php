@@ -41,6 +41,7 @@ class Order extends Base
     protected $d3List = [];
     protected $packageList = [];
     protected $ritualList = [];
+    protected $confirmStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
 
     protected function initialize()
     {
@@ -194,7 +195,7 @@ class Order extends Base
         $order['company_id'] = $this->brands[$order['company_id']]['title'];
         $order['news_type'] = $newsTypes[$order['news_type']];
         $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
-        $order['status'] = '待审核';
+        $order['status'] = $this->confirmStatusList[$order['check_status']];
         $order['sign_date'] = $order['sign_date'] ? date('Y-m-d', $order['sign_date']) : '-';
         $order['event_date'] = $order['event_date'] ? date('Y-m-d', $order['event_date']) : '-';
         $order['earnest_money_date'] = $order['earnest_money_date'] ? date('Y-m-d', $order['earnest_money_date']) : '-';
