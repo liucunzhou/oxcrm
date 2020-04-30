@@ -197,21 +197,22 @@ class Order extends Base
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
 
         #### 审核流程
-        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
-        $sequence = empty($audit) ? [] : json_decode($audit->content, true);
+        // $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
+        // $sequence = empty($audit) ? [] : json_decode($audit->content, true);
         #### 检测编辑和添加权限
+        #### 不管是谁 只要存在未被审核的将视为不能编辑，驳回后会添加新的未审核，审核后会修改is_checked=1
+        $where = [];
+        $where[] = ['order_id', '=', $order['id']];
+        $where[] = ['company_id', '=', $order['company_id']];
+        $where[] = ['user_id', '=', $this->user['id']];
+        $where[] = ['is_checked', '=', 0];
+        // $where[] = ['status', '=', 3];
+        $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
         if ($this->user['id'] == $order['user_id']) {
-            end($sequence);
-            $confirmItemId = key($sequence);
+            // end($sequence);
+            // $confirmItemId = key($sequence);
 
             // 获取审核状态
-            $where = [];
-            $where[] = ['order_id', '=', $order['id']];
-            $where[] = ['company_id', '=', $order['company_id']];
-            $where[] = ['user_id', '=', $this->user['id']];
-            // $where[] = ['confirm_item_id', '=', $confirmItemId];
-            $where[] = ['status', '=', 3];
-            $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
             if (empty($confirmLast)) {
                 $edit = 0;
                 $orderEdit = 0;
@@ -221,19 +222,8 @@ class Order extends Base
             }
 
         } else {
-            end($sequence);
-            $confirmItemId = key($sequence);
 
-            $where = [];
-            $where[] = ['order_id', '=', $order['id']];
-            $where[] = ['company_id', '=', $order['company_id']];
-            $where[] = ['user_id', '=', $this->user['id']];
-            $where[] = ['status', '=', 3];
-            $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->select();
-            if ($confirmList->isEmpty()) {
-                $edit = 0;
-                $orderEdit = 1;
-            } else if ($confirmList[0]['confirm_item_id'] == $confirmItemId && $confirmList[0]['status']==2) {
+            if (empty($confirmLast)) {
                 $edit = 0;
                 $orderEdit = 1;
             } else {
