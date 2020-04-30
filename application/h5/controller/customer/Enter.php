@@ -32,6 +32,7 @@ class Enter extends Base
         $map[] = ['user_id', '=', $this->user['id']];
         $map[] = ['member_id', '=', $allocate->member_id];
         $enterList = $this->model->where($map)->order('create_time desc')->select();
+        echo $this->model->getLastSql();
         foreach ($enterList as &$v){
             $v['status'] = $this->config['into_status_list'][$v->status]['title'];
         }
