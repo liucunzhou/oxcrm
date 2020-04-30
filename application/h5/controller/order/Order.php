@@ -197,6 +197,9 @@ class Order extends Base
         $order['status'] = '待审核';
         $order['sign_date'] = $order['sign_date'] ? date('Y-m-d', $order['sign_date']) : '-';
         $order['event_date'] = $order['event_date'] ? date('Y-m-d', $order['event_date']) : '-';
+        $order['earnest_money_date'] = $order['earnest_money_date'] ? date('Y-m-d', $order['earnest_money_date']) : '-';
+        $order['middle_money_date'] = $order['middle_money_date'] ? date('Y-m-d', $order['middle_money_date']) : '-';
+        $order['tail_money_date'] = $order['tail_money_date'] ? date('Y-m-d', $order['tail_money_date']) : '-';
         $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
         $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
         $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
