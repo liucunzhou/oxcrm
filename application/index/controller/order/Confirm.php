@@ -178,7 +178,7 @@ class Confirm extends Backend
             'page' => $get['page']
         ];
         $map = [];
-        $map[] = ['company_id', '='. $get['company_id']];
+        $map[] = ['company_id', '=', $get['company_id']];
 
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
 
