@@ -980,6 +980,7 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
+            echo "\n信息类型:";
             echo $orderData['news_type'];
             print_r($income);
             if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
@@ -1015,6 +1016,8 @@ class Order extends Base
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
+                echo "\n";
+                echo $receivableModel->getLastSql();
             }
         }
 
