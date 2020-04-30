@@ -307,7 +307,7 @@ class Confirm extends Backend
                 $where[] = ['order_id', '=', $get['id']];
                 $where[] = ['company_id', '=', $order->company_id];
                 $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
-                $where[] = ['timing', '=', $orderConfirm->confirm_type];
+                $where[] = ['confirm_type', '=', $orderConfirm->confirm_type];
                 $confirmModel = new OrderConfirm();
                 $currentConfirm = $confirmModel->where($where)->find();
                 $cstatus = $currentConfirm->status;
