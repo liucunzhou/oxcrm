@@ -366,7 +366,8 @@ class Confirm extends Backend
         $confirm->status = 1;
         $result = $confirm->save();
         if($result) {
-            OrderConfirm::where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
+            $newConfirm = new OrderConfirm();
+            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
             create_order_confirm($confirm->order_id, $confirm->company_id, $confirm->user_id, $confirm->confirm_type);
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
