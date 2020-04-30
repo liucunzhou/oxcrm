@@ -223,6 +223,7 @@ class Order extends Backend
         $OrderModel->allowField(true)->save($request);
         $request['order_id'] = $OrderModel->id;
         $request['operate_id'] = $this->user['id'];
+        $request['user_id'] = $this->user['id'];
         ## banquet message
         if (!empty($request['wedding_total'])) {
             $BanquetModel = new OrderBanquet();
@@ -292,6 +293,7 @@ class Order extends Backend
         if (!empty($request['sugar_id'])) {
             $sugarModel = new OrderSugar();
             // get wedding devices
+
             $request['salesman']= $request['sugar_salesman'];
             $sugarModel->allowField(true)->save($request);
         }

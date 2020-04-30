@@ -922,10 +922,10 @@ class Order extends Base
             $light = json_decode($param['light'], true);
             foreach ($light as $data) {
                 if (empty($data['light_id'])) continue;
-
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+
                 $lightModel = new OrderLight();
                 $data['salesman'] = $data['light_salesman'];
                 $lightModel->allowField(true)->save($data);
@@ -984,6 +984,8 @@ class Order extends Base
                 // 婚宴收款
                 $data = [];
                 $data['banquet_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_payment'] = $income['income_payment'];
+                $data['banquet_income_type'] = $income['income_type'];
                 $data['banquet_income_item_price'] = $income['income_item_price'];
                 $data['banquet_income_remark'] = $income['income_remark'];
                 $data['order_id'] = $OrderModel->id;
@@ -998,6 +1000,8 @@ class Order extends Base
                 // 婚庆收款
                 $data = [];
                 $data['wedding_receivable_no'] = $income['receivable_no'];
+                $data['wedding_income_payment'] = $income['income_payment'];
+                $data['wedding_income_type'] = $income['income_type'];
                 $data['wedding_income_item_price'] = $income['income_item_price'];
                 $data['wedding_income_remark'] = $income['income_remark'];
                 $data['order_id'] = $OrderModel->id;
