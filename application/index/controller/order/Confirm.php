@@ -191,7 +191,7 @@ class Confirm extends Backend
             $value['banquet_hall_name'] = $order->banquet_hall_name;
             $value['hotel_text'] = $order->hotel_text;
             $value['source_text'] = $order->source_text;
-            $value['bridegroom_mobile'] = $order->bridegroom_mobile;
+            $value['bridegroom'] = $order->bridegroom;
             $value['bride'] = $order->bride;
             $value['sign_date'] = $order->sign_date;
             $value['event_date'] = $order->event_date;
