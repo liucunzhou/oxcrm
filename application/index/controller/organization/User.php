@@ -383,6 +383,7 @@ class User extends Backend
     {
         $request = Request::param();
         if($request['id'] < 1) {
+
             return json(['code'=>'500', 'msg'=>'请选择要分配的员工']);
         }
 

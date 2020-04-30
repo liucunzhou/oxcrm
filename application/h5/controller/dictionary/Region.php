@@ -34,7 +34,7 @@ class Region extends Base
              $data[] = [
                  'id'       => $key,
                  'title'    => $value,
-                 'items'    => $row
+                 'children'    => $row
              ];
          }
          $result = [
