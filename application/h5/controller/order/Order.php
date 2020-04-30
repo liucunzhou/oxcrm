@@ -288,8 +288,8 @@ class Order extends Base
             $wedding = [];
         } else {
             $wedding['company_id'] = $this->brands[$wedding->company_id]['title'];
-            $banquet['wedding_package_title'] = $this->packageList[$banquet->wedding_package_id]['title'];
-            $banquet['wedding_ritual_title'] = $this->ritualList[$banquet->wedding_ritual_id]['title'];
+            $wedding['wedding_package_title'] = $this->packageList[$wedding->wedding_package_id]['title'];
+            $wedding['wedding_ritual_title'] = $this->ritualList[$wedding->wedding_ritual_id]['title'];
         }
 
         #### 获取婚宴二销订单信息
