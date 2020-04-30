@@ -990,7 +990,7 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['receipt_img'] = empty($income['receipt_imgArray  ']) ? '' : implode(',', $income['receipt_imgArray  ']);
-                $data['note_imgArray'] = empty($income['note_imgArray  ']) ? '' : implode(',', $income['note_imgArray  ']);
+                $data['note_img'] = empty($income['note_imgArray  ']) ? '' : implode(',', $income['note_imgArray  ']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
@@ -1004,7 +1004,7 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
-                $data['note_imgArray'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
