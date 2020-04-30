@@ -362,8 +362,6 @@ class Order extends Backend
             echo $d3Model->getLastSql();
         }
 
-
-
         return json(['code' => '200', 'msg' => '创建成功', 'redirect'=> 'tab']);
     }
 

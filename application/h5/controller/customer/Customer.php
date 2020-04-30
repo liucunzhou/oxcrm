@@ -135,6 +135,7 @@ class Customer extends Base
             'page' => $param['page']
         ];
 
+        $map[] = ['user_id', '=', $this->user['id']];
         $map[] = ['active_status', 'not in', [2, 3, 4]];
         $tomorrow = strtotime('tomorrow');
         if (!isset($param['next_visit_time']) || empty($param['next_visit_time'])) {

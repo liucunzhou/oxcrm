@@ -79,7 +79,7 @@
                     "title": "签单销售",
                     "align": "center",
                     "width": 120,
-                    "event" : "showOrder"
+                    // "event" : "showOrder"
                 },{
                     "field": "status",
                     "title": "审核状态",
@@ -175,53 +175,8 @@
             var id = obj.data.id;
             switch (obj.event) {
                 case 'editOrder':
-                    url = '/index/order.Order/editorder.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '编辑订单');
-                    break;
-
-                case 'sourceConfirm':
-                    url = '/index/order/sourceconfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '来源审核');
-                    break;
-
-                case 'scoreConfirm':
-                    url = '/index/order/scoreconfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '积分审核');
-                    break;
-
-                case 'fianceConfirm':
-                    url = '/index/order/fianceconfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '财务订单审核');
-                    break;
-
-                case 'accountingPaymentConfirm':
-                    url = '/index/order/accountingpaymentconfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '会计付款审核');
-                    break;
-
-                case 'cashierPaymentConfirm':
-                    url = '/index/order/cashierpaymentconfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '出纳付款审核');
-                    break;
-
-                case 'fiancePaymentConfirm':
-                    url = '/index/order/fiancepaymentconfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '财务主管付款审核');
-                    break;
-
-                case 'cashierReceviablesConfirm':
-                    url = '/index/order/cashierReceivablesConfirm.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '出纳收款审核');
-                    break;
-
-                case 'showOrder':
-                    url = '/index/order.order/showorder.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '查看订单详情');
-                    break;
-
-                case 'checkResult':
-                    url = '/index/order/checkresult.html?id=' + id;
-                    top.layui.index.openTabsPage(url, '查看审核结果');
+                    url = '/index/order.confirm/read.html?id=' + id;
+                    top.layui.index.openTabsPage(url, '审核订单');
                     break;
             }
         });
