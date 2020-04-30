@@ -996,6 +996,7 @@ class Order extends Base
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
+                echo $receivableModel->getLastSql();
             } else {
                 // 婚庆收款
                 $data = [];
