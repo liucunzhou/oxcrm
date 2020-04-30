@@ -251,7 +251,6 @@ class Order extends Base
             $banquet = [];
         } else {
             $banquet['company_id'] = $this->brands[$banquet->company_id]['title'];
-            $banquet['banquet_package_title'] = $this->packageList[$banquet->banquet_package_id]['title'];
             $banquet['banquet_ritual_title'] = $this->ritualList[$banquet->banquet_ritual_id]['title'];
         }
 
