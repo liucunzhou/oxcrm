@@ -182,16 +182,14 @@ class Confirm extends Backend
 
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
 
-        /**
         $users = \app\common\model\User::getUsers();
-        foreach ($data as $key => &$value) {
+        foreach ($list as $key => &$value) {
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
             !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
             $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
             $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
             $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
         }
-        **/
 
 
         return $list;
