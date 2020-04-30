@@ -547,12 +547,13 @@ class Order extends Backend
 
         $config = config();
         $sequences = $config['crm']['check_sequence'];
-
-        $sequence = json_decode($audit->content, true);
-        foreach ($sequence as $key=>&$row) {
-            $row['title'] = $sequences[$key]['title'];
+        if(!empty($sequences)) {
+            $sequence = (array)json_decode($audit->content, true);
+            foreach ($sequence as $key => &$row) {
+                $row['title'] = $sequences[$key]['title'];
+            }
+            $this->assign('sequence', $sequence);
         }
-        $this->assign('sequence', $sequence);
 
         return $this->fetch('order/show/main');
     }

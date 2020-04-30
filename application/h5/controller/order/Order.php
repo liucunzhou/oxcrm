@@ -519,7 +519,7 @@ class Order extends Base
                         [
                             'id'    => 'suborder',
                             'title' => '二销',
-                            'items' => [
+                            'children' => [
                                 [
                                     'id'    => 'banquetSuborder',
                                     'title' => '婚宴二销',
@@ -539,7 +539,7 @@ class Order extends Base
                             'title'     => '收款',
                             'read'      => '/h5/order.income/create',
                             'api'       => '/h5/order.income/doCreate',
-                            'items'     => []
+                            'children'     => []
                         ],
 
                         [
@@ -547,7 +547,7 @@ class Order extends Base
                             'title'     => '付款',
                             'read'      => '/h5/order.payment/create',
                             'api'       => '/h5/order.payment/doCreate',
-                            'items'     => []
+                            'children'     => []
                         ],
                     ]
                 ]
@@ -749,7 +749,6 @@ class Order extends Base
             $sugarModel->allowField(true)->save($data);
         }
 
-
         ## 酒水
         if (!empty($param['wine'])) {
             $data = json_decode($param['wine'], true);
@@ -844,11 +843,40 @@ class Order extends Base
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
         $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
+
         // 审核流程
         $sequence = json_decode($audit->content, true);
-        $first = array_shift($sequence);
+        $first = key($sequence);
         $auditConfig = $this->config['check_sequence'];
-        // $auditConfig[$]['type'] == 'staff';
+        if($auditConfig[$first]['type'] == 'staff') {
+            // 指定人员审核
+            foreach ($sequence[$first] as $row)
+            {
+                $data = [];
+                $data['company_id'] = $orderData['company_id'];
+                $data['confirm_item_id'] = $first;
+                $data['confirm_user_id'] = $row;
+                $data['user_id'] = $this->user['id'];
+                $data['order_id'] = $OrderModel->id;
+                $data['status'] = 0;
+                $orderConfirm = new OrderConfirm();
+                $orderConfirm->allowField(true)->save($data);
+            }
+        } else {
+            // 指定角色审核
+            foreach ($sequence[$first] as $row) {
+                $staff = User::getRoleManager($row, $this->user);
+                $data = [];
+                $data['company_id'] = $orderData['company_id'];
+                $data['confirm_item_id'] = $first;
+                $data['confirm_user_id'] = $staff->id;
+                $data['user_id'] = $this->user['id'];
+                $data['order_id'] = $OrderModel->id;
+                $data['status'] = 0;
+                $orderConfirm = new OrderConfirm();
+                $orderConfirm->allowField(true)->save($data);
+            }
+        }
 
         return json(['code' => '200', 'msg' => '创建成功']);
     }
