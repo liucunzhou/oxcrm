@@ -405,7 +405,7 @@ class Confirm extends Backend
                         $data['is_checked'] = 0;
                         $data['status'] = 0;
                         $data['confirm_item_id'] = $next_confirm_item_id;
-                        $data['confirm_user_id'] = $staff->id;
+                        $data['confirm_user_id'] = $staff['id'];
                         $orderConfirm = new \app\common\model\OrderConfirm();
                         $orderConfirm->allowField(true)->save($data);
                     }
