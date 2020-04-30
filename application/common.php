@@ -75,7 +75,7 @@ if(!function_exists('create_order_confirm')) {
         $where[] = ['user_id', '=', $userId];
         $where[] = ['order_id', '=', $orderId];
         $where[] = ['company_id', '=', $companyId];
-        $where[] = ['company_id', '=', $companyId];
+        $where[] = ['confirm_type', '=', $confirmType];
 
         $confirmList = \app\common\model\OrderConfirm::where($where)->order('id desc')->select();
         if($confirmList->isEmpty()) {
@@ -86,7 +86,10 @@ if(!function_exists('create_order_confirm')) {
             $where[] = ['user_id', '=', $userId];
             $where[] = ['order_id', '=', $orderId];
             $where[] = ['company_id', '=', $companyId];
-
+            $where[] = ['confirm_type', '=', $confirmType];
+            $where[] = ['is_checked', '=', 0];
+            $confirmLast = \app\common\model\OrderConfirm::where($where)->order('id desc')->find();
+            $current = $confirmLast->confirm_item_id;
             $index = get_next_confirm_item($current, $sequence);
             if(is_null($index)) {
                 // 已审核完的状态可以添加审核
@@ -104,6 +107,7 @@ if(!function_exists('create_order_confirm')) {
             {
                 $data = [];
                 $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
                 $data['confirm_user_id'] = $row;
@@ -121,6 +125,7 @@ if(!function_exists('create_order_confirm')) {
                 $staff = \app\common\model\User::getRoleManager($row, $user);
                 $data = [];
                 $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
                 $data['confirm_user_id'] = $staff->id;
