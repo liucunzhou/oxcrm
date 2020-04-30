@@ -142,8 +142,9 @@ class Customer extends Base
             $map[] = ['next_visit_time', '>', 0];
             $map[] = ['next_visit_time', 'between', [0, $tomorrow]];
         } else {
-            $param['next_visit_time'] = strtotime($param['next_visit_time']);
-            $map[] = ['next_visit_time', 'between', [$param['next_visit_time'], $tomorrow]];
+            $start = strtotime($param['next_visit_time']);
+            $end = $start + 86400;
+            $map[] = ['next_visit_time', 'between', [$start, $end]];
         }
 
         $field = 'id,realname,mobile,active_status,member_id,create_time';
