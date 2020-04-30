@@ -178,6 +178,7 @@ class Order extends Base
         }
 
         $orderId = $order->id;
+        $companyId = $order->companyId;
         $order = $order->getData();
         $newsTypes = $this->config['news_type_list'];
         $cooperationMode = $this->config['cooperation_mode'];
@@ -194,8 +195,7 @@ class Order extends Base
         $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
 
-        $audit = \app\common\model\Audit::where('company_id', '=', $order['company_id'])->find();
-        echo \app\common\model\Audit::getLastSql();
+        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
         $sequence = json_decode($audit->content, true);
         #### 检测编辑和添加权限
         if ($this->user['id'] == $order['user_id']) {
