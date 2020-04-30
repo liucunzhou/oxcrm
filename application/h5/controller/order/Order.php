@@ -195,6 +195,7 @@ class Order extends Base
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
 
         $audit = \app\common\model\Audit::where('company_id', '=', $order['company_id'])->find();
+        echo \app\common\model\Audit::getLastSql();
         $sequence = json_decode($audit->content, true);
         #### 检测编辑和添加权限
         if ($this->user['id'] == $order['user_id']) {
