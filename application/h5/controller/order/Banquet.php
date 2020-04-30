@@ -25,6 +25,15 @@ class Banquet extends Base
         $where = [];
         $where[] = ['id', '=', $id];
         $data = $this->model->field($fields, true)->where($where)->order('id desc')->find();
+        if(empty($data)) {
+            $result = [
+                'code' => '400',
+                'msg' => '获取数据失败'
+            ];
+            return json($result);
+        }
+        $data = $data->getData();
+
         $packageList = Package::getList();
         $ritualList = Ritual::getList();
         $companyList = Brand::getBrands();
