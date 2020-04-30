@@ -24,7 +24,11 @@ class Confirm extends Base
     public function getConfirmSequence()
     {
         $param = $this->request->param();
-        $audit = \app\common\model\Audit::where('company_id', '=', $param['company_id'])->find();
+        $where = [];
+        $where[] = ['company_id', '=', $param['company_id']];
+        $where[] = ['timing', '=', 'income'];
+        $audit = \app\common\model\Audit::where($where)->find();
+
         if(empty($audit)) {
             $result = [
                 'code'  => '400',
@@ -97,7 +101,17 @@ class Confirm extends Base
         $orderModel = new \app\common\model\Order();
         $order = $orderModel->where('id', '=', $param['id'])->find();
 
-        $audit = \app\common\model\Audit::where('company_id', '=', $order->company_id)->find();
+        $where = [];
+        $where[] = ['order_id', '=', $param['id']];
+        $where[] = ['company_id', '=', $order->company_id];
+        $where[] = ['user_id', '=', $this->user['id']];
+        $where[] = ['is_checked', '=', '0'];
+        $orderConfirm = OrderConfirm::where($where)->find();
+
+        $where = [];
+        $where[] = ['company_id', '=', $order->company_id];
+        $where[] = ['timing', '=', $orderConfirm->confirm_type];
+        $audit = \app\common\model\Audit::where($where)->find();
         if(empty($audit)) {
             $result = [
                 'code'  => '400',
@@ -116,6 +130,7 @@ class Confirm extends Base
 
         ### 获取所有审核的列表
         $where = [];
+        $where['confirm_no'] = $orderConfirm->confirm_no;
         $where['order_id'] = $param['id'];
         $orderConfirm = new OrderConfirm();
         $confirmRs = $orderConfirm->where($where)->column('id,status,content','confirm_item_id');
