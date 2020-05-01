@@ -8,8 +8,8 @@ use think\model\concern\SoftDelete;
 class MemberEnter extends Model
 {
     protected $pk = 'id';
-    // protected $autoWriteTimestamp = false;
     protected $autoWriteTimestamp = true;
+    protected $defaultSoftDelete = 0;
 
     ### 软删除设置
     use SoftDelete;

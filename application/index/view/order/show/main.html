@@ -60,25 +60,49 @@
                             <i class="layui-icon layui-timeline-axis"></i>
                             <div class="layui-timeline-content layui-text">
                                 <h3 class="layui-timeline-title">{$value.title}</h3>
-                                <p>已审核</p>
-                                <p>数据正确</p>
+                                <p>{$value.status}</p>
+                                <p>{$value.content}</p>
                             </div>
                         </li>
                         <{/foreach}>
                     </ul>
 
+                    <{if $confirm.status == 0}>
                     <div class="layui-input-flex">
                         <div class="layui-btn-group">
-                            <div class="layui-btn">通过</div>
-                            <div class="layui-btn layui-btn-danger">驳回</div>
+                            <div class="layui-btn layui-btn-confirm" data-id="{$confirm.id}" data-action="/index/order.confirm/doAccepte">通过</div>
+                            <div class="layui-btn layui-btn-confirm layui-btn-danger" data-id="{$confirm.id}" data-action="/index/order.confirm/doReject">驳回</div>
                         </div>
-                        <input type="text" name="content" value="" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="content" id="content" lay-verify="0" placeholder="" autocomplete="off" class="layui-input">
                     </div>
+                    <{/if}>
                 </div>
             </div>
             <div class="layui-space10" style="height: 20px;"></div>
         </div>
     </div>
 </div>
+<script>
+    $(function () {
+        $(".layui-btn-confirm").click(function(){
+            if(!confirm("确认提交审核结果么?")) {
+                return false;
+            }
+            var id = $(this).attr("data-id");
+            var content = $("#content").val();
+            var url = $(this).attr("data-action");
+            if($(this).hasClass("layui-btn-danger") && content=='') {
+                layer.msg('请输入驳回原因');
+                return false;
+            }
+
+            $.post(url, {id:id,content:content}, function(res) {
+                if(res.code == '200'){
+                    window.location.reload();
+                }
+            })
+        });
+    })
+</script>
 </body>
 </html>

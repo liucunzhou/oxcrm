@@ -3,7 +3,10 @@
 namespace app\h5\controller\order;
 
 
+use app\common\model\Brand;
 use app\common\model\OrderBanquet;
+use app\common\model\Package;
+use app\common\model\Ritual;
 use app\h5\controller\Base;
 
 class Banquet extends Base
@@ -18,15 +21,35 @@ class Banquet extends Base
 
     public function edit($id)
     {
+        $fields = "create_time,delete_time,update_time";
         $where = [];
         $where[] = ['id', '=', $id];
-        $banquet = $this->model->where($where)->order('id desc')->find();
-        if ($banquet) {
+        $data = $this->model->field($fields, true)->where($where)->order('id desc')->find();
+        if(empty($data)) {
+            $result = [
+                'code' => '400',
+                'msg' => '获取数据失败'
+            ];
+            return json($result);
+        }
+        $data = $data->getData();
+
+        $packageList = Package::getList();
+        $ritualList = Ritual::getList();
+        $companyList = Brand::getBrands();
+
+        $data['banquet_package_title'] = $packageList[$data['banquet_package_id']]['title'];
+        $data['banquet_ritual_title'] = $ritualList[$data['banquet_ritual_id']]['title'];
+        $data['company_title'] = $companyList[$data['company_id']]['title'];
+        if ($data) {
             $result = [
                 'code'  => '200',
                 'msg'   => '获取婚宴信息成功',
                 'data'  => [
-                    'detail'   => $banquet
+                    'banquet'   => $data,
+                    'packageList' => array_values($packageList),
+                    'ritualList' => array_values($ritualList),
+                    'companyList' =>  array_values($companyList)
                 ]
             ];
         } else {
@@ -42,7 +65,7 @@ class Banquet extends Base
     public function doEdit()
     {
         $params = $this->request->param();
-
+        $params = json_decode($params['banquet'], true);
         if (empty(!$params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];

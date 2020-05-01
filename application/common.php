@@ -61,9 +61,12 @@ if(!function_exists('get_next_confirm_item')) {
 
 ### 创建审核顺序
 if(!function_exists('create_order_confirm')) {
-    function create_order_confirm($orderId, $companyId, $userId)
+    function create_order_confirm($orderId, $companyId, $userId, $confirmType='income')
     {
         ### 审核流程
+        $where = [];
+        $where[] = ['company_id', '=', $companyId];
+        $where[] = ['timing', '=', $confirmType];
         $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
         $sequence = json_decode($audit->content, true);
 
@@ -72,18 +75,23 @@ if(!function_exists('create_order_confirm')) {
         $where[] = ['user_id', '=', $userId];
         $where[] = ['order_id', '=', $orderId];
         $where[] = ['company_id', '=', $companyId];
+        $where[] = ['confirm_type', '=', $confirmType];
+
         $confirmList = \app\common\model\OrderConfirm::where($where)->order('id desc')->select();
         if($confirmList->isEmpty()) {
             ### 该员工、该订单、该承办公司第一次审核
             $index = key($sequence);
+            $confirmNO = date('YmdHis').mt_rand(10000,99999);
         } else {
-            $current = '';
-            foreach ($confirmList as $key=>$row) {
-                if ($row['status'] == 2) {
-                    return -1;
-                }
-                $current = $row['confirm_item_id'];
-            }
+            $where = [];
+            $where[] = ['user_id', '=', $userId];
+            $where[] = ['order_id', '=', $orderId];
+            $where[] = ['company_id', '=', $companyId];
+            $where[] = ['confirm_type', '=', $confirmType];
+            $where[] = ['is_checked', '=', 0];
+            $confirmLast = \app\common\model\OrderConfirm::where($where)->order('id desc')->find();
+            $confirmNO = $confirmLast->confirm_no;
+            $current = $confirmLast->confirm_item_id;
             $index = get_next_confirm_item($current, $sequence);
             if(is_null($index)) {
                 // 已审核完的状态可以添加审核
@@ -100,13 +108,15 @@ if(!function_exists('create_order_confirm')) {
             foreach ($sequence[$index] as $row)
             {
                 $data = [];
-                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['confirm_no'] =  $confirmNO;
+                $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
                 $data['confirm_user_id'] = $row;
-                $data['user_id'] = $this->user['id'];
+                $data['user_id'] = $userId;
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
+                $data['is_checked'] = 0;
                 $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }
@@ -116,13 +126,15 @@ if(!function_exists('create_order_confirm')) {
             foreach ($sequence[$index] as $row) {
                 $staff = \app\common\model\User::getRoleManager($row, $user);
                 $data = [];
-                $data['confirm_no'] = date('YmdHis').mt_rand(10000,99999);
+                $data['confirm_no'] =  $confirmNO;
+                $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
                 $data['confirm_user_id'] = $staff->id;
                 $data['user_id'] = $userId;
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
+                $data['is_checked'] = 0;
                 $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }

@@ -150,11 +150,12 @@ class User extends Model
         $department = Department::getDepartment($user['department_id']);
         $path = explode('-',$department['path']);
         $departments = array_filter($path);
+        rsort($departments);
 
         $where = [];
         $where[] = ['role_id', '=', $roleId];
         $where[] = ['department_id', 'in', $departments];
-        $user = self::where($where)->find();
+        $user = self::where($where)->order('')->find();
 
         return $user;
     }

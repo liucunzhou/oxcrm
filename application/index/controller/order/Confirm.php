@@ -9,6 +9,7 @@ use app\common\model\OrderBanquet;
 use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderConfirm;
 use app\common\model\OrderEntire;
 use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingPayment;
@@ -16,10 +17,12 @@ use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\Search;
 use app\common\model\User;
+use app\index\controller\Backend;
 use app\index\controller\Base;
+use app\index\controller\organization\Audit;
 use think\facade\Request;
 
-class Confirm extends Base
+class Confirm extends Backend
 {
     protected $hotels = [];
     protected $sources = [];
@@ -33,6 +36,8 @@ class Confirm extends Base
     protected function initialize()
     {
         parent::initialize();
+        $this->model = new OrderConfirm();
+
         // 获取系统来源,酒店列表,意向状态
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
@@ -87,242 +92,350 @@ class Confirm extends Base
         $this->assign('weddingCategories', $this->weddingDevices);
     }
 
-
-# 来源审核视图
-    public function sourceConfirm()
+    # 誉思
+    public function index()
     {
-        $get = Request::param();
-        if (empty($get['id'])) return false;
-        $order = \app\common\model\Order::get($get['id'])->getData();
-        $order = $this->formatOrderDate($order);
-        $this->assign('data', $order);
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 25;
+            $list = $this->_getConfirmList($get);
 
-        $member = Member::getByMobile($order['mobile']);
-        $this->assign('member', $member);
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
 
-        ## 酒店列表
-        $hotels = \app\common\model\Store::getStoreList();
-        $this->assign('hotels', $hotels);
-
-        ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
-        $this->assign('halls', $halls);
-
-        ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
-        $this->assign('salesmans', $salesmans);
-
-        return $this->fetch('order/entire/confirm/contract_source');
-    }
-
-    # 积分审核视图
-    public function scoreConfirm()
-    {
-        $get = Request::param();
-        if (empty($get['id'])) return false;
-
-        ## 获取订单信息
-        $order = \app\common\model\Order::get($get['id'])->getData();
-
-        ## 获取婚宴信息
-        $banquet = OrderBanquet::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
-        $order = array_merge($order, $banquet);
-        ## 获取婚庆信息
-        $wedding = OrderWedding::where('order_id', '=', $get['id'])->field('id', true)->find()->getData();
-        $order = array_merge($order, $wedding);
-
-        $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-        if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-        $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-
-        $order = $this->formatOrderDate($order);
-        $this->assign('data', $order);
-
-        ## 获取客资信息
-        $member = Member::getByMobile($order['mobile']);
-        $this->assign('member', $member);
-
-
-        ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
-        $this->assign('salesmans', $salesmans);
-
-        return $this->fetch('order/entire/confirm/contract_score');
-    }
-
-    # 合同（财务）审核
-    public function fianceConfirm()
-    {
-        $get = Request::param();
-        if (empty($get['id'])) return false;
-        $order = \app\common\model\Order::get($get['id'])->getData();
-
-        switch ($order['news_type'])
-        {
-            ### 婚宴信息
-            case 0:
-                #### 获取婚宴订单信息
-                $where = [];
-                $where['pid'] = 0;
-                $where['order_id'] = $get['id'];
-                $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $banquet);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $banquetOrders = OrderBanquetSuborder::where($where)->select();
-                $this->assign('banquetOrders', $banquetOrders);
-
-                #### 获取婚宴收款信息
-                $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('receivables', $receivables);
-                #### 获取婚宴付款信息
-                $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetPayments', $banquetPayments);
-                break;
-
-            ### 婚庆信息
-            case 1:
-                #### 获取婚庆订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $wedding);
-                $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-                if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-                $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $weddingOrders = OrderWeddingSuborder::where($where)->select();
-                $this->assign('weddingOrders', $weddingOrders);
-                #### 获取婚庆收款信息
-                $receivables = OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('receivables', $receivables);
-                #### 获取婚庆付款信息
-                $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingPayments', $weddingPayments);
-                break;
-
-            ### 一站式信息
-            case 2:
-                #### 获取婚宴订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $banquet);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $banquetOrders = OrderBanquetSuborder::where($where)->select();
-                $this->assign('banquetOrders', $banquetOrders);
-
-                #### 获取婚庆订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $wedding);
-                $selectedWeddingDevices = json_decode($wedding['wedding_device'], true);
-                if(!is_array($selectedWeddingDevices)) $selectedWeddingDevices = [];
-                $this->assign('selectedWeddingDevices', $selectedWeddingDevices);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $weddingOrders = OrderWeddingSuborder::where($where)->select();
-                $this->assign('weddingOrders', $weddingOrders);
-
-
-                #### 获取婚宴收款信息
-                $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('receivables', $receivables);
-                #### 获取婚宴付款信息
-                $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetPayments', $banquetPayments);
-                #### 获取婚庆付款信息
-                $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingPayments', $weddingPayments);
-                break;
-
-            default:
-                #### 获取婚宴订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $where['pid'] = 0;
-                $banquet = OrderBanquet::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $banquet);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['pid'] = ['neq', 0];
-                $where['order_id'] = $get['id'];
-                $banquetOrders = OrderBanquet::where($where)->select();
-                $this->assign('banquetOrders', $banquetOrders);
-
-                #### 获取婚庆订单信息
-                $where = [];
-                $where['order_id'] = $get['id'];
-                $where['pid'] = 0;
-                $wedding = OrderWedding::where($where)->field('id', true)->find()->getData();
-                $order = array_merge($order, $wedding);
-                #### 获取婚宴二销订单信息
-                $where = [];
-                $where['pid'] = ['neq', 0];
-                $where['order_id'] = $get['id'];
-                $weddingOrders = OrderWedding::where($where)->select();
-                $this->assign('weddingOrders', $weddingOrders);
-
-                #### 获取婚宴收款信息
-                $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
-                $this->assign('receivables', $receivables);
-                #### 获取婚宴付款信息
-                $banquetPayments = OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('banquetPayments', $banquetPayments);
-                #### 获取婚庆付款信息
-                $weddingPayments = OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
-                $this->assign('weddingPayments', $weddingPayments);
+        } else {
+            return $this->fetch('order/confirm/index');
         }
+    }
 
-        $order = $this->formatOrderDate($order);
+    public function hs()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 26;
+            $list = $this->_getConfirmList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
+
+    public function lk()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 27;
+            $list = $this->_getConfirmList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
+
+    public function mangena()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $get['company_id'] = 24;
+            $list = $this->_getConfirmList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
+
+    # 查看订单信息
+    public function showOrder()
+    {
+        $get = $this->request->param();
+        $orderConfirm = $this->model->where('id', '=', $get['confirm_id'])->find();
+        $this->assign('confirm', $orderConfirm);
+
+        $get['id'] = $orderConfirm->order_id;
+        if (empty($get['id'])) return false;
+        $order = \app\common\model\Order::get($get['id']);
         $this->assign('data', $order);
+
+        #### 获取婚宴订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
+        $this->assign('banquet', $banquet);
+
+        #### 酒店服务项目
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $hotelItem = \app\common\model\OrderHotelItem::where($where)->order('id desc')->find();
+        $this->assign('hotelItem', $hotelItem);
+
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $banquetOrders = \app\common\model\OrderBanquetSuborder::where($where)->select();
+        $this->assign('banquetOrders', $banquetOrders);
+
+        #### 获取婚宴收款信息
+        $receivables = \app\common\model\OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
+        $this->assign('banquetReceivables', $receivables);
+
+        #### 获取婚宴付款信息
+        $banquetPayments = \app\common\model\OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
+        $this->assign('banquetPayments', $banquetPayments);
+
+        #### 获取酒店协议信息
+        $hotelProtocol = \app\common\model\OrderHotelProtocol::where('order_id', '=', $get['id'])->select();
+        $this->assign('hotelProtocol', $hotelProtocol);
+
+
+
+        #### 获取婚庆订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
+        $this->assign('wedding', $wedding);
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $weddingOrders = \app\common\model\OrderWeddingSuborder::where($where)->select();
+        $this->assign('weddingOrders', $weddingOrders);
+
+        #### 获取婚宴收款信息
+        $weddingReceivables = \app\common\model\OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
+        $this->assign('weddingReceivables', $weddingReceivables);
+        #### 获取婚庆付款信息
+        $weddingPayments = \app\common\model\OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
+        $this->assign('weddingPayments', $weddingPayments);
+
+        #### 婚车
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $car = \app\common\model\OrderCar::where($where)->select();
+        $this->assign('car', $car);
+
+        #### 喜糖
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $sugar = \app\common\model\OrderSugar::where($where)->select();
+        $this->assign('sugar', $sugar);
+
+        #### 酒水
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $wine = \app\common\model\OrderWine::where($where)->select();
+        $this->assign('wine', $wine);
+
+        #### 灯光
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $light = \app\common\model\OrderLight::where($where)->select();
+        $this->assign('light', $light);
+
+        #### 点心
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $dessert = \app\common\model\OrderDessert::where($where)->select();
+        $this->assign('dessert', $dessert);
+
+        #### LED
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $led = \app\common\model\OrderLed::where($where)->select();
+        $this->assign('led', $led);
+
+
+        #### 3D
+        $where = [];
+        $where['order_id'] = $get['id'];
+        $d3 = \app\common\model\OrderD3::where($where)->select();
+        $this->assign('d3', $d3);
+
 
         ##　获取客资分配信息
-        $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
+        $allocate = \app\common\model\MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
         $this->assign('allocate', $allocate);
 
         ## 获取客户信息
-        $member = Member::get($order['member_id']);
-        $this->assign('member', $member);
+        $member = \app\common\model\Member::get($order->member_id);
+        if($member) $this->assign('member', $member);
 
         ## 宴会厅列表
-        $halls = BanquetHall::getBanquetHalls();
+        $halls = \app\common\model\BanquetHall::getBanquetHalls();
         $this->assign('halls', $halls);
 
         ## 获取销售列表
-        $salesmans = User::getUsersByRole(8);
+        $salesmans = \app\common\model\User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
+        $where = [];
+        $where[] = ['company_id', '=', $order->company_id];
+        $where[] = ['timing', '=', $orderConfirm->confirm_type];
+        $audit = \app\common\model\Audit::where($where)->find();
 
-        if($allocate->news_type == '0') { // 婚宴订单
-            $view = 'order/banquet/confirm/contract_fiance';
-        } else if ($allocate->news_type == 1) { // 婚庆客资
-            $view = 'order/wedding/confirm/contract_fiance';
-        } else if ($allocate->news_type == 2) { // 一站式客资
-            $view = 'order/entire/confirm/contract_fiance';
-        } else {
-            $view = 'order/entire/confirm/contract_fiance';
+        $config = config();
+        $sequences = $config['crm']['check_sequence'];
+        if(!empty($sequences)) {
+            $sequence = (array)json_decode($audit->content, true);
+            foreach ($sequence as $key => &$row) {
+                $where = [];
+                $where[] = ['order_id', '=', $get['id']];
+                $where[] = ['company_id', '=', $order->company_id];
+                $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
+                $where[] = ['confirm_type', '=', $orderConfirm->confirm_type];
+                $where[] = ['confirm_item_id', '=', $key];
+                $confirmModel = new OrderConfirm();
+                $currentConfirm = $confirmModel->where($where)->find();
+                $row['title'] = $sequences[$key]['title'];
+                if (!empty($currentConfirm)) {
+                    $cstatus = $currentConfirm->status;
+                    $row['status'] = $this->confirmStatusList[$cstatus];
+                    $row['content'] = $currentConfirm->content;
+                } else {
+                    $row['status'] = '待审核';
+                    $row['content'] = '';
+                }
+            }
+            $this->assign('sequence', $sequence);
         }
-        return $this->fetch($view);
+
+        return $this->fetch('order/show/main');
+    }
+
+    protected function _getConfirmList($get)
+    {
+        $config = [
+            'page' => $get['page']
+        ];
+        $map = [];
+        $map[] = ['company_id', '=', $get['company_id']];
+        $map[] = ['confirm_user_id', '=', $this->user['id']];
+        $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+
+        $users = \app\common\model\User::getUsers();
+        foreach ($list as $key => &$value) {
+            $order = \app\common\model\Order::get($value['order_id']);
+            $value['bridegroom_mobile'] = $order->bridegroom_mobile ? substr_replace($order->bridegroom_mobile, '***', 3, 3) : '-';
+            $value['bride_mobile'] = $order->bride_mobile ? substr_replace($order->bride_mobile, '***', 3, 3) : '-';
+            $value['user_id'] = isset($users[$value['user_id']]) ? $users[$value['user_id']]['realname'] : '-';
+            $value['banquet_hall_name'] = $order->banquet_hall_name;
+            $value['hotel_text'] = $order->hotel_text;
+            $value['source_text'] = $order->source_text;
+            $value['bridegroom'] = $order->bridegroom;
+            $value['bride'] = $order->bride;
+            $value['sign_date'] = $order->sign_date;
+            $value['event_date'] = $order->event_date;
+        }
+        return $list;
     }
 
     # 来源-积分-合同审核确认，执行逻辑
-    public function doConfirm()
+    public function doAccepte()
     {
-        $params = Request::param();
+        $param = $this->request->param();
 
         ## 获取订单信息
-        $order = \app\common\model\Order::get($params['id']);
-
-        $result = $order->save($params);
+        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $data = $confirm->getData();
+        $confirm->content = $param['content'];
+        $confirm->status = 1;
+        $confirm->operate_id = $this->user['id'];
+        $result = $confirm->save();
         if($result) {
+            $newConfirm = new OrderConfirm();
+            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['status'=>1,'is_checked'=>1]);
+
+            ## 获取当前配置
+            $where = [];
+            $where[] = ['company_id', '=', $confirm->company_id];
+            $where[] = ['timing', '=', $confirm->confirm_type];
+            $auditModel = new \app\common\model\Audit();
+            $audit = $auditModel->where($where)->find();
+            $sequence = json_decode($audit->content, true);
+            $current = $confirm->confirm_item_id;
+            $next_confirm_item_id = get_next_confirm_item($current, $sequence);
+            if(!is_null($next_confirm_item_id)) {
+                $config = config();
+                $auditConfig = $config['crm']['check_sequence'];
+                unset($data['id']);
+                unset($data['create_time']);
+                unset($data['update_time']);
+                unset($data['delete_time']);
+                if($auditConfig[$next_confirm_item_id]['type'] == 'staff') {
+                    // 指定人员审核
+                    foreach ($sequence[$next_confirm_item_id] as $row)
+                    {
+                        $data['is_checked'] = 0;
+                        $data['status'] = 0;
+                        $data['confirm_item_id'] = $next_confirm_item_id;
+                        $data['confirm_user_id'] = $row;
+                        $orderConfirm = new \app\common\model\OrderConfirm();
+                        $orderConfirm->allowField(true)->save($data);
+                    }
+                } else {
+                    $user = \app\common\model\User::getUser($confirm->user_id);
+                    // 指定角色审核
+                    foreach ($sequence[$next_confirm_item_id] as $row) {
+                        $staff = \app\common\model\User::getRoleManager($row, $user);
+                        $data['is_checked'] = 0;
+                        $data['status'] = 0;
+                        $data['confirm_item_id'] = $next_confirm_item_id;
+                        $data['confirm_user_id'] = $staff['id'];
+                        $orderConfirm = new \app\common\model\OrderConfirm();
+                        $orderConfirm->allowField(true)->save($data);
+                    }
+                }
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>1]);
+            } else {
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>2]);
+            }
+
+            $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
+        } else {
+            $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
+        }
+
+        return json($json);
+    }
+
+    public function doReject()
+    {
+        $param = $this->request->param();
+
+        ## 获取订单信息
+        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $confirm->content = $param['content'];
+        $confirm->status = 2;
+        $result = $confirm->save();
+        $this->model->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
+        if($result) {
+            \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>3]);
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];

@@ -19,6 +19,7 @@ use app\common\model\OrderSugar;
 use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWine;
+use app\common\model\Package;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
@@ -38,7 +39,9 @@ class Order extends Base
     protected $dessertList = [];
     protected $ledList = [];
     protected $d3List = [];
-
+    protected $packageList = [];
+    protected $ritualList = [];
+    protected $confirmStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
 
     protected function initialize()
     {
@@ -47,6 +50,12 @@ class Order extends Base
 
         ## 获取所有品牌、公司
         $this->brands = \app\common\model\Brand::getBrands();
+
+        ## 套餐列表
+        $this->packageList = \app\common\model\Package::getList();
+
+        ## 套餐列表
+        $this->ritualList = \app\common\model\Ritual::getList();
 
         ## 汽车列表
         $this->carList = \app\common\model\Car::getList();
@@ -72,7 +81,6 @@ class Order extends Base
         if (isset($this->role['auth_type']) && $this->role['auth_type'] > 0) {
             $this->staffs = User::getUsersByDepartmentId($this->user['department_id']);
         }
-
     }
 
     ##
@@ -86,7 +94,7 @@ class Order extends Base
         ];
 
         ##  审核状态
-        if (isset($param['check_status']) && $param['check_status'] != 'all') {
+        if (isset($param['check_status']) && $param['check_status'] != 'all' && $param['check_status']!='') {
             $map[] = ['check_status', '=', $param['check_status']];
         }
 
@@ -123,7 +131,7 @@ class Order extends Base
         }
 
 
-        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile";
+        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile,check_status";
         $list = $this->model->where($map);
 
         if (isset($param['keywords']) && !empty($param['keywords'])) {
@@ -135,6 +143,7 @@ class Order extends Base
         }
 
         $list = $list->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
+
         if (!$list->isEmpty()) {
             $list = $list->getCollection()->toArray();
             $newsTypes = $this->config['news_type_list'];
@@ -144,7 +153,7 @@ class Order extends Base
                 $value['company_id'] = $this->brands[$value['company_id']]['title'];
                 $value['news_type'] = $newsTypes[$value['news_type']];
                 $value['cooperation_mode'] = isset($cooperationMode[$value['cooperation_mode']]) ? $cooperationMode[$value['cooperation_mode']] : '-';
-                $value['status'] = '待审核';
+                $value['status'] = $this->confirmStatusList[$value['check_status']];
                 $value['sign_date'] = substr($value['sign_date'], 0, 10);
                 $value['event_date'] = substr($value['event_date'], 0, 10);
                 $value['bridegroom_mobile'] = isset($value['bridegroom_mobile']) ? substr_replace($value['bridegroom_mobile'], '***', 3, 3) : '-';
@@ -187,31 +196,37 @@ class Order extends Base
         $order['company_id'] = $this->brands[$order['company_id']]['title'];
         $order['news_type'] = $newsTypes[$order['news_type']];
         $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
-        $order['status'] = '待审核';
-        $order['sign_date'] = $order['sign_date'] ? '' : substr($order['sign_date'], 0, 10);
-        $order['event_date'] = substr($order['event_date'], 0, 10);
+        $order['status'] = $this->confirmStatusList[$order['check_status']];
+        $order['sign_date'] = $order['sign_date'] ? date('Y-m-d', $order['sign_date']) : '-';
+        $order['event_date'] = $order['event_date'] ? date('Y-m-d', $order['event_date']) : '-';
+        $order['earnest_money_date'] = $order['earnest_money_date'] ? date('Y-m-d', $order['earnest_money_date']) : '-';
+        $order['middle_money_date'] = $order['middle_money_date'] ? date('Y-m-d', $order['middle_money_date']) : '-';
+        $order['tail_money_date'] = $order['tail_money_date'] ? date('Y-m-d', $order['tail_money_date']) : '-';
         $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
         $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
         $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
         $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
+        $staff = User::getUser($order['salesman']);
+        $order['salesman'] = $staff['realname'];
 
         #### 审核流程
-        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
-        $sequence = empty($audit) ? [] : json_decode($audit->content, true);
+        // $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
+        // $sequence = empty($audit) ? [] : json_decode($audit->content, true);
         #### 检测编辑和添加权限
+        #### 不管是谁 只要存在未被审核的将视为不能编辑，驳回后会添加新的未审核，审核后会修改is_checked=1
+        $where = [];
+        $where[] = ['order_id', '=', $order['id']];
+        $where[] = ['company_id', '=', $order['company_id']];
+        $where[] = ['user_id', '=', $this->user['id']];
+        $where[] = ['is_checked', '=', 0];
+        // $where[] = ['status', '=', 3];
+        $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
         if ($this->user['id'] == $order['user_id']) {
             // end($sequence);
             // $confirmItemId = key($sequence);
 
             // 获取审核状态
-            $where = [];
-            $where[] = ['order_id', '=', $order['id']];
-            $where[] = ['company_id', '=', $order['company_id']];
-            $where[] = ['user_id', '=', $this->user['id']];
-            // $where[] = ['confirm_item_id', '=', $confirmItemId];
-            $where[] = ['status', '=', 3];
-            $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
             if (empty($confirmLast)) {
                 $edit = 0;
                 $orderEdit = 0;
@@ -221,19 +236,8 @@ class Order extends Base
             }
 
         } else {
-            end($sequence);
-            $confirmItemId = key($sequence);
 
-            $where = [];
-            $where[] = ['order_id', '=', $order['id']];
-            $where[] = ['company_id', '=', $order['company_id']];
-            $where[] = ['user_id', '=', $this->user['id']];
-            $where[] = ['status', '=', 3];
-            $confirmList = OrderConfirm::where($where)->order('confirm_no desc')->select();
-            if ($confirmList->isEmpty()) {
-                $edit = 0;
-                $orderEdit = 1;
-            } else if ($confirmList[0]['confirm_item_id'] == $confirmItemId && $confirmList[0]['status']==2) {
+            if (empty($confirmLast)) {
                 $edit = 0;
                 $orderEdit = 1;
             } else {
@@ -249,7 +253,12 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
-        if (empty($banquet)) $banquet = [];
+        if (empty($banquet)) {
+            $banquet = [];
+        } else {
+            $banquet['company_id'] = $this->brands[$banquet->company_id]['title'];
+            $banquet['banquet_ritual_title'] = $this->ritualList[$banquet->banquet_ritual_id]['title'];
+        }
 
         #### 酒店服务项目
         $where = [];
@@ -281,7 +290,13 @@ class Order extends Base
         $where = [];
         $where['order_id'] = $param['id'];
         $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
-        if (empty($wedding)) $wedding = [];
+        if (empty($wedding)) {
+            $wedding = [];
+        } else {
+            $wedding['company_id'] = $this->brands[$wedding->company_id]['title'];
+            $wedding['wedding_package_title'] = $this->packageList[$wedding->wedding_package_id]['title'];
+            $wedding['wedding_ritual_title'] = $this->ritualList[$wedding->wedding_ritual_id]['title'];
+        }
 
         #### 获取婚宴二销订单信息
         $where = [];
@@ -1022,7 +1037,7 @@ class Order extends Base
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
         $orderId = $OrderModel->id;
-        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id']);
+        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id'], 'income');
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
