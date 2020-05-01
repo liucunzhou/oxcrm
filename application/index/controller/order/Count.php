@@ -41,7 +41,7 @@ class Count extends Backend
     public function index()
     {
         $param = $this->request->param();
-        $param['limit'] = isset($param['limit']) ? $param['limit'] : 200;
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 10;
         $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
             'page' => $param['page']
@@ -82,9 +82,9 @@ class Count extends Backend
                         $v['yswk'] = $res['wedding_income_item_price'];
                     }
                 } else {
-                    $v['ysdj'] = '-';
-                    $v['yszk'] = '-';
-                    $v['yswk'] = '-';
+                    $v['ysdj'] = '0';
+                    $v['yszk'] = '0';
+                    $v['yswk'] = '0';
                 }
             } else {
                 $res = $this->OrderBanquetReceivables
@@ -105,37 +105,33 @@ class Count extends Backend
                         $v['yswk'] = $res['banquet_income_item_price'];
                     }
                 } else {
-                    $v['ysdj'] = '-';
-                    $v['yszk'] = '-';
-                    $v['yswk'] = '-';
+                    $v['ysdj'] = '0';
+                    $v['yszk'] = '0';
+                    $v['yswk'] = '0';
                 }
             }
         }
-        $sum = 0;
-
-        /**
-        foreach($list as $item=>$items){
-            $sums = [
-               'sums' => [
-                   'id' =>  '总计',
-                   'event_date' =>  '',
-                   'hotel_text' =>  '',
-                   'banquet_hall_name' =>  '',
-                   'bridegroom' =>  '',
-                   'bride' =>  '',
-                   'totals_sum' => $sum += (int) $item['totals'],
-                   'earnest_money_sum' => $sum += (int) $item['earnest_money'],
-                   'middle_money_sum' => $sum += (int) $item['middle_money'],
-                   'tail_money_sum' => $sum += (int) $item['tail_money'],
-                   'totals_snum_sum' => $sum += (int) $item['totals_snum'],
-                   'ysdj_sum' => $sum += (int) $item['ysdj'],
-                   'yszk_sum' => $sum += (int) $item['yszk'],
-                   'yswk_sum' => $sum += (int) $item['yswk']
-                ]
-            ];
-        }
+        unset($list['news_type']);
+        $sums = [
+           '' => [
+               'id'                   =>  'all',
+               'event_date'          =>  '总计',
+               'hotel_text'          =>  '',
+               'banquet_hall_name'  =>  '',
+               'bridegroom'          =>  '',
+               'bride'               =>  '',
+               'earnest_money'  => array_sum(array_column($list,'earnest_money')),
+               'middle_money'   => array_sum(array_column($list,'middle_money')),
+               'tail_money'     => array_sum(array_column($list,'tail_money')),
+               'totals'          => array_sum(array_column($list,'totals')),
+               'salesman'            =>  '-',
+               'totals_snum'    => array_sum(array_column($list,'totals_snum')),
+               'ysdj'            => array_sum(array_column($list,'ysdj')),
+               'yszk'            => array_sum(array_column($list,'yszk')),
+               'yswk'            => array_sum(array_column($list,'yswk'))
+            ]
+        ];
         $list = $list + $sums;
-         * **/
         $config = config();
         $this->assign('firmList',$this->firmList);
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
