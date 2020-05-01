@@ -13,15 +13,15 @@ class Count extends Backend
 
     protected $firmList = [
         [
-            'id' => '0',
+            'company_id' => '25',
             'title' => '誉思'
             ],
         [
-            'id' => '1',
+            'company_id' => '26',
             'title' => '红丝'
         ],
         [
-            'id' => '2',
+            'company_id' => '24',
             'title' => '曼格纳'
         ]
     ];
@@ -41,25 +41,27 @@ class Count extends Backend
     public function index()
     {
         $param = $this->request->param();
-        $param['limit'] = isset($param['limit']) ? $param['limit'] : 100;
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 200;
         $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
             'page' => $param['page']
         ];
 
         $map = [];
+        // 搜索条件：company_id  newsTypesList  date_range
         // $map[] = ['event_date','between',[$param['start'],$param['end']]];
 
         $fields = "id,news_type,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
         $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
-        foreach ($list as $k=>$v){
-
-            $list[$k]['salesman'] = !empty($list[$k]['salesman']) ? $this->UserModel->getUser($list[$k]['salesman'])['realname'] : '-';
+        $list = $list->getCollection()->toArray();
+        foreach ($list as $k=>&$v){
+            $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
+            $v['salesman'] = !empty($v['salesman']) ? $this->UserModel->getUser($v['salesman'])['realname'] : '-';
 
             $WeddingSuborder = $this->OrderWeddingSuborder->where('order_id',$k['id'])->column('wedding_total');
             $BanquetSuborder = $this->OrderBanquetSuborder->where('order_id',$k['id'])->column('banquet_totals');
 
-            $list[$k]['totals_snum'] = $list[$k]['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
+            $v['totals_snum'] = $v['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
 
             if($v['news_type'] == 1) {
                 $res = $this->OrderWeddingReceivables
@@ -69,20 +71,20 @@ class Count extends Backend
 
                 if (!isset($res)) {
                     if ($res['wedding_income_type'] == 1) {
-                        $list[$k]['ysdj'] = $res['wedding_income_item_price'];
+                        $v['ysdj'] = $res['wedding_income_item_price'];
                     }
 
                     if ($res['wedding_income_type'] == 2) {
-                        $list[$k]['yszk'] = $res['wedding_income_item_price'];
+                        $v['yszk'] = $res['wedding_income_item_price'];
                     }
 
                     if ($res['wedding_income_type'] == 3) {
-                        $list[$k]['yswk'] = $res['wedding_income_item_price'];
+                        $v['yswk'] = $res['wedding_income_item_price'];
                     }
                 } else {
-                    $list[$k]['ysdj'] = '';
-                    $list[$k]['yszk'] = '';
-                    $list[$k]['yswk'] = '';
+                    $v['ysdj'] = '-';
+                    $v['yszk'] = '-';
+                    $v['yswk'] = '-';
                 }
             } else {
                 $res = $this->OrderBanquetReceivables
@@ -92,20 +94,20 @@ class Count extends Backend
 
                 if (!isset($res)) {
                     if ($res['banquet_income_type'] == 1) {
-                        $list[$k]['ysdj'] = $res['banquet_income_item_price'];
+                        $v['ysdj'] = $res['banquet_income_item_price'];
                     }
 
                     if ($res['banquet_income_type'] == 2) {
-                        $list[$k]['yszk'] = $res['banquet_income_item_price'];
+                        $v['yszk'] = $res['banquet_income_item_price'];
                     }
 
                     if ($res['banquet_income_type'] == 3) {
-                        $list[$k]['yswk'] = $res['banquet_income_item_price'];
+                        $v['yswk'] = $res['banquet_income_item_price'];
                     }
                 } else {
-                    $list[$k]['ysdj'] = '';
-                    $list[$k]['yszk'] = '';
-                    $list[$k]['yswk'] = '';
+                    $v['ysdj'] = '-';
+                    $v['yszk'] = '-';
+                    $v['yswk'] = '-';
                 }
             }
         }
