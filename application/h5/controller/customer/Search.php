@@ -13,7 +13,7 @@ class Search extends Base
 
         ###  跟进状态
         $where = [];
-        $where[] = ['type', '<>', 'wash'];
+        // $where[] = ['type', '<>', 'wash'];
         $field = "id,title,color";
         $list = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
         $statusList = $list->toArray();
