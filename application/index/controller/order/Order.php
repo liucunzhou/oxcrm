@@ -476,8 +476,8 @@ class Order extends Backend
 
 
         ##　获取客资分配信息
-        $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
-        $this->assign('allocate', $allocate);
+        // $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
+        // $this->assign('allocate', $allocate);
 
         ## 获取客户信息
         $member = Member::get($order->member_id);
