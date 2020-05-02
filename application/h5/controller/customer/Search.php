@@ -24,7 +24,7 @@ class Search extends Base
                 'color' => '#ffffff'
             ]
         ];
-        $statusList = $all + $statusList;
+        $statusLists = $all + $statusList;
 
         ###  获取方式
         $alls = [
@@ -90,7 +90,7 @@ class Search extends Base
         $data = [
             'active_status'     => [
                 'text'  => '跟进状态',
-                'items' => $statusList
+                'items' => $statusLists
             ],
             'allocate_type' => [
                 'text'  => '获取方式',
