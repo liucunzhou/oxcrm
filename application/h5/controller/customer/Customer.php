@@ -496,6 +496,7 @@ class Customer extends Base
         ];
         $member = new Member();
         $map[] = ['is_sea', '=', '1'];
+        $map[] = ['city_id', '=', $this->user['city_id']];
         ###  默认隐藏失效、无效客资
         $fields = "id,realname,mobile,active_status,banquet_size,banquet_size_end,budget,budget_end,hotel_text,zone,create_time";
         $member = $member->field($fields)->where($map);
