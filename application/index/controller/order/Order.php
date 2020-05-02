@@ -371,6 +371,10 @@ class Order extends Backend
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
+        if(empty($this->user['sale'])) {
+            $sale = User::getUser($order->salesman);
+            $order->sale = $sale['realname'];
+        }
         $this->assign('data', $order);
 
         #### 获取婚宴订单信息
@@ -402,8 +406,6 @@ class Order extends Backend
         #### 获取酒店协议信息
         $hotelProtocol = OrderHotelProtocol::where('order_id', '=', $get['id'])->select();
         $this->assign('hotelProtocol', $hotelProtocol);
-
-
 
         #### 获取婚庆订单信息
         $where = [];
