@@ -4,7 +4,7 @@
             <select name="company_id" lay-verify="" lay-search>
                 <option value="">签约公司</option>
                 <{foreach name="firmList" item="val"}>
-                <option value="{$val['company_id']}">{$val['title']}</option>
+                <option value="{$val['id']}">{$val['title']}</option>
                 <{/foreach}>
             </select>
         </div>
