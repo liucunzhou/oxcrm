@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller\order;
 
+use app\common\model\Brand;
 use app\index\controller\Backend;
 
 class Count extends Backend
@@ -11,27 +12,12 @@ class Count extends Backend
     protected $OrderWeddingSuborder = [];
     protected $OrderBanquetSuborder = [];
 
-    protected $firmList = [
-        [
-            'company_id' => '25',
-            'title' => '誉思'
-            ],
-        [
-            'company_id' => '26',
-            'title' => '红丝'
-        ],
-        [
-            'company_id' => '24',
-            'title' => '曼格纳'
-        ]
-    ];
-
-
     protected function initialize()
     {
         parent::initialize();
         $this->model = new \app\common\model\Order();
         $this->UserModel = new \app\common\model\User();
+        $this->FirmList = Brand::getBrands();
         $this->OrderWeddingReceivables = new \app\common\model\OrderWeddingReceivables();
         $this->OrderBanquetReceivables = new \app\common\model\OrderBanquetReceivables();
         $this->OrderWeddingSuborder = new \app\common\model\OrderWeddingSuborder();
@@ -49,10 +35,25 @@ class Count extends Backend
 
         $map = [];
         // 搜索条件：company_id  newsTypesList  date_range
-        // $map[] = ['event_date','between',[$param['start'],$param['end']]];
+        if( !empty($param['company_id']) )
+        {
+            $map[] = ['company_id','=',$param['company_id']];
+        }
+        if( !empty($param['newsTypesList']) )
+        {
+            $map[] = ['news_type','=',$param['newsTypesList']];
+        }
+        if( !empty($param['date_range']) )
+        {
+            $arr = explode('~',$param['date_range']);
+            $arr[0] = strtotime($arr[0]);
+            $arr[1] = strtotime($arr[1]);
+            $map[] = ['event_date','between',$arr];
+        }
 
         $fields = "id,news_type,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
         $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
+
         $list = $list->getCollection()->toArray();
         foreach ($list as $k=>&$v){
             $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
@@ -133,7 +134,7 @@ class Count extends Backend
         ];
         $list = $list + $sums;
         $config = config();
-        $this->assign('firmList',$this->firmList);
+        $this->assign('firmList',$this->FirmList);
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
         $this->assign('list',$list);
         return $this->fetch('order/count/index');
