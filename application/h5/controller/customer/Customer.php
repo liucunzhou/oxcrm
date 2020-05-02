@@ -497,7 +497,6 @@ class Customer extends Base
         $member = new Member();
         $map[] = ['is_sea', '=', '1'];
         ###  默认隐藏失效、无效客资
-        $map[] = ['active_status', 'not in', [3, 4]];
         $fields = "id,realname,mobile,active_status,banquet_size,banquet_size_end,budget,budget_end,hotel_text,zone,create_time";
         $member = $member->field($fields)->where($map);
 
@@ -512,6 +511,9 @@ class Customer extends Base
             $member = $member->where('id', 'in', function ($query) use ($mobile) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
             });
+        } else {
+            $map[] = ['active_status', 'not in', [3, 4]];
+            $member = $member->where($map);
         }
         $list = $member->order('create_time desc')->paginate($param['limit'], false, $config);
 
