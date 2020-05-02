@@ -58,59 +58,68 @@ class Count extends Backend
         foreach ($list as $k=>&$v){
             $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
             $v['salesman'] = !empty($v['salesman']) ? $this->UserModel->getUser($v['salesman'])['realname'] : '-';
-
             $WeddingSuborder = $this->OrderWeddingSuborder->where('order_id',$k['id'])->column('wedding_total');
             $BanquetSuborder = $this->OrderBanquetSuborder->where('order_id',$k['id'])->column('banquet_totals');
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
+            $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
 
+            $zdj = 0;
+            $zzk = 0;
+            $zwk = 0;
+            $zex = 0;
             if($v['news_type'] == 1) {
                 $res = $this->OrderWeddingReceivables
-                    ->where('order_id', $k['id'])
+                    ->where('order_id', $v['id'])
                     ->field('wedding_income_type,wedding_income_item_price')
                     ->select();
+                if (!empty($res)) {
+                    foreach ( $res as $key=>&$vule ){
+                        if ($vule['wedding_income_type'] == 1) {
+                            $zdj += $vule['wedding_income_item_price'];
+                        }
 
-                if (!isset($res)) {
-                    if ($res['wedding_income_type'] == 1) {
-                        $v['ysdj'] = $res['wedding_income_item_price'];
-                    }
+                        if ($vule['wedding_income_type'] == 2) {
+                            $zzk += $vule['wedding_income_item_price'];
+                        }
 
-                    if ($res['wedding_income_type'] == 2) {
-                        $v['yszk'] = $res['wedding_income_item_price'];
-                    }
+                        if ($vule['wedding_income_type'] == 3) {
+                            $zwk += $res['wedding_income_item_price'];
+                        }
 
-                    if ($res['wedding_income_type'] == 3) {
-                        $v['yswk'] = $res['wedding_income_item_price'];
+                        if ($vule['wedding_income_type'] == 4) {
+                            $zex += $res['wedding_income_item_price'];
+                        }
                     }
-                } else {
-                    $v['ysdj'] = '0';
-                    $v['yszk'] = '0';
-                    $v['yswk'] = '0';
                 }
             } else {
                 $res = $this->OrderBanquetReceivables
-                    ->where('order_id', $k['id'])
+                    ->where('order_id', $v['id'])
                     ->field('banquet_income_type,banquet_income_item_price')
                     ->select();
+                if( !empty($res) ){
+                    foreach ( $res as $key=>&$vule ){
+                        if ($vule['banquet_income_type'] == 1) {
+                            $zdj += $vule['banquet_income_item_price'];
+                        }
 
-                if (!isset($res)) {
-                    if ($res['banquet_income_type'] == 1) {
-                        $v['ysdj'] = $res['banquet_income_item_price'];
-                    }
+                        if ($vule['banquet_income_type'] == 2) {
+                            $zzk += $vule['banquet_income_item_price'];
+                        }
 
-                    if ($res['banquet_income_type'] == 2) {
-                        $v['yszk'] = $res['banquet_income_item_price'];
-                    }
+                        if ($vule['banquet_income_type'] == 3) {
+                            $zwk += $res['banquet_income_item_price'];
+                        }
 
-                    if ($res['banquet_income_type'] == 3) {
-                        $v['yswk'] = $res['banquet_income_item_price'];
+                        if ($vule['banquet_income_type'] == 4) {
+                            $zex += $res['banquet_income_item_price'];
+                        }
                     }
-                } else {
-                    $v['ysdj'] = '0';
-                    $v['yszk'] = '0';
-                    $v['yswk'] = '0';
                 }
             }
+            $v['ysdj'] = $zdj - $v['earnest_money'];
+            $v['yszk'] = $zzk - $v['middle_money'];
+            $v['yswk'] = $zwk + $zex - $v['tail_money'];
         }
         unset($list['news_type']);
         $sums = [
