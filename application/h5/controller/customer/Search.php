@@ -15,7 +15,7 @@ class Search extends Base
         $where = [];
         // $where[] = ['type', '<>', 'wash'];
         $field = "id,title,color";
-        $list = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
+        $list = Intention::where($where)->field($field)->order('sort desc,id asc')->select();
         $statusList = $list->toArray();
         $all = [
             0 => [
