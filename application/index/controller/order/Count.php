@@ -27,11 +27,13 @@ class Count extends Backend
     public function index()
     {
         $param = $this->request->param();
-        $param['limit'] = isset($param['limit']) ? $param['limit'] : 10;
-        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
+        // $param['limit'] = isset($param['limit']) ? $param['limit'] : 1000;
+        // $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
+        /**
         $config = [
             'page' => $param['page']
         ];
+         * **/
 
         $map = [];
         // 搜索条件：company_id  newsTypesList  date_range
@@ -39,22 +41,28 @@ class Count extends Backend
         {
             $map[] = ['company_id','=',$param['company_id']];
         }
+
         if( !empty($param['newsTypesList']) )
         {
             $map[] = ['news_type','=',$param['newsTypesList']];
         }
+
+        $model = $this->model;
         if( !empty($param['date_range']) )
         {
             $arr = explode('~',$param['date_range']);
             $arr[0] = strtotime($arr[0]);
             $arr[1] = strtotime($arr[1]);
             $map[] = ['event_date','between',$arr];
+        } else {
+            $model = $this->model->whereTime('event', 'month');
         }
 
         $fields = "id,news_type,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
-        $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
+        // $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
+        $list =  $model->where($map)->order('id desc')->field($fields)->select();
 
-        $list = $list->getCollection()->toArray();
+        $list = $list->toArray();
         foreach ($list as $k=>&$v){
             $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
             $v['salesman'] = !empty($v['salesman']) ? $this->UserModel->getUser($v['salesman'])['realname'] : '-';
