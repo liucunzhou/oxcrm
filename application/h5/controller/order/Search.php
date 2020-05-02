@@ -31,7 +31,7 @@ class Search extends Base
                 'title' => '所有状态'
             ]
         ];
-        $checkStautsList = $all + $checkStautsList;
+        $checkStautsList = array_merge($all , $checkStautsList);
 
         ###  签约公司
         $field = "id,title";
@@ -43,7 +43,7 @@ class Search extends Base
                 'title' => '所有公司'
             ]
         ];
-        $brandList = $all + $brandList;
+        $brandList = array_merge($all, $brandList);
 
         ###  人员列表
         $userList = [];
@@ -58,7 +58,7 @@ class Search extends Base
             $fields = 'id,realname as title,nickname';
             $userList = User::getUsersInfoByDepartmentId($this->user['department_id'], false, $fields);
             $userList = array_values($userList);
-            $userList = $users + $userList;
+            $userList = array_merge($users, $userList);
         }
 
         ##  时间类型

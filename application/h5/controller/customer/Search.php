@@ -24,7 +24,7 @@ class Search extends Base
                 'color' => '#ffffff'
             ]
         ];
-        $statusLists = $all + $statusList;
+        $statusLists = array_merge($all, $statusList);
 
         ###  获取方式
         $alls = [
@@ -40,7 +40,7 @@ class Search extends Base
                 'title' => $value
             ];
         }
-        $allocateTypeList = $alls + $allocateTypeList;
+        $allocateTypeList = array_merge($alls, $allocateTypeList);
 
         ###  人员列表
         $userList = [];
@@ -56,7 +56,7 @@ class Search extends Base
             $userList = User::getUsersInfoByDepartmentId($this->user['department_id'], false, $fields);
             $userList = array_values($userList);
             // print_r($userList);
-            $userList = $users + $userList;
+            $userList = array_merge($users, $userList);
         }
 
         ### range
@@ -133,7 +133,7 @@ class Search extends Base
                'title'  => '请选择'
            ]
         ];
-        $arr = $all + $arr;
+        $arr = array_merge($all, $arr);
 
 
         $result = [

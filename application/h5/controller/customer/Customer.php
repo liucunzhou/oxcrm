@@ -466,7 +466,7 @@ class Customer extends Base
                     'count' => array_sum($list)
                 ]
             ];
-            $data = $all + $data;
+            $data = array_merge($all, $data);
 
             $result = [
                 'code' => 200,
