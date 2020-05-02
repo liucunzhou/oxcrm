@@ -567,6 +567,10 @@ class Order extends Backend
         $this->editOrder();
 
         $order = $this->model->where('id', '=', $request['id'])->find();
+        if(empty($this->user['sale'])) {
+            $sale = User::getUser($order->salesman);
+            $order->sale = $sale['realname'];
+        }
         $audit = Audit::where('company_id', '=', $order->company_id)->find();
 
         $config = config();
