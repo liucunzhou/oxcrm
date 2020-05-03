@@ -229,7 +229,7 @@ class Order extends Base
         } else if ($confirmLast->status == 2){
             // 驳回
             $edit = 1;
-            $orderEdit = 0;
+            $orderEdit = 1;
         } else if ($confirmLast->status == 1) {
             // 通过
             $edit = 0;
