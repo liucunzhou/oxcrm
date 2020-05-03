@@ -733,7 +733,7 @@ class Customer extends Base
             $where[] = ['mobile', 'like', "%{$post['mobile']}%"];
             $list = model('Member')->where($map)->whereOr($where)->order('create_time desc')->select();
             if(!empty($list)) {
-                $data = $list->getData();
+                $data = $list->toArray();
                 $memberId = $data[0]['id'];
                 $data[0]['allocate_type'] = 1;
                 $result = MemberAllocate::searchAllocateData($this->user['id'], $memberId, $data[0]);
