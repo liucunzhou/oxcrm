@@ -445,8 +445,8 @@ class Customer extends Base
 
             $where = [];
             $where[] = ['type', '<>', 'wash'];
-            $field = "id,title,color";
-            $statusList = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
+            // $field = "id,title,color";
+            $statusList = Intention::getIntentions();
 
             $data = [];
             foreach ($statusList as $row) {
@@ -506,7 +506,7 @@ class Customer extends Base
         if (  isset($param['keywords']) && strlen($param['keywords']) == 11  ) {
             $mobile = $param['keywords'];
             $member = $member->where('id', '=', function ($query) use ($mobile) {
-                $query->table('tk_mobile')->where('mobile', '=', $mobile)->field('member_id');
+                $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
             });
 
 

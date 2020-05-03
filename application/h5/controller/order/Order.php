@@ -811,7 +811,8 @@ class Order extends Base
         $orderData['note_img'] = empty($orderData['note_imgArray']) ? '' : implode(',', $orderData['note_imgArray']);
         $OrderModel = new \app\common\model\Order();
         $result = $OrderModel->allowField(true)->save($orderData);
-        if (!$result) return json(['code' => '400', 'msg' => '创建失败']);
+        echo $OrderModel->getLastSql();
+        if (!$result || !isset($OrderModel->id)) return json(['code' => '400', 'msg' => '创建失败']);
 
         ## banquet message
         if (!empty($param['banquet'])) {
