@@ -69,9 +69,9 @@
                     <div class="contract-img upload" id="upload" data-action="{:url('/index/order.order/upload', ['id'=>$data.id])}">
                         <div class="title">合同(点击查看大图)</div>
                         <div class="img-box">
-                            <{if !empty($data.image)}>
-                                <img src="/{$data.image}" alt="">
-                            <{/if}>
+                            <{foreach name="$data.image" item="val"}>
+                            <img src="/{$val}" alt="">
+                            <{/foreach}>
                         </div>
                     </div>
                 </td>
