@@ -228,11 +228,11 @@ class Order extends Base
 
             // 获取审核状态
             if (empty($confirmLast)) {
-                $edit = 0;
+                $edit = 1;
                 // $orderEdit = 0;
                 $orderEdit = 1;
             } else {
-                $edit = 1;
+                $edit = 0;
                 $orderEdit = 1;
             }
 
