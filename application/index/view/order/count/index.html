@@ -41,8 +41,8 @@
                             <th>策划</th>
                         </tr>
                         <{foreach name="list" item="val"}>
-                        <tr onclick="showOrder('{$val.id}')">
-                            <td>{$val.event_date}</td>
+                        <tr>
+                            <td onclick="showOrder('{$val.id}')">{$val.event_date}</td>
                             <td>{$val.hotel_text}</td>
                             <td>{$val.banquet_hall_name}</td>
                             <td>{$val.bridegroom},{$val.bride}</td>
