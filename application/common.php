@@ -90,14 +90,19 @@ if(!function_exists('create_order_confirm')) {
             $where[] = ['confirm_type', '=', $confirmType];
             $where[] = ['is_checked', '=', 0];
             $confirmLast = \app\common\model\OrderConfirm::where($where)->order('id desc')->find();
-            $confirmNO = $confirmLast->confirm_no;
-            $current = $confirmLast->confirm_item_id;
-            $index = get_next_confirm_item($current, $sequence);
-            if(is_null($index)) {
-                // 已审核完的状态可以添加审核
-                $index = key($sequence);
+            if(empty($confirmLast)) {
+                $confirmNO = $confirmLast->confirm_no;
+                $current = $confirmLast->confirm_item_id;
+                $index = get_next_confirm_item($current, $sequence);
+                if (is_null($index)) {
+                    // 已审核完的状态可以添加审核
+                    $index = key($sequence);
+                } else {
+                    $index = key($sequence);
+                }
             } else {
                 $index = key($sequence);
+                $confirmNO = date('YmdHis').mt_rand(10000,99999);
             }
         }
 
