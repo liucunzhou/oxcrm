@@ -98,8 +98,6 @@ class Confirm extends Base
     public function getConfirmStep()
     {
         $param = $this->request->param();
-        $orderModel = new \app\common\model\Order();
-        $order = $orderModel->where('id', '=', $param['id'])->find();
 
         $where = [];
         $where[] = ['order_id', '=', $param['id']];
@@ -120,7 +118,7 @@ class Confirm extends Base
         }
 
         $where = [];
-        $where[] = ['company_id', '=', $order->company_id];
+        $where[] = ['company_id', '=', $orderConfirm->company_id];
         $where[] = ['timing', '=', $orderConfirm->confirm_type];
         $audit = \app\common\model\Audit::where($where)->find();
         if(empty($audit)) {
