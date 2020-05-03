@@ -45,7 +45,7 @@ class Contract extends Base
         if($result) {
             $order = \app\common\model\Order::get($param['id']);
             $intro = "编辑订单金额信息审核";
-            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
             $arr = ['code'=>'200', 'msg'=>'编辑成功'];
         } else {
             $arr = ['code'=>'200', 'msg'=>'编辑失败'];

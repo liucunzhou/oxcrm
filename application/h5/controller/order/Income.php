@@ -121,7 +121,7 @@ class Income extends Base
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $intro = '创建婚庆收款审核';
-            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             // 添加收款信息
             $data = json_decode($param['banquet_incomeList'], true);
@@ -136,7 +136,7 @@ class Income extends Base
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $intro = '创建婚宴收款审核';
-            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         }
 
         if($result2) {
@@ -226,11 +226,11 @@ class Income extends Base
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetReceivables();
             $intro = '编辑婚宴收款审核';
-            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             $model = new OrderWeddingReceivables();
             $intro = '编辑婚庆收款审核';
-            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
