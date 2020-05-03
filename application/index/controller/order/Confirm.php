@@ -348,7 +348,9 @@ class Confirm extends Backend
         ];
         $map = [];
         $map[] = ['company_id', '=', $get['company_id']];
-        $map[] = ['confirm_user_id', '=', $this->user['id']];
+        if($this->user['realname'] != 'admin') {
+            $map[] = ['confirm_user_id', '=', $this->user['id']];
+        }
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
 
         $users = \app\common\model\User::getUsers();
