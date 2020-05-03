@@ -453,7 +453,7 @@ class Confirm extends Backend
         $confirm->content = $param['content'];
         $confirm->status = 2;
         $result = $confirm->save();
-        $this->model->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
+        $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked'=>1]);
         \app\common\model\Order::where('id', '=', $orderId)->update(['check_status'=>3]);
         if($result) {
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
