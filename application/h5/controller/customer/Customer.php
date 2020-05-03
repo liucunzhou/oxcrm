@@ -494,7 +494,7 @@ class Customer extends Base
             'page' => $param['page']
         ];
         $member = new Member();
-        $map[] = ['is_sea', '=', '1'];
+        // $map[] = ['is_sea', '=', '1'];
         if ($this->user['city_id'] > 0) {
             $map[] = ['city_id', '=', $this->user['city_id']];
         }
@@ -519,7 +519,6 @@ class Customer extends Base
             $member = $member->where($map);
         }
         $list = $member->order('create_time desc')->paginate($param['limit'], false, $config);
-
 
         foreach ($list as &$value) {
             $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
