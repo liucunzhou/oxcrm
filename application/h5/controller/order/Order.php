@@ -230,14 +230,17 @@ class Order extends Base
             // 驳回
             $edit = 1;
             $orderEdit = 1;
+            $orderAdd = 0;
         } else if ($confirmLast->status == 1) {
             // 通过
             $edit = 0;
             $orderEdit = 1;
+            $orderAdd = 1;
         }else {
             // 审核中
             $edit = 0;
             $orderEdit = 0;
+            $orderAdd = 0;
         }
 
         #### 获取用户信息
@@ -657,7 +660,7 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'addItems' => [
-                    'edit' => $orderEdit,
+                    'edit' => $orderAdd,
                     'addItems' => [
                         [
                             'id' => 'suborder',
