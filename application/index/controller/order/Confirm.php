@@ -357,6 +357,7 @@ class Confirm extends Backend
 
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
+            $value['status'] = $this->confirmStatusList[$value['status']];
             $order = \app\common\model\Order::get($value['order_id']);
             $value['bridegroom_mobile'] = $order->bridegroom_mobile ? substr_replace($order->bridegroom_mobile, '***', 3, 3) : '-';
             $value['bride_mobile'] = $order->bride_mobile ? substr_replace($order->bride_mobile, '***', 3, 3) : '-';
