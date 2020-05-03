@@ -82,7 +82,7 @@ class Count extends Backend
 
         $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
         // $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
-        $list =  $model->where($map)->order('event_date desc,id desc')->field($fields)->select();
+        $list =  $model->where($map)->order('event_date asc,id desc')->field($fields)->select();
 
         $list = $list->toArray();
         foreach ($list as $k=>&$v){
