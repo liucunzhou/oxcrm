@@ -44,12 +44,29 @@ class Count extends Backend
         // 搜索条件：company_id  newsTypesList  date_range
         if( !empty($param['company_id']) )
         {
-            $map[] = ['company_id','=',$param['company_id']];
+            if(count($param['company_id']) > 1) {
+                $map[] = ['company_id','in',$param['company_id']];
+            } else {
+                $map[] = ['company_id', '=', $param['company_id'][0]];
+            }
         }
 
         if( !empty($param['newsTypesList']) )
         {
-            $map[] = ['news_type','=',$param['newsTypesList']];
+            if(count($param['news_type']) > 1) {
+                $map[] = ['news_type','in',$param['news_type']];
+            } else {
+                $map[] = ['news_type', '=', $param['news_type'][0]];
+            }
+        }
+
+        if( !empty($param['hotel_id']) )
+        {
+            if(count($param['hotel_id']) > 1) {
+                $map[] = ['hotel_id','in',$param['hotel_id']];
+            } else {
+                $map[] = ['hotel_id', '=', $param['hotel_id'][0]];
+            }
         }
 
         $model = $this->model;
@@ -63,12 +80,13 @@ class Count extends Backend
             $model = $this->model->whereTime('event_date', 'month');
         }
 
-        $fields = "id,news_type,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
+        $fields = "id,news_type,company_id,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
         // $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
-        $list =  $model->where($map)->order('event_date,id desc')->field($fields)->select();
+        $list =  $model->where($map)->order('event_date desc,id desc')->field($fields)->select();
 
         $list = $list->toArray();
         foreach ($list as $k=>&$v){
+            $v['company_id'] = !empty($v['company_id']) ? $this->FirmList[$v['company_id']]['title'] : '-';
             $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
             $v['salesman'] = !empty($v['salesman']) ? $this->UserModel->getUser($v['salesman'])['realname'] : '-';
             $WeddingSuborder = $this->OrderWeddingSuborder->where('order_id',$k['id'])->column('wedding_total');
@@ -160,31 +178,5 @@ class Count extends Backend
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
         $this->assign('list',$list);
         return $this->fetch('order/count/index');
-    }
-
-    # 查看订单信息
-    public function showOrder()
-    {
-        $request = $this->request->param();
-        $this->editOrder();
-
-        $order = $this->model->where('id', '=', $request['id'])->find();
-        if(empty($this->user['sale'])) {
-            $sale = User::getUser($order->salesman);
-            $order->sale = $sale['realname'];
-        }
-        $audit = Audit::where('company_id', '=', $order->company_id)->find();
-
-        $config = config();
-        $sequences = $config['crm']['check_sequence'];
-        if(!empty($sequences)) {
-            $sequence = (array)json_decode($audit->content, true);
-            foreach ($sequence as $key => &$row) {
-                $row['title'] = $sequences[$key]['title'];
-            }
-            $this->assign('sequence', $sequence);
-        }
-
-        return $this->fetch('order/show/main');
     }
 }
