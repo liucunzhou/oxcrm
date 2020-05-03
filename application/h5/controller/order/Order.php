@@ -821,31 +821,52 @@ class Order extends Base
         ## banquet message
         if (!empty($param['banquet'])) {
             $data = json_decode($param['banquet'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
-            $BanquetModel = new OrderBanquet();
-            $BanquetModel->allowField(true)->save($data);
+            $c1 = !empty($data['table_amount']) || !empty($data['table_price']);
+            $c2 = !empty($data['wine_fee']) || !empty($data['service_fee']);
+            $c3 = !empty($data['banquet_update_table']) || !empty($data['banquet_total']);
+            $c4 = !empty($data['banquet_discount']) || !empty($data['banquet_totals']);
+            $c5 = !empty($data['banquet_ritual_id']) || !empty($data['banquet_ritual_hall']);
+            $c6 = !empty($data['banquet_other']) || !empty($data['banquet_remark']);
+            if($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $BanquetModel = new OrderBanquet();
+                $BanquetModel->allowField(true)->save($data);
+            }
         }
 
         ## wedding message
         if (!empty($param['wedding'])) {
             $data = json_decode($param['wedding'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
-            $WeddingModel = new OrderWedding();
-            $WeddingModel->allowField(true)->save($data);
+            $c1 = !empty($data['wedding_package_id']) || !empty($data['wedding_package_price']);
+            $c2 = !empty($data['wedding_ritual_id']) || !empty($data['wedding_ritual_hall']);
+            $c3 = !empty($data['wedding_other']) || !empty($data['wedding_total']);
+            $c4 = !empty($data['wedding_remark']);
+            if($c1 || $c2 || $c3 || $c4) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $WeddingModel = new OrderWedding();
+                $WeddingModel->allowField(true)->save($data);
+            }
         }
 
         ## 酒店服务项目
         if (!empty($param['hotelItem'])) {
             $data = json_decode($param['hotelItem'], true);
-            $data['order_id'] = $OrderModel->id;
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
-            $orderHotelItem = new OrderHotelItem();
-            $orderHotelItem->allowField(true)->save($data);
+            $c1 = !empty($data['wedding_room']) || !empty($data['wedding_room_amount']);
+            $c2 = !empty($data['part']) || !empty($data['part_amount']);
+            $c3 = !empty($data['champagne']) && !empty($data['champagne_amount']);
+            $c4 = !empty($data['tea']) && !empty($data['tea_amount']);
+            $c5 = !empty($data['cake']) && !empty($data['cake_amount']);
+            if ($c1 || $c2 || $c3 || $c4 || $c5) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $orderHotelItem = new OrderHotelItem();
+                $orderHotelItem->allowField(true)->save($data);
+            }
         }
 
         ## 婚车主车
