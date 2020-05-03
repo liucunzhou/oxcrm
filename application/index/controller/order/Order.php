@@ -586,6 +586,58 @@ class Order extends Backend
         return $this->fetch('order/show/main');
     }
 
+    public function deleteOrder($id)
+    {
+        $order = \app\common\model\Order::get($id);
+        $result = $order->delete();
+        if($result) {
+            $where = [];
+            $where[] = ['order_id', '=', $id];
+            ### 婚宴信息删除
+            OrderBanquet::where($where)->delete();
+            OrderBanquetReceivables::where($where)->delete();
+            OrderBanquetPayment::where($where)->delete();
+            OrderBanquetSuborder::where($where)->delete();
+
+            ### 婚庆信息删除
+            OrderWedding::where($where)->delete();
+            OrderWeddingReceivables::where($where)->delete();
+            OrderBanquetPayment::where($where)->delete();
+            OrderBanquetSuborder::where($where)->delete();
+
+            ### 酒店服务项目
+            OrderHotelItem::where($where)->delete();
+            ### 酒店协议
+            OrderHotelProtocol::where($where)->delete();
+            ### 删除婚车信息
+            OrderCar::where($where)->delete();
+            ### 删除喜糖
+            OrderSugar::where($where)->delete();
+            ### 删除酒水
+            OrderWine::where($where)->delete();
+            ### 删除点心
+            OrderDessert::where($where)->delete();
+            ### 删除灯光
+            OrderLight::where($where)->delete();
+            ### 删除Led
+            OrderLed::where($where)->delete();
+            ### 删除3D
+            OrderD3::where($where)->delete();
+
+            $arr = [
+                'code'  => '200',
+                'msg'   => '删除成功'
+            ];
+        } else {
+            $arr = [
+                'code'  => '400',
+                'msg'   => '删除失败'
+            ];
+        }
+
+        return json($arr);
+    }
+
 
 
     # 获取订单列表
