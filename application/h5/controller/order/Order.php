@@ -229,7 +229,8 @@ class Order extends Base
             // 获取审核状态
             if (empty($confirmLast)) {
                 $edit = 0;
-                $orderEdit = 0;
+                // $orderEdit = 0;
+                $orderEdit = 1;
             } else {
                 $edit = 1;
                 $orderEdit = 1;
@@ -242,7 +243,8 @@ class Order extends Base
                 $orderEdit = 1;
             } else {
                 $edit = 0;
-                $orderEdit = 0;
+                // $orderEdit = 0;
+                $orderEdit = 1;
             }
         }
 
