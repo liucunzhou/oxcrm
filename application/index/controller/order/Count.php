@@ -79,7 +79,7 @@ class Count extends Backend
         } else {
             $model = $this->model->whereTime('event_date', 'month');
         }
-        dump($map);
+
         $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
 
         $list =  $model->where($map)->order('event_date asc,id desc')->field($fields)->select();
