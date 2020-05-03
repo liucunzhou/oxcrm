@@ -217,7 +217,7 @@ class Order extends Base
         #### 不管是谁 只要存在未被审核的将视为不能编辑，驳回后会添加新的未审核，审核后会修改is_checked=1
         $where = [];
         $where[] = ['order_id', '=', $order['id']];
-        $where[] = ['company_id', '=', $order['company_id']];
+        // $where[] = ['company_id', '=', $order['company_id']];
         $where[] = ['user_id', '=', $this->user['id']];
         $where[] = ['is_checked', '=', 0];
         // $where[] = ['status', '=', 3];
