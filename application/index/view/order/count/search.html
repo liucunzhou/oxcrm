@@ -1,7 +1,7 @@
 <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
     <div class="layui-form-item">
-        <div class="layui-inline layui-col-sm1">
-            <select name="company_id" lay-verify="" lay-search>
+        <div class="layui-inline">
+            <select name="company_id" lay-verify="" lay-search multiple>
                 <option value="">签约公司</option>
                 <{foreach name="firmList" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -9,11 +9,20 @@
             </select>
         </div>
 
-        <div class="layui-inline layui-col-sm1">
-            <select name="newsTypesList" lay-verify="">
+        <div class="layui-inline">
+            <select name="newsTypesList" lay-verify="" multiple lay-search>
                 <option value="">订单类型</option>
                 <{foreach name="newsTypesList" item="val"}>
                 <option value="{$key}">{$val}</option>
+                <{/foreach}>
+            </select>
+        </div>
+
+        <div class="layui-inline">
+            <select name="hotelList" lay-verify="" multiple lay-search>
+                <option value="">选择酒店</option>
+                <{foreach name="hotelList" item="val"}>
+                <option value="{$val.id}">{$val.title}</option>
                 <{/foreach}>
             </select>
         </div>

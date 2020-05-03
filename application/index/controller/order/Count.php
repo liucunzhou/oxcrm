@@ -2,6 +2,7 @@
 namespace app\index\controller\order;
 
 use app\common\model\Brand;
+use app\common\model\Store;
 use app\index\controller\Backend;
 
 class Count extends Backend
@@ -11,6 +12,7 @@ class Count extends Backend
     protected $OrderBanquetReceivables = [];
     protected $OrderWeddingSuborder = [];
     protected $OrderBanquetSuborder = [];
+    protected $hotelList = [];
 
     protected function initialize()
     {
@@ -22,6 +24,9 @@ class Count extends Backend
         $this->OrderBanquetReceivables = new \app\common\model\OrderBanquetReceivables();
         $this->OrderWeddingSuborder = new \app\common\model\OrderWeddingSuborder();
         $this->OrderBanquetSuborder = new \app\common\model\OrderBanquetSuborder();
+
+        $this->hotelList = Store::getStoreList();
+        $this->assign('hotelList', $this->hotelList);
     }
 
     public function index()
