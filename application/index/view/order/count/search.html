@@ -1,7 +1,7 @@
-<form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
+<!--<form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <select name="company_id" lay-verify="" lay-search multiple>
+            <select name="company_id[]" lay-verify="" lay-search multiple>
                 <option value="">签约公司</option>
                 <{foreach name="firmList" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -10,7 +10,7 @@
         </div>
 
         <div class="layui-inline">
-            <select name="newsTypesList" lay-verify="" multiple lay-search>
+            <select name="newsTypesList[]" lay-verify="" multiple lay-search>
                 <option value="">订单类型</option>
                 <{foreach name="newsTypesList" item="val"}>
                 <option value="{$key}">{$val}</option>
@@ -19,7 +19,7 @@
         </div>
 
         <div class="layui-inline">
-            <select name="hotelList" lay-verify="" multiple lay-search>
+            <select name="hotelList[]" lay-verify="" multiple lay-search>
                 <option value="">选择酒店</option>
                 <{foreach name="hotelList" item="val"}>
                 <option value="{$val.id}">{$val.title}</option>
@@ -27,7 +27,7 @@
             </select>
         </div>
 
-        <!--<div class="layui-inline layui-col-sm1">
+        &lt;!&ndash;<div class="layui-inline layui-col-sm1">
             <select name="complete" lay-verify="">
                 <option value="">完成状态</option>
                 <option value="0">待完成</option>
@@ -35,16 +35,16 @@
                 <option value="100">已完成</option>
                 <option value="101">退单</option>
             </select>
-        </div>-->
+        </div>&ndash;&gt;
 
-        <!--<div class="layui-inline layui-col-sm1">
+        &lt;!&ndash;<div class="layui-inline layui-col-sm1">
             <select name="date_range_type" lay-verify="">
                 <option value="">时间区间类型</option>
                 <option value="create_time">创建时间</option>
                 <option value="sign_date">签单时间</option>
                 <option value="event_date">举办时间</option>
             </select>
-        </div>-->
+        </div>&ndash;&gt;
 
         <div class="layui-inline layui-col-sm1">
             <input type="text" name="date_range" id="date_range" lay-verify="0" placeholder="举办时间" autocomplete="off" class="layui-input">
@@ -54,4 +54,27 @@
             <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
         </div>
     </div>
+</form>-->
+
+<form class="form form-inline">
+    <select name="company_id[]" class="form-control multiple-select" placeholder="签约公司" multiple>
+        <{foreach name="firmList" item="row"}>
+        <option value="{$row.id}">{$row.title}</option>
+        <{/foreach}>
+    </select>
+
+    <select name="newsTypesList[]" class="form-control multiple-select" placeholder="订单类型" multiple>
+        <{foreach name="newsTypesList" item="row"}>
+        <option value="{$key}">{$row}</option>
+        <{/foreach}>
+    </select>
+
+    <select name="hotel_id[]" class="form-control multiple-select" placeholder="选择酒店" multiple>
+        <{foreach name="hotelList" item="row"}>
+        <option value="{$row.id}">{$row.title}</option>
+        <{/foreach}>
+    </select>
+
+    <input type="text" class="form-control date-range" name="range" id="date-range" autocomplete="off" placeholder="选择时间区间">
+    <input type="submit" class="btn btn-primary" value="搜索">
 </form>
