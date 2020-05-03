@@ -219,33 +219,25 @@ class Order extends Base
         $where[] = ['order_id', '=', $order['id']];
         // $where[] = ['company_id', '=', $order['company_id']];
         $where[] = ['user_id', '=', $this->user['id']];
-        $where[] = ['is_checked', '=', 0];
+        // $where[] = ['is_checked', '=', 0];
         // $where[] = ['status', '=', 3];
         $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
-        if ($this->user['id'] == $order['user_id']) {
-            // end($sequence);
-            // $confirmItemId = key($sequence);
-
-            // 获取审核状态
-            if (empty($confirmLast)) {
-                $edit = 1;
-                $orderEdit = 1;
-                // $orderEdit = 1;
-            } else {
-                $edit = 0;
-                $orderEdit = 0;
-            }
-
-        } else {
-
-            if (empty($confirmLast)) {
-                $edit = 0;
-                $orderEdit = 1;
-            } else {
-                $edit = 0;
-                $orderEdit = 0;
-                // $orderEdit = 1;
-            }
+        // 获取审核状态
+        if (empty($confirmLast)) {
+            $edit = 0;
+            $orderEdit = 0;
+        } else if ($confirmLast->status == 2){
+            // 驳回
+            $edit = 1;
+            $orderEdit = 0;
+        } else if ($confirmLast->status == 1) {
+            // 通过
+            $edit = 0;
+            $orderEdit = 1;
+        }else {
+            // 审核中
+            $edit = 0;
+            $orderEdit = 0;
         }
 
         #### 获取用户信息
