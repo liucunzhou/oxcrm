@@ -2,6 +2,7 @@
 
 namespace app\h5\controller\order;
 
+use app\common\model\Brand;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
 use app\h5\controller\Base;
@@ -9,11 +10,14 @@ use app\h5\controller\Base;
 class BanquetSuborder extends Base
 {
     protected $model = null;
+    protected $companyList = [];
 
     protected function initialize()
     {
         parent::initialize();
         $this->model = new OrderBanquetSuborder();
+
+        $this->companyList = Brand::getBrands();
     }
 
     # 编辑婚庆子合同
@@ -23,6 +27,7 @@ class BanquetSuborder extends Base
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
+                'companyList'   => array_values($this->companyList),
                 'incomePaymentList' => $this->config['payments']
             ]
         ];
@@ -78,6 +83,7 @@ class BanquetSuborder extends Base
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
+                    'companyList'   => array_values($this->companyList),
                     'banquetSuborderList' => $data
                 ]
             ];

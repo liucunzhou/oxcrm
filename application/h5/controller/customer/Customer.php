@@ -367,7 +367,6 @@ class Customer extends Base
         $order = 'create_time desc,member_create_time desc';
         $field = "id,user_id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
         $list = $model->field($field)->order($order)->paginate($param['limit'], false, $config);
-
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
@@ -509,6 +508,8 @@ class Customer extends Base
             $member = $member->where('id', '=', function ($query) use ($mobile) {
                 $query->table('tk_mobile')->where('mobile', '=', $mobile)->field('member_id');
             });
+
+
         } else if ( isset($param['keywords']) && strlen($param['keywords']) < 11 ) {
             $mobile = $param['keywords'];
             $member = $member->where('id', 'in', function ($query) use ($mobile) {
@@ -584,5 +585,52 @@ class Customer extends Base
         }
 
         return json($result);
+    }
+
+    public function searchAllocate()
+    {
+        $post = Request::param();
+        $member = \app\api\model\Member::getByMobile($post['mobile']);
+        if (empty($member)) {
+            $mobiles = MobileRelation::getMobiles($post['mobile']);
+            if (!empty($mobiles)) {
+                $map[] = ['mobile', 'in', $mobiles];
+            } else {
+                $map[] = ['mobile', '=', $post['mobile']];
+            }
+            $where[] = ['mobile', 'like', "%{$post['mobile']}%"];
+            $list = model('Member')->where($map)->whereOr($where)->order('create_time desc')->select();
+            if(!empty($list)) {
+                $data = $list->getData();
+                $memberId = $data[0]['id'];
+                $data[0]['allocate_type'] = 1;
+                $result = MemberAllocate::searchAllocateData($this->user['id'], $memberId, $data[0]);
+            } else {
+                $result = 0;
+            }
+        } else {
+            $data = $member->getData();
+            $data['allocate_type'] = 1;
+            $result = MemberAllocate::searchAllocateData($this->user['id'], $member->id, $data);
+            $memberId = $member->id;
+        }
+
+        if ($result) {
+            $response = [
+                'code' => 0,
+                'msg' => '获取成功',
+                'count' => 0,
+                'data' => $memberId
+            ];
+        } else {
+            $response = [
+                'code' => -1,
+                'msg' => '获取客资失败',
+                'count' => 0,
+                'data' => []
+            ];
+        }
+
+        return xjson($response);
     }
 }

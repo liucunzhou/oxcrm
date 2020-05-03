@@ -1,6 +1,7 @@
 <?php
 namespace app\h5\controller\order;
 
+use app\common\model\Brand;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\h5\controller\Base;
@@ -8,11 +9,13 @@ use app\h5\controller\Base;
 class WeddingSuborder extends Base
 {
     protected $model = null;
+    protected $companyList = [];
 
     protected function initialize()
     {
         parent::initialize();
         $this->model = new OrderWeddingSuborder();
+        $this->companyList = Brand::getBrands();
     }
 
     # 编辑婚庆子合同
@@ -22,6 +25,7 @@ class WeddingSuborder extends Base
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
+                'companyList'   => array_values($this->companyList),
                 'incomePaymentList' => $this->config['payments']
             ]
         ];
@@ -74,6 +78,7 @@ class WeddingSuborder extends Base
                 'code' => '200',
                 'msg' => '获取数据成功',
                 'data' => [
+                    'companyList'   => array_values($this->companyList),
                     'weddingSuborderList' => $data
                 ]
             ];
