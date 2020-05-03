@@ -50,6 +50,15 @@ class BanquetSuborder extends Base
 
         // 添加收款信息
         $income = json_decode($param['banquet_incomeList'], true);
+        if(empty($income['company_id'])) {
+            $this->model->rollback();
+            $result = [
+                'code' => '400',
+                'msg' => '请选择承办公司'
+            ];
+            return json($result);
+        }
+
         $income['order_id'] = $param['order_id'];
         $income['user_id'] = $this->user['id'];
         $income['banquet_income_type'] = 5;
@@ -59,6 +68,7 @@ class BanquetSuborder extends Base
 
         if($result1 && $result2) {
             $this->model->commit();
+            create_order_confirm($param['order_id'], $income['company_id'], $this->user['id'], 'income');
             $result = [
                 'code' => '200',
                 'msg' => '添加婚宴二销成功'
