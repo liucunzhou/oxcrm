@@ -54,7 +54,7 @@ class Payment extends Base
         }
 
         $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
-        $staffs = User::getUsers(false);
+        $staffs = \app\common\model\User::getUsers(false);
         ## 审核全局列表
         $sequence = $this->config['check_sequence'];
         $auth = json_decode($audit->content, true);
