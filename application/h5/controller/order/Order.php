@@ -665,7 +665,7 @@ class Order extends Base
                     'edit' => 0,
                 ],
                 'addItems' => [
-                    'edit' => $edit,
+                    'edit' => $orderEdit,
                     'addItems' => [
                         [
                             'id' => 'suborder',
