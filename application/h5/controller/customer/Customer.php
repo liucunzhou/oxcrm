@@ -194,8 +194,8 @@ class Customer extends Base
             'code' => 200,
             'msg' => '客资详情',
             'data' => [
-                'customer'  =>  $customer,
-                'level'     =>  $this->config['levels'],
+                'customer' => $customer,
+                'level' => $this->config['levels'],
             ]
         ];
         return json($result);
@@ -205,8 +205,8 @@ class Customer extends Base
     public function doCreate()
     {
         $param = $this->request->param();
-        $res = $this->validate($param,'Customer');
-        if(true !== $res){
+        $res = $this->validate($param, 'Customer');
+        if (true !== $res) {
             // 验证失败 输出错误信息
             return json([
                 'code' => '400',
@@ -217,7 +217,7 @@ class Customer extends Base
         $model = new Member();
         $model->member_no = date('YmdHis') . rand(100, 999);
         ### 验证手机号唯一性
-        if(empty($param['mobile1'])) {
+        if (empty($param['mobile1'])) {
             $originMember = $model::checkFromMobileSet($param['mobile'], false);
             if ($originMember) {
                 return json([
@@ -244,7 +244,7 @@ class Customer extends Base
 
         ### 基本信息入库
         $model->is_sea = 1;
-        if(in_array($this->user['role_id'], [5,6,8,26])) {
+        if (in_array($this->user['role_id'], [5, 6, 8, 26])) {
             // 代表来源登陆手机端，会进入派单组公海
             $param['add_source'] = 1;
         }
@@ -260,10 +260,10 @@ class Customer extends Base
             MemberAllocate::insertAllocateData($this->user['id'], $memberId, $param);
 
             $mobileModel = new Mobile();
-            $mobileModel->insert(['mobile'=>$param['mobile'],'member_id'=>$memberId]);
+            $mobileModel->insert(['mobile' => $param['mobile'], 'member_id' => $memberId]);
             ### 将手机号1添加到手机号库
-            if(!empty($param['mobile1'])) {
-                $mobileModel->insert(['mobile'=>$param['mobile1'], 'member_id'=>$memberId]);
+            if (!empty($param['mobile1'])) {
+                $mobileModel->insert(['mobile' => $param['mobile1'], 'member_id' => $memberId]);
             }
             $result = ['code' => '200', 'msg' => '添加客资成功'];
         } else {
@@ -316,9 +316,9 @@ class Customer extends Base
 
         $map = [];
         ###  管理者还是销售
-        if($this->role['auth_type'] > 0) {
+        if ($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($param['user_id']) && !empty($param['user_id'])) {
+            if (isset($param['user_id']) && !empty($param['user_id'])) {
                 // $user_id = explode(',',$param['user_id']);
                 if ($param['user_id'] == 'all') {
                     $map[] = ['user_id', 'in', $this->staffs];
@@ -328,7 +328,7 @@ class Customer extends Base
                     $map[] = ['user_id', 'in', $param['user_id']];
                 }
 
-            }  else {
+            } else {
                 $map[] = ['user_id', '=', $this->user['id']];
             }
 
@@ -337,28 +337,28 @@ class Customer extends Base
         }
 
         ### 当前选择跟进渠道
-        if(isset($param['active_status']) && is_numeric($param['active_status'])){
-            $map[] = ['active_status','=',$param['active_status']];
+        if (isset($param['active_status']) && is_numeric($param['active_status'])) {
+            $map[] = ['active_status', '=', $param['active_status']];
         }
 
         ### 获取方式
-        if( isset($param['allocate_type']) && is_numeric($param['allocate_type']) ){
-            $map[] = ['allocate_type','=',$param['allocate_type']];
+        if (isset($param['allocate_type']) && is_numeric($param['allocate_type'])) {
+            $map[] = ['allocate_type', '=', $param['allocate_type']];
         }
 
         ### 时间区间
-        if( isset($param['range']) && !empty($param['range'])){
+        if (isset($param['range']) && !empty($param['range'])) {
             $range = format_date_range($param['range']);
             $map[] = ['create_time', 'between', $range];
         }
 
         $model = $this->model->where($map);
         ### 手机号筛选
-        if( isset($param['mobile']) && strlen($param['mobile']) == 11 ){
-           $model->where('member_id', 'in', function ($query) use ($param) {
+        if (isset($param['mobile']) && strlen($param['mobile']) == 11) {
+            $model->where('member_id', 'in', function ($query) use ($param) {
                 $query->table('tk_mobile')->where('mobile', '=', $param['mobile'])->field('member_id');
-           });
-        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11){
+            });
+        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11) {
             $model->where('member_id', 'in', function ($query) use ($param) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$param['mobile']}%")->field('member_id');
             });
@@ -396,9 +396,9 @@ class Customer extends Base
         $param = $this->request->param();
         $map = [];
         ###  管理者还是销售
-        if($this->role['auth_type'] > 0) {
+        if ($this->role['auth_type'] > 0) {
             ### 员工列表
-            if( isset($param['user_id']) && !empty($param['user_id'])) {
+            if (isset($param['user_id']) && !empty($param['user_id'])) {
                 if ($param['user_id'] == 'all') {
                     $map[] = ['user_id', 'in', $this->staffs];
                 } else if (is_numeric($param['user_id'])) {
@@ -407,7 +407,7 @@ class Customer extends Base
                     $map[] = ['user_id', 'in', $param['user_id']];
                 }
 
-            }  else {
+            } else {
                 $map[] = ['user_id', '=', $this->user['id']];
             }
 
@@ -416,23 +416,23 @@ class Customer extends Base
         }
 
         ### 获取方式
-        if( isset($param['allocate_type']) && is_numeric($param['allocate_type']) ){
-            $map[] = ['allocate_type','=',$param['allocate_type']];
+        if (isset($param['allocate_type']) && is_numeric($param['allocate_type'])) {
+            $map[] = ['allocate_type', '=', $param['allocate_type']];
         }
 
         ### 时间区间
-        if( isset($param['range']) && !empty($param['range'])){
+        if (isset($param['range']) && !empty($param['range'])) {
             $range = format_date_range($param['range']);
             $map[] = ['create_time', 'between', $range];
         }
 
         $model = $this->model->where($map);
         ### 手机号筛选
-        if( isset($param['mobile']) && strlen($param['mobile']) == 11 ){
+        if (isset($param['mobile']) && strlen($param['mobile']) == 11) {
             $model->where('member_id', 'in', function ($query) use ($param) {
                 $query->table('tk_mobile')->where('mobile', '=', $param['mobile'])->field('member_id');
             });
-        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11){
+        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11) {
             $model->where('member_id', 'in', function ($query) use ($param) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$param['mobile']}%")->field('member_id');
             });
@@ -441,7 +441,7 @@ class Customer extends Base
         $list = $model->field('active_status,count(*) as count')->where($map)->group('active_status')->select();
         if (!empty($list)) {
             $list = $list->toArray();
-            $list = array_column($list,'count', 'active_status');
+            $list = array_column($list, 'count', 'active_status');
 
             $where = [];
             $where[] = ['type', '<>', 'wash'];
@@ -452,15 +452,15 @@ class Customer extends Base
             foreach ($statusList as $row) {
                 $amount = isset($list[$row->id]) ? $list[$row->id] : 0;
                 $data[] = [
-                    'id'        => $row->id,
-                    'title'     => $row->title,
-                    'count'    => $amount
+                    'id' => $row->id,
+                    'title' => $row->title,
+                    'count' => $amount
                 ];
             }
 
             $all = [
                 0 => [
-                    'id'    => 'all',
+                    'id' => 'all',
                     'title' => '所有客资',
                     'count' => array_sum($list)
                 ]
@@ -495,7 +495,7 @@ class Customer extends Base
         ];
         $member = new Member();
         $map[] = ['is_sea', '=', '1'];
-        if($this->user['city_id'] > 0) {
+        if ($this->user['city_id'] > 0) {
             $map[] = ['city_id', '=', $this->user['city_id']];
         }
         ###  默认隐藏失效、无效客资
@@ -503,14 +503,13 @@ class Customer extends Base
         $member = $member->field($fields)->where($map);
 
         ### 手机号筛选
-        if (  isset($param['keywords']) && strlen($param['keywords']) == 11  ) {
+        if (isset($param['keywords']) && strlen($param['keywords']) == 11) {
             $mobile = $param['keywords'];
-            $member = $member->where('id', '=', function ($query) use ($mobile) {
+            $member = $member->where('id', 'in', function ($query) use ($mobile) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
             });
 
-
-        } else if ( isset($param['keywords']) && strlen($param['keywords']) < 11 ) {
+        } else if (isset($param['keywords']) && strlen($param['keywords']) < 11) {
             $mobile = $param['keywords'];
             $member = $member->where('id', 'in', function ($query) use ($mobile) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
@@ -521,6 +520,7 @@ class Customer extends Base
         }
         $list = $member->order('create_time desc')->paginate($param['limit'], false, $config);
 
+
         foreach ($list as &$value) {
             $value['mobile'] = substr_replace($value['mobile'], '***', 3, 3);
             $value['active_status'] = $value['active_status'] ? $this->status[$value['active_status']]['title'] : "未跟进";
@@ -530,7 +530,7 @@ class Customer extends Base
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
-                'sealist'   =>  $list->getCollection()
+                'sealist' => $list->getCollection()
             ]
         ];
 
@@ -596,7 +596,7 @@ class Customer extends Base
             $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
         })->select();
 
-        if(!$list->isEmpty()) {
+        if (!$list->isEmpty()) {
             $list = $list->toArray();
             $data = $list[0];
             $data['allocate_type'] = 1;
