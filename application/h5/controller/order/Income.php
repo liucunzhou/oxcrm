@@ -221,16 +221,11 @@ class Income extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['incomeList'], true);
-        $order = \app\common\model\Order::get($param['order_id']);
 
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetReceivables();
-            $intro = '编辑婚宴收款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             $model = new OrderWeddingReceivables();
-            $intro = '编辑婚庆收款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
@@ -242,6 +237,7 @@ class Income extends Base
             return json($result);
         }
 
+        $order = \app\common\model\Order::get($row['order_id']);
         if($param['income_category'] == '婚宴') {
             $data = [
                 'id'    => $param['id'],
@@ -252,6 +248,8 @@ class Income extends Base
                 // 'income_real_date'  => $row->banquet_income_real_date,
                 'remark' => $param['income_remark']
             ];
+            $intro = '编辑婚宴收款审核';
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             $data = [
                 'id'    => $param['id'],
@@ -262,6 +260,8 @@ class Income extends Base
                 // 'income_real_date'  => $row->wedding_income_real_date,
                 'remark' => $param['income_remark']
             ];
+            $intro = '编辑婚庆收款审核';
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         }
         $rs = $row->allowField(true)->save($data);
 
