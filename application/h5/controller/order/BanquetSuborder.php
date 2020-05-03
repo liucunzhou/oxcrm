@@ -5,6 +5,7 @@ namespace app\h5\controller\order;
 use app\common\model\Brand;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\User;
 use app\h5\controller\Base;
 
 class BanquetSuborder extends Base
@@ -23,12 +24,13 @@ class BanquetSuborder extends Base
     # 编辑婚庆子合同
     public function create()
     {
+
         $result = [
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
                 'companyList'   => array_values($this->companyList),
-                'incomePaymentList' => $this->config['payments']
+                'incomePaymentList' => $this->config['payments'],
             ]
         ];
         return json($result);

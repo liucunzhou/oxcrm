@@ -14,12 +14,90 @@ class Payment extends Base
 
     public function create()
     {
+        $param = $this->request->param();
+        $order = \app\common\model\Order::get($param['order_id']);
+        if(empty($order)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '订单不存在'
+            ];
+            return json($result);
+        }
+
+        if(empty($order->company_id)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '未设置签约公司'
+            ];
+            return json($result);
+        }
+
+        $where = [];
+        $where[] = ['company_id', '=', $order->company_id];
+        $where[] = ['timing', '=', 'payment'];
+        $audit = \app\common\model\Audit::where($where)->find();
+
+        if(empty($audit)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '尚未设置审核顺序'
+            ];
+            return json($result);
+        }
+
+        if(empty($audit->content)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '尚未设置审核顺序'
+            ];
+            return json($result);
+        }
+
+        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
+        $staffs = User::getUsers(false);
+        ## 审核全局列表
+        $sequence = $this->config['check_sequence'];
+        $auth = json_decode($audit->content, true);
+        $confirmList = [];
+        foreach ($auth as $key=>$row) {
+            $managerList = [];
+            $type = $sequence[$key]['type'];
+            if($type == 'role') {
+                // 获取角色
+                foreach ($row as $v)
+                {
+                    $user = User::getRoleManager($v, $this->user);
+                    $managerList[] = [
+                        'id'        => $user['id'],
+                        'realname'  => $user['realname'],
+                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            } else {
+                foreach ($row as $v) {
+                    if(!isset($staffs[$v])) continue;
+                    $user = $staffs[$v];
+                    $managerList[] = [
+                        'id'        => $user['id'],
+                        'realname'  => $user['realname'],
+                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            }
+            $confirmList[] = [
+                'id'    => $key,
+                'title' => $sequence[$key]['title'],
+                'managerList'   => $managerList
+            ];
+        }
+
         $result = [
             'code' => '200',
             'msg' => '获取数据成功',
             'data' => [
                 'incomePaymentList' => $this->config['payments'],
-                'incomeTypeList' => $this->config['payment_type_list']
+                'incomeTypeList' => $this->config['payment_type_list'],
+                'confirmList'   => $confirmList
             ]
         ];
         return json($result);
