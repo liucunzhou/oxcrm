@@ -89,7 +89,7 @@ $payments = [
 ];
 
 $suborderTypes = ['否', '婚宴二销', '婚庆二销'];
-$checkStatusList = ['待审核','审核中', '审核驳回','审核通过', '已完成'];
+$checkStatusList = ['待审核','审核中', '审核通过','审核驳回', '已完成'];
 $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
 $check_sequence = [
