@@ -222,6 +222,7 @@ class Order extends Base
         $where[] = ['is_checked', '=', 0];
         // $where[] = ['status', '=', 3];
         $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
+        var_dump($confirmLast);
         if ($this->user['id'] == $order['user_id']) {
             // end($sequence);
             // $confirmItemId = key($sequence);
