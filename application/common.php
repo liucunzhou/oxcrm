@@ -90,14 +90,12 @@ if(!function_exists('create_order_confirm')) {
             $where[] = ['confirm_type', '=', $confirmType];
             $where[] = ['is_checked', '=', 0];
             $confirmLast = \app\common\model\OrderConfirm::where($where)->order('id desc')->find();
-            if(empty($confirmLast)) {
+            if(!empty($confirmLast)) {
                 $confirmNO = $confirmLast->confirm_no;
                 $current = $confirmLast->confirm_item_id;
                 $index = get_next_confirm_item($current, $sequence);
                 if (is_null($index)) {
                     // 已审核完的状态可以添加审核
-                    $index = key($sequence);
-                } else {
                     $index = key($sequence);
                 }
             } else {
@@ -146,6 +144,7 @@ if(!function_exists('create_order_confirm')) {
                 $orderConfirm->allowField(true)->save($data);
             }
         }
+        echo $orderConfirm->getLastSql();
 
         return 1;
     }
