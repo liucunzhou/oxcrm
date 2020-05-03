@@ -445,8 +445,8 @@ class Customer extends Base
 
             $where = [];
             $where[] = ['type', '<>', 'wash'];
-            // $field = "id,title,color";
-            $statusList = Intention::getIntentions();
+            $field = "id,title,color";
+            $statusList = Intention::where($where)->field($field)->order('is_valid desc,sort desc,id asc')->select();
 
             $data = [];
             foreach ($statusList as $row) {
