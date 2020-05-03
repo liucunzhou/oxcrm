@@ -51,7 +51,7 @@ class Count extends Backend
             }
         }
 
-        if( !empty($param['newsTypesList']) )
+        if( !empty($param['news_type']) )
         {
             if(count($param['news_type']) > 1) {
                 $map[] = ['news_type','in',$param['news_type']];
@@ -79,9 +79,9 @@ class Count extends Backend
         } else {
             $model = $this->model->whereTime('event_date', 'month');
         }
-
+        dump($map);
         $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
-        // $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
+
         $list =  $model->where($map)->order('event_date asc,id desc')->field($fields)->select();
 
         $list = $list->toArray();
