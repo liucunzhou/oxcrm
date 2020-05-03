@@ -322,13 +322,13 @@ class Confirm extends Backend
             foreach ($sequence as $key => &$row) {
                 $where = [];
                 $where[] = ['order_id', '=', $get['id']];
-                $where[] = ['company_id', '=', $order->company_id];
+                // $where[] = ['company_id', '=', $order->company_id];
                 $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
-                $where[] = ['confirm_type', '=', $orderConfirm->confirm_type];
+                // $where[] = ['confirm_type', '=', $orderConfirm->confirm_type];
                 $where[] = ['confirm_item_id', '=', $key];
                 $confirmModel = new OrderConfirm();
                 $currentConfirm = $confirmModel->where($where)->find();
-                echo $confirmModel->getLastSql();
+                // echo $confirmModel->getLastSql();
                 $row['title'] = $sequences[$key]['title'];
                 if (!empty($currentConfirm)) {
                     $cstatus = $currentConfirm->status;
