@@ -131,7 +131,7 @@ if(!function_exists('create_order_confirm')) {
                 $staff = \app\common\model\User::getRoleManager($row, $user);
                 $data = [];
                 $data['confirm_intro'] = $intro;
-                $data['confirm_no'] =  $confirmNO;
+                $data['confirm_no'] = $confirmNO;
                 $data['confirm_type'] = $confirmType;
                 $data['company_id'] = $companyId;
                 $data['confirm_item_id'] = $index;
@@ -144,7 +144,6 @@ if(!function_exists('create_order_confirm')) {
                 $orderConfirm->allowField(true)->save($data);
             }
         }
-        echo $orderConfirm->getLastSql();
 
         return 1;
     }
