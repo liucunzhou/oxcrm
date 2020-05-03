@@ -40,7 +40,7 @@ class Confirm extends Backend
     protected $weddingCategories = [];
     protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
     protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
-    protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
+    protected $confirmStatusList = [0=>'待审核', 1=>'审核通过', 2=>'审核驳回'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
     protected function initialize()
@@ -103,7 +103,7 @@ class Confirm extends Backend
         $this->assign('weddingCategories', $this->weddingDevices);
     }
 
-    # 誉思
+    # 誉思订单
     public function index()
     {
         if (Request::isAjax()) {
@@ -124,6 +124,7 @@ class Confirm extends Backend
         }
     }
 
+    # 红丝订单
     public function hs()
     {
         if (Request::isAjax()) {
