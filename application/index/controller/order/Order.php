@@ -11,6 +11,7 @@ use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderCar;
+use app\common\model\OrderConfirm;
 use app\common\model\OrderD3;
 use app\common\model\OrderDessert;
 use app\common\model\OrderEntire;
@@ -623,6 +624,9 @@ class Order extends Backend
             OrderLed::where($where)->delete();
             ### 删除3D
             OrderD3::where($where)->delete();
+
+            ### 删除审核
+            OrderConfirm::where($where)->delete();
 
             $arr = [
                 'code'  => '200',

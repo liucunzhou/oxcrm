@@ -41,6 +41,7 @@ class Confirm extends Backend
     protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
     protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
+    protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
     protected function initialize()
     {
@@ -51,6 +52,7 @@ class Confirm extends Backend
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
+        $this->assign('cooperationModes', $this->cooperationModes);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
         $this->assign('staffes', $staffes);
@@ -348,11 +350,14 @@ class Confirm extends Backend
         ];
         $map = [];
         $map[] = ['company_id', '=', $get['company_id']];
-        $map[] = ['confirm_user_id', '=', $this->user['id']];
+        if($this->user['nickname'] != 'admin') {
+            $map[] = ['confirm_user_id', '=', $this->user['id']];
+        }
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
 
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
+            $value['status'] = $this->confirmStatusList[$value['status']];
             $order = \app\common\model\Order::get($value['order_id']);
             $value['bridegroom_mobile'] = $order->bridegroom_mobile ? substr_replace($order->bridegroom_mobile, '***', 3, 3) : '-';
             $value['bride_mobile'] = $order->bride_mobile ? substr_replace($order->bride_mobile, '***', 3, 3) : '-';

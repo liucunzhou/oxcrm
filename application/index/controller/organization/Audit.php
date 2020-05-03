@@ -59,7 +59,6 @@ class Audit extends Backend
             return json($result);
 
         } else {
-
             return $this->fetch();
         }
     }
