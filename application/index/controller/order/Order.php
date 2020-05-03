@@ -371,7 +371,7 @@ class Order extends Backend
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
-        if(empty($this->user['sale'])) {
+        if(empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
@@ -567,7 +567,7 @@ class Order extends Backend
         $this->editOrder();
 
         $order = $this->model->where('id', '=', $request['id'])->find();
-        if(empty($this->user['sale'])) {
+        if(empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }

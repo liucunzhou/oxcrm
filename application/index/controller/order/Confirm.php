@@ -183,7 +183,7 @@ class Confirm extends Backend
         $get['id'] = $orderConfirm->order_id;
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
-        if(empty($this->user['sale'])) {
+        if(empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
@@ -434,12 +434,13 @@ class Confirm extends Backend
 
         ## 获取订单信息
         $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $orderId = $confirm->order_id;
         $confirm->content = $param['content'];
         $confirm->status = 2;
         $result = $confirm->save();
         $this->model->where('confirm_no', '=', $confirm->confirm_no)->save(['is_checked'=>1]);
+        \app\common\model\Order::where('id', '=', $orderId)->update(['check_status'=>3]);
         if($result) {
-            \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>3]);
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
