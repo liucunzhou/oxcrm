@@ -590,43 +590,27 @@ class Customer extends Base
     public function searchAllocate()
     {
         $post = Request::param();
-        $member = Member::getByMobile($post['mobile']);
-        if (empty($member)) {
-            $mobiles = MobileRelation::getMobiles($post['mobile']);
-            if (!empty($mobiles)) {
-                $map[] = ['mobile', 'in', $mobiles];
-            } else {
-                $map[] = ['mobile', '=', $post['mobile']];
-            }
-            $where[] = ['mobile', 'like', "%{$post['mobile']}%"];
-            $list = model('Member')->where($map)->whereOr($where)->order('create_time desc')->select();
-            if(!empty($list)) {
-                $data = $list->toArray();
-                $memberId = $data[0]['id'];
-                $data[0]['allocate_type'] = 1;
-                $result = MemberAllocate::searchAllocateData($this->user['id'], $memberId, $data[0]);
-            } else {
-                $result = 0;
-            }
-        } else {
-            $data = $member->getData();
-            $data['allocate_type'] = 1;
-            $result = MemberAllocate::searchAllocateData($this->user['id'], $member->id, $data);
-            $memberId = $member->id;
-        }
+        $mobile = $post['mobile'];
+        $member = new Member();
+        $list = $member->where('id', 'in', function ($query) use ($mobile) {
+            $query->table('tk_mobile')->where('mobile', 'like', "%{$mobile}%")->field('member_id');
+        })->select();
 
-        if ($result) {
+        if(!$list->isEmpty()) {
+            $list = $list->toArray();
+            $data = $list[0];
+            $data['allocate_type'] = 1;
+            MemberAllocate::searchAllocateData($this->user['id'], $data['id'], $data);
+
             $response = [
-                'code' => 0,
+                'code' => 200,
                 'msg' => '获取成功',
-                'count' => 0,
-                'data' => $memberId
+                'data' => $data['id']
             ];
         } else {
             $response = [
-                'code' => -1,
+                'code' => 400,
                 'msg' => '获取客资失败',
-                'count' => 0,
                 'data' => []
             ];
         }

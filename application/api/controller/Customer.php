@@ -722,7 +722,7 @@ class Customer extends Base
     public function searchAllocate()
     {
         $post = Request::param();
-        $member = Member::getByMobile($post['mobile']);
+        $member = Member::where('mobile', 'like', "%{$post['mobile']}%")->find();
         if (empty($member)) {
             $mobiles = MobileRelation::getMobiles($post['mobile']);
             if (!empty($mobiles)) {
