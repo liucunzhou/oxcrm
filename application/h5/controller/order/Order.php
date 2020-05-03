@@ -852,9 +852,9 @@ class Order extends Base
             $data = json_decode($param['hotelItem'], true);
             $c1 = !empty($data['wedding_room']) || !empty($data['wedding_room_amount']);
             $c2 = !empty($data['part']) || !empty($data['part_amount']);
-            $c3 = !empty($data['champagne']) && !empty($data['champagne_amount']);
-            $c4 = !empty($data['tea']) && !empty($data['tea_amount']);
-            $c5 = !empty($data['cake']) && !empty($data['cake_amount']);
+            $c3 = !empty($data['champagne']) || !empty($data['champagne_amount']);
+            $c4 = !empty($data['tea']) || !empty($data['tea_amount']);
+            $c5 = !empty($data['cake']) || !empty($data['cake_amount']);
             if ($c1 || $c2 || $c3 || $c4 || $c5) {
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
