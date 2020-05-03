@@ -60,7 +60,7 @@ class Count extends Backend
 
         $fields = "id,news_type,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
         // $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
-        $list =  $model->where($map)->order('id desc')->field($fields)->select();
+        $list =  $model->where($map)->order('event_date,id desc')->field($fields)->select();
 
         $list = $list->toArray();
         foreach ($list as $k=>&$v){
@@ -155,5 +155,31 @@ class Count extends Backend
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
         $this->assign('list',$list);
         return $this->fetch('order/count/index');
+    }
+
+    # 查看订单信息
+    public function showOrder()
+    {
+        $request = $this->request->param();
+        $this->editOrder();
+
+        $order = $this->model->where('id', '=', $request['id'])->find();
+        if(empty($this->user['sale'])) {
+            $sale = User::getUser($order->salesman);
+            $order->sale = $sale['realname'];
+        }
+        $audit = Audit::where('company_id', '=', $order->company_id)->find();
+
+        $config = config();
+        $sequences = $config['crm']['check_sequence'];
+        if(!empty($sequences)) {
+            $sequence = (array)json_decode($audit->content, true);
+            foreach ($sequence as $key => &$row) {
+                $row['title'] = $sequences[$key]['title'];
+            }
+            $this->assign('sequence', $sequence);
+        }
+
+        return $this->fetch('order/show/main');
     }
 }
