@@ -51,7 +51,7 @@ class Count extends Backend
             }
         }
 
-        if( !empty($param['newsTypesList']) )
+        if( !empty($param['news_type']) )
         {
             if(count($param['news_type']) > 1) {
                 $map[] = ['news_type','in',$param['news_type']];
@@ -80,9 +80,9 @@ class Count extends Backend
             $model = $this->model->whereTime('event_date', 'month');
         }
 
-        $fields = "id,news_type,company_id,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
-        // $list =  $this->model->where($map)->order('id desc')->field($fields)->paginate($param['limit'], false, $config);
-        $list =  $model->where($map)->order('event_date desc,id desc')->field($fields)->select();
+        $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
+
+        $list =  $model->where($map)->order('event_date asc,id desc')->field($fields)->select();
 
         $list = $list->toArray();
         foreach ($list as $k=>&$v){
@@ -94,6 +94,9 @@ class Count extends Backend
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
             $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
+            if( empty($v['hotel_text']) ){
+                $v['hotel_text'] = !empty($v['hotel_id']) ? $this->hotelList[$v['hotel_id']]['title'] : '-';
+            }
 
             $zdj = 0;
             $zzk = 0;
