@@ -186,7 +186,7 @@ class Income extends Base
                 'income_type_text'   => $incomeTypeList[$row->banquet_income_type],
                 'income_date'   => $row->banquet_income_date,
                 'income_real_date'  => $row->banquet_income_real_date,
-                'income_remark' => $row->banquet_income_remark,
+                'income_remark' => $row->remark,
                 'income_category' => $param['income_category']
             ];
         } else {
@@ -250,7 +250,7 @@ class Income extends Base
                 'banquet_income_type'   => $param['income_type'],
                 'banquet_income_date'   => $param['income_date'],
                 // 'income_real_date'  => $row->banquet_income_real_date,
-                'banquet_income_remark' => $param['income_remark']
+                'remark' => $param['income_remark']
             ];
         } else {
             $data = [
