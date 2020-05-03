@@ -39,12 +39,7 @@ class WeddingSuborder extends Base
 
         $param = $this->request->param();
         $suborder = json_decode($param['weddingSuborderList'], true);
-        $suborder['order_id'] = $param['order_id'];
-        $suborder['salesman'] = $this->user['id'];
-        $result1 = $this->model->allowField(true)->save($suborder);
-
-        $income = json_decode($param['wedding_incomeList'], true);
-        if(empty($income['company_id'])) {
+        if(empty($suborder['company_id'])) {
             $this->model->rollback();
             $result = [
                 'code' => '400',
@@ -52,6 +47,11 @@ class WeddingSuborder extends Base
             ];
             return json($result);
         }
+        $suborder['order_id'] = $param['order_id'];
+        $suborder['salesman'] = $this->user['id'];
+        $result1 = $this->model->allowField(true)->save($suborder);
+
+        $income = json_decode($param['wedding_incomeList'], true);
         $income['order_id'] = $param['order_id'];
         $income['user_id'] = $this->user['id'];
         $income['wedding_income_type'] = 5;
@@ -61,7 +61,7 @@ class WeddingSuborder extends Base
 
         if($result1 && $result2) {
             $this->model->commit();
-            create_order_confirm($param['order_id'], $income['company_id'], $this->user['id'], 'income');
+            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income');
             $result = [
                 'code' => '200',
                 'msg' => '添加婚庆二销成功'
