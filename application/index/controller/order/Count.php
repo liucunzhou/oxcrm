@@ -55,7 +55,7 @@ class Count extends Backend
             $arr[1] = strtotime($arr[1]);
             $map[] = ['event_date','between',$arr];
         } else {
-            $model = $this->model->whereTime('event', 'month');
+            $model = $this->model->whereTime('event_date', 'month');
         }
 
         $fields = "id,news_type,event_date,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
