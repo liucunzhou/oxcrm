@@ -328,6 +328,7 @@ class Confirm extends Backend
                 $where[] = ['confirm_item_id', '=', $key];
                 $confirmModel = new OrderConfirm();
                 $currentConfirm = $confirmModel->where($where)->find();
+                echo $confirmModel->getLastSql();
                 $row['title'] = $sequences[$key]['title'];
                 if (!empty($currentConfirm)) {
                     $cstatus = $currentConfirm->status;
