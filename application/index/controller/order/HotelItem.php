@@ -52,11 +52,11 @@ class HotelItem extends Backend
     {
         $params = $this->request->param();
 
-        if(empty(!$params['id'])) {
+        if(!empty($params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];
             $model = $this->model->where($where)->find();
-            $result = $model->save($params);
+            $result = $model->allowField(true)->save($params);
         } else {
             $result = $this->model->allowField(true)->save($params);
         }

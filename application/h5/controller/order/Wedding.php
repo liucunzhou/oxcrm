@@ -63,11 +63,11 @@ class Wedding extends Base
     {
         $params = $this->request->param();
         $params = json_decode($params['wedding'], true);
-        if(empty(!$params['id'])) {
+        if(!empty($params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];
             $model = $this->model->where($where)->find();
-            $result = $model->save($params);
+            $result = $model->allowField(true)->save($params);
         } else {
             $result = $this->model->allowField(true)->save($params);
         }
