@@ -67,7 +67,7 @@ class BanquetSuborder extends Base
 
         if($result1 && $result2) {
             $this->model->commit();
-            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income');
+            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income', "创建婚宴二销订单收款审核");
             $result = [
                 'code' => '200',
                 'msg' => '添加婚宴二销成功'
@@ -112,19 +112,16 @@ class BanquetSuborder extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['banquetSuborderList'], true);
-        if(!empty($param['id'])) {
-            $action = '更新';
-            $model = OrderBanquetSuborder::get($param['id']);
-        } else {
-            $action = '添加';
-            $model = new OrderBanquetSuborder();
-        }
+        $action = '更新';
+        $model = OrderBanquetSuborder::get($param['id']);
+        $intro = "编辑婚宴二销订单";
 
         $model->startTrans();
         $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
         if($result1) {
             $model->commit();
+            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'income', $intro);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             $model->rollback();

@@ -61,7 +61,7 @@ class WeddingSuborder extends Base
 
         if($result1 && $result2) {
             $this->model->commit();
-            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income');
+            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income', "创建婚庆二销订单收款审核");
             $result = [
                 'code' => '200',
                 'msg' => '添加婚庆二销成功'
@@ -105,13 +105,8 @@ class WeddingSuborder extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['weddingSuborderList'], true);
-        if(!empty($param['id'])) {
-            $action = '更新';
-            $model = OrderWeddingSuborder::get($param['id']);
-        } else {
-            $action = '添加';
-            $model = new OrderWeddingSuborder();
-        }
+        $model = OrderWeddingSuborder::get($param['id']);
+        $intro = "编辑婚庆二销订单";
 
         $model->startTrans();
         $model->wedding_items = json_encode($param['items']);
@@ -119,10 +114,11 @@ class WeddingSuborder extends Base
         $result1 = $model->save($param);
         if($result1) {
             $model->commit();
-            return json(['code'=>'200', 'msg'=> $action.'成功']);
+            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'income', $intro);
+            return json(['code'=>'200', 'msg'=> '更新成功']);
         } else {
             $model->rollback();
-            return json(['code'=>'500', 'msg'=> $action.'失败']);
+            return json(['code'=>'500', 'msg'=> '更新失败']);
         }
     }
 }

@@ -112,6 +112,7 @@ class Income extends Base
             $data = json_decode($param['banquet_incomeList'], true);
             $income['order_id'] = $param['order_id'];
             $income['user_id'] = $this->user['id'];
+            $income['wedding_receivable_no'] = $data['receivable_no'];
             $income['wedding_income_payment'] = $data['banquet_income_payment'];
             $income['wedding_income_type'] = $data['banquet_income_type'];
             $income['wedding_income_date'] = $data['banquet_income_date'];
@@ -119,11 +120,14 @@ class Income extends Base
             $income['remark'] = $param['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
+            $intro = '创建婚庆收款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             // 添加收款信息
             $data = json_decode($param['banquet_incomeList'], true);
             $income['order_id'] = $param['order_id'];
             $income['user_id'] = $this->user['id'];
+            $income['banquet_receivable_no'] = $data['receivable_no'];
             $income['banquet_income_payment'] = $data['banquet_income_payment'];
             $income['banquet_income_type'] = $data['banquet_income_type'];
             $income['banquet_income_date'] = $data['banquet_income_date'];
@@ -131,6 +135,8 @@ class Income extends Base
             $income['remark'] = $param['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
+            $intro = '创建婚宴收款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
         }
 
         if($result2) {
@@ -156,6 +162,7 @@ class Income extends Base
         } else {
             $model = new OrderWeddingReceivables();
         }
+
 
         $row = $model->where('id', '=', $param['id'])->find();
         if(empty($row)) {
@@ -214,10 +221,16 @@ class Income extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['incomeList'], true);
+        $order = \app\common\model\Order::get($param['order_id']);
+
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetReceivables();
+            $intro = '编辑婚宴收款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             $model = new OrderWeddingReceivables();
+            $intro = '编辑婚庆收款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
@@ -226,7 +239,6 @@ class Income extends Base
                 'code'  => '400',
                 'msg'   => '读取失败'
             ];
-
             return json($result);
         }
 

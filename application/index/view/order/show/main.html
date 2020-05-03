@@ -47,10 +47,11 @@
 
             <{include file="order/show/fragment/money" /}>
 
+            <{if !empty($confirm)}>
             <div class="layui-card">
                 <div class="layui-card-header">
                     <div class="layui-card-header-left">
-                        审批
+                        审批({$confirm.intro})
                     </div>
                 </div>
                 <div class="layui-card-body">
@@ -78,6 +79,7 @@
                     <{/if}>
                 </div>
             </div>
+            <{/if}>
             <div class="layui-space10" style="height: 20px;"></div>
         </div>
     </div>

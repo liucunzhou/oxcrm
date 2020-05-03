@@ -119,6 +119,8 @@ class Payment extends Base
             $payment['wedding_payment_remark'] = $param['payment_remark'];
             $receivable = new OrderWeddingPayment();
             $result2 = $receivable->allowField(true)->save($payment);
+            $intro = '创建婚宴付款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'payment', $intro);
         } else {
             // 添加收款信息
             $data = json_decode($param['paymentList'], true);
@@ -131,6 +133,8 @@ class Payment extends Base
             $payment['banquet_payment_remark'] = $param['payment_remark'];
             $receivable = new OrderBanquetPayment();
             $result2 = $receivable->allowField(true)->save($payment);
+            $intro = '创建婚庆付款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'payment', $intro);
         }
 
         if($result2) {
@@ -210,10 +214,15 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
+        $order = \app\common\model\Order::get($param['order_id']);
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
+            $intro = '创建婚宴付款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'payment', $intro);
         } else {
             $model = new OrderWeddingPayment();
+            $intro = '创建婚庆付款审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'payment', $intro);
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
@@ -222,7 +231,6 @@ class Payment extends Base
                 'code'  => '400',
                 'msg'   => '读取失败'
             ];
-
             return json($result);
         }
 

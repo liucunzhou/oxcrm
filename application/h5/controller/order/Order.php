@@ -1052,7 +1052,7 @@ class Order extends Base
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
         $orderId = $OrderModel->id;
-        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id'], 'income');
+        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id'], 'income', "创建订单定金审核");
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
@@ -1115,6 +1115,8 @@ class Order extends Base
 
         // id,user_id,create_time,module,controller,action,id,page,content
         if ($rs) {
+            $intro = '编辑订单信息审核';
+            create_order_confirm($order->order_id, $order->company_id, $this->user['id'], 'income', $intro);
             $result = [
                 'code' => '200',
                 'msg' => '编辑成功'
