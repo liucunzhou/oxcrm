@@ -183,7 +183,7 @@ class Confirm extends Backend
         $get['id'] = $orderConfirm->order_id;
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
-        if(empty($this->user['sale'])) {
+        if(empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
