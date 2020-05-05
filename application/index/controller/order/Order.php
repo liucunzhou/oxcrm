@@ -376,25 +376,6 @@ class Order extends Backend
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
-        ## 合同
-        if(!empty($order['image'])) {
-            $order['image'] = explode(',', $order['image']);
-        } else {
-            $order['image'] = [];
-        }
-        ## 收据
-        if(!empty($order['receipt_img'])) {
-            $order['receipt_img'] = explode(',', $order['receipt_img']);
-        } else {
-            $order['receipt_img'] = [];
-        }
-        ## 小票
-        if(!empty($order['note_img'])) {
-            $order['note_img'] = explode(',', $order['note_img']);
-        } else {
-            $order['note_img'] = [];
-        }
-        $this->assign('data', $order);
 
         #### 获取婚宴订单信息
         $where = [];
@@ -509,6 +490,41 @@ class Order extends Backend
         $salesmans = User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
 
+        ## 合同
+        if(!empty($order['image'])) {
+            $order['image'] = explode(',', $order['image']);
+        } else {
+            $order['image'] = [];
+        }
+        ## 收据
+        if(!empty($order['receipt_img'])) {
+            $order['receipt_img'] = explode(',', $order['receipt_img']);
+        } else {
+            $order['receipt_img'] = [];
+        }
+        ## 小票
+        if(!empty($order['note_img'])) {
+            $order['note_img'] = explode(',', $order['note_img']);
+        } else {
+            $order['note_img'] = [];
+        }
+        $this->assign('data', $order);
+        $photos = [];
+        $images = array_merge($order['image'], $order['receipt_img'], $order['note_img']);
+        foreach ($images as $key=>$val) {
+            $photos[$key]['alt'] = '';
+            $photos[$key]['pid'] = $order['id'];
+            $photos[$key]['src'] = $val;
+            $photos[$key]['thumb'] = $val;
+        }
+        $photosData = [
+            'id'    => $order['id'],
+            'title' => '订单凭证',
+            'start' => 0,
+            'data'  => $photos
+        ];
+        $this->assign('photosData', $photosData);
+
         return $this->fetch('order/edit/main');
     }
 
@@ -600,6 +616,41 @@ class Order extends Backend
             }
             $this->assign('sequence', $sequence);
         }
+
+        ## 合同
+        if(!empty($order['image'])) {
+            $order['image'] = explode(',', $order['image']);
+        } else {
+            $order['image'] = [];
+        }
+        ## 收据
+        if(!empty($order['receipt_img'])) {
+            $order['receipt_img'] = explode(',', $order['receipt_img']);
+        } else {
+            $order['receipt_img'] = [];
+        }
+        ## 小票
+        if(!empty($order['note_img'])) {
+            $order['note_img'] = explode(',', $order['note_img']);
+        } else {
+            $order['note_img'] = [];
+        }
+        $this->assign('data', $order);
+        $photos = [];
+        $images = array_merge($order['image'], $order['receipt_img'], $order['note_img']);
+        foreach ($images as $key=>$val) {
+            $photos[$key]['alt'] = '';
+            $photos[$key]['pid'] = $order['id'];
+            $photos[$key]['src'] = $val;
+            $photos[$key]['thumb'] = $val;
+        }
+        $photosData = [
+            'id'    => $order['id'],
+            'title' => '订单凭证',
+            'start' => 0,
+            'data'  => $photos
+        ];
+        $this->assign('photosData', $photosData);
 
         return $this->fetch('order/show/main');
     }

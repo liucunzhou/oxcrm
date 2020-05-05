@@ -66,9 +66,9 @@
                 <td></td>
                 <td></td>
                 <td colspan="2" rowspan="6">
-                    <div class="contract-img upload" id="upload" data-action="{:url('/index/order.order/upload', ['id'=>$data.id])}">
-                        <div class="title">合同(点击查看大图)</div>
-                        <div class="img-box">
+                    <div class="contract-img">
+                        <div class="title upload" id="upload" data-action="{:url('/index/order.order/upload', ['id'=>$data.id])}">合同(点击上传)</div>
+                        <div class="img-box show-photos">
                             <{foreach name="$data.image" item="val"}>
                             <img src="{$val}" alt="">
                             <{/foreach}>
