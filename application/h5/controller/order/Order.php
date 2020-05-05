@@ -224,7 +224,7 @@ class Order extends Base
          * $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
          **/
         // 获取审核状态
-        if (empty($order['check_status'] == '0')) {
+        if ($order['check_status'] == '0') {
             // 待审核
             $edit = 0;
             $orderEdit = 0;
