@@ -1,4 +1,5 @@
 <?php
+
 namespace app\h5\controller\order;
 
 use app\common\model\Member;
@@ -39,7 +40,7 @@ class Order extends Base
     protected $d3List = [];
     protected $packageList = [];
     protected $ritualList = [];
-    protected $confirmStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
 
     protected function initialize()
     {
@@ -92,7 +93,7 @@ class Order extends Base
         ];
 
         ##  审核状态
-        if (isset($param['check_status']) && $param['check_status'] != 'all' && $param['check_status']!='') {
+        if (isset($param['check_status']) && $param['check_status'] != 'all' && $param['check_status'] != '') {
             $map[] = ['check_status', '=', $param['check_status']];
         }
 
@@ -213,28 +214,37 @@ class Order extends Base
         // $sequence = empty($audit) ? [] : json_decode($audit->content, true);
         #### 检测编辑和添加权限
         #### 不管是谁 只要存在未被审核的将视为不能编辑，驳回后会添加新的未审核，审核后会修改is_checked=1
-        $where = [];
-        $where[] = ['order_id', '=', $order['id']];
-        // $where[] = ['company_id', '=', $order['company_id']];
-        $where[] = ['user_id', '=', $this->user['id']];
-        // $where[] = ['is_checked', '=', 0];
-        // $where[] = ['status', '=', 3];
-        $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
+        /**
+         * $where = [];
+         * $where[] = ['order_id', '=', $order['id']];
+         * // $where[] = ['company_id', '=', $order['company_id']];
+         * $where[] = ['user_id', '=', $this->user['id']];
+         * // $where[] = ['is_checked', '=', 0];
+         * // $where[] = ['status', '=', 3];
+         * $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
+         **/
         // 获取审核状态
-        if (empty($confirmLast)) {
+        if (empty($order['check_status'] == 0)) {
+            // 待审核
             $edit = 0;
             $orderEdit = 0;
-        } else if ($confirmLast->status == 2){
-            // 驳回
-            $edit = 1;
-            $orderEdit = 1;
             $orderAdd = 0;
-        } else if ($confirmLast->status == 1) {
-            // 通过
+        } else if ($order['check_status'] == 1) {
+            // 审核中
+            $edit = 0;
+            $orderEdit = 0;
+            $orderAdd = 0;
+        } else if ($order['check_status'] == 2) {
+            // 审核通过
             $edit = 0;
             $orderEdit = 1;
             $orderAdd = 1;
-        }else {
+        } else if ($order['check_status'] == 3) {
+            // 审核驳回
+            $edit = 0;
+            $orderEdit = 1;
+            $orderAdd = 1;
+        } else {
             // 审核中
             $edit = 0;
             $orderEdit = 0;
@@ -266,7 +276,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $banquetSuborderList = \app\common\model\OrderBanquetSuborder::where($where)->select();
         foreach ($banquetSuborderList as &$row) {
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -298,7 +308,7 @@ class Order extends Base
         $where['order_id'] = $param['id'];
         $weddingSuborderList = \app\common\model\OrderWeddingSuborder::where($where)->select();
         foreach ($weddingSuborderList as &$row) {
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -319,7 +329,7 @@ class Order extends Base
         foreach ($carList as $key => &$row) {
             $row['car_id'] = $this->carList[$row['car_id']]['title'];
             $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -332,7 +342,7 @@ class Order extends Base
         $sugarList = \app\common\model\OrderSugar::where($where)->select();
         foreach ($sugarList as $key => &$row) {
             $row['sugar_id'] = $this->sugarList[$row['sugar_id']]['title'];
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -345,7 +355,7 @@ class Order extends Base
         $wineList = \app\common\model\OrderWine::where($where)->select();
         foreach ($wineList as $key => &$row) {
             $row['wine_id'] = $this->wineList[$row['wine_id']]['title'];
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -358,7 +368,7 @@ class Order extends Base
         $lightList = \app\common\model\OrderLight::where($where)->select();
         foreach ($lightList as $key => &$row) {
             $row['light_id'] = $this->lightList[$row['light_id']]['title'];
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -371,7 +381,7 @@ class Order extends Base
         $dessertList = \app\common\model\OrderDessert::where($where)->select();
         foreach ($dessertList as $key => &$row) {
             $row['dessert_id'] = $this->dessertList[$row['dessert_id']]['title'];
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -384,7 +394,7 @@ class Order extends Base
         $ledList = \app\common\model\OrderLed::where($where)->select();
         foreach ($ledList as $key => &$row) {
             $row['led_id'] = $this->ledList[$row['led_id']]['title'];
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -397,7 +407,7 @@ class Order extends Base
         $d3List = \app\common\model\OrderD3::where($where)->select();
         foreach ($d3List as $key => &$row) {
             $row['d3_id'] = $this->d3List[$row['d3_id']]['title'];
-            if($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($row['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $row['edit'] = 1;
             } else {
                 $row['edit'] = 0;
@@ -427,7 +437,7 @@ class Order extends Base
         #### 合成收款信息
         $incomeList = [];
         foreach ($banquetReceivableList as $key => $value) {
-            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $value['edit'] = 1;
             } else {
                 $value['edit'] = 0;
@@ -444,11 +454,11 @@ class Order extends Base
                 'income_remark' => $value['remark'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit'  => $value['edit']
+                'edit' => $value['edit']
             ];
         }
         foreach ($weddingReceivableList as $key => $value) {
-            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $value['edit'] = 1;
             } else {
                 $value['edit'] = 0;
@@ -466,14 +476,14 @@ class Order extends Base
                 'income_remark' => $value['remark'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit'  => $value['edit']
+                'edit' => $value['edit']
             ];
         }
 
         #### 合成付款信息
         $paymentList = [];
         foreach ($banquetPaymentList as $key => $value) {
-            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $value['edit'] = 1;
             } else {
                 $value['edit'] = 0;
@@ -494,7 +504,7 @@ class Order extends Base
             ];
         }
         foreach ($weddingPaymentList as $key => $value) {
-            if($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
+            if ($value['user_id'] == $this->user['id'] && $orderEdit == 1) {
                 $value['edit'] = 1;
             } else {
                 $value['edit'] = 0;
@@ -820,7 +830,7 @@ class Order extends Base
             $c4 = !empty($data['banquet_discount']) || !empty($data['banquet_totals']);
             $c5 = !empty($data['banquet_ritual_id']) || !empty($data['banquet_ritual_hall']);
             $c6 = !empty($data['banquet_other']) || !empty($data['banquet_remark']);
-            if($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
+            if ($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -836,7 +846,7 @@ class Order extends Base
             $c2 = !empty($data['wedding_ritual_id']) || !empty($data['wedding_ritual_hall']);
             $c3 = !empty($data['wedding_other']) || !empty($data['wedding_total']);
             $c4 = !empty($data['wedding_remark']);
-            if($c1 || $c2 || $c3 || $c4) {
+            if ($c1 || $c2 || $c3 || $c4) {
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
