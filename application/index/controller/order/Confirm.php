@@ -358,11 +358,14 @@ class Confirm extends Backend
                 $currentConfirm = $confirmModel->where($where)->find();
                 // echo $confirmModel->getLastSql();
                 $row['title'] = $sequences[$key]['title'];
+
                 if (!empty($currentConfirm)) {
                     $cstatus = $currentConfirm->status;
+                    // $row['managers'] = $managers;
                     $row['status'] = $this->confirmStatusList[$cstatus];
                     $row['content'] = $currentConfirm->content;
                 } else {
+                    // $row['managers'] = $managers;
                     $row['status'] = '待审核';
                     $row['content'] = '';
                 }
