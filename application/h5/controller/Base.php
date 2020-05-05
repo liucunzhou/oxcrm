@@ -21,8 +21,9 @@ class Base extends Controller
         $config = config();
         $this->config = $config['crm'];
         $this->allocateTypes = $this->config['allocate_type_list'];
-
         $token = $this->request->header("token");
+        if(empty($token)) $token = $this->request->param('token');
+
         if( empty($token) ){
             $arr = [
                 'code'  => '405',
