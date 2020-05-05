@@ -224,22 +224,22 @@ class Order extends Base
          * $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
          **/
         // 获取审核状态
-        if (empty($order['check_status'] == 0)) {
+        if (empty($order['check_status'] == '0')) {
             // 待审核
             $edit = 0;
             $orderEdit = 0;
             $orderAdd = 0;
-        } else if ($order['check_status'] == 1) {
+        } else if ($order['check_status'] == '1') {
             // 审核中
             $edit = 0;
             $orderEdit = 0;
             $orderAdd = 0;
-        } else if ($order['check_status'] == 2) {
+        } else if ($order['check_status'] == '2') {
             // 审核通过
             $edit = 0;
             $orderEdit = 1;
             $orderAdd = 1;
-        } else if ($order['check_status'] == 3) {
+        } else if ($order['check_status'] == '3') {
             // 审核驳回
             $edit = 0;
             $orderEdit = 1;
