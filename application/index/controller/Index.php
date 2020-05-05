@@ -27,23 +27,28 @@ class Index extends Base
         }
 
         $menus = [];
-        foreach ($nodes as $key=>$node) {
-            if($user['nickname'] == 'admin') {
-                $k = $modules[$node['parent_id']];
-                $menus[$k]['icon'] = 'icon-cogs';
-                $menus[$k]['items'][] = [
-                    'text' => $node['title'],
-                    'url' => $node['route']
-                ];
-            } else if(in_array($node['id'], $userAuthSet)) {
-                $k = $modules[$node['parent_id']];
-                $menus[$k]['icon'] = 'icon-cogs';
-                $menus[$k]['items'][] = [
-                    'text' => $node['title'],
-                    'url' => $node['route']
-                ];
+        foreach ($modules as $key=>$val) {
+            foreach ($nodes as $k=>$node) {
+                if ($node['parent_id'] == $key) {
+                    if($user['nickname'] == 'admin') {
+                        $k = $modules[$node['parent_id']];
+                        $menus[$k]['icon'] = 'icon-cogs';
+                        $menus[$k]['items'][] = [
+                            'text' => $node['title'],
+                            'url' => $node['route']
+                        ];
+                    } else if(in_array($node['id'], $userAuthSet)) {
+                        $k = $modules[$node['parent_id']];
+                        $menus[$k]['icon'] = 'icon-cogs';
+                        $menus[$k]['items'][] = [
+                            'text' => $node['title'],
+                            'url' => $node['route']
+                        ];
+                    }
+                }
             }
         }
+        
         $this->assign('menus', $menus);
 
         return $this->fetch();

@@ -134,6 +134,11 @@ $check_sequence = [
         'title' => '会计',
         'type'  => 'staff'
     ],
+    'hceo' => [
+        'id'    => 'hceo',
+        'title' => '核算经理',
+        'type'  => 'staff'
+    ],
 ];
 
 return [
