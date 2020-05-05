@@ -18,6 +18,7 @@ class Confirm extends Base
     protected function initialize()
     {
         return parent::initialize();
+
     }
 
     # comnpany_id,创建时的审核进程

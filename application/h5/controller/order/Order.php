@@ -1027,7 +1027,7 @@ class Order extends Base
                 // 婚宴收款
                 $data = [];
                 $data['banquet_receivable_no'] = $income['receivable_no'];
-                $data['banquet_income_date'] = time();
+                $data['banquet_income_date'] = $income['income_date'];
                 $data['banquet_income_payment'] = $income['income_payment'];
                 $data['banquet_income_type'] = 1;
                 $data['banquet_income_item_price'] = $income['income_item_price'];
@@ -1044,7 +1044,7 @@ class Order extends Base
                 // 婚庆收款
                 $data = [];
                 $data['wedding_receivable_no'] = $income['receivable_no'];
-                $data['wedding_income_date'] = time();
+                $data['wedding_income_date'] = $income['income_date'];
                 $data['wedding_income_payment'] = $income['income_payment'];
                 $data['wedding_income_type'] = 1;
                 $data['wedding_income_item_price'] = $income['income_item_price'];

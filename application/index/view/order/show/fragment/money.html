@@ -99,7 +99,7 @@
                     <td class="text-center">{$row['banquet_receivable_no']}</td>
                     <td class="text-center">{$row['banquet_income_date']}</td>
                     <td class="text-center">{$row['banquet_income_real_date']}</td>
-                    <td class="text-center">{$payments[$row['banquet_income_payment']]}</td>
+                    <td class="text-center">{$payments[$row['banquet_income_payment']]}{$row['banquet_income_payment']}</td>
                     <td class="text-center">{$paymentTypes[$row['banquet_income_type']]}</td>
                     <td class="text-center">{$row['banquet_income_item_price']}</td>
                     <td class="text-left">{$row.remark}</td>
@@ -110,7 +110,7 @@
                     <td class="text-center">婚庆</td>
                     <td class="text-center">{$row.wedding_receivable_no}</td>
                     <td class="text-center">{$row.wedding_income_date}</td>
-                    <td class="text-center">{$payments[$row['wedding_income_payment']]}</td>
+                    <td class="text-center">{$payments[$row['wedding_income_payment']]}{$row['wedding_income_payment']}</td>
                     <td class="text-center">{$paymentTypes[$row.wedding_income_type]}</td>
                     <td class="text-center">{$row.wedding_income_item_price}</td>
                     <td class="text-left">{$row.remark}</td>

@@ -101,6 +101,34 @@ class Confirm extends Backend
         ## 婚庆二销分类列表
         $this->weddingCategories = \app\common\model\WeddingCategory::getList();
         $this->assign('weddingCategories', $this->weddingDevices);
+
+        ## 汽车列表
+        $carList = \app\common\model\Car::getList();
+        $this->assign('carList', $carList);
+
+        ## 酒水列表
+        $wineList = \app\common\model\Wine::getList();
+        $this->assign('wineList', $wineList);
+
+        ## 喜糖列表
+        $sugarList = \app\common\model\Sugar::getList();
+        $this->assign('sugarList', $sugarList);
+
+        ## 灯光列表
+        $lightList = \app\common\model\Light::getList();
+        $this->assign('lightList', $lightList);
+
+        ## 点心列表
+        $dessertList = \app\common\model\Dessert::getList();
+        $this->assign('dessertList', $dessertList);
+
+        ## led列表
+        $ledList = \app\common\model\Led::getList();
+        $this->assign('ledList', $ledList);
+
+        ## 3d列表
+        $d3List = \app\common\model\D3::getList();
+        $this->assign('d3List', $d3List);
     }
 
     # 誉思订单
