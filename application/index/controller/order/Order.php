@@ -723,7 +723,12 @@ class Order extends Backend
             $map[] = ['score', '<>', ''];
         }
 
-        $list = model('order')->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+        $model = model('order')->where($map);
+        if (isset($get['mobile'])) {
+            $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
+        }
+
+        $list = $model->order('id desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection();
 
         $users = \app\common\model\User::getUsers();

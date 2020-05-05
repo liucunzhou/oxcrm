@@ -334,6 +334,7 @@ class Search
 
     public static function order(&$user, &$get)
     {
+
         if (isset($get['complete']) && $get['complete'] == 100) {
             $map[] = ['complete', '=', $get['complete']];
         }
@@ -348,10 +349,6 @@ class Search
 
         if (isset($get['hotel_id']) && !empty($get['hotel_id'])) {
             $map[] = ['hotel_id', '=', $get['hotel_id']];
-        }
-
-        if (isset($get['mobile']) && !empty($get['mobile_type'])) {
-            $map[] = [$get['mobile_type'], '=', $get['mobile']];
         }
 
         if (isset($get['staff']) && !empty($get['staff'])) {
