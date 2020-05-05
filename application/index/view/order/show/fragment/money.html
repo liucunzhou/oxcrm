@@ -60,60 +60,51 @@
     </div>
 </div>
 
-
-
 <{if !$banquetReceivables->isEmpty()}>
 <div class="layui-card">
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col>
-                <col width="240">
-            </colgroup>
-
             <thead>
                 <tr class="no-border">
                     <td colspan="7">收款信息</td>
                 </tr>
                 <tr>
-                    <th class="text-center">收款项目</th>
-                    <th class="text-center">收款编号</th>
-                    <th class="text-center">收款日期</th>
-                    <th class="text-center">实际收款日期</th>
-                    <th class="text-center">收款方式</th>
-                    <th class="text-center">款项性质</th>
-                    <th class="text-center">收款金额</th>
-                    <th class="text-left">备注</th>
+                    <th class="text-left">收款项目</th>
+                    <th class="text-left">收款编号</th>
+                    <th class="text-left">收款日期</th>
+                    <th class="text-left">实际收款日期</th>
+                    <th class="text-left">收款方式</th>
+                    <th class="text-left">款项性质</th>
+                    <th class="text-left">收款金额</th>
                 </tr>
             </thead>
             <tbody>
             <{foreach name="banquetReceivables" item="row"}>
                 <tr>
-                    <td class="text-center">婚宴</td>
-                    <td class="text-center">{$row['banquet_receivable_no']}</td>
-                    <td class="text-center">{$row['banquet_income_date']}</td>
-                    <td class="text-center">{$row['banquet_income_real_date']}</td>
-                    <td class="text-center">{$payments[$row['banquet_income_payment']]}</td>
-                    <td class="text-center">{$paymentTypes[$row['banquet_income_type']]}</td>
-                    <td class="text-center">{$row['banquet_income_item_price']}</td>
-                    <td class="text-left">{$row.remark}</td>
+                    <td class="text-left">婚宴</td>
+                    <td class="text-left">{$row['banquet_receivable_no']}</td>
+                    <td class="text-left">{$row['banquet_income_date']}</td>
+                    <td class="text-left">{$row['banquet_income_real_date']}</td>
+                    <td class="text-left">{$payments[$row['banquet_income_payment']]}</td>
+                    <td class="text-left">{$paymentTypes[$row['banquet_income_type']]}</td>
+                    <td class="text-left">{$row['banquet_income_item_price']}</td>
+                </tr>
+                <tr>
+                    <td class="text-left" colspan="7">备注:{$row.remark}</td>
                 </tr>
             <{/foreach}>
             <{foreach name="weddingReceivables" item="row"}>
                 <tr>
-                    <td class="text-center">婚庆</td>
-                    <td class="text-center">{$row.wedding_receivable_no}</td>
-                    <td class="text-center">{$row.wedding_income_date}</td>
-                    <td class="text-center">{$payments[$row['wedding_income_payment']]}</td>
-                    <td class="text-center">{$paymentTypes[$row.wedding_income_type]}</td>
-                    <td class="text-center">{$row.wedding_income_item_price}</td>
-                    <td class="text-left">{$row.remark}</td>
+                    <td class="text-left">婚庆</td>
+                    <td class="text-left">{$row.wedding_receivable_no}</td>
+                    <td class="text-left">{$row.wedding_income_date}</td>
+                    <td class="text-left">{$row.wedding_income_real_date}</td>
+                    <td class="text-left">{$payments[$row['wedding_income_payment']]}</td>
+                    <td class="text-left">{$paymentTypes[$row.wedding_income_type]}</td>
+                    <td class="text-left">{$row.wedding_income_item_price}</td>
+                </tr>
+                <tr>
+                    <td class="text-left" colspan="7">备注:{$row.remark}</td>
                 </tr>
             <{/foreach}>
             </tbody>
@@ -127,41 +118,31 @@
 <div class="layui-card">
     <div class="layui-card-body no-margin no-padding">
         <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col>
-                <col width="240">
-            </colgroup>
             <thead>
             <tr class="no-border">
-                <td colspan="8">付款信息</td>
+                <td colspan="6">付款信息</td>
             </tr>
             <tr>
-                <th class="text-center">收款项目</th>
-                <th class="text-center">付款编号</th>
-                <th class="text-center">申请日期</th>
-                <th class="text-center">款项性质</th>
-                <th class="text-center">付款金额</th>
+                <th class="text-left">收款项目</th>
+                <th class="text-left">付款编号</th>
+                <th class="text-left">申请日期</th>
+                <th class="text-left">款项性质</th>
+                <th class="text-left">付款金额</th>
                 <th class="text-center">收款名称</th>
-                <th class="text-left">备注</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="banquetPayments" item="row"}>
             <tr>
-                <th class="text-center">婚宴</th>
-                <th class="text-center">{$row['banquet_payment_no']}</th>
-                <th class="text-center">{$row['banquet_apply_pay_date']}</th>
-                <th class="text-center">{$paymentTypes[$row['banquet_pay_type']]}</th>
-                <th class="text-center">{$row['banquet_pay_item_price']}</th>
-                <th class="text-center">{$row['banquet_supplier']}</th>
-                <th class="text-left">{$row.banquet_payment_remark}</th>
+                <th class="text-left">婚宴</th>
+                <th class="text-left">{$row['banquet_payment_no']}</th>
+                <th class="text-left">{$row['banquet_apply_pay_date']}</th>
+                <th class="text-left">{$paymentTypes[$row['banquet_pay_type']]}</th>
+                <th class="text-left">{$row['banquet_pay_item_price']}</th>
+                <th class="text-left">{$row['banquet_supplier']}</th>
+            </tr>
+            <tr>
+                <th class="text-left" colspan="6">备注：{$row.banquet_payment_remark}</th>
             </tr>
             <{/foreach}>
             </tbody>
@@ -174,39 +155,30 @@
 <div class="layui-card">
     <div class="layui-card-body no-margin no-padding">
         <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col>
-                <col width="240">
-            </colgroup>
             <thead>
             <tr class="no-border">
-                <td colspan="8">婚庆付款信息</td>
+                <td colspan="5">婚庆付款信息</td>
             </tr>
             <tr>
-                <th class="text-center">付款编号</th>
-                <th class="text-center">申请日期</th>
-                <th class="text-center">款项性质</th>
-                <th class="text-center">付款金额</th>
-                <th class="text-center">收款名称</th>
-                <th class="text-left">备注</th>
+                <th class="text-left">付款编号</th>
+                <th class="text-left">申请日期</th>
+                <th class="text-left">款项性质</th>
+                <th class="text-left">付款金额</th>
+                <th class="text-left">收款名称</th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="weddingPayments" item="row"}>
             <tr>
-                <th class="text-center">{$row['wedding_payment_no']}</th>
-                <th class="text-center">{$row['wedding_apply_pay_date']}</th>
-                <th class="text-center">{$paymentTypes[$row['wedding_pay_type']]}</th>
-                <th class="text-center">{$row['wedding_pay_item_price']}</th>
-                <th class="text-center">{$row['wedding_pay_to_company']}</th>
-                <th class="text-left">
-                    {$row.wedding_payment_remark}
+                <th class="text-left">{$row['wedding_payment_no']}</th>
+                <th class="text-left">{$row['wedding_apply_pay_date']}</th>
+                <th class="text-left">{$paymentTypes[$row['wedding_pay_type']]}</th>
+                <th class="text-left">{$row['wedding_pay_item_price']}</th>
+                <th class="text-left">{$row['wedding_pay_to_company']}</th>
+            </tr>
+            <tr>
+                <th class="text-left" colspan="5">
+                    备注:{$row.wedding_payment_remark}
                 </th>
             </tr>
             <{/foreach}>

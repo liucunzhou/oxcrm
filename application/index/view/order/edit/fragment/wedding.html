@@ -18,6 +18,7 @@
 
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
+            <!--
             <colgroup>
                 <col width="120">
                 <col width="120">
@@ -29,29 +30,30 @@
                 <col width="120">
                 <col>
             </colgroup>
+            -->
             <thead>
             <tr>
-                <th class="text-center">婚庆总金额</th>
-                <th class="text-center">套餐</th>
-                <th class="text-center">套餐金额</th>
-                <th class="text-center">仪式堂</th>
-                <th class="text-center">仪式堂价格</th>
-                <th class="text-center">研发产品编号</th>
-                <th class="text-center">其他金额</th>
+                <th class="text-left">婚庆总金额</th>
+                <th class="text-left">套餐</th>
+                <th class="text-left">套餐金额</th>
+                <th class="text-left">仪式堂</th>
+                <th class="text-left">仪式堂价格</th>
+                <th class="text-left">研发产品编号</th>
+                <th class="text-left">其他金额</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td class="text-center">{$wedding.wedding_total}</td>
-                <td class="text-center">{$wedding.wedding_package_id}</td>
-                <td class="text-center">{$wedding.wedding_package_price|default='-'}</td>
-                <td class="text-center">{$rituals[$wedding.wedding_ritual_id]['title']}</td>
-                <td class="text-center">{$wedding.wedding_ritual_hall|default='-'}</td>
-                <td class="text-center">{$wedding.new_product_no|default='-'}</td>
-                <td class="text-center">{$wedding.wedding_other}</td>
+                <td class="text-left">{$wedding.wedding_total}</td>
+                <td class="text-left">{$wedding.wedding_package_id}</td>
+                <td class="text-left">{$wedding.wedding_package_price|default='-'}</td>
+                <td class="text-left">{$rituals[$wedding.wedding_ritual_id]['title']}</td>
+                <td class="text-left">{$wedding.wedding_ritual_hall|default='-'}</td>
+                <td class="text-left">{$wedding.new_product_no|default='-'}</td>
+                <td class="text-left">{$wedding.wedding_other}</td>
             </tr>
             <tr>
-                <td colspan="7" class="td-remark">备注: {$wedding.wedding_remark|default='-'}</td>
+                <td colspan="7" class="text-left">备注: {$wedding.wedding_remark|default='-'}</td>
             </tr>
             </tbody>
         </table>
@@ -95,38 +97,41 @@
                 </td>
             </tr>
             <tr>
-                <th class="text-center">
+                <th class="text-left">
                     <a class="lay-right" href="javascript:void(0);" title="查看二销明细" data-action="{:url('order/showWeddingDetails', ['id'=>$row['id']])}">
                     订单号
                     </a>
                 </th>
-                <th class="text-center">订单金额</th>
-                <th class="text-center">审核状态</th>
-                <th class="text-left">备注</th>
+                <th class="text-left">订单金额</th>
+                <th class="text-left">审核状态</th>
                 <th class="text-left"></th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="weddingOrders" item="row"}>
             <tr>
-                <td class="text-center">{$row['wedding_order_no']}</td>
-                <td class="text-center">{$row['wedding_totals']}</td>
-                <td class="text-center">{$confirmStatusList[$row['check_wedding_suborder_status']]}</td>
-                <td class="text-left">{$row.sub_wedding_remark}</td>
+                <td class="text-left">{$row['wedding_order_no']}</td>
+                <td class="text-left">{$row['wedding_totals']}</td>
+                <td class="text-left">{$confirmStatusList[$row['check_wedding_suborder_status']]}</td>
                 <td class="text-right">
                     <div>
                         <a href="javascript:void(0);"
                            class="layui-right-side btn-edit-solid"
                            title="编辑婚庆二销信息" data-action="{:url('/index/order.wedding_suborder/edit', ['id'=>$row['id']])}">编辑</a>
+                        <!--
                         <a href="javascript:void(0);"
                            class="layui-right-side btn-confirm-solid"
                            title="审核婚庆二销信息"
                            data-action="{:url('/index/order.wedding_suborder/confirm', ['id'=>$row['id']])}">审核</a>
+                        -->
                         <a href="javascript:void(0);"
                            class="btn-delete-solid lay-delete-api"
                            data-action="{:url('/index/order.wedding_suborder/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </td>
+            </tr>
+            <tr>
+                <td class="text-left" colspan="4">备注{$row.sub_wedding_remark}</td>
             </tr>
             <{/foreach}>
             </tbody>
@@ -139,43 +144,27 @@
 <div class="layui-card">
     <div class="layui-card-body no-margin no-padding">
         <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col>
-                <col width="240">
-            </colgroup>
             <thead>
-            <tr class="no-border">
-                <td colspan="8">婚庆收款信息</td>
-            </tr>
-            <tr>
-                <th class="text-center">收款编号</th>
-                <th class="text-center">收款日期</th>
-                <th class="text-center">收款方式</th>
-                <th class="text-center">收款性质</th>
-                <th class="text-center">收款金额</th>
-                <th class="text-center">审核状态</th>
-                <th class="text-left">备注</th>
-                <th class="text-left"></th>
-            </tr>
+                <tr class="no-border">
+                    <td colspan="6">婚庆收款信息</td>
+                </tr>
+                <tr>
+                    <th class="text-left">收款编号</th>
+                    <th class="text-left">收款日期</th>
+                    <th class="text-left">收款方式</th>
+                    <th class="text-left">收款性质</th>
+                    <th class="text-left">收款金额</th>
+                    <th class="text-left"></th>
+                </tr>
             </thead>
             <tbody>
             <{foreach name="weddingReceivables" item="row"}>
             <tr>
-                <td class="text-center">{$row.wedding_receivable_no}</td>
-                <td class="text-center">{$row.wedding_income_date}</td>
-                <td class="text-center">{$payments[$row['wedding_income_payment']]}</td>
-                <td class="text-center">{$paymentTypes[$row.wedding_income_type]}</td>
-                <td class="text-center">{$row.wedding_income_item_price}</td>
-                <th class="text-center">
-                    {$confirmStatusList[$row['check_status_receivables_cashier']]}
-                </th>
-                <td class="text-left">{$row.remark}</td>
+                <td class="text-left">{$row.wedding_receivable_no}</td>
+                <td class="text-left">{$row.wedding_income_date}</td>
+                <td class="text-left">{$payments[$row['wedding_income_payment']]}</td>
+                <td class="text-left">{$paymentTypes[$row.wedding_income_type]}</td>
+                <td class="text-left">{$row.wedding_income_item_price}</td>
                 <td class="text-right">
                     <div>
                         <a href="javascript:void(0);"
@@ -184,20 +173,11 @@
                         <a href="javascript:void(0);"
                            class="btn-delete-solid lay-delete-api"
                            data-action="{:url('/index/order.wedding_receivable/delete', ['id'=>$row['id']])}">删除</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_receivable/accountingConfirm')} layui-right-side btn-confirm-solid"
-                           title="一站式婚庆付款-会计审核"
-                           data-action="{:url('/index/order.wedding_receivable/accountingConfirm', ['id'=>$row['id']])}">会计审核</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_receivable/fianceConfirm')} layui-right-side btn-confirm-solid"
-                           title="一站式婚庆付款-财务审核"
-                           data-action="{:url('/index/order.wedding_receivable/financeConfirm', ['id'=>$row['id']])}">财务审核</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_receivable/cashierConfirm')} layui-right-side btn-confirm-solid"
-                           title="一站式婚庆付款-出纳审核"
-                           data-action="{:url('/index/order.wedding_receivable/cashierConfirm', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
                 </td>
+            </tr>
+            <tr>
+                <td class="text-left" colspan="6">备注:{$row.remark}</td>
             </tr>
             <{/foreach}>
             </tbody>
@@ -225,34 +205,22 @@
                 <td colspan="8">婚庆付款信息</td>
             </tr>
             <tr>
-                <th class="text-center">付款编号</th>
-                <th class="text-center">申请日期</th>
-                <th class="text-center">款项性质</th>
-                <th class="text-center">付款金额</th>
-                <th class="text-center">收款名称</th>
-                <th class="text-center">审核状态</th>
-                <th class="text-left">备注</th>
+                <th class="text-left">付款编号</th>
+                <th class="text-left">申请日期</th>
+                <th class="text-left">款项性质</th>
+                <th class="text-left">付款金额</th>
+                <th class="text-left">收款名称</th>
                 <th class="text-left"></th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="weddingPayments" item="row"}>
             <tr>
-                <th class="text-center">{$row['wedding_payment_no']}</th>
-                <th class="text-center">{$row['wedding_apply_pay_date']}</th>
-                <th class="text-center">{$paymentTypes[$row['wedding_pay_type']]}</th>
-                <th class="text-center">{$row['wedding_pay_item_price']}</th>
-                <th class="text-center">{$row['wedding_pay_to_company']}</th>
-                <th class="text-center">
-                    {$confirmStatusList[$row['check_status_payment_account']]}
-                    -
-                    {$confirmStatusList[$row['check_status_payment_fiance']]}
-                    -
-                    {$confirmStatusList[$row['check_status_payment_cashier']]}
-                </th>
-                <th class="text-left">
-                    {$row.wedding_payment_remark}
-                </th>
+                <th class="text-left">{$row['wedding_payment_no']}</th>
+                <th class="text-left">{$row['wedding_apply_pay_date']}</th>
+                <th class="text-left">{$paymentTypes[$row['wedding_pay_type']]}</th>
+                <th class="text-left">{$row['wedding_pay_item_price']}</th>
+                <th class="text-left">{$row['wedding_pay_to_company']}</th>
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);" 
@@ -261,20 +229,11 @@
                         <a href="javascript:void(0);" 
                            class="{:auth('/index/order.wedding_payment/delete')} layui-right-side btn-delete-solid lay-delete-api"
                            data-action="{:url('/index/order.wedding_payment/delete', ['id'=>$row['id']])}">删除</a>
-                        <a href="javascript:void(0);" 
-                           class="{:auth('/index/order.wedding_payment/accountingConfirm')} layui-right-side btn-confirm-solid"
-                           title="一站式婚庆付款-会计审核"
-                           data-action="{:url('/index/order.wedding_payment/accountingConfirm', ['id'=>$row['id']])}">会计审核</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_payment/fianceConfirm')} layui-right-side btn-confirm-solid"
-                           title="一站式婚庆付款-财务审核"
-                           data-action="{:url('/index/order.wedding_payment/financeConfirm', ['id'=>$row['id']])}">财务审核</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.wedding_payment/cashierConfirm')} layui-right-side btn-confirm-solid"
-                           title="一站式婚庆付款-出纳审核"
-                           data-action="{:url('/index/order.wedding_payment/cashierConfirm', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
                 </th>
+            </tr>
+            <tr>
+                <th class="text-left" colspan="6">备注:{$row.wedding_payment_remark}</th>
             </tr>
             <{/foreach}>
             </tbody>

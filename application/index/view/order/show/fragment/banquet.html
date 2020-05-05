@@ -7,50 +7,36 @@
     </div>
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-                <col>
-            </colgroup>
             <thead>
                 <tr>
-                    <th class="text-center">婚宴总金额</th>
-                    <th class="text-center">桌数</th>
-                    <th class="text-center">餐标</th>
-                    <th class="text-center">酒水费用</th>
-                    <th class="text-center">加菜换菜</th>
-                    <th class="text-center">优惠金额</th>
-                    <th class="text-center">服务费总计</th>
-                    <th class="text-center">仪式堂</th>
-                    <th class="text-center">仪式堂价格</th>
-                    <th class="text-center">其他金额</th>
+                    <th class="text-left">婚宴总金额</th>
+                    <th class="text-left">桌数</th>
+                    <th class="text-left">餐标</th>
+                    <th class="text-left">酒水费用</th>
+                    <th class="text-left">加菜换菜</th>
+                    <th class="text-left">优惠金额</th>
+                    <th class="text-left">服务费总计</th>
+                    <th class="text-left">仪式堂</th>
+                    <th class="text-left">仪式堂价格</th>
+                    <th class="text-left">其他金额</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-center">{$banquet.banquet_totals}</td>
-                    <td class="text-center">{$banquet.table_amount}</td>
-                    <td class="text-center">{$banquet.table_price}</td>
-                    <td class="text-center">{$banquet.wine_fee}</td>
-                    <td class="text-center">{$banquet.banquet_update_table}</td>
-                    <td class="text-center">{$banquet.banquet_discount}</td>
-                    <td class="text-center">{$banquet.service_fee}</td>
-                    <td class="text-center">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
-                    <td class="text-center">{$banquet.banquet_ritual_hall|default="-"}</td>
-                    <td class="text-center">{$banquet.banquet_other}</td>
+                    <td class="text-left">{$banquet.banquet_totals}</td>
+                    <td class="text-left">{$banquet.table_amount}</td>
+                    <td class="text-left">{$banquet.table_price}</td>
+                    <td class="text-left">{$banquet.wine_fee}</td>
+                    <td class="text-left">{$banquet.banquet_update_table}</td>
+                    <td class="text-left">{$banquet.banquet_discount}</td>
+                    <td class="text-left">{$banquet.service_fee}</td>
+                    <td class="text-left">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
+                    <td class="text-left">{$banquet.banquet_ritual_hall|default="-"}</td>
+                    <td class="text-left">{$banquet.banquet_other}</td>
                 </tr>
                 <tr>
-                    <td class="text-center">备注:</td>
-                    <td colspan="9">
-                        {$banquet.banquet_remark}
+                    <td colspan="10">
+                        备注:{$banquet.banquet_remark}
                     </td>
                 </tr>
             </tbody>
@@ -106,24 +92,25 @@
                 </colgroup>
                 <thead>
                     <tr class="no-border">
-                        <td colspan="7">婚宴二销信息</td>
+                        <td colspan="4">婚宴二销信息</td>
                     </tr>
                     <tr>
-                        <th class="text-center">订单号</th>
-                        <th class="text-center">桌数</th>
-                        <th class="text-center">餐标</th>
-                        <th class="text-center">订单金额</th>
-                        <th class="text-left">备注</th>
+                        <th class="text-left">订单号</th>
+                        <th class="text-left">桌数</th>
+                        <th class="text-left">餐标</th>
+                        <th class="text-left">订单金额</th>
                     </tr>
                 </thead>
                 <tbody>
                     <{foreach name="banquetOrders" item="row"}>
                     <tr>
-                        <td class="text-center">{$row.banquet_order_no}</td>
-                        <td class="text-center">{$row.table_amount}</td>
-                        <td class="text-center">{$row.table_price}</td>
-                        <td class="text-center">{$row.banquet_totals}</td>
-                        <td class="text-left">{$row.sub_banquet_remark}</td>
+                        <td class="text-left">{$row.banquet_order_no}</td>
+                        <td class="text-left">{$row.table_amount}</td>
+                        <td class="text-left">{$row.table_price}</td>
+                        <td class="text-left">{$row.banquet_totals}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-left">备注:{$row.sub_banquet_remark}</td>
                     </tr>
                     <{/foreach}>
                 </tbody>

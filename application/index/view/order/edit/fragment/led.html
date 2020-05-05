@@ -15,35 +15,22 @@
     </div>
     <div class="layui-card-body">
         <table class="layui-table no-padding no-margin">
-            <colgroup>
-                <col width="100">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
-                <col>
-                <col width="240">
-            </colgroup>
             <thead>
             <tr>
-                <th class="text-center">是否二销</th>
-                <th class="text-center">Led类型</th>
-                <th class="text-center">Led数量</th>
-                <th class="text-center">价格小计</th>
-                <th class="text-left">备注</th>
+                <th class="text-left">是否二销</th>
+                <th class="text-left">Led类型</th>
+                <th class="text-left">Led数量</th>
+                <th class="text-left">价格小计</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="led" item="row"}>
             <tr>
-                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
-                <th class="text-center">{$ledList[$row['led_id']]['title']}</th>
-                <th class="text-center">{$row['led_amount']}</th>
-                <th class="text-center">{$row['led_price']}</th>
-                <th class="text-left">{$row['led_remark']}</th>
+                <th class="text-left">{$suborderTypes[$row.is_suborder]}</th>
+                <th class="text-left">{$ledList[$row['led_id']]['title']}</th>
+                <th class="text-left">{$row['led_amount']}</th>
+                <th class="text-left">{$row['led_price']}</th>
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
@@ -54,6 +41,10 @@
                            data-action="{:url('/index/order.led/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </th>
+            </tr>
+            <tr>
+                <!--<td class="text-center">备注:</td>-->
+                <td colspan="5" class="text-left">备注:{$row['led_remark']}</td>
             </tr>
             <{/foreach}>
             </tbody>

@@ -35,35 +35,34 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th class="text-center">婚宴总金额</th>
-                    <th class="text-center">桌数</th>
-                    <th class="text-center">餐标</th>
-                    <th class="text-center">酒水费用</th>
-                    <th class="text-center">加菜换菜</th>
-                    <th class="text-center">优惠金额</th>
-                    <th class="text-center">服务费总计</th>
-                    <th class="text-center">仪式堂</th>
-                    <th class="text-center">仪式堂价格</th>
-                    <th class="text-center">其他金额</th>
+                    <th class="text-left">婚宴总金额</th>
+                    <th class="text-left">桌数</th>
+                    <th class="text-left">餐标</th>
+                    <th class="text-left">酒水费用</th>
+                    <th class="text-left">加菜换菜</th>
+                    <th class="text-left">优惠金额</th>
+                    <th class="text-left">服务费总计</th>
+                    <th class="text-left">仪式堂</th>
+                    <th class="text-left">仪式堂价格</th>
+                    <th class="text-left">其他金额</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-center">{$banquet.banquet_totals}</td>
-                    <td class="text-center">{$banquet.table_amount}</td>
-                    <td class="text-center">{$banquet.table_price}</td>
-                    <td class="text-center">{$banquet.wine_fee}</td>
-                    <td class="text-center">{$banquet.banquet_update_table}</td>
-                    <td class="text-center">{$banquet.banquet_discount}</td>
-                    <td class="text-center">{$banquet.service_fee}</td>
-                    <td class="text-center">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
-                    <td class="text-center">{$banquet.banquet_ritual_hall|default="-"}</td>
-                    <td class="text-center">{$banquet.banquet_other}</td>
+                    <td class="text-left">{$banquet.banquet_totals}</td>
+                    <td class="text-left">{$banquet.table_amount}</td>
+                    <td class="text-left">{$banquet.table_price}</td>
+                    <td class="text-left">{$banquet.wine_fee}</td>
+                    <td class="text-left">{$banquet.banquet_update_table}</td>
+                    <td class="text-left">{$banquet.banquet_discount}</td>
+                    <td class="text-left">{$banquet.service_fee}</td>
+                    <td class="text-left">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
+                    <td class="text-left">{$banquet.banquet_ritual_hall|default="-"}</td>
+                    <td class="text-left">{$banquet.banquet_other}</td>
                 </tr>
                 <tr>
-                    <td class="text-center">备注:</td>
-                    <td colspan="9">
-                        {$banquet.banquet_remark}
+                    <td colspan="10" class="text-left">
+                        备注:{$banquet.banquet_remark}
                     </td>
                 </tr>
             </tbody>
@@ -133,45 +132,44 @@
     <div class="layui-card layui-card">
         <div class="layui-card-body no-padding no-margin">
             <table class="layui-table no-padding no-margin">
+                <!--
                 <colgroup>
                     <col width="150">
                     <col width="150">
                     <col width="150">
                     <col width="150">
-                    <col width="150">
                     <col>
-                    <col width="150">
                 </colgroup>
+                -->
                 <thead>
                     <tr class="no-border">
-                        <td colspan="7">婚宴二销信息</td>
+                        <td colspan="5">婚宴二销信息</td>
                     </tr>
                     <tr>
-                        <th class="text-center">订单号</th>
-                        <th class="text-center">桌数</th>
-                        <th class="text-center">餐标</th>
-                        <th class="text-center">订单金额</th>
-                        <th class="text-center">审核状态</th>
-                        <th class="text-left">备注</th>
+                        <th class="text-left">订单号</th>
+                        <th class="text-left">桌数</th>
+                        <th class="text-left">餐标</th>
+                        <th class="text-left">订单金额</th>
                         <th class="text-right"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <{foreach name="banquetOrders" item="row"}>
                     <tr>
-                        <td class="text-center">{$row.banquet_order_no}</td>
-                        <td class="text-center">{$row.table_amount}</td>
-                        <td class="text-center">{$row.table_price}</td>
-                        <td class="text-center">{$row.banquet_totals}</td>
-                        <td class="text-center">{$confirmStatusList[$row['check_banquet_suborder_status']]}</td>
-                        <td class="text-left">{$row.sub_banquet_remark}</td>
+                        <td class="text-left">{$row.banquet_order_no}</td>
+                        <td class="text-left">{$row.table_amount}</td>
+                        <td class="text-left">{$row.table_price}</td>
+                        <td class="text-left">{$row.banquet_totals}</td>
                         <td class="text-right">
                             <div>
                                 <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" title="编辑婚宴二销信息" data-action="{:url('/index/order.banquet_suborder/edit', ['id'=>$row['id']])}">编辑</a>
-                                <a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>
+                                <!--<a href="javascript:void(0);" class="{:auth('/index/order.banquet_suborder/confirm')} btn-confirm-solid layui-right-side" title="审核婚宴二销信息" data-action="{:url('order.banquet_suborder/confirm', ['id'=>$row['id']])}">审核</a>-->
                                 <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_suborder/delete', ['id'=>$row['id']])}">删除</a>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
+                        <th class="text-left" colspan="5">备注:{$row.sub_banquet_remark}</th>
                     </tr>
                     <{/foreach}>
                 </tbody>
@@ -191,45 +189,44 @@
                 <col width="150">
                 <col width="150">
                 <col width="150">
+                <col width="150">
                 <col>
-                <col width="240">
             </colgroup>
 
             <thead>
-            <tr class="no-border">
-                <td colspan="7">婚宴收款信息</td>
-            </tr>
-            <tr>
-                <th class="text-center">收款编号</th>
-                <th class="text-center">收款日期</th>
-                <th class="text-center">实际收款日期</th>
-                <th class="text-center">收款方式</th>
-                <th class="text-center">款项性质</th>
-                <th class="text-center">收款金额</th>
-                <th class="text-center">审核状态</th>
-                <th class="text-left">备注</th>
-                <th class="text-left"></th>
-            </tr>
+                <tr class="no-border">
+                    <td colspan="7">婚宴收款信息</td>
+                </tr>
+                <tr>
+                    <th class="text-left">收款编号</th>
+                    <th class="text-left">收款日期</th>
+                    <th class="text-left">实际收款日期</th>
+                    <th class="text-left">收款方式</th>
+                    <th class="text-left">款项性质</th>
+                    <th class="text-left">收款金额</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
             <{foreach name="banquetReceivables" item="row"}>
-            <tr>
-                <td class="text-center">{$row['banquet_receivable_no']}</td>
-                <td class="text-center">{$row['banquet_income_date']}</td>
-                <td class="text-center">{$row['banquet_income_real_date']}</td>
-                <td class="text-center">{$payments[$row['banquet_income_payment']]}</td>
-                <td class="text-center">{$paymentTypes[$row['banquet_income_type']]}</td>
-                <td class="text-center">{$row['banquet_income_item_price']}</td>
-                <td class="text-center">{$confirmStatusList[$row['check_banquet_receivable_status']]}</td>
-                <td class="text-left">{$row.remark}</td>
-                <td class="text-right">
-                    <div>
-                        <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/edit', ['id'=>$row['id']])}">编辑</a>
-                        <a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/confirm')} btn-confirm-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/confirm', ['id'=>$row['id']])}">审核</a>
-                        <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_receivable/delete', ['id'=>$row['id']])}">删除</a>
-                    </div>
-                </td>
-            </tr>
+                <tr>
+                    <td class="text-left">{$row['banquet_receivable_no']}</td>
+                    <td class="text-left">{$row['banquet_income_date']}</td>
+                    <td class="text-left">{$row['banquet_income_real_date']}</td>
+                    <td class="text-left">{$payments[$row['banquet_income_payment']]}</td>
+                    <td class="text-left">{$paymentTypes[$row['banquet_income_type']]}</td>
+                    <td class="text-left">{$row['banquet_income_item_price']}</td>
+                    <td class="text-right">
+                        <div>
+                            <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/edit', ['id'=>$row['id']])}">编辑</a>
+                            <!--<a href="javascript:void(0);" class="{:auth('/index/order.banquet_receivable/confirm')} btn-confirm-solid layui-right-side" data-action="{:url('/index/order.banquet_receivable/confirm', ['id'=>$row['id']])}">审核</a>-->
+                            <a href="javascript:void(0);" class="btn-delete-solid lay-delete-api" data-action="{:url('/index/order.banquet_receivable/delete', ['id'=>$row['id']])}">删除</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">备注:{$row.remark}</td>
+                </tr>
             <{/foreach}>
             </tbody>
         </table>
@@ -242,48 +239,38 @@
 <div class="layui-card">
     <div class="layui-card-body no-margin no-padding">
         <table class="layui-table no-padding no-margin">
+            <!--
             <colgroup>
                 <col width="150">
                 <col width="150">
                 <col width="150">
                 <col width="150">
                 <col width="150">
-                <col width="150">
                 <col>
-                <col width="240">
             </colgroup>
+            -->
             <thead>
                 <tr class="no-border">
-                    <td colspan="8">婚宴付款信息</td>
+                    <td colspan="6">婚宴付款信息</td>
                 </tr>
                 <tr>
-                    <th class="text-center">付款编号</th>
-                    <th class="text-center">申请日期</th>
-                    <th class="text-center">款项性质</th>
-                    <th class="text-center">付款金额</th>
-                    <th class="text-center">收款名称</th>
-                    <th class="text-center">审核状态</th>
-                    <th class="text-left">备注</th>
+                    <th class="text-left">付款编号</th>
+                    <th class="text-left">申请日期</th>
+                    <th class="text-left">款项性质</th>
+                    <th class="text-left">付款金额</th>
+                    <th class="text-left">收款名称</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
             <{foreach name="banquetPayments" item="row"}>
             <tr>
-                <th class="text-center">{$row['banquet_payment_no']}</th>
-                <th class="text-center">{$row['banquet_apply_pay_date']}</th>
-                <th class="text-center">{$paymentTypes[$row['banquet_pay_type']]}</th>
-                <th class="text-center">{$row['banquet_pay_item_price']}</th>
-                <th class="text-center">{$row['banquet_supplier']}</th>
-                <th class="text-center">
-                    {$confirmStatusList[$row['check_status_payment_account']]}
-                    -
-                    {$confirmStatusList[$row['check_status_payment_fiance']]}
-                    -
-                    {$confirmStatusList[$row['check_status_payment_cashier']]}
-                </th>
-                <th class="text-left">{$row.banquet_payment_remark}</th>
-                <th class="text-right">
+                <td class="text-left">{$row['banquet_payment_no']}</td>
+                <td class="text-left">{$row['banquet_apply_pay_date']}</td>
+                <td class="text-left">{$paymentTypes[$row['banquet_pay_type']]}</td>
+                <td class="text-left">{$row['banquet_pay_item_price']}</td>
+                <td class="text-left">{$row['banquet_supplier']}</td>
+                <td class="text-right">
                     <div>
                         <a href="javascript:void(0);"
                            class="btn-edit-solid layui-right-side"
@@ -291,20 +278,12 @@
                         <a href="javascript:void(0);"
                            class="btn-delete-solid lay-delete-api"
                            data-action="{:url('/index/order.banquet_payment/delete', ['id'=>$row['id']])}">删除</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/accountConfirm')} btn-confirm-solid layui-right-side"
-                           title="一站式婚宴付款-会计审核"
-                           data-action="{:url('/index/order.banquet_payment/accountConfirm', ['id'=>$row['id']])}">会计审核</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/fianceConfirm')} btn-confirm-solid layui-right-side"
-                           title="一站式婚宴付款-财务审核"
-                           data-action="{:url('/index/order.banquet_payment/fianceConfirm', ['id'=>$row['id']])}">财务审核</a>
-                        <a href="javascript:void(0);"
-                           class="{:auth('/index/order.banquet_payment/cashierConfirm')} btn-confirm-solid layui-right-side"
-                           title="一站式婚宴付款-出纳审核"
-                           data-action="{:url('/index/order.banquet_payment/cashierConfirm', ['id'=>$row['id']])}">出纳审核</a>
                     </div>
-                </th>
+                </td>
+            </tr>
+            <tr>
+                <!--<td class="text-center"></td>-->
+                <td colspan="6">备注：{$row.banquet_payment_remark}</td>
             </tr>
             <{/foreach}>
             </tbody>
@@ -319,6 +298,7 @@
 <div class="layui-card layui-card">
     <div class="layui-card-body no-padding no-margin">
         <table class="layui-table no-padding no-margin">
+            <!--
             <colgroup>
                 <col width="150">
                 <col width="150">
@@ -328,33 +308,34 @@
                 <col>
                 <col width="150">
             </colgroup>
+            -->
             <thead>
             <tr class="no-border">
                 <td colspan="7">酒店协议信息</td>
             </tr>
             <tr>
-                <th class="text-center">餐标</th>
-                <th class="text-center">桌数</th>
-                <th class="text-center">定金付款金额</th>
-                <th class="text-center">定金付款日期</th>
-                <th class="text-center">中款付款金额</th>
-                <th class="text-center">中款付款日期</th>
-                <th class="text-center">尾款付款金额</th>
-                <th class="text-center">尾款付款日期</th>
+                <th class="text-left">餐标</th>
+                <th class="text-left">桌数</th>
+                <th class="text-left">定金付款金额</th>
+                <th class="text-left">定金付款日期</th>
+                <th class="text-left">中款付款金额</th>
+                <th class="text-left">中款付款日期</th>
+                <th class="text-left">尾款付款金额</th>
+                <th class="text-left">尾款付款日期</th>
                 <th class="text-right"></th>
             </tr>
             </thead>
             <tbody>
             <{foreach name="hotelProtocol" item="row"}>
             <tr>
-                <td class="text-center">{$row.table_price}</td>
-                <td class="text-center">{$row.table_amount}</td>
-                <td class="text-center">{$row.earnest_money}</td>
-                <td class="text-center">{$row.earnest_money_date}</td>
-                <td class="text-center">{$row.middle_money}</td>
-                <td class="text-center">{$row.middle_money_date}</td>
-                <td class="text-center">{$row.tail_money}</td>
-                <td class="text-center">{$row.tail_money_date}</td>
+                <td class="text-left">{$row.table_price}</td>
+                <td class="text-left">{$row.table_amount}</td>
+                <td class="text-left">{$row.earnest_money}</td>
+                <td class="text-left">{$row.earnest_money_date}</td>
+                <td class="text-left">{$row.middle_money}</td>
+                <td class="text-left">{$row.middle_money_date}</td>
+                <td class="text-left">{$row.tail_money}</td>
+                <td class="text-left">{$row.tail_money_date}</td>
                 <td class="text-right">
                     <div>
                         <a href="javascript:void(0);" class="btn-edit-solid layui-right-side" title="编辑酒店协议信息" data-action="{:url('/index/order.hotel_protocol/edit', ['id'=>$row['id']])}">编辑</a>

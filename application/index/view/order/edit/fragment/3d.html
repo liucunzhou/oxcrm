@@ -20,11 +20,7 @@
                 <col width="150">
                 <col width="150">
                 <col width="150">
-                <col width="150">
-                <col width="150">
-                <col width="150">
                 <col>
-                <col width="240">
             </colgroup>
             <thead>
             <tr>
@@ -32,7 +28,6 @@
                 <th class="text-center">3D类型</th>
                 <th class="text-center">3D数量</th>
                 <th class="text-center">价格小计</th>
-                <th class="text-left">备注</th>
                 <th></th>
             </tr>
             </thead>
@@ -43,7 +38,6 @@
                 <th class="text-center">{$d3List[$row['d3_id']]['title']}</th>
                 <th class="text-center">{$row['d3_amount']}</th>
                 <th class="text-center">{$row['d3_price']}</th>
-                <th class="text-left">{$row['d3_remark']}</th>
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
@@ -54,6 +48,9 @@
                            data-action="{:url('/index/order.d3/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </th>
+            </tr>
+            <tr>
+                <th colspan="5" class="text-left">备注:{$row['d3_remark']}</th></td>
             </tr>
             <{/foreach}>
             </tbody>

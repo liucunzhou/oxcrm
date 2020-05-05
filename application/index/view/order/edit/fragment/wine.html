@@ -15,6 +15,7 @@
     </div>
     <div class="layui-card-body">
         <table class="layui-table no-padding no-margin">
+            <!--
             <colgroup>
                 <col width="100">
                 <col width="150">
@@ -26,6 +27,7 @@
                 <col>
                 <col width="240">
             </colgroup>
+            -->
             <thead>
             <tr>
                 <th class="text-center">是否二销</th>
@@ -35,7 +37,6 @@
                 <th class="text-center">联系人</th>
                 <th class="text-center">电话</th>
                 <th class="text-center">联系地址</th>
-                <th class="text-left">备注</th>
                 <th></th>
             </tr>
             </thead>
@@ -49,7 +50,6 @@
                 <th class="text-center">{$row['wine_contact']}</th>
                 <th class="text-center">{$row['wine_mobile']}</th>
                 <th class="text-center">{$row['wine_address']}</th>
-                <th class="text-left">{$row['wine_remark']}</th>
                 <th class="text-right">
                     <div>
                         <a href="javascript:void(0);"
@@ -60,6 +60,9 @@
                            data-action="{:url('/index/order.wine/delete', ['id'=>$row['id']])}">删除</a>
                     </div>
                 </th>
+            </tr>
+            <tr>
+                <th class="text-left" colspan="8">{$row['wine_remark']}</th>
             </tr>
             <{/foreach}>
             </tbody>
