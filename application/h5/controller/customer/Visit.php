@@ -194,6 +194,7 @@ class Visit extends Base
         if ($result1 && $result2) {
             $member->commit();
             $data = [];
+            $data['next_visit_time'] = $param['next_visit_time'];
             $data['active_status'] = $param['status'];
             $data['color'] = $param['color'] ? $param['color'] : '';
             $res = $allocate->save($data);

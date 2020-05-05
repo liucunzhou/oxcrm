@@ -136,13 +136,14 @@ class Customer extends Base
         ];
 
         $map[] = ['user_id', '=', $this->user['id']];
-        $map[] = ['active_status', 'not in', [2, 3, 4]];
+        $map[] = ['active_status', 'not in', [3, 4]];
+        $start = strtotime($param['next_visit_time']);
         $tomorrow = strtotime('tomorrow');
-        if (!isset($param['next_visit_time']) || empty($param['next_visit_time'])) {
+        $today = $tomorrow - 86400;
+        if (!isset($param['next_visit_time']) || empty($param['next_visit_time']) || $today == $start) {
             $map[] = ['next_visit_time', '>', 0];
             $map[] = ['next_visit_time', 'between', [0, $tomorrow]];
         } else {
-            $start = strtotime($param['next_visit_time']);
             $end = $start + 86400;
             $map[] = ['next_visit_time', 'between', [$start, $end]];
         }
