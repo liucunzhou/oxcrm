@@ -493,7 +493,6 @@ class Order extends Backend
         $d3 = OrderD3::where($where)->select();
         $this->assign('d3', $d3);
 
-
         ##　获取客资分配信息
         // $allocate = MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
         // $this->assign('allocate', $allocate);

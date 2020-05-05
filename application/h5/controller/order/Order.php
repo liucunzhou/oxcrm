@@ -1,7 +1,5 @@
 <?php
-
 namespace app\h5\controller\order;
-
 
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
@@ -221,7 +219,7 @@ class Order extends Base
         $where[] = ['user_id', '=', $this->user['id']];
         // $where[] = ['is_checked', '=', 0];
         // $where[] = ['status', '=', 3];
-        $confirmLast = OrderConfirm::where($where)->order('confirm_no desc')->find();
+        $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
         // 获取审核状态
         if (empty($confirmLast)) {
             $edit = 0;
