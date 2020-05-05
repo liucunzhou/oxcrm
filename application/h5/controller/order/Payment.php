@@ -66,7 +66,7 @@ class Payment extends Base
                 // 获取角色
                 foreach ($row as $v)
                 {
-                    $user = User::getRoleManager($v, $this->user);
+                    $user = \app\common\model\User::getRoleManager($v, $this->user);
                     $managerList[] = [
                         'id'        => $user['id'],
                         'realname'  => $user['realname'],
