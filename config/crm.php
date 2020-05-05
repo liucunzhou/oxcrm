@@ -111,7 +111,17 @@ $check_sequence = [
     ],
     'ceo' => [
         'id'    => 'ceo',
-        'title' => '总经理',
+        'title' => '区域总经理',
+        'type'  => 'staff'
+    ],
+    'gfceo' => [
+        'id'    => 'gfceo',
+        'title' => '集团副总经理',
+        'type'  => 'staff'
+    ],
+    'gceo' => [
+        'id'    => 'gceo',
+        'title' => '集团总经理',
         'type'  => 'staff'
     ],
     'cashier' => [
