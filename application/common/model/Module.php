@@ -17,7 +17,7 @@ class Module extends Model
 
     public static function getList()
     {
-        $list = self::column('id,name');
+        $list = self::order('sort asc,id asc')->column('id,name');
 
         return $list;
     }
