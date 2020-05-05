@@ -297,7 +297,25 @@ class Customer extends Base
                 'msg' => '修改客资失败'
             ]);
         }
+    }
 
+    public function unique()
+    {
+        $param = $this->request->param();
+        $list = Mobile::where('mobile', like, "%{$param['mobile']}%")->select();
+        if($list->isEmpty()) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '该手机号不存在，可以添加'
+            ];
+        } else {
+            $result = [
+                'code'  => '400',
+                'msg'   => '该手机号已存在'
+            ];
+        }
+
+        return json($result);
     }
 
     /**
