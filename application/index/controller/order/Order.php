@@ -38,7 +38,6 @@ class Order extends Backend
     protected $weddingDevices = [];
     protected $weddingCategories = [];
     protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
-    protected $newsTypes = ['婚宴信息', '婚庆信息', '一站式'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
     protected function initialize()
