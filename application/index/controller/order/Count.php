@@ -151,9 +151,12 @@ class Count extends Backend
                     }
                 }
             }
-            $v['ysdj'] = $zdj - $v['earnest_money'];
+            $v['ysdj'] = $this->plus_minus_conversion($zdj - $v['earnest_money']);
+            $v['yszk'] = $this->plus_minus_conversion($zzk - $v['middle_money']);
+            $v['yswk'] = $this->plus_minus_conversion($zwk + $zex - $v['tail_money']);
+            /*$v['ysdj'] = $zdj - $v['earnest_money'];
             $v['yszk'] = $zzk - $v['middle_money'];
-            $v['yswk'] = $zwk + $zex - $v['tail_money'];
+            $v['yswk'] = $zwk + $zex - $v['tail_money'];*/
         }
         unset($list['news_type']);
         $sums = [
@@ -170,9 +173,12 @@ class Count extends Backend
                'totals'          => array_sum(array_column($list,'totals')),
                'salesman'            =>  '-',
                'totals_snum'    => array_sum(array_column($list,'totals_snum')),
-               'ysdj'            => array_sum(array_column($list,'ysdj')),
+               /*'ysdj'            => array_sum(array_column($list,'ysdj')),
                'yszk'            => array_sum(array_column($list,'yszk')),
-               'yswk'            => array_sum(array_column($list,'yswk'))
+               'yswk'            => array_sum(array_column($list,'yswk'))*/
+               'ysdj'            => $this->plus_minus_conversion(array_sum(array_column($list,'ysdj'))),
+               'yszk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yszk'))),
+               'yswk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yswk')))
             ]
         ];
         $list = $list + $sums;
@@ -181,5 +187,9 @@ class Count extends Backend
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
         $this->assign('list',$list);
         return $this->fetch('order/count/index');
+    }
+
+    function plus_minus_conversion($number = 0){
+        return $number > 0 ? -1 * $number : abs($number);
     }
 }
