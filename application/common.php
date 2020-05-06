@@ -67,7 +67,7 @@ if(!function_exists('create_order_confirm')) {
         $where = [];
         $where[] = ['company_id', '=', $companyId];
         $where[] = ['timing', '=', $confirmType];
-        $audit = \app\common\model\Audit::where('company_id', '=', $companyId)->find();
+        $audit = \app\common\model\Audit::where($where)->find();
         $sequence = json_decode($audit->content, true);
 
         ### 获取当前订单，当前用户的审核流程
