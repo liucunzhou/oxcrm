@@ -17,16 +17,7 @@ class Brand extends Model
 
     public static function getBrands($update=false)
     {
-        $cacheKey = 'brands';
-        $data = redis()->get($cacheKey);
-        if(empty($data) || $update) {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
-            $json = json_encode($data);
-            $result = redis()->set($cacheKey, $json);
-        } else {
-
-            $data = json_decode($data, true);
-        }
+        $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
 
         return $data;
     }
