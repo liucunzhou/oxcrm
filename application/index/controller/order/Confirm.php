@@ -3,6 +3,7 @@
 namespace app\index\controller\order;
 
 use app\common\model\BanquetHall;
+use app\common\model\Brand;
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
 use app\common\model\OrderBanquet;
@@ -440,10 +441,17 @@ class Confirm extends Backend
         if($this->user['nickname'] != 'admin') {
             $map[] = ['confirm_user_id', '=', $this->user['id']];
         }
+        $configCrm = config();
+        $checkSequence = $configCrm['crm']['check_sequence'];
+        $brands = Brand::getBrands();
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
-
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
+            $companyId = $value->company_id;
+            $item = $value->confirm_item_id;
+            $value['company'] = $brands[$companyId]['title'];
+            // $value['item'] = $checkSequence[$item]['title'];
+            $value['item'] = $value->confirm_intro;
             $value['status'] = $this->confirmStatusList[$value['status']];
             $order = \app\common\model\Order::get($value['order_id']);
             $value['bridegroom_mobile'] = $order->bridegroom_mobile ? substr_replace($order->bridegroom_mobile, '***', 3, 3) : '-';
