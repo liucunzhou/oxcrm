@@ -80,6 +80,10 @@ class order extends Command
             case 'initComplete':
                 $this->isComplete();
                 break;
+
+            case 'export':
+                $this->export();
+                break;
         }
     }
 
@@ -98,7 +102,6 @@ class order extends Command
         file_put_contents('./update.sql', $update);
         fclose($handle);
     }
-
 
 
     // 初始化红丝订单
@@ -991,5 +994,20 @@ class order extends Command
                 }
             }
         }
+    }
+
+    ### 导出
+    public function export()
+    {
+        $file = './order-export.csv';
+        $fp = fopen($file, 'w+');
+        $order = new \app\common\model\Order();
+        $orderList = $order->select();
+
+        foreach ($orderList as $key=>$val) {
+            $row = $val->getData();
+            $rs = fputcsv($fp, $row);
+        }
+        fclose($fp);
     }
 }

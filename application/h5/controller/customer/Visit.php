@@ -11,6 +11,7 @@ use app\common\model\OperateLog;
 use app\common\model\Source;
 use app\common\model\Store;
 use app\common\model\User;
+use app\common\model\UserAuth;
 use app\h5\controller\Base;
 use think\facade\Request;
 use app\common\model\Region;
@@ -69,6 +70,10 @@ class Visit extends Base
         $users = User::getUsers(false);
 
         $map = [];
+        $userAuth = UserAuth::where('user_id', '=', $this->user['id'])->find();
+        if ($userAuth->show_visit_log != 1) {
+            $map[] = ['user_id', '=', $this->user['id']];
+        }
         $map[] = ['member_id','=',$allocate['member_id']];
         $field = "status,create_time,next_visit_time,user_id,content,is_into_store";
         ### 根据分配表的数据查询回访记录

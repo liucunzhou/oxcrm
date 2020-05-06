@@ -1,9 +1,4 @@
 <?php
 $arr = [];
 
-$a1 = array_column($arr, 'totals');
-
-$sum = array_sum($a1);
-
-echo $sum;
-print_r($a1);
+echo json_encode($arr, JSON_FORCE_OBJECT);
