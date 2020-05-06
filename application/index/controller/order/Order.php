@@ -320,7 +320,6 @@ class Order extends Backend
             $sugarModel->allowField(true)->save($request);
         }
 
-
         ## 酒水
         if (!empty($request['wine_id'])) {
             $wineModel = new OrderWine();
@@ -393,6 +392,11 @@ class Order extends Backend
         $where['order_id'] = $get['id'];
         $banquetOrders = OrderBanquetSuborder::where($where)->select();
         $this->assign('banquetOrders', $banquetOrders);
+        if($banquetOrders->isEmpty()) {
+            $banquetOrderArr = [];
+        } else {
+            $banquetOrderArr = $banquetOrders->toArray();
+        }
 
         #### 获取婚宴收款信息
         $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
@@ -421,6 +425,11 @@ class Order extends Backend
         $where = [];
         $where['order_id'] = $get['id'];
         $weddingOrders = OrderWeddingSuborder::where($where)->select();
+        if ($weddingOrders->isEmpty()) {
+            $weddingOrderArr = [];
+        } else {
+            $weddingOrderArr = $weddingOrders->toArray();
+        }
         $this->assign('weddingOrders', $weddingOrders);
 
         #### 获取婚宴收款信息
@@ -523,6 +532,26 @@ class Order extends Backend
             'data'  => $photos
         ];
         $this->assign('photosData', $photosData);
+
+        // 统计
+        ### 婚庆总计
+        if (empty($weddingOrderArr)) {
+            $count['wedding_totals'] = 0;
+        } else {
+            $weddingTotalsArr = array_column($weddingOrderArr, 'wedding_totals');
+            $count['wedding_totals'] = array_sum($weddingTotalsArr);
+        }
+        ### 婚宴总计
+        if (empty($banquetOrderArr)) {
+            $count['banquet_totals'] = 0;
+        } else {
+            $banquetTotalsArr = array_column($banquetOrderArr, 'banquet_totals');
+            $count['banquet_totals'] = array_sum($banquetTotalsArr);
+        }
+        ### 订单综合
+        $count['totals'] = $order['totals'];
+        $count['customer_totals'] = $count['totals'] + $count['wedding_totals'] + $count['banquet_totals'];
+        $this->assign('count', $count);
 
         return $this->fetch('order/edit/main');
     }
@@ -694,7 +723,6 @@ class Order extends Backend
 
             ### 删除审核
             OrderConfirm::where($where)->delete();
-
             $arr = [
                 'code'  => '200',
                 'msg'   => '删除成功'
@@ -705,7 +733,6 @@ class Order extends Backend
                 'msg'   => '删除失败'
             ];
         }
-
         return json($arr);
     }
 
