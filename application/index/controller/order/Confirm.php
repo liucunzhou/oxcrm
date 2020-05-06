@@ -447,10 +447,11 @@ class Confirm extends Backend
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
+            print_r($value);
             $companyId = $value->company_id;
             $value['company'] = $brands[$companyId]['title'];
             // $value['item'] = $checkSequence[$item]['title'];
-            $value['item'] = $value->confirm_inro;
+            $value['item'] = $value->confirm_intro;
             $value['status'] = $this->confirmStatusList[$value['status']];
             $order = \app\common\model\Order::get($value['order_id']);
             $value['bridegroom_mobile'] = $order->bridegroom_mobile ? substr_replace($order->bridegroom_mobile, '***', 3, 3) : '-';
@@ -463,6 +464,7 @@ class Confirm extends Backend
             $value['bride'] = $order->bride;
             $value['sign_date'] = $order->sign_date;
             $value['event_date'] = $order->event_date;
+            $value['banquet_hall_name'] = $order->banquet_hall_name;
         }
         return $list;
     }
