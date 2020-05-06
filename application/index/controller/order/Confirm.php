@@ -447,7 +447,6 @@ class Confirm extends Backend
         $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
-            print_r($value);
             $companyId = $value->company_id;
             $value['company'] = $brands[$companyId]['title'];
             // $value['item'] = $checkSequence[$item]['title'];
