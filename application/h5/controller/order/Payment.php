@@ -119,7 +119,7 @@ class Payment extends Base
             $payment['wedding_payment_remark'] = $param['payment_remark'];
             $receivable = new OrderWeddingPayment();
             $result2 = $receivable->allowField(true)->save($payment);
-            $intro = '创建婚宴付款审核';
+            $intro = '创建婚庆付款审核';
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro);
         } else {
             // 添加收款信息
@@ -133,7 +133,7 @@ class Payment extends Base
             $payment['banquet_payment_remark'] = $param['payment_remark'];
             $receivable = new OrderBanquetPayment();
             $result2 = $receivable->allowField(true)->save($payment);
-            $intro = '创建婚庆付款审核';
+            $intro = '创建婚宴付款审核';
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro);
         }
 
