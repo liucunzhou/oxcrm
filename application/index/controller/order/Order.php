@@ -750,6 +750,7 @@ class Order extends Backend
             $map[] = ['score', '<>', ''];
         }
 
+        $map[] = ['check_status', '<>', 3];
         $model = model('order')->where($map);
         if (isset($get['mobile'])) {
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
