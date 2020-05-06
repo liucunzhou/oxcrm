@@ -117,7 +117,7 @@ class Income extends Base
             $income['wedding_income_type'] = $data['banquet_income_type'];
             $income['wedding_income_date'] = $data['banquet_income_date'];
             $income['wedding_income_item_price'] = $data['banquet_income_item_price'];
-            $income['remark'] = $param['income_remark'];
+            $income['remark'] = $data['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $intro = '创建婚庆收款审核';
@@ -132,7 +132,7 @@ class Income extends Base
             $income['banquet_income_type'] = $data['banquet_income_type'];
             $income['banquet_income_date'] = $data['banquet_income_date'];
             $income['banquet_income_item_price'] = $data['banquet_income_item_price'];
-            $income['remark'] = $param['income_remark'];
+            $income['remark'] = $data['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $intro = '创建婚宴收款审核';
