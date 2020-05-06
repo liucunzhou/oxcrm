@@ -37,7 +37,7 @@ class Order extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
-    protected $confirmStatusList = [0=>'待审核', 1=>'通过', 2=>'驳回'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
     protected function initialize()
@@ -760,6 +760,8 @@ class Order extends Backend
 
         $users = \app\common\model\User::getUsers();
         foreach ($data as $key => &$value) {
+            $checkStatus = $value->check_status;
+            $value['check_status'] = $this->confirmStatusList[$checkStatus];
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
             !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
             $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
