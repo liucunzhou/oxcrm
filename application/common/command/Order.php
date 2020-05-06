@@ -1139,7 +1139,7 @@ class order extends Command
             $data[] = $tailPayment;
 
             ### 订单状态以及备注
-            $data[] = isset($statuses[$row['status']]) ? $statuses[$row['status']] : '-';
+            $data[] = isset($statuses[$row['complete']]) ? $statuses[$row['complete']] : '-';
             $data[] = $row['remark'].$remark;
             fputcsv($fp, $data);
         }
