@@ -41,6 +41,7 @@ class Count extends Backend
          * **/
 
         $map = [];
+        $map[] = ['complete','!=','101'];
         // 搜索条件：company_id  newsTypesList  date_range
         if( !empty($param['company_id']) )
         {
