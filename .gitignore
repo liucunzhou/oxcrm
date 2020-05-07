@@ -8,3 +8,4 @@
 /.idea
 config/cache.php
 /public/uploads/*
+shell/*
