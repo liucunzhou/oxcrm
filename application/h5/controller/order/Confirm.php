@@ -9,16 +9,120 @@
 namespace app\h5\controller\order;
 
 
+use app\common\model\Brand;
 use app\common\model\OrderConfirm;
 use app\common\model\User;
 use app\h5\controller\Base;
 
 class Confirm extends Base
 {
+    protected $confirmStatusList = [0=>'待审核', 1=>'审核通过', 2=>'审核驳回'];
+
     protected function initialize()
     {
         return parent::initialize();
+    }
 
+    # 我审核的
+    public function myConfirmed()
+    {
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 100;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
+        $config = [
+            'page' => $param['page']
+        ];
+        $users = User::getUsers();
+        $newsTypes = $this->config['news_type_list'];
+        $companies = Brand::getBrands();
+
+        $model = new OrderConfirm();
+        // $model->
+        $where = [];
+        // $where[] = ['confirm_user_id', '=', $this->user['id']];
+        $model = $model->where($where)->order('id desc');
+        $list = $model->paginate($param['limit'], false, $config);
+
+        if($list->isEmpty()) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '暂无审核数据'
+            ];
+        } else {
+            $data = [];
+            foreach ($list as $key => $value) {
+                $order = \app\common\model\Order::get($value->order_id);
+                $data[]  = [
+                    'title'         => $value['confirm_intro'],
+                    'create_time'   => $value['create_time'],
+                    'status'        => $this->confirmStatusList[$value['status']],
+                    'company'       => $companies[$value['company_id']]['title'],
+                    'news_type'     => $newsTypes[$order['news_type']],
+                    'user_id'       => $users[$value['user_id']]['realname']
+                ];
+            }
+
+            $result = [
+                'code'  => '200',
+                'msg'   => '获取数据成功',
+                'data'  => [
+                    'confirmList'   => $data
+                ]
+            ];
+        }
+
+        return json($result);
+    }
+
+    # 审核我的
+    public function confirmMine()
+    {
+        $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 100;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
+        $config = [
+            'page' => $param['page']
+        ];
+        $users = User::getUsers();
+        $newsTypes = $this->config['news_type_list'];
+        $companies = Brand::getBrands();
+
+        $model = new OrderConfirm();
+        // $model->
+        $where = [];
+        // $where[] = ['confirm_user_id', '=', $this->user['id']];
+        $model = $model->where($where)->order('id desc');
+        $list = $model->paginate($param['limit'], false, $config);
+
+        if($list->isEmpty()) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '暂无审核数据'
+            ];
+        } else {
+            $data = [];
+            foreach ($list as $key => $value) {
+                $order = \app\common\model\Order::get($value->order_id);
+                $data[]  = [
+                    'title'         => $value['confirm_intro'],
+                    'create_time'   => $value['create_time'],
+                    'status'        => $this->confirmStatusList[$value['status']],
+                    'company'       => $companies[$value['company_id']]['title'],
+                    'news_type'     => $newsTypes[$order['news_type']],
+                    'user_id'       => $users[$value['user_id']]['realname']
+                ];
+            }
+
+            $result = [
+                'code'  => '200',
+                'msg'   => '获取数据成功',
+                'data'  => [
+                    'confirmList'   => $data
+                ]
+            ];
+        }
+
+        return json($result);
     }
 
     # comnpany_id,创建时的审核进程

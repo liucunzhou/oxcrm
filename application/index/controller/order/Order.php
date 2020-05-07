@@ -745,11 +745,6 @@ class Order extends Backend
             'page' => $get['page']
         ];
         $map = Search::order($this->user, $get);
-
-        if($statusField == 'check_status_score') {
-            $map[] = ['score', '<>', ''];
-        }
-
         $map[] = ['check_status', '<>', 3];
         $model = model('order')->where($map);
         if (isset($get['mobile'])) {
