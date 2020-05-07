@@ -58,7 +58,7 @@ class Confirm extends Base
                     'status'        => $this->confirmStatusList[$value['status']],
                     'company'       => $companies[$value['company_id']]['title'],
                     'news_type'     => $newsTypes[$order['news_type']],
-                    'user_id'       => $users[$value['user_id']]['realname']
+                    'user'          => $users[$value['user_id']]['realname']
                 ];
             }
 
@@ -109,7 +109,7 @@ class Confirm extends Base
                     'status'        => $this->confirmStatusList[$value['status']],
                     'company'       => $companies[$value['company_id']]['title'],
                     'news_type'     => $newsTypes[$order['news_type']],
-                    'user_id'       => $users[$value['user_id']]['realname']
+                    'user'          => $users[$value['user_id']]['realname']
                 ];
             }
 

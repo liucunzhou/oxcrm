@@ -358,6 +358,8 @@ class Customer extends Base
         ### 当前选择跟进渠道
         if (isset($param['active_status']) && is_numeric($param['active_status'])) {
             $map[] = ['active_status', '=', $param['active_status']];
+        } else if (empty($param['active_status'])) {
+            $map[] = ['active_status', '=', 0];
         }
 
         ### 获取方式
