@@ -1071,8 +1071,8 @@ class order extends Command
 
             ### 合同信息
             $data[] = !empty($row['totals']) ? $row['totals'] : '-';
-            $data[] = !empty($row['earnest_money_date']) ?  date('Y-m-d',$row['earnest_money']) : '-';
-            $data[] = !empty($row['earnest_money']) ? $row['earnest_money_date'] : '-';
+            $data[] = !empty($row['earnest_money_date']) ?  date('Y-m-d',$row['earnest_money_date']) : '-';
+            $data[] = !empty($row['earnest_money']) ? $row['earnest_money'] : '-';
             $data[] = !empty($row['middle_money_date']) ? date('Y-m-d', $row['middle_money_date']) : '-';
             $data[] = !empty($row['middle_money']) ? $row['middle_money'] : '-';
             $data[] = !empty($row['tail_money_date']) ? date('Y-m-d', $row['tail_money_date']) : '-';
