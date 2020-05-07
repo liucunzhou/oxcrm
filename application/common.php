@@ -61,7 +61,7 @@ if(!function_exists('get_next_confirm_item')) {
 
 ### 创建审核顺序
 if(!function_exists('create_order_confirm')) {
-    function create_order_confirm($orderId, $companyId, $userId, $confirmType='income', $intro='创建订单定金审核')
+    function create_order_confirm($orderId, $companyId, $userId, $confirmType='income', $intro='创建订单定金审核', $source=[])
     {
         ### 审核流程
         $where = [];

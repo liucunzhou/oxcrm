@@ -820,6 +820,8 @@ class Order extends Base
         $OrderModel = new \app\common\model\Order();
         $result = $OrderModel->allowField(true)->save($orderData);
         if (!$result || !isset($OrderModel->id)) return json(['code' => '400', 'msg' => '创建失败']);
+        $source['order'] = $OrderModel->toArray();
+
 
         ## banquet message
         if (!empty($param['banquet'])) {
@@ -836,6 +838,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $BanquetModel = new OrderBanquet();
                 $BanquetModel->allowField(true)->save($data);
+                $source['banquet'] = $BanquetModel->toArray();
             }
         }
 
@@ -852,6 +855,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $WeddingModel = new OrderWedding();
                 $WeddingModel->allowField(true)->save($data);
+                $source['wedding'] = $WeddingModel->toArray();
             }
         }
 
@@ -869,6 +873,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $orderHotelItem = new OrderHotelItem();
                 $orderHotelItem->allowField(true)->save($data);
+                $source['hotelItem'] = $orderHotelItem->toArray();
             }
         }
 
@@ -897,6 +902,7 @@ class Order extends Base
                 $row['user_id'] = $this->user['id'];
                 $carModel = new OrderCar();
                 $carModel->allowField(true)->save($row);
+                $source['car'][] = $carModel->toArray();
             }
         }
 
@@ -927,6 +933,7 @@ class Order extends Base
                 $row['user_id'] = $this->user['id'];
                 $carModel = new OrderCar();
                 $carModel->allowField(true)->save($row);
+                $source['car'][] = $carModel->toArray();
             }
         }
 
@@ -942,6 +949,7 @@ class Order extends Base
                 $sugarModel = new OrderSugar();
                 $data['salesman'] = $data['sugar_salesman'];
                 $sugarModel->allowField(true)->save($data);
+                $source['sugar'][] = $sugarModel->toArray();
             }
         }
 
@@ -957,6 +965,7 @@ class Order extends Base
                 $wineModel = new OrderWine();
                 $param['salesman'] = $param['wine_salesman'];
                 $wineModel->allowField(true)->save($data);
+                $source['wine'][] = $wineModel->toArray();
             }
         }
 
@@ -972,6 +981,7 @@ class Order extends Base
                 $lightModel = new OrderLight();
                 $data['salesman'] = $data['light_salesman'];
                 $lightModel->allowField(true)->save($data);
+                $source['light'][] = $lightModel->toArray();
             }
         }
 
@@ -987,6 +997,7 @@ class Order extends Base
                 $dessertModel = new OrderDessert();
                 $data['salesman'] = $data['dessert_salesman'];
                 $dessertModel->allowField(true)->save($data);
+                $source['dessert'][] = $dessertModel->toArray();
             }
         }
 
@@ -1002,6 +1013,7 @@ class Order extends Base
                 $ledModel = new OrderLed();
                 $data['salesman'] = $data['led_salesman'];
                 $ledModel->allowField(true)->save($data);
+                $source['led'][] = $ledModel->toArray();
             }
         }
 
@@ -1017,6 +1029,7 @@ class Order extends Base
                 $d3Model = new OrderD3();
                 $data['salesman'] = $data['d3_salesman'];
                 $d3Model->allowField(true)->save($data);
+                $source['d3'][] = $d3Model->toArray();
             }
         }
 
@@ -1040,6 +1053,7 @@ class Order extends Base
 
                 $receivableModel = new OrderBanquetReceivables();
                 $receivableModel->allowField(true)->save($data);
+                $source['banquetIncome'][] = $receivableModel->toArray();
             } else {
                 // 婚庆收款
                 $data = [];
@@ -1057,13 +1071,14 @@ class Order extends Base
 
                 $receivableModel = new OrderWeddingReceivables();
                 $receivableModel->allowField(true)->save($data);
+                $source['weddingIncome'][] = $receivableModel->toArray();
             }
         }
 
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
         $orderId = $OrderModel->id;
-        $addConfirmResult = create_order_confirm($orderId, $companyId, $this->user['id'], 'income', "创建订单定金审核");
+        create_order_confirm($orderId, $companyId, $this->user['id'], 'income', "创建订单定金审核", $source);
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 

@@ -27,7 +27,7 @@ class Confirm extends Base
     public function myConfirmed()
     {
         $param = $this->request->param();
-        $param['limit'] = isset($param['limit']) ? $param['limit'] : 100;
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 5;
         $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
         $config = [
             'page' => $param['page']
@@ -39,6 +39,15 @@ class Confirm extends Base
         $model = new OrderConfirm();
         // $model->
         $where = [];
+        if($param['type'] == '0') {
+            $where[] = ['status', '=', 0];
+        } else {
+            if(is_numeric($param['status'])) {
+                $where[] = ['status', '=', 0];
+            } else {
+                $where[] = ['status', '<>', 0];
+            }
+        }
         // $where[] = ['confirm_user_id', '=', $this->user['id']];
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
@@ -63,9 +72,10 @@ class Confirm extends Base
             }
 
             $result = [
-                'code'  => '200',
-                'msg'   => '获取数据成功',
-                'data'  => [
+                'code'      => '200',
+                'msg'       => '获取数据成功',
+                'totals'    => $list->total(),
+                'data'      => [
                     'confirmList'   => $data
                 ]
             ];
@@ -116,6 +126,7 @@ class Confirm extends Base
             $result = [
                 'code'  => '200',
                 'msg'   => '获取数据成功',
+                'totals'    => $list->total(),
                 'data'  => [
                     'confirmList'   => $data
                 ]
