@@ -1018,7 +1018,7 @@ class order extends Command
         $statuses = [0=>'待完成',99=>'意向金',100=>'已完成',101=>'退单'];
         $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
 
-        $file = './order-export.csv';
+        $file = './shell/order-export.csv';
         $fp = fopen($file, 'w+');
         $order = new \app\common\model\Order();
         $orderList = $order->select();
