@@ -142,7 +142,7 @@ class Confirm extends Base
         $param = $this->request->param();
         $where = [];
         $where[] = ['company_id', '=', $param['company_id']];
-        $where[] = ['timing', '=', 'income'];
+        $where[] = ['timing', '=', 'order'];
         $audit = \app\common\model\Audit::where($where)->find();
 
         if(empty($audit)) {
