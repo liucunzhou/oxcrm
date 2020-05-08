@@ -241,7 +241,7 @@ class Order extends Base
             $orderAdd = 1;
         } else if ($order['check_status'] == '3') {
             // 审核驳回
-            $edit = 0;
+            $edit = 1;
             $orderEdit = 1;
             $orderAdd = 1;
         } else {
