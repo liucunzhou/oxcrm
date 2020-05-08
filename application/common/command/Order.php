@@ -1171,18 +1171,25 @@ class order extends Command
             if ($row[8] == '手机号') continue;
             $order = new \app\common\model\Order();
             if(!empty($row[8]) && $row[8] != '-') {
-                $list = $order->whereOr('bride_mobile', "like", "%{$row[8]}%")->whereOr('bridegroom_mobile', "like", "%{$row[8]}%")->select();
+                $list = $order->where('company_id', '=', 26)->where('bride_mobile|bridegroom_mobile', "like", "%{$row[8]}%")->select();
             } else if (!empty($row[10]) && $row[10] != '-') {
-                $list = $order->whereOr('bride_mobile', "like", "%{$row[10]}%")->whereOr('bridegroom_mobile', "like", "%{$row[10]}%")->select();
+                $list = $order->where('company_id', '=', 26)->where('bride_mobile|bridegroom_mobile', "like", "%{$row[10]}%")->select();
             } else {
                 continue;
             }
 
+            $list->all();
+            $count = count($list);
+            if($count>1) {
+                echo $order->getLastSql();
+                echo "\n";
+                break;
+            }
             foreach ($list as $key=>$row) {
-                echo $row->id;
+                // echo $row->id;
                 $key = $key + 1;
                 // echo $row->company_id;
-                echo "\n";
+                // echo "\n";
             }
         }
     }

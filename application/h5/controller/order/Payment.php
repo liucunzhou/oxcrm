@@ -1,4 +1,5 @@
 <?php
+
 namespace app\h5\controller\order;
 
 use app\common\model\OrderBanquetPayment;
@@ -16,18 +17,18 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $order = \app\common\model\Order::get($param['order_id']);
-        if(empty($order)) {
+        if (empty($order)) {
             $result = [
-                'code'  => '400',
-                'msg'   => '订单不存在'
+                'code' => '400',
+                'msg' => '订单不存在'
             ];
             return json($result);
         }
 
-        if(empty($order->company_id)) {
+        if (empty($order->company_id)) {
             $result = [
-                'code'  => '400',
-                'msg'   => '未设置签约公司'
+                'code' => '400',
+                'msg' => '未设置签约公司'
             ];
             return json($result);
         }
@@ -37,18 +38,18 @@ class Payment extends Base
         $where[] = ['timing', '=', 'payment'];
         $audit = \app\common\model\Audit::where($where)->find();
 
-        if(empty($audit)) {
+        if (empty($audit)) {
             $result = [
-                'code'  => '400',
-                'msg'   => '尚未设置审核顺序'
+                'code' => '400',
+                'msg' => '尚未设置审核顺序'
             ];
             return json($result);
         }
 
-        if(empty($audit->content)) {
+        if (empty($audit->content)) {
             $result = [
-                'code'  => '400',
-                'msg'   => '尚未设置审核顺序'
+                'code' => '400',
+                'msg' => '尚未设置审核顺序'
             ];
             return json($result);
         }
@@ -59,35 +60,34 @@ class Payment extends Base
         $sequence = $this->config['check_sequence'];
         $auth = json_decode($audit->content, true);
         $confirmList = [];
-        foreach ($auth as $key=>$row) {
+        foreach ($auth as $key => $row) {
             $managerList = [];
             $type = $sequence[$key]['type'];
-            if($type == 'role') {
+            if ($type == 'role') {
                 // 获取角色
-                foreach ($row as $v)
-                {
+                foreach ($row as $v) {
                     $user = \app\common\model\User::getRoleManager($v, $this->user);
                     $managerList[] = [
-                        'id'        => $user['id'],
-                        'realname'  => $user['realname'],
-                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
                     ];
                 }
             } else {
                 foreach ($row as $v) {
-                    if(!isset($staffs[$v])) continue;
+                    if (!isset($staffs[$v])) continue;
                     $user = $staffs[$v];
                     $managerList[] = [
-                        'id'        => $user['id'],
-                        'realname'  => $user['realname'],
-                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
                     ];
                 }
             }
             $confirmList[] = [
-                'id'    => $key,
+                'id' => $key,
                 'title' => $sequence[$key]['title'],
-                'managerList'   => $managerList
+                'managerList' => $managerList
             ];
         }
 
@@ -97,7 +97,7 @@ class Payment extends Base
             'data' => [
                 'incomePaymentList' => $this->config['payments'],
                 'incomeTypeList' => $this->config['payment_type_list'],
-                'confirmList'   => $confirmList
+                'confirmList' => $confirmList
             ]
         ];
         return json($result);
@@ -108,7 +108,7 @@ class Payment extends Base
         $param = $this->request->param();
         $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
 
-        if($order->news_type == 1) {
+        if ($order->news_type == 1) {
             $data = json_decode($param['paymentList'], true);
             $payment['order_id'] = $param['order_id'];
             $payment['user_id'] = $this->user['id'];
@@ -117,6 +117,9 @@ class Payment extends Base
             $payment['wedding_apply_pay_date'] = $data['apply_pay_date'];
             $payment['wedding_pay_item_price'] = $data['pay_item_price'];
             $payment['wedding_payment_remark'] = $data['payment_remark'];
+            $payment['wedding_pay_to_company'] = $data['pay_to_company'];
+            $payment['wedding_pay_to_account'] = $data['pay_to_account'];
+            $payment['wedding_pay_to_bank'] = $data['pay_to_bank'];
             $paymentModel = new OrderWeddingPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
             $intro = '创建婚庆付款审核';
@@ -132,6 +135,9 @@ class Payment extends Base
             $payment['banquet_apply_pay_date'] = $data['apply_pay_date'];
             $payment['banquet_pay_item_price'] = $data['pay_item_price'];
             $payment['banquet_payment_remark'] = $data['payment_remark'];
+            $payment['banquet_pay_to_company'] = $data['pay_to_company'];
+            $payment['banquet_pay_to_account'] = $data['pay_to_account'];
+            $payment['banquet_pay_to_bank'] = $data['pay_to_bank'];
             $paymentModel = new OrderBanquetPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
 
@@ -140,7 +146,7 @@ class Payment extends Base
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         }
 
-        if($result2) {
+        if ($result2) {
             $result = [
                 'code' => '200',
                 'msg' => '添加付款成功'
@@ -158,55 +164,61 @@ class Payment extends Base
     public function edit()
     {
         $param = $this->request->param();
-        if($param['income_category'] == '婚宴') {
+        if ($param['income_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
         } else {
             $model = new OrderWeddingPayment();
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
-        if(empty($row)) {
+        if (empty($row)) {
             $result = [
-                'code'  => '400',
-                'msg'   => '读取失败'
+                'code' => '400',
+                'msg' => '读取失败'
             ];
 
             return json($result);
         }
 
         $payTypeList = array_column($this->config['payment_type_list'], 'title', 'id');
-        if($param['income_category'] == '婚宴') {
+        if ($param['income_category'] == '婚宴') {
             $data = [
-                'id'    => $row->id,
+                'id' => $row->id,
                 'payment_no' => $row->banquet_payment_no,
-                'pay_type'   => $row->banquet_pay_type,
-                'pay_type_text'   => $payTypeList[$row->banquet_pay_type],
-                'apply_pay_date'   => $row->banquet_apply_pay_date,
-                'pay_real_date'  => $row->banquet_pay_real_date,
-                'pay_item_price'  => $row->banquet_pay_item_price,
+                'pay_type' => $row->banquet_pay_type,
+                'pay_type_text' => $payTypeList[$row->banquet_pay_type],
+                'apply_pay_date' => $row->banquet_apply_pay_date,
+                'pay_real_date' => $row->banquet_pay_real_date,
+                'pay_item_price' => $row->banquet_pay_item_price,
                 'payment_remark' => $row->banquet_payment_remark,
+                'pay_to_company' => $row->banquet_pay_to_company,
+                'pay_to_account' => $row->banquet_pay_to_account,
+                'pay_to_bank' => $row->banquet_pay_to_bank,
                 'pay_category' => $param['income_category']
             ];
         } else {
             $data = [
-                'id'    => $row->id,
+                'id' => $row->id,
                 'payment_no' => $row->wedding_payment_no,
-                'pay_type'   => $row->wedding_pay_type,
-                'pay_type_text'   => $payTypeList[$row->wedding_pay_type],
-                'apply_pay_date'   => $row->wedding_apply_pay_date,
-                'pay_real_date'  => $row->wedding_pay_real_date,
-                'pay_item_price'  => $row->wedding_pay_item_price,
+                'pay_type' => $row->wedding_pay_type,
+                'pay_type_text' => $payTypeList[$row->wedding_pay_type],
+                'apply_pay_date' => $row->wedding_apply_pay_date,
+                'pay_real_date' => $row->wedding_pay_real_date,
+                'pay_item_price' => $row->wedding_pay_item_price,
                 'payment_remark' => $row->wedding_payment_remark,
+                'pay_to_company' => $row->wedding_pay_to_company,
+                'pay_to_account' => $row->wedding_pay_to_account,
+                'pay_to_bank' => $row->wedding_pay_to_bank,
                 'pay_category' => $param['income_category']
             ];
         }
 
         $result = [
-            'code'  => '200',
-            'msg'   => '读取成功',
-            'data'  => [
-                'paymentList'   =>   $data,
-                'payTypeList'    => $this->config['payment_type_list'],
+            'code' => '200',
+            'msg' => '读取成功',
+            'data' => [
+                'paymentList' => $data,
+                'payTypeList' => $this->config['payment_type_list'],
             ]
         ];
 
@@ -218,45 +230,52 @@ class Payment extends Base
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
-        if($param['income_category'] == '婚宴') {
+        if ($param['income_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
         } else {
             $model = new OrderWeddingPayment();
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
-        if(empty($row)) {
+        if (empty($row)) {
             $result = [
-                'code'  => '400',
-                'msg'   => '读取失败'
+                'code' => '400',
+                'msg' => '读取失败'
             ];
             return json($result);
         }
 
-        if($param['income_category'] == '婚宴') {
+        if ($param['income_category'] == '婚宴') {
             $data = [
-                'id'    => $param['id'],
+                'id' => $param['id'],
                 'banquet_payment_no' => $param['payment_no'],
-                'banquet_pay_type'   => $param['pay_type'],
-                'banquet_apply_pay_date'   => $param['apply_pay_date'],
-                'banquet_pay_item_price'   => $param['pay_item_price'],
+                'banquet_pay_type' => $param['pay_type'],
+                'banquet_apply_pay_date' => $param['apply_pay_date'],
+                'banquet_pay_item_price' => $param['pay_item_price'],
                 // 'pay_real_date'  => $row->banquet_pay_real_date,
-                'banquet_payment_remark' => $param['payment_remark']
+                'banquet_payment_remark' => $param['payment_remark'],
+                'banquet_pay_to_company' => $param['pay_to_company'],
+                'banquet_pay_to_account' => $param['pay_to_account'],
+                'banquet_pay_to_bank' => $param['pay_to_bank']
             ];
         } else {
+
             $data = [
-                'id'    => $param['id'],
+                'id' => $param['id'],
                 'wedding_payment_no' => $param['payment_no'],
-                'wedding_pay_type'   => $param['pay_type'],
-                'wedding_apply_pay_date'   => $param['apply_pay_date'],
-                'wedding_pay_item_price'   => $param['pay_item_price'],
+                'wedding_pay_type' => $param['pay_type'],
+                'wedding_apply_pay_date' => $param['apply_pay_date'],
+                'wedding_pay_item_price' => $param['pay_item_price'],
                 // 'pay_real_date'  => $row->wedding_pay_real_date,
-                'wedding_payment_remark' => $param['payment_remark']
+                'wedding_payment_remark' => $param['payment_remark'],
+                'wedding_pay_to_company' => $param['pay_to_company'],
+                'wedding_pay_to_account' => $param['pay_to_account'],
+                'wedding_pay_to_bank' => $param['pay_to_bank']
             ];
         }
         $rs = $row->allowField(true)->save($data);
 
-        if($param['income_category'] == '婚宴') {
+        if ($param['income_category'] == '婚宴') {
             $intro = '创建婚宴付款审核';
             $source['banquetPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
@@ -266,15 +285,15 @@ class Payment extends Base
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         }
 
-        if($rs) {
+        if ($rs) {
             $result = [
-                'code'  => '200',
-                'msg'   => '编辑成功',
+                'code' => '200',
+                'msg' => '编辑成功',
             ];
         } else {
             $result = [
-                'code'  => '400',
-                'msg'   => '编辑失败',
+                'code' => '400',
+                'msg' => '编辑失败',
             ];
         }
 

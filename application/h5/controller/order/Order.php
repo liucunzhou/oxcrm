@@ -463,6 +463,7 @@ class Order extends Base
             } else {
                 $value['edit'] = 0;
             }
+            $value['edit'] = 1;
             $incomeList[] = [
                 'id' => $value['id'],
                 'receivable_no' => $value['banquet_receivable_no'],
@@ -484,6 +485,7 @@ class Order extends Base
             } else {
                 $value['edit'] = 0;
             }
+            $value['edit'] = 1;
 
             $incomeList[] = [
                 'id' => $value['id'],
