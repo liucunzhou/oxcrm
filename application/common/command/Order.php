@@ -1023,6 +1023,7 @@ class order extends Command
         $order = new \app\common\model\Order();
         $orderList = $order->select();
         $header = [
+            '编号',
             '签单销售','签单类型','婚庆所属公司','签单日期', '婚期','酒店','厅',
             '新郎','手机号','新娘','手机号'
             ,'餐标','桌数',
@@ -1035,6 +1036,7 @@ class order extends Command
         foreach ($orderList as $key=>$val) {
             $row = $val->getData();
             $data = [];
+            $data[] = $row['id'];
             if(!empty($row['sale'])) {
                 $data[] = $row['sale'];
             } else if (!empty($row['user_id'])) {

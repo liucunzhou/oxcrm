@@ -566,6 +566,11 @@ class Confirm extends Backend
         return json($json);
     }
 
+    public function reject()
+    {
+        ### 获取所有非
+    }
+
     protected function updateItemStatus($origin, $status)
     {
         if (empty($origin)) return false;
