@@ -245,7 +245,7 @@ class Payment extends Base
             return json($result);
         }
 
-        if ($param['income_category'] == '婚宴') {
+        if ($param['pay_category'] == '婚宴') {
             $data = [
                 'id' => $param['id'],
                 'banquet_payment_no' => $param['payment_no'],
