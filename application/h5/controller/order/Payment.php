@@ -229,7 +229,6 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
-        print_r($param);
         if ($param['pay_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
         } else {
