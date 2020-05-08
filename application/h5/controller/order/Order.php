@@ -214,41 +214,62 @@ class Order extends Base
         // $sequence = empty($audit) ? [] : json_decode($audit->content, true);
         #### 检测编辑和添加权限
         #### 不管是谁 只要存在未被审核的将视为不能编辑，驳回后会添加新的未审核，审核后会修改is_checked=1
-        /**
-         * $where = [];
-         * $where[] = ['order_id', '=', $order['id']];
-         * // $where[] = ['company_id', '=', $order['company_id']];
-         * $where[] = ['user_id', '=', $this->user['id']];
-         * // $where[] = ['is_checked', '=', 0];
-         * // $where[] = ['status', '=', 3];
-         * $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
-         **/
-        // 获取审核状态
-        if ($order['check_status'] == '0') {
-            // 待审核
-            $edit = 0;
-            $orderEdit = 0;
-            $orderAdd = 0;
-        } else if ($order['check_status'] == '1') {
-            // 审核中
-            $edit = 0;
-            $orderEdit = 0;
-            $orderAdd = 0;
-        } else if ($order['check_status'] == '2') {
-            // 审核通过
-            $edit = 0;
-            $orderEdit = 1;
-            $orderAdd = 1;
-        } else if ($order['check_status'] == '3') {
-            // 审核驳回
-            $edit = 1;
-            $orderEdit = 1;
-            $orderAdd = 1;
+        $where = [];
+        $where[] = ['order_id', '=', $order['id']];
+        // $where[] = ['company_id', '=', $order['company_id']];
+        $where[] = ['user_id', '=', $this->user['id']];
+         // $where[] = ['status', '=', 3];
+        $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
+        if(empty($confirmLast)) {
+            // 获取审核状态
+            if ($order['check_status'] == '0') {
+                // 待审核
+                $edit = 0;
+                $orderEdit = 0;
+                $orderAdd = 0;
+            } else if ($order['check_status'] == '1') {
+                // 审核中
+                $edit = 0;
+                $orderEdit = 0;
+                $orderAdd = 0;
+            } else if ($order['check_status'] == '2') {
+                // 审核通过
+                $edit = 0;
+                $orderEdit = 1;
+                $orderAdd = 1;
+            } else if ($order['check_status'] == '3') {
+                // 审核驳回
+                $edit = 1;
+                $orderEdit = 1;
+                $orderAdd = 1;
+            } else {
+                // 审核中
+                $edit = 0;
+                $orderEdit = 0;
+                $orderAdd = 0;
+            }
         } else {
-            // 审核中
-            $edit = 0;
-            $orderEdit = 0;
-            $orderAdd = 0;
+            if ($confirmLast->status == '0') {
+                // 待审核
+                $edit = 0;
+                $orderEdit = 0;
+                $orderAdd = 0;
+            } else if ($confirmLast->status == '1') {
+                // 审核通过
+                $edit = 0;
+                $orderEdit = 1;
+                $orderAdd = 1;
+            } else if ($confirmLast->status == '2') {
+                // 审核驳回
+                $edit = 1;
+                $orderEdit = 1;
+                $orderAdd = 1;
+            } else {
+                // 审核中
+                $edit = 0;
+                $orderEdit = 0;
+                $orderAdd = 0;
+            }
         }
 
         #### 获取用户信息
