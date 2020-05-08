@@ -55,6 +55,7 @@ class BanquetSuborder extends Base
         $suborder['order_id'] = $param['order_id'];
         $suborder['salesman'] = $this->user['id'];
         $result1 = $this->model->allowField(true)->save($suborder);
+        $source['banquetSuborder'][] = $this->model->toArray();
 
         // 添加收款信息
         $income = json_decode($param['banquet_incomeList'], true);
@@ -64,10 +65,11 @@ class BanquetSuborder extends Base
         $income['remark'] = $param['income_remark'];
         $receivable = new OrderBanquetReceivables();
         $result2 = $receivable->allowField(true)->save($income);
+        $source['banquetIncome'][] = $receivable->toArray();
 
         if($result1 && $result2) {
             $this->model->commit();
-            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income', "创建婚宴二销订单收款审核");
+            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'order', "创建婚宴二销订单收款审核", $source);
             $result = [
                 'code' => '200',
                 'msg' => '添加婚宴二销成功'
@@ -119,9 +121,11 @@ class BanquetSuborder extends Base
         $model->startTrans();
         $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
+        $source['banquetSuborder'][] = $model->toArray();
+
         if($result1) {
             $model->commit();
-            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'order', $intro, $source);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
         } else {
             $model->rollback();

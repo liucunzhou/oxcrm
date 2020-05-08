@@ -9,33 +9,35 @@
         <table class="layui-table no-padding no-margin">
             <thead>
                 <tr>
-                    <th class="text-left">婚宴总金额</th>
-                    <th class="text-left">桌数</th>
-                    <th class="text-left">餐标</th>
-                    <th class="text-left">酒水费用</th>
-                    <th class="text-left">加菜换菜</th>
-                    <th class="text-left">优惠金额</th>
-                    <th class="text-left">服务费总计</th>
-                    <th class="text-left">仪式堂</th>
-                    <th class="text-left">仪式堂价格</th>
-                    <th class="text-left">其他金额</th>
+                    <th class="text-center">婚宴总金额</th>
+                    <th class="text-center">桌数</th>
+                    <th class="text-center">餐标</th>
+                    <th class="text-center">酒水费用</th>
+                    <th class="text-center">加菜换菜</th>
+                    <th class="text-center">优惠金额</th>
+                    <th class="text-center">服务费总计</th>
+                    <th class="text-center">仪式堂</th>
+                    <th class="text-center">仪式堂价格</th>
+                    <th class="text-center">其他金额</th>
+                    <th class="text-center">审核状态</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-left">{$banquet.banquet_totals}</td>
-                    <td class="text-left">{$banquet.table_amount}</td>
-                    <td class="text-left">{$banquet.table_price}</td>
-                    <td class="text-left">{$banquet.wine_fee}</td>
-                    <td class="text-left">{$banquet.banquet_update_table}</td>
-                    <td class="text-left">{$banquet.banquet_discount}</td>
-                    <td class="text-left">{$banquet.service_fee}</td>
-                    <td class="text-left">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
-                    <td class="text-left">{$banquet.banquet_ritual_hall|default="-"}</td>
-                    <td class="text-left">{$banquet.banquet_other}</td>
+                    <td class="text-center">{$banquet.banquet_totals}</td>
+                    <td class="text-center">{$banquet.table_amount}</td>
+                    <td class="text-center">{$banquet.table_price}</td>
+                    <td class="text-center">{$banquet.wine_fee}</td>
+                    <td class="text-center">{$banquet.banquet_update_table}</td>
+                    <td class="text-center">{$banquet.banquet_discount}</td>
+                    <td class="text-center">{$banquet.service_fee}</td>
+                    <td class="text-center">{$rituals[$banquet.banquet_ritual_id]['title']}</td>
+                    <td class="text-center">{$banquet.banquet_ritual_hall|default="-"}</td>
+                    <td class="text-center">{$banquet.banquet_other}</td>
+                    <td class="text-center">{$confirmProjectStatusList[$banquet['item_check_status']]}</td>
                 </tr>
                 <tr>
-                    <td colspan="10">
+                    <td colspan="11">
                         备注:{$banquet.banquet_remark}
                     </td>
                 </tr>
@@ -61,14 +63,26 @@
             <tr>
                 <td class="tb-field">婚房</td>
                 <td class="tb-value">{$hotelItem.wedding_room}</td>
+                <td class="tb-field">婚房数量</td>
+                <td class="tb-value">{$hotelItem.wedding_room_amount}</td>
                 <td class="tb-field">停车位</td>
                 <td class="tb-value">{$hotelItem.part}</td>
+                <td class="tb-field">停车位数量</td>
+                <td class="tb-value">{$hotelItem.part_amount}</td>
                 <td class="tb-field">香槟</td>
                 <td class="tb-value">{$hotelItem.champagne}</td>
+                <td class="tb-field">香槟数量</td>
+                <td class="tb-value">{$hotelItem.champagne_amount}</td>
                 <td class="tb-field">茶歇</td>
                 <td class="tb-value">{$hotelItem.tea}</td>
+                <td class="tb-field">茶歇数量</td>
+                <td class="tb-value">{$hotelItem.tea_amount}</td>
                 <td class="tb-field">蛋糕</td>
                 <td class="tb-value">{$hotelItem.cake}</td>
+                <td class="tb-field">蛋糕数量</td>
+                <td class="tb-value">{$hotelItem.cake_amount}</td>
+                <td class="tb-field">审核状态</td>
+                <td class="tb-value">{$confirmProjectStatusList[$hotelItem['item_check_status']]}</td>
             </tr>
             </tbody>
         </table>

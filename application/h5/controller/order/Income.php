@@ -120,8 +120,9 @@ class Income extends Base
             $income['remark'] = $data['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
+            $source['weddingIncome'][] = $receivable->toArray();
             $intro = '创建婚庆收款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
         } else {
             // 添加收款信息
             $data = json_decode($param['banquet_incomeList'], true);
@@ -135,8 +136,9 @@ class Income extends Base
             $income['remark'] = $data['income_remark'];
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
+            $source['banquetIncome'][] = $receivable->toArray();
             $intro = '创建婚宴收款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
         }
 
         if($result2) {
@@ -248,8 +250,6 @@ class Income extends Base
                 // 'income_real_date'  => $row->banquet_income_real_date,
                 'remark' => $param['income_remark']
             ];
-            $intro = '编辑婚宴收款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         } else {
             $data = [
                 'id'    => $param['id'],
@@ -260,10 +260,17 @@ class Income extends Base
                 // 'income_real_date'  => $row->wedding_income_real_date,
                 'remark' => $param['income_remark']
             ];
-            $intro = '编辑婚庆收款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
         }
+
         $rs = $row->allowField(true)->save($data);
+        if($param['income_category'] == '婚宴') {
+            $intro = '编辑婚宴收款审核';
+            $source['banquetIncome'][] = $row->toArray();
+        } else {
+            $intro = '编辑婚庆收款审核';
+            $source['weddingIncome'][] = $row->toArray();
+        }
+        create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
 
         if($rs) {
             $result = [

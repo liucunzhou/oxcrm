@@ -1141,8 +1141,9 @@ class Order extends Base
 
         // id,user_id,create_time,module,controller,action,id,page,content
         if ($rs) {
+            $source['order'] = $order->toArray();
             $intro = '编辑订单信息审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $result = [
                 'code' => '200',
                 'msg' => '编辑成功'

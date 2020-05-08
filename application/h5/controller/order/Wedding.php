@@ -68,14 +68,16 @@ class Wedding extends Base
             $where[] = ['id', '=', $params['id']];
             $model = $this->model->where($where)->find();
             $result = $model->allowField(true)->save($params);
+            $source['wedding'] = $model->toArray();
         } else {
             $result = $this->model->allowField(true)->save($params);
+            $source['wedding'] = $this->model->toArray();
         }
 
         if($result) {
             $order = \app\common\model\Order::get($params['order_id']);
             $intro = "编辑婚庆信息审核";
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
         } else {
             $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];

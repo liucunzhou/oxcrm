@@ -38,14 +38,16 @@ class Contract extends Base
             $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
             $result = $model->allowField(true)->save($param);
+            $source['order'] = $model->toArray();
         } else {
             $result = $this->model->allowField(true)->save($param);
+            $source['order'] = $this->model->toArray();
         }
 
         if($result) {
             $order = \app\common\model\Order::get($param['id']);
             $intro = "编辑订单金额信息审核";
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'编辑成功'];
         } else {
             $arr = ['code'=>'200', 'msg'=>'编辑失败'];

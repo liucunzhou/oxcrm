@@ -106,6 +106,7 @@ if(!function_exists('create_order_confirm')) {
 
         $config = config();
         $auditConfig = $config['crm']['check_sequence'];
+        $sourceJson = json_encode($source);
         if($auditConfig[$index]['type'] == 'staff') {
             // 指定人员审核
             foreach ($sequence[$index] as $row)
@@ -121,6 +122,7 @@ if(!function_exists('create_order_confirm')) {
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
                 $data['is_checked'] = 0;
+                $data['source'] = $sourceJson;
                 $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }
@@ -140,6 +142,7 @@ if(!function_exists('create_order_confirm')) {
                 $data['order_id'] = $orderId;
                 $data['status'] = 0;
                 $data['is_checked'] = 0;
+                $data['source'] = $sourceJson;
                 $orderConfirm = new \app\common\model\OrderConfirm();
                 $orderConfirm->allowField(true)->save($data);
             }

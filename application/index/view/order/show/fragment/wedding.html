@@ -8,27 +8,29 @@
         <table class="layui-table no-padding no-margin">
             <thead>
                 <tr>
-                    <th class="text-left">婚庆总金额</th>
-                    <th class="text-left">套餐</th>
-                    <th class="text-left">套餐金额</th>
-                    <th class="text-left">仪式堂</th>
-                    <th class="text-left">仪式堂价格</th>
-                    <th class="text-left">研发产品编号</th>
-                    <th class="text-left">其他金额</th>
+                    <th class="text-center">婚庆总金额</th>
+                    <th class="text-center">套餐</th>
+                    <th class="text-center">套餐金额</th>
+                    <th class="text-center">仪式堂</th>
+                    <th class="text-center">仪式堂价格</th>
+                    <th class="text-center">研发产品编号</th>
+                    <th class="text-center">其他金额</th>
+                    <th class="text-center">审核状态</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-left">{$wedding.wedding_total}</td>
-                    <td class="text-left">{$wedding.wedding_package_id}</td>
-                    <td class="text-left">{$wedding.wedding_package_price|default='-'}</td>
-                    <td class="text-left">{$rituals[$wedding.wedding_ritual_id]['title']}</td>
-                    <td class="text-left">{$wedding.wedding_ritual_hall|default='-'}</td>
-                    <td class="text-left">{$wedding.new_product_no|default='-'}</td>
-                    <td class="text-left">{$wedding.wedding_other}</td>
+                    <td class="text-center">{$wedding.wedding_total}</td>
+                    <td class="text-center">{$wedding.wedding_package_id}</td>
+                    <td class="text-center">{$wedding.wedding_package_price|default='-'}</td>
+                    <td class="text-center">{$rituals[$wedding.wedding_ritual_id]['title']}</td>
+                    <td class="text-center">{$wedding.wedding_ritual_hall|default='-'}</td>
+                    <td class="text-center">{$wedding.new_product_no|default='-'}</td>
+                    <td class="text-center">{$wedding.wedding_other}</td>
+                    <th class="text-center">{$confirmProjectStatusList[$wedding['item_check_status']]}</th>
                 </tr>
                 <tr>
-                    <td colspan="7" class="td-remark">备注: {$wedding.wedding_remark|default='-'}</td>
+                    <td colspan="8" class="td-remark">备注: {$wedding.wedding_remark|default='-'}</td>
                 </tr>
             </tbody>
         </table>

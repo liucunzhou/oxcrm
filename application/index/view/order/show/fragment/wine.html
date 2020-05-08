@@ -24,10 +24,8 @@
                 <th class="text-center">酒水类型</th>
                 <th class="text-center">酒水数量</th>
                 <th class="text-center">价格小计</th>
-                <th class="text-center">联系人</th>
-                <th class="text-center">电话</th>
-                <th class="text-center">联系地址</th>
                 <th class="text-left">备注</th>
+                <th class="text-center">审核状态</th>
             </tr>
             </thead>
             <tbody>
@@ -37,10 +35,8 @@
                 <th class="text-center">{$wineList[$row['wine_id']]['title']}</th>
                 <th class="text-center">{$row['wine_amount']}</th>
                 <th class="text-center">{$row['wine_price']}</th>
-                <th class="text-center">{$row['wine_contact']}</th>
-                <th class="text-center">{$row['wine_mobile']}</th>
-                <th class="text-center">{$row['wine_address']}</th>
                 <th class="text-left">{$row['wine_remark']}</th>
+                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
             </tr>
             <{/foreach}>
             </tbody>

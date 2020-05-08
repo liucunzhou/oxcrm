@@ -41,6 +41,8 @@ class Confirm extends Backend
     protected $weddingCategories = [];
     // protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
     // protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
+    protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
+    // 审核过程中的审核项的审核状态
     protected $confirmStatusList = [0=>'待审核', 1=>'审核通过', 2=>'审核驳回'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
@@ -53,6 +55,7 @@ class Confirm extends Backend
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
+        $this->assign('confirmProjectStatusList', $this->confirmProjectStatusList);
         $this->assign('cooperationModes', $this->cooperationModes);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
@@ -525,8 +528,11 @@ class Confirm extends Backend
                     }
                 }
                 \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>1]);
+                $this->updateItemStatus($confirm->source, 1);
             } else {
+
                 \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>2]);
+                $this->updateItemStatus($confirm->source, 2);
             }
 
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
@@ -549,6 +555,7 @@ class Confirm extends Backend
         $result = $confirm->save();
         $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked'=>1]);
         \app\common\model\Order::where('id', '=', $orderId)->update(['check_status'=>3]);
+        $this->updateItemStatus($confirm->source, 3);
         if($result) {
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
@@ -556,5 +563,142 @@ class Confirm extends Backend
         }
 
         return json($json);
+    }
+
+    protected function updateItemStatus($origin, $status)
+    {
+        if (empty($origin)) return false;
+        $origin = json_decode($origin, true);
+
+        $data['item_check_status'] = $status;
+        foreach ($origin as $key=>$row) {
+            $whereId = [];
+            $whereId['id'] = $row['id'];
+            switch ($key) {
+                case 'order':
+                    \app\common\model\Order::where($whereId)->update($data);
+                    break;
+
+                case 'banquet':
+                    OrderBanquet::where($whereId)->update($data);
+                    break;
+
+                case 'banquetIncome':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderBanquetReceivables::where($where)->update($data);
+                    }
+                    break;
+
+                case 'banquetPayment':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderBanquetPayment::where($where)->update($data);
+                    }
+                    break;
+
+                case 'banquetSuborder':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderBanquetSuborder::where($where)->update($data);
+                    }
+                    break;
+
+                case 'wedding':
+                    OrderWedding::where($whereId)->update($data);
+                    break;
+
+                case 'weddingIncome':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderWeddingReceivables::where($where)->update($data);
+                    }
+                    break;
+
+                case 'weddingPayment':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderWeddingPayment::where($where)->update($data);
+                    }
+                    break;
+
+                case 'weddingSuborder':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderWeddingSuborder::where($where)->update($data);
+                    }
+                    break;
+
+                case 'hotelItem':
+                    OrderHotelItem::where($whereId)->update($data);
+                    break;
+
+                case 'hotelProtocol':
+                    OrderHotelProtocol::where($whereId)->update($data);
+                    break;
+
+                case 'car':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderCar::where($where)->update($data);
+                    }
+                    break;
+
+                case 'wine':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderWine::where($where)->update($data);
+                    }
+                    break;
+
+                case 'sugar':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderSugar::where($where)->update($data);
+                    }
+                    break;
+
+                case 'dessert':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderDessert::where($where)->update($data);
+                    }
+                    break;
+
+                case 'light':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderLight::where($where)->update($data);
+                    }
+                    break;
+
+                case 'led':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderLed::where($where)->update($data);
+                    }
+                    break;
+
+                case 'd3':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        OrderD3::where($where)->update($data);
+                    }
+                    break;
+            }
+        }
     }
 }

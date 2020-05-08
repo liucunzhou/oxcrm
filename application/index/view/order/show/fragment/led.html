@@ -25,6 +25,7 @@
                 <th class="text-center">Led数量</th>
                 <th class="text-center">价格小计</th>
                 <th class="text-left">备注</th>
+                <th class="text-center">审核状态</th>
             </tr>
             </thead>
             <tbody>
@@ -35,6 +36,7 @@
                 <th class="text-center">{$row['led_amount']}</th>
                 <th class="text-center">{$row['led_price']}</th>
                 <th class="text-left">{$row['led_remark']}</th>
+                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
             </tr>
             <{/foreach}>
             </tbody>

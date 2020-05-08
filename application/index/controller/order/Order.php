@@ -37,6 +37,7 @@ class Order extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
+    protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
@@ -49,6 +50,7 @@ class Order extends Backend
         $this->assign('payments', $this->payments);
         $this->assign('paymentTypes', $this->paymentTypes);
         $this->assign('confirmStatusList', $this->confirmStatusList);
+        $this->assign('confirmProjectStatusList', $this->confirmProjectStatusList);
         $this->assign('newsTypes', $this->newsTypes);
         $this->assign('cooperationModes', $this->cooperationModes);
 

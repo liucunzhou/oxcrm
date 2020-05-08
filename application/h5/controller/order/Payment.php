@@ -117,10 +117,11 @@ class Payment extends Base
             $payment['wedding_apply_pay_date'] = $data['apply_pay_date'];
             $payment['wedding_pay_item_price'] = $data['pay_item_price'];
             $payment['wedding_payment_remark'] = $data['payment_remark'];
-            $receivable = new OrderWeddingPayment();
-            $result2 = $receivable->allowField(true)->save($payment);
+            $paymentModel = new OrderWeddingPayment();
+            $result2 = $paymentModel->allowField(true)->save($payment);
             $intro = '创建婚庆付款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro);
+            $source['weddingPayment'][] = $paymentModel->toArray();
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         } else {
             // 添加收款信息
             $data = json_decode($param['paymentList'], true);
@@ -131,13 +132,13 @@ class Payment extends Base
             $payment['banquet_apply_pay_date'] = $data['apply_pay_date'];
             $payment['banquet_pay_item_price'] = $data['pay_item_price'];
             $payment['banquet_payment_remark'] = $data['payment_remark'];
-            $receivable = new OrderBanquetPayment();
-            $result2 = $receivable->allowField(true)->save($payment);
+            $paymentModel = new OrderBanquetPayment();
+            $result2 = $paymentModel->allowField(true)->save($payment);
 
             $intro = '创建婚宴付款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro);
+            $source['banquetPayment'][] = $paymentModel->toArray();
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         }
-
 
         if($result2) {
             $result = [
@@ -219,12 +220,8 @@ class Payment extends Base
         $order = \app\common\model\Order::get($param['order_id']);
         if($param['income_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
-            $intro = '创建婚宴付款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro);
         } else {
             $model = new OrderWeddingPayment();
-            $intro = '创建婚庆付款审核';
-            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro);
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
@@ -258,6 +255,16 @@ class Payment extends Base
             ];
         }
         $rs = $row->allowField(true)->save($data);
+
+        if($param['income_category'] == '婚宴') {
+            $intro = '创建婚宴付款审核';
+            $source['banquetPayment'][] = $row->toArray();
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
+        } else {
+            $intro = '创建婚庆付款审核';
+            $source['weddingPayment'][] = $row->toArray();
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
+        }
 
         if($rs) {
             $result = [

@@ -15,8 +15,8 @@
                 <col width="150">
                 <col width="150">
                 <col width="150">
-                <col>
                 <col width="240">
+                <col>
             </colgroup>
             <thead>
             <tr>
@@ -27,10 +27,8 @@
                 <th class="text-center">价格</th>
                 <th class="text-center">服务时间</th>
                 <th class="text-center">服务距离</th>
-                <th class="text-center">联系人</th>
-                <th class="text-center">电话</th>
-                <th class="text-center">接车时间</th>
-                <th class="text-center">接车地点</th>
+                <th class="text-center">备注</th>
+                <th class="text-center">审核状态</th>
             </tr>
             </thead>
             <tbody>
@@ -43,10 +41,8 @@
                 <th class="text-center">{$row['car_price']}</th>
                 <th class="text-center">{$row['service_hour']}</th>
                 <th class="text-center">{$row['service_distance']}</th>
-                <th class="text-center">{$row['car_contact']}</th>
-                <th class="text-center">{$row['car_mobile']}</th>
-                <th class="text-center">{$row['arrive_time']}</th>
-                <th class="text-center">{$row['arrive_address']}</th>
+                <th class="text-center">{$row['car_remark']}</th>
+                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
             </tr>
             <{/foreach}>
             </tbody>

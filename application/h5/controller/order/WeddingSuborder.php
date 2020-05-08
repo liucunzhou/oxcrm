@@ -50,6 +50,7 @@ class WeddingSuborder extends Base
         $suborder['order_id'] = $param['order_id'];
         $suborder['salesman'] = $this->user['id'];
         $result1 = $this->model->allowField(true)->save($suborder);
+        $source['weddingSuborder'][] = $this->model->toArray();
 
         $income = json_decode($param['wedding_incomeList'], true);
         $income['order_id'] = $param['order_id'];
@@ -58,10 +59,11 @@ class WeddingSuborder extends Base
         $income['remark'] = $param['income_remark'];
         $receivable = new OrderWeddingReceivables();
         $result2 = $receivable->allowField(true)->save($income);
+        $source['weddingIncome'][] = $receivable->toArray();
 
         if($result1 && $result2) {
             $this->model->commit();
-            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'income', "创建婚庆二销订单收款审核");
+            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'order', "创建婚庆二销订单收款审核", $source);
             $result = [
                 'code' => '200',
                 'msg' => '添加婚庆二销成功'
@@ -112,9 +114,10 @@ class WeddingSuborder extends Base
         $model->wedding_items = json_encode($param['items']);
         $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
+        $source['weddingSuborder'][] = $model->toArray();
         if($result1) {
             $model->commit();
-            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'income', $intro);
+            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'order', $intro, $source);
             return json(['code'=>'200', 'msg'=> '更新成功']);
         } else {
             $model->rollback();
