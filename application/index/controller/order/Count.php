@@ -41,6 +41,7 @@ class Count extends Backend
          * **/
 
         $map = [];
+        $map[] = ['complete','<>','101'];
         // 搜索条件：company_id  newsTypesList  date_range
         if( !empty($param['company_id']) )
         {
@@ -151,12 +152,12 @@ class Count extends Backend
                     }
                 }
             }
-            $v['ysdj'] = $this->plus_minus_conversion($zdj - $v['earnest_money']);
+            /*$v['ysdj'] = $this->plus_minus_conversion($zdj - $v['earnest_money']);
             $v['yszk'] = $this->plus_minus_conversion($zzk - $v['middle_money']);
-            $v['yswk'] = $this->plus_minus_conversion($zwk + $zex - $v['tail_money']);
-            /*$v['ysdj'] = $zdj - $v['earnest_money'];
+            $v['yswk'] = $this->plus_minus_conversion($zwk + $zex - $v['tail_money']);*/
+            $v['ysdj'] = $zdj - $v['earnest_money'];
             $v['yszk'] = $zzk - $v['middle_money'];
-            $v['yswk'] = $zwk + $zex - $v['tail_money'];*/
+            $v['yswk'] = $zwk + $zex - $v['tail_money'];
         }
         unset($list['news_type']);
         $sums = [
@@ -173,15 +174,20 @@ class Count extends Backend
                'totals'          => array_sum(array_column($list,'totals')),
                'salesman'            =>  '-',
                'totals_snum'    => array_sum(array_column($list,'totals_snum')),
-               /*'ysdj'            => array_sum(array_column($list,'ysdj')),
+               'ysdj'            => array_sum(array_column($list,'ysdj')),
                'yszk'            => array_sum(array_column($list,'yszk')),
-               'yswk'            => array_sum(array_column($list,'yswk'))*/
-               'ysdj'            => $this->plus_minus_conversion(array_sum(array_column($list,'ysdj'))),
+               'yswk'            => array_sum(array_column($list,'yswk'))
+               /*'ysdj'            => $this->plus_minus_conversion(array_sum(array_column($list,'ysdj'))),
                'yszk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yszk'))),
-               'yswk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yswk')))
+               'yswk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yswk')))*/
             ]
         ];
         $list = $list + $sums;
+        foreach ($list as $k=>&$v){
+            $v['ysdj'] = $this->plus_minus_conversion($v['ysdj']);
+            $v['yszk'] = $this->plus_minus_conversion($v['yszk']);
+            $v['yswk'] = $this->plus_minus_conversion($v['yswk']);
+        }
         $config = config();
         $this->assign('firmList',$this->FirmList);
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
