@@ -568,7 +568,10 @@ class Confirm extends Backend
 
     public function reject()
     {
-        ### 获取所有非
+        ### 获取所有非付款审批
+        $where = [];
+        $where[] = ['confirm_type', '<>', 'payment'];
+        $list = OrderConfirm::where()->whereNull('')->select();
     }
 
     protected function updateItemStatus($origin, $status)

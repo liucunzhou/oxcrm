@@ -95,6 +95,10 @@ class order extends Command
             case 'export':
                 $this->export();
                 break;
+
+            case 'hsToys':
+                $this->hsToYs();
+                break;
         }
     }
 
@@ -113,7 +117,6 @@ class order extends Command
         file_put_contents('./update.sql', $update);
         fclose($handle);
     }
-
 
     // 初始化红丝订单
     public function initMGN()
@@ -1146,5 +1149,41 @@ class order extends Command
             fputcsv($fp, $data);
         }
         fclose($fp);
+    }
+
+    public function hsToYs()
+    {
+        echo "start...";
+        echo "\n";
+        $file = './shell/hs26-yusi25.csv';
+        $fp = fopen($file, 'r');
+
+        $key = 0;
+        while (!feof($fp)) {
+
+            $row = fgetcsv($fp);
+            if (empty($row)) break;
+
+            foreach ($row as &$val) {
+                $val = mb_convert_encoding($val, 'UTF-8', 'GBK');
+            }
+
+            if ($row[8] == '手机号') continue;
+            $order = new \app\common\model\Order();
+            if(!empty($row[8]) && $row[8] != '-') {
+                $list = $order->whereOr('bride_mobile', "like", "%{$row[8]}%")->whereOr('bridegroom_mobile', "like", "%{$row[8]}%")->select();
+            } else if (!empty($row[10]) && $row[10] != '-') {
+                $list = $order->whereOr('bride_mobile', "like", "%{$row[10]}%")->whereOr('bridegroom_mobile', "like", "%{$row[10]}%")->select();
+            } else {
+                continue;
+            }
+
+            foreach ($list as $key=>$row) {
+                echo $row->id;
+                $key = $key + 1;
+                // echo $row->company_id;
+                echo "\n";
+            }
+        }
     }
 }
