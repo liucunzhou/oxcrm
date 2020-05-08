@@ -228,7 +228,6 @@ class Payment extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-        $param = json_decode($param['paymentList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
         if ($param['pay_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
@@ -237,6 +236,7 @@ class Payment extends Base
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
+        $param = json_decode($row->order_id, true);
         if (empty($row)) {
             $result = [
                 'code' => '400',
