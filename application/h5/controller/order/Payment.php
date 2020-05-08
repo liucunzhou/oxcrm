@@ -230,7 +230,7 @@ class Payment extends Base
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
-        if ($param['income_category'] == '婚宴') {
+        if ($param['pay_category'] == '婚宴') {
             $model = new OrderBanquetPayment();
         } else {
             $model = new OrderWeddingPayment();
