@@ -275,7 +275,7 @@ class Payment extends Base
         }
         $rs = $row->allowField(true)->save($data);
 
-        if ($param['income_category'] == '婚宴') {
+        if ($param['pay_category'] == '婚宴') {
             $intro = '创建婚宴付款审核';
             $source['banquetPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
