@@ -411,6 +411,7 @@ class Confirm extends Backend
             'data'  => $photos
         ];
         $this->assign('photosData', $photosData);
+        $this->assign('images', $images);
 
         // 统计
         ### 婚庆总计

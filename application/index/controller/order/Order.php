@@ -534,6 +534,7 @@ class Order extends Backend
             'data'  => $photos
         ];
         $this->assign('photosData', $photosData);
+        $this->assign('images', $images);
 
         // 统计
         ### 婚庆总计
@@ -681,6 +682,7 @@ class Order extends Backend
             'data'  => $photos
         ];
         $this->assign('photosData', $photosData);
+        $this->assign('images', $images);
 
         return $this->fetch('order/show/main');
     }
