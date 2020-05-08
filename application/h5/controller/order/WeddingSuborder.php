@@ -63,7 +63,7 @@ class WeddingSuborder extends Base
 
         if($result1 && $result2) {
             $this->model->commit();
-            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'order', "创建婚庆二销订单收款审核", $source);
+            create_order_confirm($param['order_id'], $suborder['company_id'], $this->user['id'], 'suborder', "创建婚庆二销订单收款审核", $source);
             $result = [
                 'code' => '200',
                 'msg' => '添加婚庆二销成功'
@@ -117,7 +117,7 @@ class WeddingSuborder extends Base
         $source['weddingSuborder'][] = $model->toArray();
         if($result1) {
             $model->commit();
-            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'order', $intro, $source);
+            create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'suborder', $intro, $source);
             return json(['code'=>'200', 'msg'=> '更新成功']);
         } else {
             $model->rollback();
