@@ -548,6 +548,8 @@ class Order extends Base
             ];
         }
 
+        $edit = 1;
+
         #### 获取审核进度
         $result = [
             'code' => '200',
