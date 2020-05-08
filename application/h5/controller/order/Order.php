@@ -512,6 +512,8 @@ class Order extends Base
                 $value['edit'] = 0;
             }
 
+            $value['edit'] = 1;
+
             $paymentList[] = [
                 'id' => $value['id'],
                 'payment_no' => $value['banquet_payment_no'],
