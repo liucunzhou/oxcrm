@@ -1521,7 +1521,7 @@ class Order extends Base
             $banquetItem = [
                 [
                     'id' => 'banquet',
-                    'title' => '婚庆',
+                    'title' => '婚宴',
                     'read' => '/h5/order.banquet/create',
                     'api' => '/h5/order.banquet/doCreate',
                     'children' => []
