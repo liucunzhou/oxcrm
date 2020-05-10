@@ -14,6 +14,22 @@ class Light extends Base
         $this->model = new OrderLight();
     }
 
+    public function create()
+    {
+
+        $list = \app\common\model\Light::getList();
+        $result = [
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'list' => array_values($list)
+            ]
+        ];
+
+
+        return json($result);
+    }
+
     public function edit($id)
     {
         $where = [];

@@ -14,6 +14,21 @@ class D3 extends Base
         $this->model = new OrderD3();
     }
 
+    public function create()
+    {
+
+        $list = \app\common\model\D3::getList();
+        $result = [
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'list' => array_values($list)
+            ]
+        ];
+
+
+        return json($result);
+    }
 
     public function edit($id)
     {

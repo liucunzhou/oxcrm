@@ -14,12 +14,29 @@ class Car extends Base
         $this->model = new OrderCar();
     }
 
+    public function create()
+    {
+
+        $list = \app\common\model\Car::getList();
+        $result = [
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'list' => array_values($list)
+            ]
+        ];
+
+
+        return json($result);
+    }
+
     public function edit($id)
     {
         $where = [];
         $where[] = ['id', '=', $id];
         $fields = "id,car_id,order_id,is_master,car_amount,car_price,car_remark";
         $data = $this->model->where($where)->field($fields)->find();
+        $carList = \app\common\model\Car::getList();
         if(!empty($data)) {
             $row = \app\common\model\Car::get($data->car_id);
             $data['title'] = $row->title;
@@ -27,7 +44,8 @@ class Car extends Base
                 'code' => '200',
                 'msg' => '获取信息成功',
                 'data' => [
-                    'carList' => $data
+                    'car' => $data,
+                    'carList' => $carList
                 ]
             ];
         } else {

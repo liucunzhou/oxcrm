@@ -14,6 +14,22 @@ class Wine extends Base
         $this->model = new OrderWine();
     }
 
+    public function create()
+    {
+
+        $list = \app\common\model\Wine::getList();
+        $result = [
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'list' => array_values($list)
+            ]
+        ];
+
+
+        return json($result);
+    }
+
     public function edit($id)
     {
         $where = [];

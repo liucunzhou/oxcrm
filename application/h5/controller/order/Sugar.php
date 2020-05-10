@@ -14,6 +14,22 @@ class Sugar extends Base
         $this->model = new OrderSugar();
     }
 
+    public function create()
+    {
+
+        $list = \app\common\model\Sugar::getList();
+        $result = [
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'list' => array_values($list)
+            ]
+        ];
+
+
+        return json($result);
+    }
+
     public function edit($id)
     {
         $where = [];

@@ -17,6 +17,44 @@ class Wedding extends Base
         $this->model = new OrderWedding();
     }
 
+    public function create()
+    {
+
+        $packageList = Package::getList();
+        $ritualList = Ritual::getList();
+        $companyList = Brand::getBrands();
+
+        $result = [
+            'code' => '200',
+            'msg' => '获取数据成功',
+            'data' => [
+                'packageList' => array_values($packageList),
+                'ritualList' => array_values($ritualList),
+                'companyList' =>  array_values($companyList)
+            ]
+        ];
+        return json($result);
+    }
+
+    public function doCreate()
+    {
+        $params = $this->request->param();
+        $params = json_decode($params['wedding'], true);
+
+        $result = $this->model->allowField(true)->save($params);
+        $source['wedding'] = $this->model->toArray();
+
+        if($result) {
+            $order = \app\common\model\Order::get($params['order_id']);
+            $intro = "创建婚庆信息审核";
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
+            $arr = ['code'=>'200', 'msg'=>'创建婚庆信息成功'];
+        } else {
+            $arr = ['code'=>'400', 'msg'=>'创建婚庆信息失败'];
+        }
+        return json($arr);
+    }
+
     public function edit($id)
     {
         $fields = "create_time,delete_time,update_time";
