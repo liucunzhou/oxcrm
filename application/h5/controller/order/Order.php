@@ -1446,40 +1446,38 @@ class Order extends Base
                 // 订单付款信息
                 'paymentList' => $paymentList,
                 'addItems' => [
-                    'addItems' => [
-                        [
-                            'id' => 'suborder',
-                            'title' => '二销',
-                            'children' => [
-                                [
-                                    'id' => 'banquetSuborder',
-                                    'title' => '婚宴二销',
-                                    'read' => '/h5/order.banquet_suborder/create',
-                                    'api' => '/h5/order.banquet_suborder/doCreate'
-                                ],
-                                [
-                                    'id' => 'weddingSuborder',
-                                    'title' => '婚庆二销',
-                                    'read' => '/h5/order.wedding_suborder/create',
-                                    'api' => '/h5/order.wedding_suborder/doCreate'
-                                ],
-                            ]
-                        ],
-                        [
-                            'id' => 'incomeAppend',
-                            'title' => '收款',
-                            'read' => '/h5/order.income/create',
-                            'api' => '/h5/order.income/doCreate',
-                            'children' => []
-                        ],
-                        [
-                            'id' => 'paymentAppend',
-                            'title' => '付款',
-                            'read' => '/h5/order.payment/create',
-                            'api' => '/h5/order.payment/doCreate',
-                            'children' => []
-                        ],
-                    ]
+                    [
+                        'id' => 'suborder',
+                        'title' => '二销',
+                        'children' => [
+                            [
+                                'id' => 'banquetSuborder',
+                                'title' => '婚宴二销',
+                                'read' => '/h5/order.banquet_suborder/create',
+                                'api' => '/h5/order.banquet_suborder/doCreate'
+                            ],
+                            [
+                                'id' => 'weddingSuborder',
+                                'title' => '婚庆二销',
+                                'read' => '/h5/order.wedding_suborder/create',
+                                'api' => '/h5/order.wedding_suborder/doCreate'
+                            ],
+                        ]
+                    ],
+                    [
+                        'id' => 'incomeAppend',
+                        'title' => '收款',
+                        'read' => '/h5/order.income/create',
+                        'api' => '/h5/order.income/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'paymentAppend',
+                        'title' => '付款',
+                        'read' => '/h5/order.payment/create',
+                        'api' => '/h5/order.payment/doCreate',
+                        'children' => []
+                    ],
                 ]
             ]
         ];
