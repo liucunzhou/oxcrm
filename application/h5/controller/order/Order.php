@@ -1179,4 +1179,314 @@ class Order extends Base
         }
         return json($result);
     }
+
+    public function show()
+    {
+        $param = $this->request->param();
+
+        $order = \app\common\model\Order::field('update_time,delete_time', true)->where('id', '=', $param['id'])->find();
+        if (empty($order)) {
+            $result = [
+                'code' => '200',
+                'msg' => '订单不存在'
+            ];
+            return json($result);
+        }
+
+        $orderId = $order->id;
+        $order = $order->getData();
+        $newsTypes = $this->config['news_type_list'];
+        $cooperationMode = $this->config['cooperation_mode'];
+        $order['contract_no'] = isset($order['contract_no']) ? $order['contract_no'] : '-';
+        $order['company_id'] = $this->brands[$order['company_id']]['title'];
+        $order['news_type'] = $newsTypes[$order['news_type']];
+        $order['cooperation_mode'] = isset($cooperationMode[$order['cooperation_mode']]) ? $cooperationMode[$order['cooperation_mode']] : '-';
+        $order['status'] = $this->confirmStatusList[$order['check_status']];
+        $order['sign_date'] = $order['sign_date'] ? date('Y-m-d', $order['sign_date']) : '-';
+        $order['event_date'] = $order['event_date'] ? date('Y-m-d', $order['event_date']) : '-';
+        $order['earnest_money_date'] = $order['earnest_money_date'] ? date('Y-m-d', $order['earnest_money_date']) : '-';
+        $order['middle_money_date'] = $order['middle_money_date'] ? date('Y-m-d', $order['middle_money_date']) : '-';
+        $order['tail_money_date'] = $order['tail_money_date'] ? date('Y-m-d', $order['tail_money_date']) : '-';
+        $order['bridegroom_mobile'] = isset($order['bridegroom_mobile']) ? substr_replace($order['bridegroom_mobile'], '***', 3, 3) : '-';
+        $order['bride_mobile'] = isset($order['bride_mobile']) ? substr_replace($order['bride_mobile'], '***', 3, 3) : '-';
+        $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
+        $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
+        $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
+        $staff = User::getUser($order['salesman']);
+        $order['salesman'] = $staff['realname'];
+
+        #### 获取用户信息
+        $member = Member::field('realname,mobile,source_text')->where('id', '=', $order->member_id)->find();
+
+        #### 获取婚宴订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
+        if (empty($banquet)) {
+            $banquet = [];
+        } else {
+            $banquet['company_id'] = $this->brands[$banquet->company_id]['title'];
+            $banquet['banquet_ritual_title'] = $this->ritualList[$banquet->banquet_ritual_id]['title'];
+        }
+
+        #### 酒店服务项目
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $hotelItem = \app\common\model\OrderHotelItem::where($where)->order('id desc')->find();
+        if (empty($hotelItem)) $hotelItem = [];
+
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $banquetSuborderList = \app\common\model\OrderBanquetSuborder::where($where)->select();
+        foreach ($banquetSuborderList as &$row) {
+            $row['receipt_img'] = empty($row['receipt_img']) ? [] : explode(',', $row['receipt_img']);
+            $row['note_img'] = empty($row['note_img']) ? [] : explode(',', $row['note_img']);
+        }
+
+        #### 获取婚宴收款信息
+        $banquetReceivableList = \app\common\model\OrderBanquetReceivables::where('order_id', '=', $param['id'])->select();
+
+        #### 获取婚宴付款信息
+        $banquetPaymentList = \app\common\model\OrderBanquetPayment::where('order_id', '=', $param['id'])->select();
+
+        #### 获取婚庆订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
+        if (empty($wedding)) {
+            $wedding = [];
+        } else {
+            $wedding['company_id'] = $this->brands[$wedding->company_id]['title'];
+            $wedding['wedding_package_title'] = $this->packageList[$wedding->wedding_package_id]['title'];
+            $wedding['wedding_ritual_title'] = $this->ritualList[$wedding->wedding_ritual_id]['title'];
+        }
+
+        #### 获取婚宴二销订单信息
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $weddingSuborderList = \app\common\model\OrderWeddingSuborder::where($where)->select();
+        foreach ($weddingSuborderList as &$row) {
+            $row['receipt_img'] = empty($row['receipt_img']) ? [] : explode(',', $row['receipt_img']);
+            $row['note_img'] = empty($row['note_img']) ? [] : explode(',', $row['note_img']);
+        }
+
+        #### 获取婚宴收款信息
+        $weddingReceivableList = \app\common\model\OrderWeddingReceivables::where('order_id', '=', $param['id'])->select();
+        #### 获取婚庆付款信息
+        $weddingPaymentList = \app\common\model\OrderWeddingPayment::where('order_id', '=', $param['id'])->select();
+
+        #### 婚车
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $carList = \app\common\model\OrderCar::where($where)->select();
+        foreach ($carList as $key => &$row) {
+            $row['car_id'] = $this->carList[$row['car_id']]['title'];
+            $row['is_master'] = $row['is_master'] == '1' ? '主车' : '跟车';
+        }
+
+        #### 喜糖
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $sugarList = \app\common\model\OrderSugar::where($where)->select();
+        foreach ($sugarList as $key => &$row) {
+            $row['sugar_id'] = $this->sugarList[$row['sugar_id']]['title'];
+        }
+
+        #### 酒水
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $wineList = \app\common\model\OrderWine::where($where)->select();
+        foreach ($wineList as $key => &$row) {
+            $row['wine_id'] = $this->wineList[$row['wine_id']]['title'];
+        }
+
+        #### 灯光
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $lightList = \app\common\model\OrderLight::where($where)->select();
+        foreach ($lightList as $key => &$row) {
+            $row['light_id'] = $this->lightList[$row['light_id']]['title'];
+        }
+
+        #### 点心
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $dessertList = \app\common\model\OrderDessert::where($where)->select();
+        foreach ($dessertList as $key => &$row) {
+            $row['dessert_id'] = $this->dessertList[$row['dessert_id']]['title'];
+        }
+
+        #### LED
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $ledList = \app\common\model\OrderLed::where($where)->select();
+        foreach ($ledList as $key => &$row) {
+            $row['led_id'] = $this->ledList[$row['led_id']]['title'];
+        }
+
+        #### 3D
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $d3List = \app\common\model\OrderD3::where($where)->select();
+        foreach ($d3List as $key => &$row) {
+            $row['d3_id'] = $this->d3List[$row['d3_id']]['title'];
+
+        }
+
+        #### 合同金额
+        $contractPrice = [
+            'id' => $orderId,
+            'totals' => $order['totals'],
+            'earnest_money_date' => $order['earnest_money_date'],
+            'earnest_money' => $order['earnest_money'],
+            'middle_money_date' => $order['middle_money_date'],
+            'middle_money' => $order['middle_money'],
+            'tail_money_date' => $order['tail_money_date'],
+            'tail_money' => $order['tail_money']
+        ];
+
+        #### 支付方式列表
+        $paymentConfig = $this->config['payments'];
+        $paymentConfig = array_column($paymentConfig, 'title', 'id');
+
+        #### 支付性质
+        $paymentTypes = $this->config['payment_type_list'];
+        $paymentTypes = array_column($paymentTypes, 'title', 'id');
+
+        #### 合成收款信息
+        $incomeList = [];
+        foreach ($banquetReceivableList as $key => $value) {
+            $incomeList[] = [
+                'id' => $value['id'],
+                'receivable_no' => $value['banquet_receivable_no'],
+                'income_category' => '婚宴',
+                'income_payment' => $paymentConfig[$value['banquet_income_payment']],
+                'income_type' => $paymentTypes[$value['banquet_income_type']],
+                'income_date' => $value['banquet_income_date'],
+                'income_real_date' => $value['banquet_income_real_date'],
+                'income_item_price' => $value['banquet_income_item_price'],
+                'income_remark' => $value['remark'],
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit' => $value['edit']
+            ];
+        }
+        foreach ($weddingReceivableList as $key => $value) {
+            $incomeList[] = [
+                'id' => $value['id'],
+                'receivable_no' => $value['wedding_receivable_no'],
+                'income_category' => '婚庆',
+                'income_payment' => $paymentConfig[$value['wedding_income_payment']],
+                'income_type' => $paymentTypes[$value['wedding_income_type']],
+                'income_date' => $value['wedding_income_date'],
+                'income_real_date' => $value['wedding_income_real_date'],
+                'income_item_price' => $value['wedding_income_item_price'],
+                'income_remark' => $value['remark'],
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit' => $value['edit']
+            ];
+        }
+
+        #### 合成付款信息
+        $paymentList = [];
+        foreach ($banquetPaymentList as $key => $value) {
+            $paymentList[] = [
+                'id' => $value['id'],
+                'payment_no' => $value['banquet_payment_no'],
+                'pay_category' => '婚宴',
+                'pay_type' => $paymentTypes[$value['banquet_pay_type']],
+                'apply_pay_date' => $value['banquet_apply_pay_date'],
+                'pay_real_date' => $value['banquet_pay_real_date'],
+                'pay_item_price' => $value['banquet_pay_item_price'],
+                'payment_remark' => $value['banquet_payment_remark'],
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit' => $value['edit']
+            ];
+        }
+        foreach ($weddingPaymentList as $key => $value) {
+            $paymentList[] = [
+                'id' => $value['id'],
+                'payment_no' => $value['wedding_payment_no'],
+                'pay_category' => '婚庆',
+                'pay_type' => $paymentTypes[$value['wedding_pay_type']],
+                'apply_pay_date' => $value['wedding_apply_pay_date'],
+                'pay_real_date' => $value['wedding_pay_real_date'],
+                'pay_item_price' => $value['wedding_pay_item_price'],
+                'payment_remark' => $value['wedding_payment_remark'],
+                'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
+                'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
+                'edit' => $value['edit']
+            ];
+        }
+
+
+        #### 获取审核进度
+        $result = [
+            'code' => '200',
+            'msg' => '获取成功',
+            'data' => [
+                'order' => $order,
+                'member' => $member,
+                'banquet' => $banquet,
+                'banquetSuborderList' => $banquetSuborderList,
+                'hotelItem' => $hotelItem,
+                'wedding' => $wedding,
+                'weddingSuborderList' => $weddingSuborderList,
+                'carList' => $carList,
+                'wineList' => $wineList,
+                'sugarList' => $sugarList,
+                'dessertList' => $dessertList,
+                'lightList' => $lightList,
+                'ledList' => $ledList,
+                'd3List' => $d3List,
+                // 合同收款信息
+                'contractPrice' => $contractPrice,
+                // 订单收款信息
+                'incomeList' => $incomeList,
+                // 订单付款信息
+                'paymentList' => $paymentList,
+                'addItems' => [
+                    'addItems' => [
+                        [
+                            'id' => 'suborder',
+                            'title' => '二销',
+                            'children' => [
+                                [
+                                    'id' => 'banquetSuborder',
+                                    'title' => '婚宴二销',
+                                    'read' => '/h5/order.banquet_suborder/create',
+                                    'api' => '/h5/order.banquet_suborder/doCreate'
+                                ],
+                                [
+                                    'id' => 'weddingSuborder',
+                                    'title' => '婚庆二销',
+                                    'read' => '/h5/order.wedding_suborder/create',
+                                    'api' => '/h5/order.wedding_suborder/doCreate'
+                                ],
+                            ]
+                        ],
+                        [
+                            'id' => 'incomeAppend',
+                            'title' => '收款',
+                            'read' => '/h5/order.income/create',
+                            'api' => '/h5/order.income/doCreate',
+                            'children' => []
+                        ],
+                        [
+                            'id' => 'paymentAppend',
+                            'title' => '付款',
+                            'read' => '/h5/order.payment/create',
+                            'api' => '/h5/order.payment/doCreate',
+                            'children' => []
+                        ],
+                    ]
+                ]
+            ]
+        ];
+
+        return json($result);
+    }
 }
