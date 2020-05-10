@@ -25,7 +25,7 @@ class Car extends Base
             'msg' => '获取信息成功',
             'data' => [
                 'list' => array_values($list),
-                'companyList'   => array_values($this->companyList),
+                'companyList'   => array_values($companyList),
             ]
         ];
 
