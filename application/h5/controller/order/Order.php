@@ -1465,17 +1465,80 @@ class Order extends Base
                         ]
                     ],
                     [
-                        'id' => 'incomeAppend',
+                        'id' => 'income',
                         'title' => '收款',
                         'read' => '/h5/order.income/create',
                         'api' => '/h5/order.income/doCreate',
                         'children' => []
                     ],
                     [
-                        'id' => 'paymentAppend',
+                        'id' => 'payment',
                         'title' => '付款',
                         'read' => '/h5/order.payment/create',
                         'api' => '/h5/order.payment/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'hotelProtocol',
+                        'title' => '酒店协议',
+                        'read' => '/h5/order.hotel_protocol/create',
+                        'api' => '/h5/order.hotel_protocol/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'hotelItem',
+                        'title' => '酒店服务项目',
+                        'read' => '/h5/order.hotel_item/create',
+                        'api' => '/h5/order.hotel_item/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'car',
+                        'title' => '婚车',
+                        'read' => '/h5/order.car/create',
+                        'api' => '/h5/order.car/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'wine',
+                        'title' => '酒水',
+                        'read' => '/h5/order.wine/create',
+                        'api' => '/h5/order.wine/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'sugar',
+                        'title' => '喜糖',
+                        'read' => '/h5/order.sugar/create',
+                        'api' => '/h5/order.sugar/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'dessert',
+                        'title' => '糕点',
+                        'read' => '/h5/order.dessert/create',
+                        'api' => '/h5/order.dessert/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'light',
+                        'title' => '灯光',
+                        'read' => '/h5/order.light/create',
+                        'api' => '/h5/order.light/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => 'led',
+                        'title' => 'Led',
+                        'read' => '/h5/order.led/create',
+                        'api' => '/h5/order.led/doCreate',
+                        'children' => []
+                    ],
+                    [
+                        'id' => '3d',
+                        'title' => '3D',
+                        'read' => '/h5/order.d3/create',
+                        'api' => '/h5/order.d3/doCreate',
                         'children' => []
                     ],
                 ]
