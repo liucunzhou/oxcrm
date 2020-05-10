@@ -1517,7 +1517,7 @@ class Order extends Base
             ],
         ];
 
-        if(empty($banquet)) {
+        if(empty($banquet) || 1) {
             $banquetItem = [
                 [
                     'id' => 'banquet',
@@ -1530,7 +1530,7 @@ class Order extends Base
             $addItems = array_merge($banquetItem, $addItems);
         }
 
-        if(empty($wedding)) {
+        if(empty($wedding) || 1) {
             $weddingItem = [
                 [
                     'id' => 'wedding',
