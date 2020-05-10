@@ -218,9 +218,9 @@ class Order extends Base
         $where[] = ['order_id', '=', $order['id']];
         // $where[] = ['company_id', '=', $order['company_id']];
         $where[] = ['user_id', '=', $this->user['id']];
-         // $where[] = ['status', '=', 3];
+        // $where[] = ['status', '=', 3];
         $confirmLast = OrderConfirm::where($where)->order('id desc')->find();
-        if(empty($confirmLast)) {
+        if (empty($confirmLast)) {
             // 获取审核状态
             if ($order['check_status'] == '0') {
                 // 待审核
@@ -1419,6 +1419,129 @@ class Order extends Base
             ];
         }
 
+        $addItems = [
+            [
+                'id' => 'suborder',
+                'title' => '二销',
+                'children' => [
+                    [
+                        'id' => 'banquetSuborder',
+                        'title' => '婚宴二销',
+                        'read' => '/h5/order.banquet_suborder/create',
+                        'api' => '/h5/order.banquet_suborder/doCreate'
+                    ],
+                    [
+                        'id' => 'weddingSuborder',
+                        'title' => '婚庆二销',
+                        'read' => '/h5/order.wedding_suborder/create',
+                        'api' => '/h5/order.wedding_suborder/doCreate'
+                    ],
+                ]
+            ],
+            [
+                'id' => 'income',
+                'title' => '收款',
+                'read' => '/h5/order.income/create',
+                'api' => '/h5/order.income/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'payment',
+                'title' => '付款',
+                'read' => '/h5/order.payment/create',
+                'api' => '/h5/order.payment/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'hotelProtocol',
+                'title' => '酒店协议',
+                'read' => '/h5/order.hotel_protocol/create',
+                'api' => '/h5/order.hotel_protocol/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'hotelItem',
+                'title' => '酒店服务项目',
+                'read' => '/h5/order.hotel_item/create',
+                'api' => '/h5/order.hotel_item/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'car',
+                'title' => '婚车',
+                'read' => '/h5/order.car/create',
+                'api' => '/h5/order.car/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'wine',
+                'title' => '酒水',
+                'read' => '/h5/order.wine/create',
+                'api' => '/h5/order.wine/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'sugar',
+                'title' => '喜糖',
+                'read' => '/h5/order.sugar/create',
+                'api' => '/h5/order.sugar/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'dessert',
+                'title' => '糕点',
+                'read' => '/h5/order.dessert/create',
+                'api' => '/h5/order.dessert/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'light',
+                'title' => '灯光',
+                'read' => '/h5/order.light/create',
+                'api' => '/h5/order.light/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => 'led',
+                'title' => 'Led',
+                'read' => '/h5/order.led/create',
+                'api' => '/h5/order.led/doCreate',
+                'children' => []
+            ],
+            [
+                'id' => '3d',
+                'title' => '3D',
+                'read' => '/h5/order.d3/create',
+                'api' => '/h5/order.d3/doCreate',
+                'children' => []
+            ],
+        ];
+
+        if(empty($banquet)) {
+            $banquetItem = [
+                [
+                    'id' => 'banquet',
+                    'title' => '婚庆',
+                    'read' => '/h5/order.banquet/create',
+                    'api' => '/h5/order.banquet/doCreate',
+                    'children' => []
+                ]
+            ];
+            $addItems = array_merge($banquetItem, $addItems);
+        }
+
+        if(empty($wedding)) {
+            $weddingItem = [
+                [
+                    'id' => 'wedding',
+                    'title' => '婚庆',
+                    'read' => '/h5/order.wedding/create',
+                    'api' => '/h5/order.wedding/doCreate',
+                    'children' => []
+                ]
+            ];
+            $addItems = array_merge($weddingItem, $addItems);
+        }
 
         #### 获取审核进度
         $result = [
@@ -1445,103 +1568,7 @@ class Order extends Base
                 'incomeList' => $incomeList,
                 // 订单付款信息
                 'paymentList' => $paymentList,
-                'addItems' => [
-                    [
-                        'id' => 'suborder',
-                        'title' => '二销',
-                        'children' => [
-                            [
-                                'id' => 'banquetSuborder',
-                                'title' => '婚宴二销',
-                                'read' => '/h5/order.banquet_suborder/create',
-                                'api' => '/h5/order.banquet_suborder/doCreate'
-                            ],
-                            [
-                                'id' => 'weddingSuborder',
-                                'title' => '婚庆二销',
-                                'read' => '/h5/order.wedding_suborder/create',
-                                'api' => '/h5/order.wedding_suborder/doCreate'
-                            ],
-                        ]
-                    ],
-                    [
-                        'id' => 'income',
-                        'title' => '收款',
-                        'read' => '/h5/order.income/create',
-                        'api' => '/h5/order.income/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'payment',
-                        'title' => '付款',
-                        'read' => '/h5/order.payment/create',
-                        'api' => '/h5/order.payment/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'hotelProtocol',
-                        'title' => '酒店协议',
-                        'read' => '/h5/order.hotel_protocol/create',
-                        'api' => '/h5/order.hotel_protocol/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'hotelItem',
-                        'title' => '酒店服务项目',
-                        'read' => '/h5/order.hotel_item/create',
-                        'api' => '/h5/order.hotel_item/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'car',
-                        'title' => '婚车',
-                        'read' => '/h5/order.car/create',
-                        'api' => '/h5/order.car/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'wine',
-                        'title' => '酒水',
-                        'read' => '/h5/order.wine/create',
-                        'api' => '/h5/order.wine/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'sugar',
-                        'title' => '喜糖',
-                        'read' => '/h5/order.sugar/create',
-                        'api' => '/h5/order.sugar/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'dessert',
-                        'title' => '糕点',
-                        'read' => '/h5/order.dessert/create',
-                        'api' => '/h5/order.dessert/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'light',
-                        'title' => '灯光',
-                        'read' => '/h5/order.light/create',
-                        'api' => '/h5/order.light/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => 'led',
-                        'title' => 'Led',
-                        'read' => '/h5/order.led/create',
-                        'api' => '/h5/order.led/doCreate',
-                        'children' => []
-                    ],
-                    [
-                        'id' => '3d',
-                        'title' => '3D',
-                        'read' => '/h5/order.d3/create',
-                        'api' => '/h5/order.d3/doCreate',
-                        'children' => []
-                    ],
-                ]
+                'addItems' => $addItems
             ]
         ];
 
