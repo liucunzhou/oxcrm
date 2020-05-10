@@ -1212,6 +1212,7 @@ class Order extends Base
         $order['image'] = empty($order['image']) ? [] : explode(',', $order['image']);
         $order['receipt_img'] = empty($order['receipt_img']) ? [] : explode(',', $order['receipt_img']);
         $order['note_img'] = empty($order['note_img']) ? [] : explode(',', $order['note_img']);
+
         $staff = User::getUser($order['salesman']);
         $order['salesman'] = $staff['realname'];
 
@@ -1369,7 +1370,6 @@ class Order extends Base
                 'income_remark' => $value['remark'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit' => $value['edit']
             ];
         }
         foreach ($weddingReceivableList as $key => $value) {
@@ -1385,7 +1385,6 @@ class Order extends Base
                 'income_remark' => $value['remark'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit' => $value['edit']
             ];
         }
 
@@ -1403,7 +1402,6 @@ class Order extends Base
                 'payment_remark' => $value['banquet_payment_remark'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit' => $value['edit']
             ];
         }
         foreach ($weddingPaymentList as $key => $value) {
@@ -1418,7 +1416,6 @@ class Order extends Base
                 'payment_remark' => $value['wedding_payment_remark'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
-                'edit' => $value['edit']
             ];
         }
 
