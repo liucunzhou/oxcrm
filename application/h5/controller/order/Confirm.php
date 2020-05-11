@@ -16,11 +16,53 @@ use app\h5\controller\Base;
 
 class Confirm extends Base
 {
+    protected $staffs = [];
+    protected $brands = [];
+    protected $hotels = [];
+    protected $carList = [];
+    protected $sugarList = [];
+    protected $wineList = [];
+    protected $lightList = [];
+    protected $dessertList = [];
+    protected $ledList = [];
+    protected $d3List = [];
+    protected $packageList = [];
+    protected $ritualList = [];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核通过', 2 => '审核驳回', 13 => '审核撤销'];
 
     protected function initialize()
     {
         return parent::initialize();
+
+        ## 获取所有品牌、公司
+        $this->brands = \app\common\model\Brand::getBrands();
+
+        ## 套餐列表
+        $this->packageList = \app\common\model\Package::getList();
+
+        ## 套餐列表
+        $this->ritualList = \app\common\model\Ritual::getList();
+
+        ## 汽车列表
+        $this->carList = \app\common\model\Car::getList();
+
+        ## 酒水列表
+        $this->wineList = \app\common\model\Wine::getList();
+
+        ## 喜糖列表
+        $this->sugarList = \app\common\model\Sugar::getList();
+
+        ## 灯光列表
+        $this->lightList = \app\common\model\Light::getList();
+
+        ## 点心列表
+        $this->dessertList = \app\common\model\Dessert::getList();
+
+        ## led列表
+        $this->ledList = \app\common\model\Led::getList();
+
+        ## 3d列表
+        $this->d3List = \app\common\model\D3::getList();
     }
 
     # 我审核的
@@ -198,7 +240,7 @@ class Confirm extends Base
                     } else if ($key == 'wine') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/wine/wine';
                         break;
-                    }else if ($key == 'hotelProtocol') {
+                    } else if ($key == 'hotelProtocol') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/light/light';
                         break;
                     } else if ($key == 'sugar') {
@@ -244,7 +286,7 @@ class Confirm extends Base
         $origin = json_decode($confirm->source, true);
         $source = [];
 
-        foreach ($origin as $key =>$value) {
+        foreach ($origin as $key => $value) {
             if ($key == 'order') {
 
             } else if ($key == 'banquet') {
@@ -324,7 +366,7 @@ class Confirm extends Base
                 $editApi = '/h5/order.payment/doedit';
                 $backendApi = '/h5/order.confirm/backend';
 
-            } else if ($key == 'banquetIncome' ) {
+            } else if ($key == 'banquetIncome') {
                 $value = $value[0];
                 $source['income'] = [];
                 $source['income']["id"] = $value["id"];
@@ -370,7 +412,7 @@ class Confirm extends Base
 
             } else if ($key == 'wine') {
 
-            }else if ($key == 'hotelProtocol') {
+            } else if ($key == 'hotelProtocol') {
 
             } else if ($key == 'sugar') {
 
@@ -384,11 +426,11 @@ class Confirm extends Base
                 $source = [];
                 foreach ($value as $v) {
                     $source['d3'][] = [
-                        'id'    => $v['id'],
-                        'd3_id'    => $v['d3_id'],
-                        'd3_amount'    => $v['d3_amount'],
-                        'd3_price'    => $v['d3_price'],
-                        'd3_remark'    => $v['d3_remark'],
+                        'id' => $v['id'],
+                        'd3_id' => $v['d3_id'],
+                        'd3_amount' => $v['d3_amount'],
+                        'd3_price' => $v['d3_price'],
+                        'd3_remark' => $v['d3_remark'],
                     ];
                 }
                 $editApi = '/h5/order.d3/doedit';
@@ -396,33 +438,33 @@ class Confirm extends Base
             }
         }
 
-        if($confirm->status == '0') {
+        if ($confirm->status == '0') {
             $buttons = [
                 [
-                    'id'    => 'backend',
+                    'id' => 'backend',
                     'label' => '撤销',
-                    'api'   => $backendApi
+                    'api' => $backendApi
                 ]
             ];
         } else if ($confirm->status == '1') {
             $buttons = [
                 [
-                    'id'    => 'update',
+                    'id' => 'update',
                     'label' => '更新',
-                    'api'   => $editApi
+                    'api' => $editApi
                 ]
             ];
         } else if ($confirm->status == '2') {
             $buttons = [
                 [
-                    'id'    => 'backout',
+                    'id' => 'backout',
                     'label' => '撤销',
-                    'api'   => $backendApi
+                    'api' => $backendApi
                 ],
                 [
-                    'id'    => 'update',
+                    'id' => 'update',
                     'label' => '更新',
-                    'api'   => $editApi
+                    'api' => $editApi
                 ]
             ];
         } else {
@@ -430,9 +472,9 @@ class Confirm extends Base
         }
 
         $confirmData = [
-            'confirm_no'    => $confirm->confirm_no,
+            'confirm_no' => $confirm->confirm_no,
             'confirm_intro' => $confirm->confirm_intro,
-            'status'        => $this->confirmStatusList[$confirm->status]
+            'status' => $this->confirmStatusList[$confirm->status]
         ];
 
         $where = [];
@@ -522,15 +564,23 @@ class Confirm extends Base
             ];
         }
         $result = [
-            'code'  => '200',
-            'msg'   => '获取数据成功',
-            'data'  => [
-                'confirm'           => $confirmData,
-                'detail'            => $source,
-                'buttons'           => $buttons,
-                'incomeTypeList'    => $this->config['payment_type_list'],
+            'code' => '200',
+            'msg' => '获取数据成功',
+            'data' => [
+                'confirm' => $confirmData,
+                'detail' => $source,
+                'buttons' => $buttons,
+                'incomeTypeList' => $this->config['payment_type_list'],
                 'incomePaymentList' => $this->config['payments'],
-                'confirmList'       => $confirmList,
+                'confirmList' => $confirmList,
+                'companyList' => array_values($this->brands),
+                'carList' => array_values($this->carList),
+                'wineList' => array_values($this->wineList),
+                'sugarList' => array_values($this->sugarList),
+                'dessertList' => array_values($this->dessertList),
+                'lightList' => array_values($this->lightList),
+                'ledList' => array_values($this->ledList),
+                'd3List' => array_values($this->d3List),
             ]
         ];
 
@@ -542,17 +592,17 @@ class Confirm extends Base
         $params = $this->request->param();
 
         $where['id'] = $params['id'];
-        $rs = OrderConfirm::where($where)->update(['status'=>13]);
+        $rs = OrderConfirm::where($where)->update(['status' => 13]);
 
-        if($rs) {
+        if ($rs) {
             $result = [
-                'code'  => '200',
-                'msg'   => '撤销成功'
+                'code' => '200',
+                'msg' => '撤销成功'
             ];
         } else {
             $result = [
-                'code'  => '400',
-                'msg'   => '撤销失败'
+                'code' => '400',
+                'msg' => '撤销失败'
             ];
         }
 
