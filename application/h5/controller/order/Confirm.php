@@ -276,7 +276,9 @@ class Confirm extends Base
                 $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
                 $source['income']["note_img"] = $value["note_img"];
+
             } else if ($key == 'weddingIncome') {
+                $value = $value[0];
                 $source['income'] = [];
                 $source['income']["id"] = $value["id"];
                 $source['income']["user_id"] = $value["user_id"];
