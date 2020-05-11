@@ -61,7 +61,7 @@ if(!function_exists('get_next_confirm_item')) {
 
 ### 创建审核顺序
 if(!function_exists('create_order_confirm')) {
-    function create_order_confirm($orderId, $companyId, $userId, $confirmType='income', $intro='创建订单定金审核', $source=[])
+    function create_order_confirm($orderId, $companyId, $userId, $confirmType='order', $intro='创建订单定金审核', $source=[])
     {
         ### 审核流程
         $where = [];
@@ -70,39 +70,9 @@ if(!function_exists('create_order_confirm')) {
         $audit = \app\common\model\Audit::where($where)->find();
         $sequence = json_decode($audit->content, true);
 
-        ### 获取当前订单，当前用户的审核流程
-        $where = [];
-        $where[] = ['user_id', '=', $userId];
-        $where[] = ['order_id', '=', $orderId];
-        $where[] = ['company_id', '=', $companyId];
-        $where[] = ['confirm_type', '=', $confirmType];
-
-        $confirmList = \app\common\model\OrderConfirm::where($where)->order('id desc')->select();
-        if($confirmList->isEmpty()) {
-            ### 该员工、该订单、该承办公司第一次审核
-            $index = key($sequence);
-            $confirmNO = date('YmdHis').mt_rand(10000,99999);
-        } else {
-            $where = [];
-            $where[] = ['user_id', '=', $userId];
-            $where[] = ['order_id', '=', $orderId];
-            $where[] = ['company_id', '=', $companyId];
-            $where[] = ['confirm_type', '=', $confirmType];
-            $where[] = ['is_checked', '=', 0];
-            $confirmLast = \app\common\model\OrderConfirm::where($where)->order('id desc')->find();
-            if(!empty($confirmLast)) {
-                $confirmNO = $confirmLast->confirm_no;
-                $current = $confirmLast->confirm_item_id;
-                $index = get_next_confirm_item($current, $sequence);
-                if (is_null($index)) {
-                    // 已审核完的状态可以添加审核
-                    $index = key($sequence);
-                }
-            } else {
-                $index = key($sequence);
-                $confirmNO = date('YmdHis').mt_rand(10000,99999);
-            }
-        }
+        ### 该员工、该订单、该承办公司第一次审核
+        $index = key($sequence);
+        $confirmNO = date('YmdHis').mt_rand(10000,99999);
 
         $config = config();
         $auditConfig = $config['crm']['check_sequence'];
