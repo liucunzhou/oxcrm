@@ -16,13 +16,18 @@ class HotelItem extends Base
     public function create()
     {
         $param = $this->request->param();
-        $order = new \app\common\model\Order();
-        $where = [];
-        $where['id'] = $param['id'];
-        $row = $order->where($where)->find();
-        $this->assign('order', $row);
+        $order = \app\common\model\Order::get($param['order_id']);
+        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
-        return $this->fetch();
+        $result = [
+            'code' => '200',
+            'msg' => '获取信息成功',
+            'data' => [
+                'confirmList' => $confirmList
+            ]
+        ];
+
+        return json($result);
     }
 
     public function edit($id)
