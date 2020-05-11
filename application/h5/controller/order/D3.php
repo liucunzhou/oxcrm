@@ -33,9 +33,9 @@ class D3 extends Base
         $param = $this->request->param();
         $param = json_decode($param['d3List'], true);
         foreach($param as $key=>$value) {
-            $data['operate_id'] = $this->user['id'];
-            $data['user_id'] = $this->user['id'];
-            $result = $this->model->allowField(true)->save($param);
+            $value['operate_id'] = $this->user['id'];
+            $value['user_id'] = $this->user['id'];
+            $result = $this->model->allowField(true)->save($value);
             $source['d3'][] = $this->model->toArray();
         }
 
