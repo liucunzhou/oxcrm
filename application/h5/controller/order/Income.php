@@ -189,6 +189,8 @@ class Income extends Base
                 'income_date'   => $row->banquet_income_date,
                 'income_real_date'  => $row->banquet_income_real_date,
                 'income_remark' => $row->remark,
+                'receipt_img' => $row->receipt_img,
+                'note_img' => $row->note_img,
                 'income_category' => $param['income_category']
             ];
         } else {
@@ -202,6 +204,8 @@ class Income extends Base
                 'income_date'   => $row->wedding_income_date,
                 'income_real_date'  => $row->wedding_income_real_date,
                 'income_remark' => $row->remark,
+                'receipt_img' => $row->receipt_img,
+                'note_img' => $row->note_img,
                 'income_category' => $param['income_category']
             ];
         }

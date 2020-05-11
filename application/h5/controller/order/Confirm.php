@@ -103,6 +103,7 @@ class Confirm extends Base
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
 
+
         if ($list->isEmpty()) {
             $result = [
                 'code' => '200',
@@ -242,6 +243,9 @@ class Confirm extends Base
         $confirm = OrderConfirm::get($param['id']);
         $origin = json_decode($confirm->source, true);
         $source = [];
+
+        $paymentList = array_column($this->config['payments'], 'title', 'id');
+        $incomeTypeList = array_column($this->config['payment_type_list'], 'title', 'id');
         foreach ($origin as $key =>$value) {
             if ($key == 'order') {
 
@@ -266,8 +270,8 @@ class Confirm extends Base
                 $source['income']["receivable_no"] = $value["banquet_receivable_no"];
                 $source['income']["income_date"] = $value["banquet_income_date"];
                 $source['income']["income_real_date"] = $value["banquet_income_real_date"];
-                $source['income']["income_payment"] = $value["banquet_income_payment"];
-                $source['income']["income_type"] = $value["banquet_income_type"];
+                $source['income']["income_payment"] = $paymentList[$value["banquet_income_payment"]];
+                $source['income']["income_type"] = $incomeTypeList[$value["banquet_income_type"]];
                 $source['income']["income_item_price"] = $value["banquet_income_item_price"];
                 $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
@@ -280,8 +284,8 @@ class Confirm extends Base
                 $source['income']["receivable_no"] = $value["wedding_receivable_no"];
                 $source['income']["income_date"] = $value["wedding_income_date"];
                 $source['income']["income_real_date"] = $value["wedding_income_real_date"];
-                $source['income']["income_payment"] = $value["wedding_income_payment"];
-                $source['income']["income_type"] = $value["wedding_income_type"];
+                $source['income']["income_payment"] = $paymentList[$value["wedding_income_payment"]];
+                $source['income']["income_type"] = $incomeTypeList[$value["wedding_income_type"]];
                 $source['income']["income_item_price"] = $value["wedding_income_item_price"];
                 $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
@@ -332,13 +336,16 @@ class Confirm extends Base
             'confirm_intro' => $confirm->confirm_intro,
             'status'        => $this->confirmStatusList[$confirm->status]
         ];
+
         $result = [
             'code'  => '200',
             'msg'   => '获取数据成功',
             'data'  => [
-                'confirm'   => $confirmData,
-                'detail'    => $source,
-                'buttons'   => $buttons
+                'confirm'           => $confirmData,
+                'detail'            => $source,
+                'buttons'           => $buttons,
+                'incomeTypeList'    => $this->config['payment_type_list'],
+                'incomePaymentList' => $this->config['payments']
             ]
         ];
 
