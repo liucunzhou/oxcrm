@@ -1101,7 +1101,7 @@ class Order extends Base
         // 根据公司创建审核流程
         $companyId = $orderData['company_id'];
         $orderId = $OrderModel->id;
-        create_order_confirm($orderId, $companyId, $this->user['id'], 'income', "创建订单定金审核", $source);
+        create_order_confirm($orderId, $companyId, $this->user['id'], 'order', "创建订单定金审核", $source);
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
