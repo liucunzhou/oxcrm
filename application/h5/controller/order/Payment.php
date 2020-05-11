@@ -237,14 +237,14 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
-        if ($param['pay_category'] == '婚宴') {
+        $order = \app\common\model\Order::get($param['order_id']);
+
+        if ($order['news_type'] != 1) {
             $model = new OrderBanquetPayment();
         } else {
             $model = new OrderWeddingPayment();
         }
-
         $row = $model->where('id', '=', $param['id'])->find();
-        $order = \app\common\model\Order::get($row->order_id);
         if (empty($row)) {
             $result = [
                 'code' => '400',
@@ -253,14 +253,13 @@ class Payment extends Base
             return json($result);
         }
 
-        if ($param['pay_category'] == '婚宴') {
+        if ($order['news_type'] != 1) {
             $data = [
                 'id' => $param['id'],
                 'banquet_payment_no' => $param['payment_no'],
                 'banquet_pay_type' => $param['pay_type'],
                 'banquet_apply_pay_date' => $param['apply_pay_date'],
                 'banquet_pay_item_price' => $param['pay_item_price'],
-                // 'pay_real_date'  => $row->banquet_pay_real_date,
                 'banquet_payment_remark' => $param['payment_remark'],
                 'banquet_pay_to_company' => $param['pay_to_company'],
                 'banquet_pay_to_account' => $param['pay_to_account'],
@@ -276,7 +275,6 @@ class Payment extends Base
                 'wedding_pay_type' => $param['pay_type'],
                 'wedding_apply_pay_date' => $param['apply_pay_date'],
                 'wedding_pay_item_price' => $param['pay_item_price'],
-                // 'pay_real_date'  => $row->wedding_pay_real_date,
                 'wedding_payment_remark' => $param['payment_remark'],
                 'wedding_pay_to_company' => $param['pay_to_company'],
                 'wedding_pay_to_account' => $param['pay_to_account'],
@@ -287,7 +285,7 @@ class Payment extends Base
         }
         $rs = $row->allowField(true)->save($data);
 
-        if ($param['pay_category'] == '婚宴') {
+        if ($order['news_type'] != 1) {
             $intro = '创建婚宴付款审核';
             $source['banquetPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
