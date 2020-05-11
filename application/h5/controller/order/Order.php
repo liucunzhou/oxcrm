@@ -905,7 +905,7 @@ class Order extends Base
             $carData = json_decode($param['car'], true);
             if (!empty($carData['master_car_id'])) {
                 $row = [];
-                $row['company_id'] = $carData['car_company_id'];
+                $row['company_id'] = $carData['company_id'];
                 $row['is_master'] = 1;
                 $row['is_suborder'] = 0;
                 $row['car_id'] = $carData['master_car_id'];
@@ -918,8 +918,7 @@ class Order extends Base
                 $row['arrive_time'] = $carData['arrive_time'];
                 $row['arrive_address'] = $carData['arrive_address'];
                 $row['car_remark'] = $carData['master_car_remark'];
-                $row['salesman'] = $carData['car_salesman'];
-                $row['company_id'] = $carData['car_company_id'];
+                $row['salesman'] = $this->user['id'];;
                 $row['order_id'] = $OrderModel->id;
                 $row['operate_id'] = $this->user['id'];
                 $row['user_id'] = $this->user['id'];
@@ -935,7 +934,7 @@ class Order extends Base
             if (!empty($carData['slave_car_id'])) {
                 $row = [];
                 $row['order_id'] = $carData['order_id'];
-                $row['company_id'] = $carData['car_company_id'];
+                $row['company_id'] = $carData['company_id'];
                 $row['is_master'] = 0;
                 $row['is_suborder'] = 0;
                 $row['car_id'] = $carData['slave_car_id'];
@@ -949,8 +948,7 @@ class Order extends Base
                 $row['arrive_address'] = $carData['arrive_address'];
                 $row['car_remark'] = $carData['slave_car_remark'];
                 $row['create_time'] = time();
-                $row['salesman'] = $carData['car_salesman'];
-                $row['company_id'] = $carData['car_company_id'];
+                $row['salesman'] = $this->user['id'];
                 $row['order_id'] = $OrderModel->id;
                 $row['operate_id'] = $this->user['id'];
                 $row['user_id'] = $this->user['id'];
