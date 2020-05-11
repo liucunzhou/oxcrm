@@ -89,17 +89,18 @@ class D3 extends Base
         $param = $this->request->param();
         $param = json_decode($param['d3List'], true);
 
-        foreach($param as $key=>$value) {
-            $where = [];
-            $where[] = ['id', '=', $param['id']];
-            $model = $this->model->where($where)->find();
-            $result = $model->allowField(true)->save($param);
+        foreach ($param as $row) {
+            $orderId = $row['order_id'];
+            $row['user_id'] = $this->user['id'];
+            $row['salesman'] = $this->user['id'];
+            $model = OrderD3::get($row['id']);
+            $result = $model->allowField(true)->save($row);
             $source['d3'][] = $model->toArray();
         }
 
         if($result) {
-            $order = \app\common\model\Order::get($param['order_id']);
-            $intro = "编辑3D审核";
+            $order = \app\common\model\Order::get($orderId);
+            $intro = "编辑3D信息审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'编辑3D信息成功'];
         } else {
