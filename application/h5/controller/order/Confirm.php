@@ -254,7 +254,7 @@ class Confirm extends Base
         $key = key($origin);
         if ($key == 'order') {
             $source = $origin;
-            $editApi = '/h5/order.banquet/doedit';
+            $editApi = '/h5/order.order/doEdit';
             $backendApi = '/h5/order.confirm/backend';
         } else if ($key == 'banquet') {
             $value = $origin['banquet'];
