@@ -256,7 +256,7 @@ class Confirm extends Base
             } else if ($key == 'weddingSuborder') {
 
             } else if ($key == 'banquetPayment') {
-                $value = $value;
+                $value = $value[0];
                 $source['payment'] = [];
                 $source['payment']['id'] = $value['order_id'];
                 $source['payment']['order_id'] = $value['order_id'];
@@ -274,7 +274,7 @@ class Confirm extends Base
                 $editApi = '/h5/order.payment/doedit';
                 $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'weddingPayment') {
-                $value = $value;
+                $value = $value[0];
                 $source['payment'] = [];
                 $source['payment']['id'] = $value['order_id'];
                 $source['payment']['order_id'] = $value['order_id'];
