@@ -274,6 +274,8 @@ class Confirm extends Base
                 $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
                 $source['income']["note_img"] = $value["note_img"];
+                $source['income_category'] = "婚宴";
+                $editApi = '/h5/order.confirm/doedit';
 
             } else if ($key == 'weddingIncome') {
                 $value = $value[0];
@@ -290,6 +292,8 @@ class Confirm extends Base
                 $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
                 $source['income']["note_img"] = $value["note_img"];
+                $source['income_category'] = "婚庆";
+                $editApi = '/h5/order.confirm/doedit';
 
             } else if ($key == 'hotelItem') {
 
@@ -433,7 +437,8 @@ class Confirm extends Base
                 'buttons'           => $buttons,
                 'incomeTypeList'    => $this->config['payment_type_list'],
                 'incomePaymentList' => $this->config['payments'],
-                'confirmList'       => $confirmList
+                'confirmList'       => $confirmList,
+                'editApi'           => $editApi
             ]
         ];
 
