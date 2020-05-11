@@ -1332,7 +1332,6 @@ class Order extends Base
         $d3List = \app\common\model\OrderD3::where($where)->select();
         foreach ($d3List as $key => &$row) {
             $row['d3_id'] = $this->d3List[$row['d3_id']]['title'];
-
         }
 
         #### 合同金额
