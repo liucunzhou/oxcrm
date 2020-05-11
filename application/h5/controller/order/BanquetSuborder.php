@@ -62,7 +62,12 @@ class BanquetSuborder extends Base
         $income['order_id'] = $param['order_id'];
         $income['user_id'] = $this->user['id'];
         $income['banquet_income_type'] = 5;
-        $income['remark'] = $param['income_remark'];
+        $income['remark'] = $income['income_remark'];
+        $income['banquet_receivable_no'] = $income['receivable_no'];
+        $income['contract_img'] = implode(',', $income['image']);
+        $income['receipt_img'] = implode(',', $income['receipt_img']);
+        $income['note_img'] = implode(',', $income['note_img']);
+
         $receivable = new OrderBanquetReceivables();
         $result2 = $receivable->allowField(true)->save($income);
         $source['banquetIncome'][] = $receivable->toArray();

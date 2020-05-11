@@ -281,21 +281,31 @@ class Confirm extends Base
         } else if ($key == 'banquetSuborder') {
             $value = $origin;
             $source = [];
-            $suborder = $value['banquetSuborder'];
+            $suborder = $value['banquetSuborder'][0];
             $source['suborder']['id'] = $suborder['id'];
             $source['suborder']['company_id'] = $suborder['company_id'];
             $source['suborder']['order_id'] = $suborder['order_id'];
             $source['suborder']['salesman'] = $suborder['salesman'];
+            $source['suborder']['table_price'] = $suborder['table_price'];
+            $source['suborder']['table_amount'] = $suborder['table_amount'];
             $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
-            $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
-            $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
+            $source['suborder']['banquet_totals'] = $suborder['banquet_totals'];
+            $source['suborder']['sub_banquet_remark'] = $suborder['sub_banquet_remark'];
 
-            $income = $value['banquetIncome'];
+            $income = $value['banquetIncome'][0];
             $source['income']['id'] = $income['id'];
             $source['income']['user_id'] = $income['user_id'];
             $source['income']['order_id'] = $income['order_id'];
-            $source['income']['wedding_income_type'] = $income['wedding_income_type'];
-            $source['income']['remark'] = $income['remark'];
+            $source['income']['receivable_no'] = $income['receivable_no'];
+            $source['income']['banquet_income_payment'] = $income['banquet_income_payment'];
+            $source['income']['banquet_income_type'] = $income['banquet_income_type'];
+            $source['income']['banquet_income_date'] = $income['banquet_income_date'];
+            $source['income']['banquet_income_item_price'] = $income['banquet_income_item_price'];
+            $source['income']['image'] = explode(",", $income['contact_img']);
+            $source['income']['receipt_img'] = explode(",", $income['receipt_img']);
+            $source['income']['note_img'] = explode(",", $income['note_img']);
+            $source['income']['income_remark'] = $income['income_remark'];
+
             $editApi = '/h5/order.banquet_suborder/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
@@ -314,6 +324,7 @@ class Confirm extends Base
             $source['wedding']['wedding_other'] = $value['wedding_other'];
             $source['wedding']['wedding_total'] = $value['wedding_total'];
             $source['wedding']['wedding_remark'] = $value['wedding_remark'];
+
             $editApi = '/h5/order.wedding/doedit';
             $backendApi = '/h5/order.confirm/backend';
 
