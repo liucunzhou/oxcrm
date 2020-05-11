@@ -163,7 +163,6 @@ class Confirm extends Base
                 // 判断跳转路径
                 $source = json_decode($confirm->source, true);
                 if (empty($source)) continue;
-
                 foreach ($source as $key => $value) {
                     if ($key == 'order') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
@@ -180,10 +179,10 @@ class Confirm extends Base
                     } else if ($key == 'weddingSuborder') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/weddingSuborder/weddingSuborder';
                         break;
-                    } else if ($key == 'payment') {
+                    } else if ($key == 'banquetPayment' || $key == 'weddingPayment') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/payment/payment';
                         break;
-                    } else if ($key == 'income') {
+                    } else if ($key == 'banquetIncome' || $key == 'weddingIncome') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/income/income';
                         break;
                     } else if ($key == 'hotelItem') {
@@ -239,6 +238,12 @@ class Confirm extends Base
     public function detail()
     {
         $param = $this->request->param();
+
+        $confirm = OrderConfirm::get($param['id']);
+        $source = json_decode($confirm->source, true);
+
+
+
     }
 
     # comnpany_id,创建时的审核进程
