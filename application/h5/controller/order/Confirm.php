@@ -272,8 +272,20 @@ class Confirm extends Base
                 $source['income']["remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
                 $source['income']["note_img"] = $value["note_img"];
-
             } else if ($key == 'weddingIncome') {
+                $source['income'] = [];
+                $source['income']["id"] = $value["id"];
+                $source['income']["user_id"] = $value["user_id"];
+                $source['income']["order_id"] = $value["order_id"];
+                $source['income']["receivable_no"] = $value["wedding_receivable_no"];
+                $source['income']["income_date"] = $value["wedding_income_date"];
+                $source['income']["income_real_date"] = $value["wedding_income_real_date"];
+                $source['income']["income_payment"] = $value["wedding_income_payment"];
+                $source['income']["income_type"] = $value["wedding_income_type"];
+                $source['income']["income_item_price"] = $value["wedding_income_item_price"];
+                $source['income']["remark"] = $value["remark"];
+                $source['income']["receipt_img"] = $value["receipt_img"];
+                $source['income']["note_img"] = $value["note_img"];
 
             } else if ($key == 'hotelItem') {
 
