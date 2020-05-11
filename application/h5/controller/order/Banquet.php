@@ -21,9 +21,13 @@ class Banquet extends Base
 
     public function create()
     {
+        $param = $this->request->param();
         $packageList = Package::getList();
         $ritualList = Ritual::getList();
         $companyList = Brand::getBrands();
+
+        $order = \app\common\model\Order::get($param['order_id']);
+        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
         $result = [
             'code'  => '200',
@@ -31,7 +35,8 @@ class Banquet extends Base
             'data'  => [
                 'packageList' => array_values($packageList),
                 'ritualList' => array_values($ritualList),
-                'companyList' =>  array_values($companyList)
+                'companyList' =>  array_values($companyList),
+                'confirmList' => $confirmList
             ]
         ];
 

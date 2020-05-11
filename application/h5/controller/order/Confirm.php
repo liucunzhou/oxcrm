@@ -435,7 +435,6 @@ class Confirm extends Base
             'status'        => $this->confirmStatusList[$confirm->status]
         ];
 
-
         $where = [];
         $where[] = ['company_id', '=', $confirm->company_id];
         $where[] = ['timing', '=', $confirm->confirm_type];

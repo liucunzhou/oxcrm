@@ -54,4 +54,60 @@ class Base extends Controller
             $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
         }
     }
+
+    protected function getConfirmProcess($companyId, $timing='order')
+    {
+        $where = [];
+        $where[] = ['company_id', '=', $companyId];
+        $where[] = ['timing', '=', $timing];
+        $audit = \app\common\model\Audit::where($where)->find();
+
+        if (empty($audit)) {
+            return [];
+        }
+
+        if (empty($audit->content)) {
+            return [];
+        }
+
+        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
+        $staffs = User::getUsers(false);
+        ## 审核全局列表
+        $sequence = $this->config['check_sequence'];
+        $auth = json_decode($audit->content, true);
+        $confirmList = [];
+        foreach ($auth as $key => $row) {
+            $managerList = [];
+            $type = $sequence[$key]['type'];
+            if ($type == 'role') {
+                // 获取角色
+                foreach ($row as $v) {
+                    $user = User::getRoleManager($v, $this->user);
+                    $managerList[] = [
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            } else {
+                foreach ($row as $v) {
+                    if (!isset($staffs[$v])) continue;
+                    $user = $staffs[$v];
+                    $managerList[] = [
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            }
+            $confirmList[] = [
+                'id' => $key,
+                'title' => $sequence[$key]['title'],
+                'managerList' => $managerList
+            ];
+        }
+
+        return $confirmList;
+    }
+
 }
