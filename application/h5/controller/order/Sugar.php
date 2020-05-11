@@ -94,7 +94,7 @@ class Sugar extends Base
             $row['salesman'] = $this->user['id'];
             $model = OrderSugar::get($row['id']);
             $result = $model->allowField(true)->save($row);
-            $source['wine'][] = $model->toArray();
+            $source['sugar'][] = $model->toArray();
         }
 
         if($result) {
