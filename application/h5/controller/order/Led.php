@@ -30,8 +30,32 @@ class Led extends Base
             ]
         ];
 
-
         return json($result);
+    }
+
+    public function doCreate()
+    {
+        $param = $this->request->param();
+        $orderId = $param['order_id'];
+        $param = json_decode($param['ledList'], true);
+        foreach($param as $key=>$value) {
+            $value['order_id'] = $orderId;
+            $value['operate_id'] = $this->user['id'];
+            $value['user_id'] = $this->user['id'];
+            $result = $this->model->allowField(true)->save($value);
+            $source['led'][] = $this->model->toArray();
+        }
+
+        if($result) {
+            $order = \app\common\model\Order::get($orderId);
+            $intro = "添加Led审核";
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
+            $arr = ['code'=>'200', 'msg'=>'添加Led信息成功'];
+        } else {
+            $arr = ['code'=>'200', 'msg'=>'添加Led信息失败'];
+        }
+
+        return json($arr);
     }
 
     public function edit($id)
