@@ -39,13 +39,14 @@ class Wedding extends Base
     public function doCreate()
     {
         $params = $this->request->param();
+        $orderId = $params['order_id'];
         $params = json_decode($params['wedding'], true);
 
         $result = $this->model->allowField(true)->save($params);
         $source['wedding'] = $this->model->toArray();
 
         if($result) {
-            $order = \app\common\model\Order::get($params['order_id']);
+            $order = \app\common\model\Order::get($orderId);
             $intro = "创建婚庆信息审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'创建婚庆信息成功'];
