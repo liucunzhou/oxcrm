@@ -415,9 +415,9 @@ class Confirm extends Base
                     $source['car']['company_id'] = $v['company_id'];
                     $source['car']['is_master'] = $v['is_master'];
                     $source['car']['is_suborder'] = $v['is_suborder'];
-                    $source['car']['car_id'] = $v['master_car_id'];
-                    $source['car']['car_price'] = $v['master_car_price'];
-                    $source['car']['car_amount'] = $v['master_car_amount'];
+                    $source['car']['car_id'] = $v['car_id'];
+                    $source['car']['car_price'] = $v['car_price'];
+                    $source['car']['car_amount'] = $v['car_amount'];
                     $source['car']['service_hour'] = $v['service_hour'];
                     $source['car']['service_distance'] = $v['service_distance'];
                     $source['car']['arrive_time'] = $v['arrive_time'];
