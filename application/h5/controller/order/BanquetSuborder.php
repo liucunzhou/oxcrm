@@ -118,19 +118,18 @@ class BanquetSuborder extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-        $suborder = json_decode($param['banquetSuborderList'], true);
         $action = '更新';
+
+        $suborder = json_decode($param['banquetSuborderList'], true);
         $model = OrderBanquetSuborder::get($suborder['id']);
         $intro = "编辑婚宴二销订单";
         $model->startTrans();
         $model->user_id = $this->user['id'];
-        $result1 = $model->save($param);
-        echo $model->getLastSql();
+        $result1 = $model->save($suborder);
         $source['banquetSuborder'][] = $model->toArray();
 
         // 添加收款信息
         $income = json_decode($param['banquet_incomeList'], true);
-        $income['order_id'] = $param['order_id'];
         $income['user_id'] = $this->user['id'];
         $income['banquet_income_type'] = 5;
         $income['remark'] = $income['income_remark'];
@@ -141,8 +140,6 @@ class BanquetSuborder extends Base
 
         $receivable = OrderBanquetReceivables::get($income['id']);
         $result2 = $receivable->allowField(true)->save($income);
-        echo "<br>";
-        echo $receivable->getLastSql();
         $source['banquetIncome'][] = $receivable->toArray();
 
         if($result1 || $result2) {
