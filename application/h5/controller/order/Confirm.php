@@ -304,6 +304,8 @@ class Confirm extends Base
                 $source['banquet']['banquet_ritual_id'] = $value['banquet_ritual_id'];
                 $source['banquet']['banquet_ritual_hall'] = $value['banquet_ritual_hall'];
                 $source['banquet']['banquet_totals'] = $value['banquet_totals'];
+                $source['banquet']['banquet_totals'] = $value['banquet_totals'];
+                $source['banquet']['banquet_other'] = $value['banquet_other'];
                 $source['banquet']['banquet_remark'] = $value['banquet_remark'];
                 $editApi = '/h5/order.banquet/doedit';
                 $backendApi = '/h5/order.confirm/backend';
