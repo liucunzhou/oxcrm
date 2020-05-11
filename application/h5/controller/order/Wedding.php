@@ -41,7 +41,8 @@ class Wedding extends Base
         $params = $this->request->param();
         $orderId = $params['order_id'];
         $params = json_decode($params['wedding'], true);
-
+        $params['order_id'] = $orderId;
+        $params['user_id'] = $this->user['id'];
         $result = $this->model->allowField(true)->save($params);
         $source['wedding'] = $this->model->toArray();
 

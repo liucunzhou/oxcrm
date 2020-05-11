@@ -291,6 +291,7 @@ class Confirm extends Base
 
             } else if ($key == 'banquet') {
                 $source['banquet'] = [];
+                $source['banquet']['id'] = $value['od'];
                 $source['banquet']['company_id'] = $value['company_id'];
                 $source['banquet']['order_id'] = $value['order_id'];
                 $source['banquet']['user_id'] = $value['user_id'];
@@ -331,7 +332,7 @@ class Confirm extends Base
             } else if ($key == 'banquetPayment') {
                 $value = $value[0];
                 $source['payment'] = [];
-                $source['payment']['id'] = $value['order_id'];
+                $source['payment']['id'] = $value['id'];
                 $source['payment']['order_id'] = $value['order_id'];
                 $source['payment']['user_id'] = $value['id'];
                 $source['payment']['payment_no'] = $value['banquet_payment_no'];
@@ -350,7 +351,7 @@ class Confirm extends Base
             } else if ($key == 'weddingPayment') {
                 $value = $value[0];
                 $source['payment'] = [];
-                $source['payment']['id'] = $value['order_id'];
+                $source['payment']['id'] = $value['id'];
                 $source['payment']['order_id'] = $value['order_id'];
                 $source['payment']['user_id'] = $value['id'];
                 $source['payment']['payment_no'] = $value['wedding_payment_no'];

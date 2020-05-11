@@ -48,6 +48,8 @@ class Banquet extends Base
         $params = $this->request->param();
         $orderId = $params['order_id'];
         $params = json_decode($params['banquet'], true);
+        $params['order_id'] = $orderId;
+        $params['user_id'] = $this->user['id'];
         $result = $this->model->allowField(true)->save($params);
         $source['banquet'] = $this->model->toArray();
 
