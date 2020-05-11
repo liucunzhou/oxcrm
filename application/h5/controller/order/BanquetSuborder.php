@@ -121,7 +121,6 @@ class BanquetSuborder extends Base
         $suborder = json_decode($param['banquetSuborderList'], true);
         $action = '更新';
         $model = OrderBanquetSuborder::get($suborder['id']);
-        echo OrderBanquetSuborder::getLastSql();
         $intro = "编辑婚宴二销订单";
         $model->startTrans();
         $model->user_id = $this->user['id'];
@@ -135,9 +134,9 @@ class BanquetSuborder extends Base
         $income['banquet_income_type'] = 5;
         $income['remark'] = $income['income_remark'];
         $income['banquet_receivable_no'] = $income['receivable_no'];
-        $income['contract_img'] = implode(',', $income['contact_img']);
-        $income['receipt_img'] = implode(',', $income['receipt_img']);
-        $income['note_img'] = implode(',', $income['note_img']);;
+        $income['contract_img'] = is_array($income['contact_img']) ? implode(',', $income['contact_img']) : $income['contact_img'];
+        $income['receipt_img'] = is_array($income['receipt_img']) ? implode(',', $income['receipt_img']) : $income['receipt_img'];
+        $income['note_img'] = is_array($income['note_img']) ? implode(',', $income['note_img']) : $income['note_img'];
 
         $receivable = OrderBanquetReceivables::get($income['id']);
         $result2 = $receivable->allowField(true)->save($income);
