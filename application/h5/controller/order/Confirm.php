@@ -301,9 +301,9 @@ class Confirm extends Base
             $source['income']['banquet_income_type'] = $income['banquet_income_type'];
             $source['income']['banquet_income_date'] = $income['banquet_income_date'];
             $source['income']['banquet_income_item_price'] = $income['banquet_income_item_price'];
-            $source['income']['image'] = $income['contact_img'];
-            $source['income']['receipt_img'] = $income['receipt_img'];
-            $source['income']['note_img'] = $income['note_img'];
+            $source['income']['contact_img'] = explode(",", $income['contact_img']);
+            $source['income']['receipt_img'] = explode(",", $income['receipt_img']);
+            $source['income']['note_img'] = explode(",", $income['note_img']);
             $source['income']['income_remark'] = $income['income_remark'];
 
             $editApi = '/h5/order.banquet_suborder/doEdit';
@@ -350,7 +350,7 @@ class Confirm extends Base
             $source['income']['wedding_income_date'] = $income['wedding_income_date'];
             $source['income']['wedding_income_item_price'] = $income['wedding_income_item_price'];
             $source['income']['income_remark'] = $income['income_remark'];
-            $source['income']['image'] = explode(",", $income['contact_img']);
+            $source['income']['contact_img'] = explode(",", $income['contact_img']);
             $source['income']['receipt_img'] = explode(",", $income['receipt_img']);
             $source['income']['note_img'] = explode(",", $income['note_img']);
 
@@ -742,6 +742,8 @@ class Confirm extends Base
                 'buttons' => $buttons,
                 'incomeTypeList' => $this->config['payment_type_list'],
                 'incomePaymentList' => $this->config['payments'],
+                'newsTypeList'  => $this->config['news_type_list'],
+                'cooperationModeList'  => $this->config['cooperation_mode'],
                 'confirmList' => $confirmList,
                 'companyList' => array_values($this->brands),
                 'carList' => array_values($this->carList),

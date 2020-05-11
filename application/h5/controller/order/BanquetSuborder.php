@@ -64,7 +64,7 @@ class BanquetSuborder extends Base
         $income['banquet_income_type'] = 5;
         $income['remark'] = $income['income_remark'];
         $income['banquet_receivable_no'] = $income['receivable_no'];
-        $income['contract_img'] = implode(',', $income['image']);
+        $income['contract_img'] = implode(',', $income['contact_img']);
         $income['receipt_img'] = implode(',', $income['receipt_img']);
         $income['note_img'] = implode(',', $income['note_img']);
 
