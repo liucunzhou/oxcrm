@@ -125,6 +125,7 @@ class BanquetSuborder extends Base
         $model->startTrans();
         $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
+        echo $model->getLastSql();
         $source['banquetSuborder'][] = $model->toArray();
 
         // 添加收款信息
@@ -140,6 +141,8 @@ class BanquetSuborder extends Base
 
         $receivable = OrderBanquetReceivables::get($income['id']);
         $result2 = $receivable->allowField(true)->save($income);
+        echo "<br>";
+        echo $receivable->getLastSql();
         $source['banquetIncome'][] = $receivable->toArray();
 
         if($result1 || $result2) {
