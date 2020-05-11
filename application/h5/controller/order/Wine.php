@@ -87,19 +87,18 @@ class Wine extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['wineList'], true);
-        if(!empty($param['id'])) {
-            $where = [];
-            $where[] = ['id', '=', $param['id']];
-            $model = $this->model->where($where)->find();
-            $result = $model->allowField(true)->save($param);
+
+        foreach ($param as $row) {
+            $orderId = $row['order_id'];
+            $row['user_id'] = $this->user['id'];
+            $row['salesman'] = $this->user['id'];
+            $model = OrderWine::get($row['id']);
+            $result = $model->allowField(true)->save($row);
             $source['wine'][] = $model->toArray();
-        } else {
-            $result = $this->model->allowField(true)->save($param);
-            $source['wine'][] = $this->model->toArray();
         }
 
         if($result) {
-            $order = \app\common\model\Order::get($param['order_id']);
+            $order = \app\common\model\Order::get($orderId);
             $intro = "编辑酒水审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];

@@ -150,7 +150,6 @@ class Car extends Base
             $row['car_id'] = $param['master_car_id'];
             $row['car_price'] = $param['master_car_price'];
             $row['car_amount'] = $param['master_car_amount'];
-            $carModel = new OrderCar();
             $master = OrderCar::get($param['master_order_id']);
             $result1 = $master->allowField(true)->save($row);
             $source['car'][] = $master->toArray();
@@ -162,7 +161,6 @@ class Car extends Base
             $row['car_id'] = $param['slave_car_id'];
             $row['car_price'] = $param['slave_car_price'];
             $row['car_amount'] = $param['slave_car_amount'];
-            $carModel = new OrderCar();
             $slave = OrderCar::get($param['slave_order_id']);
             $result2 = $slave->allowField(true)->save($row);
             $source['car'][] = $slave->toArray();
