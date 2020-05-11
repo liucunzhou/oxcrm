@@ -118,17 +118,31 @@ class BanquetSuborder extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-        $param = json_decode($param['banquetSuborderList'], true);
+        $suborder = json_decode($param['banquetSuborderList'], true);
         $action = '更新';
-        $model = OrderBanquetSuborder::get($param['id']);
+        $model = OrderBanquetSuborder::get($suborder['id']);
         $intro = "编辑婚宴二销订单";
-
         $model->startTrans();
         $model->user_id = $this->user['id'];
         $result1 = $model->save($param);
         $source['banquetSuborder'][] = $model->toArray();
 
-        if($result1) {
+        // 添加收款信息
+        $income = json_decode($param['banquet_incomeList'], true);
+        $income['order_id'] = $param['order_id'];
+        $income['user_id'] = $this->user['id'];
+        $income['banquet_income_type'] = 5;
+        $income['remark'] = $income['income_remark'];
+        $income['banquet_receivable_no'] = $income['receivable_no'];
+        $income['contract_img'] = implode(',', $income['contact_img']);
+        $income['receipt_img'] = implode(',', $income['receipt_img']);
+        $income['note_img'] = implode(',', $income['note_img']);;
+
+        $receivable = OrderBanquetReceivables::get($income['id']);
+        $result2 = $receivable->allowField(true)->save($income);
+        $source['banquetIncome'][] = $receivable->toArray();
+
+        if($result1 || $result2) {
             $model->commit();
             create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'suborder', $intro, $source);
             return json(['code'=>'200', 'msg'=> $action.'成功']);
