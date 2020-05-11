@@ -16,13 +16,17 @@ class Sugar extends Base
 
     public function create()
     {
+        $param = $this->request->param();
+        $order = \app\common\model\Order::get($param['order_id']);
+        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
         $list = \app\common\model\Sugar::getList();
         $result = [
             'code' => '200',
             'msg' => '获取信息成功',
             'data' => [
-                'list' => array_values($list)
+                'list' => array_values($list),
+                'confirmList' => $confirmList
             ]
         ];
 

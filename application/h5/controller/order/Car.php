@@ -17,6 +17,9 @@ class Car extends Base
 
     public function create()
     {
+        $param = $this->request->param();
+        $order = \app\common\model\Order::get($param['order_id']);
+        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
         $list = \app\common\model\Car::getList();
         $companyList = Brand::getBrands();
