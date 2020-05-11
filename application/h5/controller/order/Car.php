@@ -99,6 +99,8 @@ class Car extends Base
         } else {
             $arr = ['code'=>'200', 'msg'=>'添加婚车信息失败'];
         }
+
+        return json($arr);
     }
 
     public function edit($id)
