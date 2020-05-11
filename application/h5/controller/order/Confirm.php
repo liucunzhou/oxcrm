@@ -30,42 +30,6 @@ class Confirm extends Base
     protected $ritualList = [];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核通过', 2 => '审核驳回', 13 => '审核撤销'];
 
-    protected function initialize()
-    {
-        parent::initialize();
-
-        ## 获取所有品牌、公司
-        $this->brands = \app\common\model\Brand::getBrands();
-
-        ## 套餐列表
-        $this->packageList = \app\common\model\Package::getList();
-
-        ## 套餐列表
-        $this->ritualList = \app\common\model\Ritual::getList();
-
-        ## 汽车列表
-        $this->carList = \app\common\model\Car::getList();
-
-        ## 酒水列表
-        $this->wineList = \app\common\model\Wine::getList();
-
-        ## 喜糖列表
-        $this->sugarList = \app\common\model\Sugar::getList();
-
-        ## 灯光列表
-        $this->lightList = \app\common\model\Light::getList();
-
-        ## 点心列表
-        $this->dessertList = \app\common\model\Dessert::getList();
-
-        ## led列表
-        $this->ledList = \app\common\model\Led::getList();
-
-        ## 3d列表
-        $this->d3List = \app\common\model\D3::getList();
-    }
-
-    # 我审核的
     public function myConfirmed()
     {
         $param = $this->request->param();
@@ -126,7 +90,8 @@ class Confirm extends Base
         return json($result);
     }
 
-    # 审核我的
+    # 我审核的
+
     public function confirmMine()
     {
         $param = $this->request->param();
@@ -178,7 +143,8 @@ class Confirm extends Base
         return json($result);
     }
 
-    ## 订单的审核列表
+    # 审核我的
+
     public function orderConfirms()
     {
         $param = $this->request->param();
@@ -275,6 +241,8 @@ class Confirm extends Base
         return json($result);
     }
 
+    ## 订单的审核列表
+
     public function detail()
     {
         $param = $this->request->param();
@@ -283,328 +251,341 @@ class Confirm extends Base
         $origin = json_decode($confirm->source, true);
         $source = [];
 
-        foreach ($origin as $key => $value) {
-            if ($key == 'order') {
+        $key = key($origin);
+        if ($key == 'order') {
 
-            } else if ($key == 'banquet') {
-                $source['banquet'] = [];
-                $source['banquet']['id'] = $value['od'];
-                $source['banquet']['company_id'] = $value['company_id'];
-                $source['banquet']['order_id'] = $value['order_id'];
-                $source['banquet']['user_id'] = $value['user_id'];
-                $source['banquet']['table_amount'] = $value['table_amount'];
-                $source['banquet']['table_price'] = $value['table_price'];
-                $source['banquet']['wine_fee'] = $value['wine_fee'];
-                $source['banquet']['service_fee'] = $value['service_fee'];
-                $source['banquet']['banquet_update_table'] = $value['banquet_update_table'];
-                $source['banquet']['banquet_discount'] = $value['banquet_discount'];
-                $source['banquet']['banquet_ritual_id'] = $value['banquet_ritual_id'];
-                $source['banquet']['banquet_ritual_hall'] = $value['banquet_ritual_hall'];
-                $source['banquet']['banquet_totals'] = $value['banquet_totals'];
-                $source['banquet']['banquet_totals'] = $value['banquet_totals'];
-                $source['banquet']['banquet_other'] = $value['banquet_other'];
-                $source['banquet']['banquet_remark'] = $value['banquet_remark'];
-                $editApi = '/h5/order.banquet/doedit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'banquetSuborder') {
-                $source = [];
-                $suborder = $value['banquetSuborder'];
-                $source['suborder']['id'] = $suborder['id'];
-                $source['suborder']['company_id'] = $suborder['company_id'];
-                $source['suborder']['order_id'] = $suborder['order_id'];
-                $source['suborder']['salesman'] = $suborder['salesman'];
-                $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
-                $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
-                $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
+        } else if ($key == 'banquet') {
+            $value = $origin['banquet'];
+            $source['banquet'] = [];
+            $source['banquet']['id'] = $value['order_id'];
+            $source['banquet']['company_id'] = $value['company_id'];
+            $source['banquet']['order_id'] = $value['order_id'];
+            $source['banquet']['user_id'] = $value['user_id'];
+            $source['banquet']['table_amount'] = $value['table_amount'];
+            $source['banquet']['table_price'] = $value['table_price'];
+            $source['banquet']['wine_fee'] = $value['wine_fee'];
+            $source['banquet']['service_fee'] = $value['service_fee'];
+            $source['banquet']['banquet_update_table'] = $value['banquet_update_table'];
+            $source['banquet']['banquet_discount'] = $value['banquet_discount'];
+            $source['banquet']['banquet_ritual_id'] = $value['banquet_ritual_id'];
+            $source['banquet']['banquet_ritual_hall'] = $value['banquet_ritual_hall'];
+            $source['banquet']['banquet_totals'] = $value['banquet_totals'];
+            $source['banquet']['banquet_totals'] = $value['banquet_totals'];
+            $source['banquet']['banquet_other'] = $value['banquet_other'];
+            $source['banquet']['banquet_remark'] = $value['banquet_remark'];
+            $editApi = '/h5/order.banquet/doedit';
+            $backendApi = '/h5/order.confirm/backend';
 
-                $income = $value['banquetIncome'];
-                $source['income']['id'] = $income['id'];
-                $source['income']['user_id'] = $income['user_id'];
-                $source['income']['order_id'] = $income['order_id'];
-                $source['income']['wedding_income_type'] = $income['wedding_income_type'];
-                $source['income']['remark'] = $income['remark'];
-                break;
+        } else if ($key == 'banquetSuborder') {
+            $value = $origin;
+            $source = [];
+            $suborder = $value['banquetSuborder'];
+            $source['suborder']['id'] = $suborder['id'];
+            $source['suborder']['company_id'] = $suborder['company_id'];
+            $source['suborder']['order_id'] = $suborder['order_id'];
+            $source['suborder']['salesman'] = $suborder['salesman'];
+            $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
+            $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
+            $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
 
-            } else if ($key == 'wedding') {
-                $source['wedding'] = [];
-                $source['wedding']['company_id'] = $value['company_id'];
-                $source['wedding']['order_id'] = $value['order_id'];
-                $source['wedding']['user_id'] = $value['user_id'];
-                $source['wedding']['wedding_package_id'] = $value['wedding_package_id'];
-                $source['wedding']['wedding_package_price'] = $value['wedding_package_price'];
-                $source['wedding']['wedding_ritual_id'] = $value['wedding_ritual_id'];
-                $source['wedding']['wedding_ritual_hall'] = $value['wedding_ritual_hall'];
-                $source['wedding']['is_new_product'] = $value['is_new_product'];
-                $source['wedding']['new_product_no'] = $value['new_product_no'];
-                $source['wedding']['wedding_other'] = $value['wedding_other'];
-                $source['wedding']['wedding_total'] = $value['wedding_total'];
-                $source['wedding']['wedding_remark'] = $value['wedding_remark'];
-                $editApi = '/h5/order.wedding/doedit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'weddingSuborder') {
+            $income = $value['banquetIncome'];
+            $source['income']['id'] = $income['id'];
+            $source['income']['user_id'] = $income['user_id'];
+            $source['income']['order_id'] = $income['order_id'];
+            $source['income']['wedding_income_type'] = $income['wedding_income_type'];
+            $source['income']['remark'] = $income['remark'];
+            $editApi = '/h5/order.banquet_suborder/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
 
-                $source = [];
-                $suborder = $value['weddingSuborder'];
-                $source['suborder']['id'] = $suborder['id'];
-                $source['suborder']['company_id'] = $suborder['company_id'];
-                $source['suborder']['order_id'] = $suborder['order_id'];
-                $source['suborder']['salesman'] = $suborder['salesman'];
-                $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
-                $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
-                $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
+        } else if ($key == 'wedding') {
+            $value = $origin['wedding'];
+            $source['wedding'] = [];
+            $source['wedding']['company_id'] = $value['company_id'];
+            $source['wedding']['order_id'] = $value['order_id'];
+            $source['wedding']['user_id'] = $value['user_id'];
+            $source['wedding']['wedding_package_id'] = $value['wedding_package_id'];
+            $source['wedding']['wedding_package_price'] = $value['wedding_package_price'];
+            $source['wedding']['wedding_ritual_id'] = $value['wedding_ritual_id'];
+            $source['wedding']['wedding_ritual_hall'] = $value['wedding_ritual_hall'];
+            $source['wedding']['is_new_product'] = $value['is_new_product'];
+            $source['wedding']['new_product_no'] = $value['new_product_no'];
+            $source['wedding']['wedding_other'] = $value['wedding_other'];
+            $source['wedding']['wedding_total'] = $value['wedding_total'];
+            $source['wedding']['wedding_remark'] = $value['wedding_remark'];
+            $editApi = '/h5/order.wedding/doedit';
+            $backendApi = '/h5/order.confirm/backend';
 
-                $income = $value['weddingIncome'];
-                $source['income']['id'] = $income['id'];
-                $source['income']['user_id'] = $income['user_id'];
-                $source['income']['order_id'] = $income['order_id'];
-                $source['income']['wedding_income_type'] = $income['wedding_income_type'];
-                $source['income']['remark'] = $income['remark'];
-                break;
-            } else if ($key == 'banquetPayment') {
-                $value = $value[0];
-                $source['payment'] = [];
-                $source['payment']['id'] = $value['id'];
-                $source['payment']['order_id'] = $value['order_id'];
-                $source['payment']['user_id'] = $value['id'];
-                $source['payment']['payment_no'] = $value['banquet_payment_no'];
-                $source['payment']['pay_type'] = $value['banquet_pay_type'];
-                $source['payment']['apply_pay_date'] = $value['banquet_apply_pay_date'];
-                $source['payment']['pay_item_price'] = $value['banquet_pay_item_price'];
-                $source['payment']['payment_remark'] = $value['banquet_payment_remark'];
-                $source['payment']['pay_to_company'] = $value['banquet_pay_to_company'];
-                $source['payment']['pay_to_account'] = $value['banquet_pay_to_account'];
-                $source['payment']['pay_to_bank'] = $value['banquet_pay_to_bank'];
-                $source['payment']['receipt_img'] = $value['receipt_img'];
-                $source['payment']['note_img'] = $value['note_img'];
-                $editApi = '/h5/order.payment/doedit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'weddingPayment') {
-                $value = $value[0];
-                $source['payment'] = [];
-                $source['payment']['id'] = $value['id'];
-                $source['payment']['order_id'] = $value['order_id'];
-                $source['payment']['user_id'] = $value['id'];
-                $source['payment']['payment_no'] = $value['wedding_payment_no'];
-                $source['payment']['pay_type'] = $value['wedding_pay_type'];
-                $source['payment']['apply_pay_date'] = $value['wedding_apply_pay_date'];
-                $source['payment']['pay_item_price'] = $value['wedding_pay_item_price'];
-                $source['payment']['payment_remark'] = $value['wedding_payment_remark'];
-                $source['payment']['pay_to_company'] = $value['wedding_pay_to_company'];
-                $source['payment']['pay_to_account'] = $value['wedding_pay_to_account'];
-                $source['payment']['pay_to_bank'] = $value['wedding_pay_to_bank'];
-                $source['payment']['receipt_img'] = $value['receipt_img'];
-                $source['payment']['note_img'] = $value['note_img'];
-                $editApi = '/h5/order.payment/doedit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'banquetIncome') {
-                $value = $value[0];
-                $source['income'] = [];
-                $source['income']["id"] = $value["id"];
-                $source['income']["user_id"] = $value["user_id"];
-                $source['income']["order_id"] = $value["order_id"];
-                $source['income']["receivable_no"] = $value["banquet_receivable_no"];
-                $source['income']["income_date"] = $value["banquet_income_date"];
-                $source['income']["income_real_date"] = $value["banquet_income_real_date"];
-                $source['income']["income_payment"] = $value["banquet_income_payment"];
-                $source['income']["income_type"] = $value["banquet_income_type"];
-                $source['income']["income_item_price"] = $value["banquet_income_item_price"];
-                $source['income']["income_remark"] = $value["remark"];
-                $source['income']["receipt_img"] = $value["receipt_img"];
-                $source['income']["note_img"] = $value["note_img"];
-                $source['income_category'] = "婚宴";
-                $editApi = '/h5/order.banquet/doedit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'weddingIncome') {
-                $value = $value[0];
-                $source['income'] = [];
-                $source['income']["id"] = $value["id"];
-                $source['income']["user_id"] = $value["user_id"];
-                $source['income']["order_id"] = $value["order_id"];
-                $source['income']["receivable_no"] = $value["wedding_receivable_no"];
-                $source['income']["income_date"] = $value["wedding_income_date"];
-                $source['income']["income_real_date"] = $value["wedding_income_real_date"];
-                $source['income']["income_payment"] = $value["wedding_income_payment"];
-                $source['income']["income_type"] = $value["wedding_income_type"];
-                $source['income']["income_item_price"] = $value["wedding_income_item_price"];
-                $source['income']["income_remark"] = $value["remark"];
-                $source['income']["receipt_img"] = $value["receipt_img"];
-                $source['income']["note_img"] = $value["note_img"];
-                $source['income_category'] = "婚庆";
-                $editApi = '/h5/order.wedding/doedit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'hotelItem') {
-                $source['hotelItem'] = [];
-                $source['hotelItem']["id"] = $value["id"];
-                $source['hotelItem']["user_id"] = $value["user_id"];
-                $source['hotelItem']["order_id"] = $value["order_id"];
-                $source['hotelItem']["wedding_room_amount"] = $value["wedding_room_amount"];
-                $source['hotelItem']["wedding_room"] = $value["wedding_room"];
-                $source['hotelItem']["part_amount"] = $value["part_amount"];
-                $source['hotelItem']["part"] = $value["part"];
-                $source['hotelItem']["champagne_amount"] = $value["champagne_amount"];
-                $source['hotelItem']["champagne"] = $value["champagne"];
-                $source['hotelItem']["tea_amount"] = $value["tea_amount"];
-                $source['hotelItem']["tea"] = $value["tea"];
-                $source['hotelItem']["cake_amount"] = $value["cake_amount"];
-                $source['hotelItem']["cake"] = $value["cake"];
-                $editApi = '/h5/order.wedding/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-            } else if ($key == 'hotelProtocol') {
+        } else if ($key == 'weddingSuborder') {
+            $value = $origin;
+            $source = [];
+            $suborder = $value['weddingSuborder'][0];
+            $source['suborder']['id'] = $suborder['id'];
+            $source['suborder']['company_id'] = $suborder['company_id'];
+            $source['suborder']['order_id'] = $suborder['order_id'];
+            $source['suborder']['salesman'] = $suborder['salesman'];
+            $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
+            $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
+            $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
 
-                $source['hotelProtocol'] = [];
-                $source['hotelProtocol']["id"] = $value["id"];
-                $source['hotelProtocol']["user_id"] = $value["user_id"];
-                $source['hotelProtocol']["order_id"] = $value["order_id"];
-                $source['hotelProtocol']["table_price"] = $value["table_price"];
-                $source['hotelProtocol']["table_amount"] = $value["table_amount"];
-                $source['hotelProtocol']["wedding_room_amount"] = $value["wedding_room_amount"];
-                $source['hotelProtocol']["wedding_room"] = $value["wedding_room"];
-                $source['hotelProtocol']["part_amount"] = $value["part_amount"];
-                $source['hotelProtocol']["part"] = $value["part"];
-                $source['hotelProtocol']["champagne_amount"] = $value["champagne_amount"];
-                $source['hotelProtocol']["champagne"] = $value["champagne"];
-                $source['hotelProtocol']["tea_amount"] = $value["tea_amount"];
-                $source['hotelProtocol']["tea"] = $value["tea"];
-                $source['hotelProtocol']["cake_amount"] = $value["cake_amount"];
-                $source['hotelProtocol']["cake"] = $value["cake"];
-                $source['hotelProtocol']["tail_money_date"] = $value["tail_money_date"];
-                $source['hotelProtocol']["tail_money"] = $value["tail_money"];
-                $source['hotelProtocol']["middle_money_date"] = $value["middle_money_date"];
-                $source['hotelProtocol']["middle_money"] = $value["middle_money"];
-                $source['hotelProtocol']["earnest_money_date"] = $value["earnest_money_date"];
-                $source['hotelProtocol']["earnest_money"] = $value["earnest_money"];
-                $editApi = '/h5/order.hotel_protocol/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
+            $income = $value['weddingIncome'][0];
+            $source['income']['id'] = $income['id'];
+            $source['income']['user_id'] = $income['user_id'];
+            $source['income']['order_id'] = $income['order_id'];
+            $source['income']['wedding_income_type'] = $income['wedding_income_type'];
+            $source['income']['remark'] = $income['remark'];
 
-                break;
-            } else if ($key == 'car') {
-                $source = [];
-                ## 婚车主车
-                foreach ($value as $v) {
-                    $source['car']['company_id'] = $v['company_id'];
-                    $source['car']['is_suborder'] = $v['is_suborder'];
-                    $source['car']['service_hour'] = $v['service_hour'];
-                    $source['car']['service_distance'] = $v['service_distance'];
-                    $source['car']['arrive_time'] = $v['arrive_time'];
-                    $source['car']['arrive_address'] = $v['arrive_address'];
-                    $source['car']['car_remark'] = $v['master_car_remark'];
-                    $source['car']['salesman'] = $v['car_salesman'];
-                    $source['car']['order_id'] = $v['order_id'];
-                    $source['car']['user_id'] = $v['user_id'];
-                    if($v['is_master']) {
-                        $source['car']['master_order_id'] = $v['id'];
-                        $source['car']['master_car_id'] = $v['car_id'];
-                        $source['car']['master_car_price'] = $v['car_price'];
-                        $source['car']['master_car_amount'] = $v['car_amount'];
-                    } else {
-                        $source['car']['slave_order_id'] = $v['id'];
-                        $source['car']['slave_car_id'] = $v['car_id'];
-                        $source['car']['slave_car_price'] = $v['car_price'];
-                        $source['car']['slave_car_amount'] = $v['car_amount'];
-                    }
+        } else if ($key == 'banquetPayment') {
+            $value = $origin['banquetPayment'];
+            $value = $value[0];
+            $source['payment'] = [];
+            $source['payment']['id'] = $value['id'];
+            $source['payment']['order_id'] = $value['order_id'];
+            $source['payment']['user_id'] = $value['id'];
+            $source['payment']['payment_no'] = $value['banquet_payment_no'];
+            $source['payment']['pay_type'] = $value['banquet_pay_type'];
+            $source['payment']['apply_pay_date'] = $value['banquet_apply_pay_date'];
+            $source['payment']['pay_item_price'] = $value['banquet_pay_item_price'];
+            $source['payment']['payment_remark'] = $value['banquet_payment_remark'];
+            $source['payment']['pay_to_company'] = $value['banquet_pay_to_company'];
+            $source['payment']['pay_to_account'] = $value['banquet_pay_to_account'];
+            $source['payment']['pay_to_bank'] = $value['banquet_pay_to_bank'];
+            $source['payment']['receipt_img'] = $value['receipt_img'];
+            $source['payment']['note_img'] = $value['note_img'];
+            $editApi = '/h5/order.payment/doedit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'weddingPayment') {
+            $value = $origin['weddingPayment'];
+            $value = $value[0];
+            $source['payment'] = [];
+            $source['payment']['id'] = $value['id'];
+            $source['payment']['order_id'] = $value['order_id'];
+            $source['payment']['user_id'] = $value['id'];
+            $source['payment']['payment_no'] = $value['wedding_payment_no'];
+            $source['payment']['pay_type'] = $value['wedding_pay_type'];
+            $source['payment']['apply_pay_date'] = $value['wedding_apply_pay_date'];
+            $source['payment']['pay_item_price'] = $value['wedding_pay_item_price'];
+            $source['payment']['payment_remark'] = $value['wedding_payment_remark'];
+            $source['payment']['pay_to_company'] = $value['wedding_pay_to_company'];
+            $source['payment']['pay_to_account'] = $value['wedding_pay_to_account'];
+            $source['payment']['pay_to_bank'] = $value['wedding_pay_to_bank'];
+            $source['payment']['receipt_img'] = $value['receipt_img'];
+            $source['payment']['note_img'] = $value['note_img'];
+            $editApi = '/h5/order.payment/doedit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'banquetIncome') {
+            $value = $origin['banquetIncome'];
+            $value = $value[0];
+            $source['income'] = [];
+            $source['income']["id"] = $value["id"];
+            $source['income']["user_id"] = $value["user_id"];
+            $source['income']["order_id"] = $value["order_id"];
+            $source['income']["receivable_no"] = $value["banquet_receivable_no"];
+            $source['income']["income_date"] = $value["banquet_income_date"];
+            $source['income']["income_real_date"] = $value["banquet_income_real_date"];
+            $source['income']["income_payment"] = $value["banquet_income_payment"];
+            $source['income']["income_type"] = $value["banquet_income_type"];
+            $source['income']["income_item_price"] = $value["banquet_income_item_price"];
+            $source['income']["income_remark"] = $value["remark"];
+            $source['income']["receipt_img"] = $value["receipt_img"];
+            $source['income']["note_img"] = $value["note_img"];
+            $source['income_category'] = "婚宴";
+            $editApi = '/h5/order.banquet/doedit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'weddingIncome') {
+            $value = $origin['weddingIncome'];
+            $value = $value[0];
+            $source['income'] = [];
+            $source['income']["id"] = $value["id"];
+            $source['income']["user_id"] = $value["user_id"];
+            $source['income']["order_id"] = $value["order_id"];
+            $source['income']["receivable_no"] = $value["wedding_receivable_no"];
+            $source['income']["income_date"] = $value["wedding_income_date"];
+            $source['income']["income_real_date"] = $value["wedding_income_real_date"];
+            $source['income']["income_payment"] = $value["wedding_income_payment"];
+            $source['income']["income_type"] = $value["wedding_income_type"];
+            $source['income']["income_item_price"] = $value["wedding_income_item_price"];
+            $source['income']["income_remark"] = $value["remark"];
+            $source['income']["receipt_img"] = $value["receipt_img"];
+            $source['income']["note_img"] = $value["note_img"];
+            $source['income_category'] = "婚庆";
+            $editApi = '/h5/order.wedding/doedit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'hotelItem') {
+            $value = $origin['hotelItem'];
+            $source['hotelItem'] = [];
+            $source['hotelItem']["id"] = $value["id"];
+            $source['hotelItem']["user_id"] = $value["user_id"];
+            $source['hotelItem']["order_id"] = $value["order_id"];
+            $source['hotelItem']["wedding_room_amount"] = $value["wedding_room_amount"];
+            $source['hotelItem']["wedding_room"] = $value["wedding_room"];
+            $source['hotelItem']["part_amount"] = $value["part_amount"];
+            $source['hotelItem']["part"] = $value["part"];
+            $source['hotelItem']["champagne_amount"] = $value["champagne_amount"];
+            $source['hotelItem']["champagne"] = $value["champagne"];
+            $source['hotelItem']["tea_amount"] = $value["tea_amount"];
+            $source['hotelItem']["tea"] = $value["tea"];
+            $source['hotelItem']["cake_amount"] = $value["cake_amount"];
+            $source['hotelItem']["cake"] = $value["cake"];
+            $editApi = '/h5/order.wedding/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+        } else if ($key == 'hotelProtocol') {
+            $value = $origin['hotelProtocol'];
+            $source['hotelProtocol'] = [];
+            $source['hotelProtocol']["id"] = $value["id"];
+            $source['hotelProtocol']["user_id"] = $value["user_id"];
+            $source['hotelProtocol']["order_id"] = $value["order_id"];
+            $source['hotelProtocol']["table_price"] = $value["table_price"];
+            $source['hotelProtocol']["table_amount"] = $value["table_amount"];
+            $source['hotelProtocol']["wedding_room_amount"] = $value["wedding_room_amount"];
+            $source['hotelProtocol']["wedding_room"] = $value["wedding_room"];
+            $source['hotelProtocol']["part_amount"] = $value["part_amount"];
+            $source['hotelProtocol']["part"] = $value["part"];
+            $source['hotelProtocol']["champagne_amount"] = $value["champagne_amount"];
+            $source['hotelProtocol']["champagne"] = $value["champagne"];
+            $source['hotelProtocol']["tea_amount"] = $value["tea_amount"];
+            $source['hotelProtocol']["tea"] = $value["tea"];
+            $source['hotelProtocol']["cake_amount"] = $value["cake_amount"];
+            $source['hotelProtocol']["cake"] = $value["cake"];
+            $source['hotelProtocol']["tail_money_date"] = $value["tail_money_date"];
+            $source['hotelProtocol']["tail_money"] = $value["tail_money"];
+            $source['hotelProtocol']["middle_money_date"] = $value["middle_money_date"];
+            $source['hotelProtocol']["middle_money"] = $value["middle_money"];
+            $source['hotelProtocol']["earnest_money_date"] = $value["earnest_money_date"];
+            $source['hotelProtocol']["earnest_money"] = $value["earnest_money"];
+            $editApi = '/h5/order.hotel_protocol/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'car') {
+            $value = $origin['car'];
+            $source = [];
+            ## 婚车主车
+            foreach ($value as $v) {
+                $source['car']['company_id'] = $v['company_id'];
+                $source['car']['is_suborder'] = $v['is_suborder'];
+                $source['car']['service_hour'] = $v['service_hour'];
+                $source['car']['service_distance'] = $v['service_distance'];
+                $source['car']['arrive_time'] = $v['arrive_time'];
+                $source['car']['arrive_address'] = $v['arrive_address'];
+                $source['car']['car_remark'] = $v['master_car_remark'];
+                $source['car']['salesman'] = $v['car_salesman'];
+                $source['car']['order_id'] = $v['order_id'];
+                $source['car']['user_id'] = $v['user_id'];
+                if($v['is_master']) {
+                    $source['car']['master_order_id'] = $v['id'];
+                    $source['car']['master_car_id'] = $v['car_id'];
+                    $source['car']['master_car_price'] = $v['car_price'];
+                    $source['car']['master_car_amount'] = $v['car_amount'];
+                } else {
+                    $source['car']['slave_order_id'] = $v['id'];
+                    $source['car']['slave_car_id'] = $v['car_id'];
+                    $source['car']['slave_car_price'] = $v['car_price'];
+                    $source['car']['slave_car_amount'] = $v['car_amount'];
                 }
-
-                $editApi = '/h5/order.car/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'wine') {
-                $source = [];
-                foreach ($value as $v) {
-                    $source['wine'][] = [
-                        'id' => $v['id'],
-                        'order_id' => $v['order_id'],
-                        'wine_id' => $v['wine_id'],
-                        'wine_amount' => $v['wine_amount'],
-                        'wine_price' => $v['wine_price'],
-                        'wine_remark' => $v['wine_remark'],
-                    ];
-                }
-                $editApi = '/h5/order.wine/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'sugar') {
-                $source = [];
-                foreach ($value as $v) {
-                    $source['sugar'][] = [
-                        'id' => $v['id'],
-                        'order_id' => $v['order_id'],
-                        'sugar_id' => $v['sugar_id'],
-                        'sugar_amount' => $v['sugar_amount'],
-                        'sugar_price' => $v['sugar_price'],
-                        'sugar_remark' => $v['sugar_remark'],
-                    ];
-                }
-                $editApi = '/h5/order.sugar/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'dessert') {
-                $source = [];
-                foreach ($value as $v) {
-                    $source['dessert'][] = [
-                        'id' => $v['id'],
-                        'order_id' => $v['order_id'],
-                        'dessert_id' => $v['dessert_id'],
-                        'dessert_amount' => $v['dessert_amount'],
-                        'dessert_price' => $v['dessert_price'],
-                        'dessert_remark' => $v['dessert_remark'],
-                    ];
-                }
-                $editApi = '/h5/order.dessert/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'light') {
-                $source = [];
-                foreach ($value as $v) {
-                    $source['light'][] = [
-                        'id' => $v['id'],
-                        'order_id' => $v['order_id'],
-                        'light_id' => $v['light_id'],
-                        'light_amount' => $v['light_amount'],
-                        'light_price' => $v['light_price'],
-                        'light_remark' => $v['light_remark'],
-                    ];
-                }
-                $editApi = '/h5/order.light/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'led') {
-                $source = [];
-                foreach ($value as $v) {
-                    $source['led'][] = [
-                        'id' => $v['id'],
-                        'order_id' => $v['order_id'],
-                        'led_id' => $v['led_id'],
-                        'led_amount' => $v['led_amount'],
-                        'led_price' => $v['led_price'],
-                        'led_remark' => $v['led_remark'],
-                    ];
-                }
-                $editApi = '/h5/order.led/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
-            } else if ($key == 'd3') {
-                $source = [];
-                foreach ($value as $v) {
-                    $source['d3'][] = [
-                        'id' => $v['id'],
-                        'order_id' => $v['order_id'],
-                        'd3_id' => $v['d3_id'],
-                        'd3_amount' => $v['d3_amount'],
-                        'd3_price' => $v['d3_price'],
-                        'd3_remark' => $v['d3_remark'],
-                    ];
-                }
-                $editApi = '/h5/order.d3/doEdit';
-                $backendApi = '/h5/order.confirm/backend';
-                break;
             }
+
+            $editApi = '/h5/order.car/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+        } else if ($key == 'wine') {
+            $value = $origin['wine'];
+            $source = [];
+            foreach ($value as $v) {
+                $source['wine'][] = [
+                    'id' => $v['id'],
+                    'order_id' => $v['order_id'],
+                    'wine_id' => $v['wine_id'],
+                    'wine_amount' => $v['wine_amount'],
+                    'wine_price' => $v['wine_price'],
+                    'wine_remark' => $v['wine_remark'],
+                ];
+            }
+            $editApi = '/h5/order.wine/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'sugar') {
+            $value = $origin['sugar'];
+            $source = [];
+            foreach ($value as $v) {
+                $source['sugar'][] = [
+                    'id' => $v['id'],
+                    'order_id' => $v['order_id'],
+                    'sugar_id' => $v['sugar_id'],
+                    'sugar_amount' => $v['sugar_amount'],
+                    'sugar_price' => $v['sugar_price'],
+                    'sugar_remark' => $v['sugar_remark'],
+                ];
+            }
+            $editApi = '/h5/order.sugar/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'dessert') {
+            $value = $origin['dessert'];
+            $source = [];
+            foreach ($value as $v) {
+                $source['dessert'][] = [
+                    'id' => $v['id'],
+                    'order_id' => $v['order_id'],
+                    'dessert_id' => $v['dessert_id'],
+                    'dessert_amount' => $v['dessert_amount'],
+                    'dessert_price' => $v['dessert_price'],
+                    'dessert_remark' => $v['dessert_remark'],
+                ];
+            }
+            $editApi = '/h5/order.dessert/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'light') {
+            $value = $origin['light'];
+            $source = [];
+            foreach ($value as $v) {
+                $source['light'][] = [
+                    'id' => $v['id'],
+                    'order_id' => $v['order_id'],
+                    'light_id' => $v['light_id'],
+                    'light_amount' => $v['light_amount'],
+                    'light_price' => $v['light_price'],
+                    'light_remark' => $v['light_remark'],
+                ];
+            }
+            $editApi = '/h5/order.light/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'led') {
+            $value = $origin['led'];
+            $source = [];
+            foreach ($value as $v) {
+                $source['led'][] = [
+                    'id' => $v['id'],
+                    'order_id' => $v['order_id'],
+                    'led_id' => $v['led_id'],
+                    'led_amount' => $v['led_amount'],
+                    'led_price' => $v['led_price'],
+                    'led_remark' => $v['led_remark'],
+                ];
+            }
+            $editApi = '/h5/order.led/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
+
+        } else if ($key == 'd3') {
+            $value = $origin['d3'];
+            $source = [];
+            foreach ($value as $v) {
+                $source['d3'][] = [
+                    'id' => $v['id'],
+                    'order_id' => $v['order_id'],
+                    'd3_id' => $v['d3_id'],
+                    'd3_amount' => $v['d3_amount'],
+                    'd3_price' => $v['d3_price'],
+                    'd3_remark' => $v['d3_remark'],
+                ];
+            }
+            $editApi = '/h5/order.d3/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
         }
+
 
         if ($confirm->status == '0') {
             $buttons = [
@@ -780,7 +761,6 @@ class Confirm extends Base
         return json($result);
     }
 
-    # comnpany_id,创建时的审核进程
     public function getConfirmSequence()
     {
         $param = $this->request->param();
@@ -853,7 +833,8 @@ class Confirm extends Base
         return json($result);
     }
 
-    # 订单ID 参数id
+    # comnpany_id,创建时的审核进程
+
     public function getConfirmStep()
     {
         $param = $this->request->param();
@@ -972,5 +953,42 @@ class Confirm extends Base
         ];
 
         return json($result);
+    }
+
+    # 订单ID 参数id
+
+    protected function initialize()
+    {
+        parent::initialize();
+
+        ## 获取所有品牌、公司
+        $this->brands = \app\common\model\Brand::getBrands();
+
+        ## 套餐列表
+        $this->packageList = \app\common\model\Package::getList();
+
+        ## 套餐列表
+        $this->ritualList = \app\common\model\Ritual::getList();
+
+        ## 汽车列表
+        $this->carList = \app\common\model\Car::getList();
+
+        ## 酒水列表
+        $this->wineList = \app\common\model\Wine::getList();
+
+        ## 喜糖列表
+        $this->sugarList = \app\common\model\Sugar::getList();
+
+        ## 灯光列表
+        $this->lightList = \app\common\model\Light::getList();
+
+        ## 点心列表
+        $this->dessertList = \app\common\model\Dessert::getList();
+
+        ## led列表
+        $this->ledList = \app\common\model\Led::getList();
+
+        ## 3d列表
+        $this->d3List = \app\common\model\D3::getList();
     }
 }
