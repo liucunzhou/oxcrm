@@ -413,11 +413,7 @@ class Confirm extends Base
                 ## 婚车主车
                 foreach ($value as $v) {
                     $source['car']['company_id'] = $v['company_id'];
-                    $source['car']['is_master'] = $v['is_master'];
                     $source['car']['is_suborder'] = $v['is_suborder'];
-                    $source['car']['car_id'] = $v['car_id'];
-                    $source['car']['car_price'] = $v['car_price'];
-                    $source['car']['car_amount'] = $v['car_amount'];
                     $source['car']['service_hour'] = $v['service_hour'];
                     $source['car']['service_distance'] = $v['service_distance'];
                     $source['car']['arrive_time'] = $v['arrive_time'];
@@ -426,6 +422,17 @@ class Confirm extends Base
                     $source['car']['salesman'] = $v['car_salesman'];
                     $source['car']['order_id'] = $v['order_id'];
                     $source['car']['user_id'] = $v['user_id'];
+                    if($v['is_master']) {
+                        $source['car']['master_order_id'] = $v['id'];
+                        $source['car']['master_car_id'] = $v['car_id'];
+                        $source['car']['master_car_price'] = $v['car_price'];
+                        $source['car']['master_car_amount'] = $v['car_amount'];
+                    } else {
+                        $source['car']['slave_order_id'] = $v['id'];
+                        $source['car']['slave_car_id'] = $v['car_id'];
+                        $source['car']['slave_car_price'] = $v['car_price'];
+                        $source['car']['slave_car_amount'] = $v['car_amount'];
+                    }
                 }
 
                 $editApi = '/h5/order.car/doEdit';
