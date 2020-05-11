@@ -112,7 +112,7 @@ class WeddingSuborder extends Base
         $param = $this->request->param();
         $intro = "编辑婚庆二销订单";
         $suborder = json_decode($param['weddingSuborderList'], true);
-        $model = OrderWeddingSuborder::get($param['id']);
+        $model = OrderWeddingSuborder::get($suborder['id']);
         $model->startTrans();
         $suborder['user_id'] = $this->user['id'];
         $suborder['salesman'] = $this->user['id'];
