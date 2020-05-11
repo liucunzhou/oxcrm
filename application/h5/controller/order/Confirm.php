@@ -32,7 +32,7 @@ class Confirm extends Base
 
     protected function initialize()
     {
-        return parent::initialize();
+        parent::initialize();
 
         ## 获取所有品牌、公司
         $this->brands = \app\common\model\Brand::getBrands();
@@ -563,6 +563,7 @@ class Confirm extends Base
                 'managerList' => $managerList
             ];
         }
+
         $result = [
             'code' => '200',
             'msg' => '获取数据成功',
