@@ -306,7 +306,7 @@ class Confirm extends Base
                 $source['banquet']['banquet_remark'] = $value['banquet_remark'];
                 $editApi = '/h5/order.banquet/doedit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'banquetSuborder') {
                 $source = [];
                 $suborder = $value['banquetSuborder'];
@@ -324,6 +324,7 @@ class Confirm extends Base
                 $source['income']['order_id'] = $income['order_id'];
                 $source['income']['wedding_income_type'] = $income['wedding_income_type'];
                 $source['income']['remark'] = $income['remark'];
+                break;
 
             } else if ($key == 'wedding') {
                 $source['wedding'] = [];
@@ -341,7 +342,7 @@ class Confirm extends Base
                 $source['wedding']['wedding_remark'] = $value['wedding_remark'];
                 $editApi = '/h5/order.wedding/doedit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'weddingSuborder') {
 
                 $source = [];
@@ -360,7 +361,7 @@ class Confirm extends Base
                 $source['income']['order_id'] = $income['order_id'];
                 $source['income']['wedding_income_type'] = $income['wedding_income_type'];
                 $source['income']['remark'] = $income['remark'];
-
+                break;
             } else if ($key == 'banquetPayment') {
                 $value = $value[0];
                 $source['payment'] = [];
@@ -379,7 +380,7 @@ class Confirm extends Base
                 $source['payment']['note_img'] = $value['note_img'];
                 $editApi = '/h5/order.payment/doedit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'weddingPayment') {
                 $value = $value[0];
                 $source['payment'] = [];
@@ -398,7 +399,7 @@ class Confirm extends Base
                 $source['payment']['note_img'] = $value['note_img'];
                 $editApi = '/h5/order.payment/doedit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'banquetIncome') {
                 $value = $value[0];
                 $source['income'] = [];
@@ -417,7 +418,7 @@ class Confirm extends Base
                 $source['income_category'] = "婚宴";
                 $editApi = '/h5/order.banquet/doedit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'weddingIncome') {
                 $value = $value[0];
                 $source['income'] = [];
@@ -436,7 +437,7 @@ class Confirm extends Base
                 $source['income_category'] = "婚庆";
                 $editApi = '/h5/order.wedding/doedit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'hotelItem') {
                 $source['hotelItem'] = [];
                 $source['hotelItem']["id"] = $value["id"];
@@ -480,6 +481,8 @@ class Confirm extends Base
                 $source['hotelProtocol']["earnest_money"] = $value["earnest_money"];
                 $editApi = '/h5/order.hotel_protocol/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+
+                break;
             } else if ($key == 'car') {
                 $source = [];
                 ## 婚车主车
@@ -509,7 +512,7 @@ class Confirm extends Base
 
                 $editApi = '/h5/order.car/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
-
+                break;
             } else if ($key == 'wine') {
                 $source = [];
                 foreach ($value as $v) {
@@ -524,6 +527,7 @@ class Confirm extends Base
                 }
                 $editApi = '/h5/order.wine/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+                break;
             } else if ($key == 'sugar') {
                 $source = [];
                 foreach ($value as $v) {
@@ -538,6 +542,7 @@ class Confirm extends Base
                 }
                 $editApi = '/h5/order.sugar/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+                break;
             } else if ($key == 'dessert') {
                 $source = [];
                 foreach ($value as $v) {
@@ -552,6 +557,7 @@ class Confirm extends Base
                 }
                 $editApi = '/h5/order.dessert/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+                break;
             } else if ($key == 'light') {
                 $source = [];
                 foreach ($value as $v) {
@@ -566,6 +572,7 @@ class Confirm extends Base
                 }
                 $editApi = '/h5/order.light/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+                break;
             } else if ($key == 'led') {
                 $source = [];
                 foreach ($value as $v) {
@@ -580,6 +587,7 @@ class Confirm extends Base
                 }
                 $editApi = '/h5/order.led/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+                break;
             } else if ($key == 'd3') {
                 $source = [];
                 foreach ($value as $v) {
@@ -594,6 +602,7 @@ class Confirm extends Base
                 }
                 $editApi = '/h5/order.d3/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
+                break;
             }
         }
 
