@@ -248,10 +248,41 @@ class Confirm extends Base
             if ($key == 'order') {
 
             } else if ($key == 'banquet') {
+                $source['banquet'] = [];
+                $source['banquet']['company_id'] = $value['company_id'];
+                $source['banquet']['order_id'] = $value['order_id'];
+                $source['banquet']['user_id'] = $value['user_id'];
+                $source['banquet']['table_amount'] = $value['table_amount'];
+                $source['banquet']['table_price'] = $value['table_price'];
+                $source['banquet']['wine_fee'] = $value['wine_fee'];
+                $source['banquet']['service_fee'] = $value['service_fee'];
+                $source['banquet']['banquet_update_table'] = $value['banquet_update_table'];
+                $source['banquet']['banquet_discount'] = $value['banquet_discount'];
+                $source['banquet']['banquet_ritual_id'] = $value['banquet_ritual_id'];
+                $source['banquet']['banquet_ritual_hall'] = $value['banquet_ritual_hall'];
+                $source['banquet']['banquet_totals'] = $value['banquet_totals'];
+                $source['banquet']['banquet_remark'] = $value['banquet_remark'];
+                $editApi = '/h5/order.banquet/doedit';
+                $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'banquetSuborder') {
 
             } else if ($key == 'wedding') {
+                $source['wedding'] = [];
+                $source['wedding']['company_id'] = $value['company_id'];
+                $source['wedding']['order_id'] = $value['order_id'];
+                $source['wedding']['user_id'] = $value['user_id'];
+                $source['wedding']['wedding_package_id'] = $value['wedding_package_id'];
+                $source['wedding']['wedding_package_price'] = $value['wedding_package_price'];
+                $source['wedding']['wedding_ritual_id'] = $value['wedding_ritual_id'];
+                $source['wedding']['wedding_ritual_hall'] = $value['wedding_ritual_hall'];
+                $source['wedding']['is_new_product'] = $value['is_new_product'];
+                $source['wedding']['new_product_no'] = $value['new_product_no'];
+                $source['wedding']['wedding_other'] = $value['wedding_other'];
+                $source['wedding']['wedding_total'] = $value['wedding_total'];
+                $source['wedding']['wedding_remark'] = $value['wedding_remark'];
+                $editApi = '/h5/order.wedding/doedit';
+                $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'weddingSuborder') {
 
