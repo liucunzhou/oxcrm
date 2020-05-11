@@ -142,8 +142,8 @@ class Confirm extends Base
 
         $confirm = new OrderConfirm();
         $where = [];
-        // $where[] = ['user_id', '=', $this->user['id']];
-        $where[] = ['user_id', '=', $param['user_id']];
+        $where[] = ['user_id', '=', $this->user['id']];
+        // $where[] = ['user_id', '=', $param['user_id']];
         $where[] = ['order_id', '=', $param['order_id']];
         $confirmList = $confirm->where($where)->order('create_time desc')->select();
 
