@@ -34,28 +34,25 @@ class HotelProtocol extends Base
 
     public function doCreate()
     {
+
         $param = $this->request->param();
         $orderId = $param['order_id'];
         $param = json_decode($param['hotelProtocol'], true);
-
-        $where = [];
-        $where[] = ['id', '=', $param['id']];
-        $model = $this->model->where($where)->find();
         $param['order_id'] = $orderId;
-        $result = $model->allowField(true)->save($param);
-        $source['hotelProtocol'] = $model->toArray();
+        $result = $this->model->allowField(true)->save($param);
+        $source['hotelProtocol'] = $this->model->toArray();
 
         if($result) {
             $order = \app\common\model\Order::get($orderId);
-            $intro = "编辑酒店协议项目审核";
+            $intro = "添加酒店协议项目审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
+            $arr = ['code'=>'200', 'msg'=>'添加酒店协议项目成功'];
         } else {
-            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'添加酒店协议项目失败'];
         }
-
         return json($arr);
     }
+
     public function edit($id)
     {
         $where = [];

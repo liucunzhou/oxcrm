@@ -30,6 +30,27 @@ class HotelItem extends Base
         return json($result);
     }
 
+    public function doCreate()
+    {
+
+        $param = $this->request->param();
+        $orderId = $param['order_id'];
+        $param = json_decode($param['hotelItem'], true);
+        $param['order_id'] = $orderId;
+        $result = $this->model->allowField(true)->save($param);
+        $source['hotelItem'] = $this->model->toArray();
+
+        if($result) {
+            $order = \app\common\model\Order::get($orderId);
+            $intro = "添加酒店服务项目审核";
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
+            $arr = ['code'=>'200', 'msg'=>'添加酒店服务项目成功'];
+        } else {
+            $arr = ['code'=>'400', 'msg'=>'添加酒店服务项目失败'];
+        }
+        return json($arr);
+    }
+
     public function edit($id)
     {
         $where = [];
