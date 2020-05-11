@@ -419,22 +419,47 @@ class Confirm extends Base
             } else if ($key == 'dessert') {
 
             } else if ($key == 'light') {
-
+                $source = [];
+                foreach ($value as $v) {
+                    $source['light'][] = [
+                        'id' => $v['id'],
+                        'order_id' => $v['order_id'],
+                        'led_id' => $v['led_id'],
+                        'led_amount' => $v['led_amount'],
+                        'led_price' => $v['led_price'],
+                        'led_remark' => $v['led_remark'],
+                    ];
+                }
+                $editApi = '/h5/order.led/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'led') {
-
+                $source = [];
+                foreach ($value as $v) {
+                    $source['led'][] = [
+                        'id' => $v['id'],
+                        'order_id' => $v['order_id'],
+                        'led_id' => $v['led_id'],
+                        'led_amount' => $v['led_amount'],
+                        'led_price' => $v['led_price'],
+                        'led_remark' => $v['led_remark'],
+                    ];
+                }
+                $editApi = '/h5/order.led/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'd3') {
                 $source = [];
                 foreach ($value as $v) {
                     $source['d3'][] = [
                         'id' => $v['id'],
+                        'order_id' => $v['order_id'],
                         'd3_id' => $v['d3_id'],
                         'd3_amount' => $v['d3_amount'],
                         'd3_price' => $v['d3_price'],
                         'd3_remark' => $v['d3_remark'],
                     ];
                 }
-                $editApi = '/h5/order.d3/doedit';
-                $backendApi = '/h5/order.d3/backend';
+                $editApi = '/h5/order.d3/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             }
         }
 
