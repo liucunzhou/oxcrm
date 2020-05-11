@@ -36,9 +36,10 @@ class D3 extends Base
     public function doCreate()
     {
         $param = $this->request->param();
+        $orderId = $param['order_id'];
         $param = json_decode($param['d3List'], true);
         foreach($param as $key=>$value) {
-            $value['order_id'] = $param['order_id'];
+            $value['order_id'] = $orderId;
             $value['operate_id'] = $this->user['id'];
             $value['user_id'] = $this->user['id'];
             $result = $this->model->allowField(true)->save($value);
@@ -46,7 +47,7 @@ class D3 extends Base
         }
 
         if($result) {
-            $order = \app\common\model\Order::get($param['order_id']);
+            $order = \app\common\model\Order::get($orderId);
             $intro = "添加3D审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'添加3D信息成功'];
