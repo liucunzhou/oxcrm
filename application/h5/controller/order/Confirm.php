@@ -308,6 +308,22 @@ class Confirm extends Base
                 $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'banquetSuborder') {
+                $source = [];
+                $suborder = $value['banquetSuborder'];
+                $source['suborder']['id'] = $suborder['id'];
+                $source['suborder']['company_id'] = $suborder['company_id'];
+                $source['suborder']['order_id'] = $suborder['order_id'];
+                $source['suborder']['salesman'] = $suborder['salesman'];
+                $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
+                $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
+                $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
+
+                $income = $value['banquetIncome'];
+                $source['income']['id'] = $income['id'];
+                $source['income']['user_id'] = $income['user_id'];
+                $source['income']['order_id'] = $income['order_id'];
+                $source['income']['wedding_income_type'] = $income['wedding_income_type'];
+                $source['income']['remark'] = $income['remark'];
 
             } else if ($key == 'wedding') {
                 $source['wedding'] = [];
@@ -327,6 +343,23 @@ class Confirm extends Base
                 $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'weddingSuborder') {
+
+                $source = [];
+                $suborder = $value['weddingSuborder'];
+                $source['suborder']['id'] = $suborder['id'];
+                $source['suborder']['company_id'] = $suborder['company_id'];
+                $source['suborder']['order_id'] = $suborder['order_id'];
+                $source['suborder']['salesman'] = $suborder['salesman'];
+                $source['suborder']['wedding_order_no'] = $suborder['wedding_order_no'];
+                $source['suborder']['wedding_totals'] = $suborder['wedding_totals'];
+                $source['suborder']['sub_wedding_remark'] = $suborder['sub_wedding_remark'];
+
+                $income = $value['weddingIncome'];
+                $source['income']['id'] = $income['id'];
+                $source['income']['user_id'] = $income['user_id'];
+                $source['income']['order_id'] = $income['order_id'];
+                $source['income']['wedding_income_type'] = $income['wedding_income_type'];
+                $source['income']['remark'] = $income['remark'];
 
             } else if ($key == 'banquetPayment') {
                 $value = $value[0];
