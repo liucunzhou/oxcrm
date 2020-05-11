@@ -16,18 +16,45 @@ class Wine extends Base
 
     public function create()
     {
+        $param = $this->request->param();
+        $order = \app\common\model\Order::get($param['order_id']);
+        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
         $list = \app\common\model\Wine::getList();
         $result = [
             'code' => '200',
             'msg' => '获取信息成功',
             'data' => [
-                'list' => array_values($list)
+                'list' => array_values($list),
+                'confirmList' => $confirmList
             ]
         ];
-
-
         return json($result);
+    }
+
+    public function doCreate()
+    {
+        $param = $this->request->param();
+        $orderId = $param['order_id'];
+        $param = json_decode($param['wineList'], true);
+        foreach($param as $key=>$value) {
+            $value['order_id'] = $orderId;
+            $value['operate_id'] = $this->user['id'];
+            $value['user_id'] = $this->user['id'];
+            $result = $this->model->allowField(true)->save($value);
+            $source['wine'][] = $this->model->toArray();
+        }
+
+        if($result) {
+            $order = \app\common\model\Order::get($orderId);
+            $intro = "添加酒水信息审核";
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
+            $arr = ['code'=>'200', 'msg'=>'添加酒水信息成功'];
+        } else {
+            $arr = ['code'=>'200', 'msg'=>'添加酒水信息失败'];
+        }
+
+        return json($arr);
     }
 
     public function edit($id)

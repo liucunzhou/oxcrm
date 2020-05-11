@@ -19,7 +19,6 @@ class Car extends Base
     {
         $param = $this->request->param();
         $order = \app\common\model\Order::get($param['order_id']);
-        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
         $list = \app\common\model\Car::getList();
         $companyList = Brand::getBrands();
@@ -34,6 +33,72 @@ class Car extends Base
 
 
         return json($result);
+    }
+
+    public function doCreate(){
+        $param = $this->request->param();
+        $orderId = $param['order_id'];
+        $carData = json_decode($param['car'], true);
+        if (!empty($carData['master_car_id'])) {
+            $row = [];
+            $row['company_id'] = $carData['car_company_id'];
+            $row['is_master'] = 1;
+            $row['is_suborder'] = 0;
+            $row['car_id'] = $carData['master_car_id'];
+            $row['car_price'] = $carData['master_car_price'];
+            $row['car_amount'] = $carData['master_car_amount'];
+            $row['service_hour'] = $carData['service_hour'];
+            $row['service_distance'] = $carData['service_distance'];
+            $row['car_contact'] = $carData['car_contact'];
+            $row['car_mobile'] = $carData['car_mobile'];
+            $row['arrive_time'] = $carData['arrive_time'];
+            $row['arrive_address'] = $carData['arrive_address'];
+            $row['car_remark'] = $carData['master_car_remark'];
+            $row['salesman'] = $carData['car_salesman'];
+            $row['company_id'] = $carData['car_company_id'];
+            $row['order_id'] = $orderId;
+            $row['operate_id'] = $this->user['id'];
+            $row['user_id'] = $this->user['id'];
+            $carModel = new OrderCar();
+            $result1 = $carModel->allowField(true)->save($row);
+            $source['car'][] = $carModel->toArray();
+        }
+
+        if (!empty($carData['slave_car_id'])) {
+            $row = [];
+            $row['order_id'] = $carData['order_id'];
+            $row['company_id'] = $carData['car_company_id'];
+            $row['is_master'] = 0;
+            $row['is_suborder'] = 0;
+            $row['car_id'] = $carData['slave_car_id'];
+            $row['car_price'] = $carData['slave_car_price'];
+            $row['car_amount'] = $carData['slave_car_amount'];
+            $row['service_hour'] = $carData['service_hour'];
+            $row['service_distance'] = $carData['service_distance'];
+            $row['car_contact'] = $carData['car_contact'];
+            $row['car_mobile'] = $carData['car_mobile'];
+            $row['arrive_time'] = $carData['arrive_time'];
+            $row['arrive_address'] = $carData['arrive_address'];
+            $row['car_remark'] = $carData['slave_car_remark'];
+            $row['create_time'] = time();
+            $row['salesman'] = $carData['car_salesman'];
+            $row['company_id'] = $carData['car_company_id'];
+            $row['order_id'] = $orderId;
+            $row['operate_id'] = $this->user['id'];
+            $row['user_id'] = $this->user['id'];
+            $carModel = new OrderCar();
+            $result2 = $carModel->allowField(true)->save($row);
+            $source['car'][] = $carModel->toArray();
+        }
+
+        if($result1 || $result2) {
+            $order = \app\common\model\Order::get($orderId);
+            $intro = "添加婚车审核";
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
+            $arr = ['code'=>'200', 'msg'=>'添加婚车信息成功'];
+        } else {
+            $arr = ['code'=>'200', 'msg'=>'添加婚车信息失败'];
+        }
     }
 
     public function edit($id)
