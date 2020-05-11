@@ -247,7 +247,8 @@ class Income extends Base
         if($param['income_category'] == '婚宴') {
             $data = [
                 'id'    => $param['id'],
-                'banquet_receivable_no' => $param['receivable_no'],
+                'banquet_receivable_no' => $param['receivable_
+                no'],
                 'banquet_income_payment'    => $param['income_payment'],
                 'banquet_income_type'   => $param['income_type'],
                 'banquet_income_date'   => $param['income_date'],

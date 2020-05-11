@@ -320,16 +320,32 @@ class Confirm extends Base
 
         if($confirm->status == '0') {
             $buttons = [
-                'backout'   => '撤销'
+                [
+                    'id'    => 'backend',
+                    'label' => '撤销',
+                    'api'   => $editApi
+                ]
             ];
         } else if ($confirm->status == '1') {
             $buttons = [
-                'update'   => '更新'
+                [
+                    'id'    => 'update',
+                    'label' => '更新',
+                    'api'   => $editApi
+                ]
             ];
         } else if ($confirm->status == '2') {
             $buttons = [
-                'backout'  => '撤销',
-                'update'   => '更新'
+                [
+                    'id'    => 'backout',
+                    'label' => '撤销',
+                    'api'   => $editApi
+                ],
+                [
+                    'id'    => 'update',
+                    'label' => '更新',
+                    'api'   => $editApi
+                ]
             ];
         } else {
             $buttons = [];
@@ -438,7 +454,6 @@ class Confirm extends Base
                 'incomeTypeList'    => $this->config['payment_type_list'],
                 'incomePaymentList' => $this->config['payments'],
                 'confirmList'       => $confirmList,
-                'editApi'           => $editApi
             ]
         ];
 
