@@ -269,7 +269,7 @@ class Confirm extends Base
                 $source['income']["income_payment"] = $value["banquet_income_payment"];
                 $source['income']["income_type"] = $value["banquet_income_type"];
                 $source['income']["income_item_price"] = $value["banquet_income_item_price"];
-                $source['income']["remark"] = $value["remark"];
+                $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
                 $source['income']["note_img"] = $value["note_img"];
             } else if ($key == 'weddingIncome') {
@@ -283,7 +283,7 @@ class Confirm extends Base
                 $source['income']["income_payment"] = $value["wedding_income_payment"];
                 $source['income']["income_type"] = $value["wedding_income_type"];
                 $source['income']["income_item_price"] = $value["wedding_income_item_price"];
-                $source['income']["remark"] = $value["remark"];
+                $source['income']["income_remark"] = $value["remark"];
                 $source['income']["receipt_img"] = $value["receipt_img"];
                 $source['income']["note_img"] = $value["note_img"];
 
