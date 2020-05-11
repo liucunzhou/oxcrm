@@ -241,9 +241,39 @@ class Confirm extends Base
 
         $confirm = OrderConfirm::get($param['id']);
         $source = json_decode($confirm->source, true);
+        if($confirm->status == '0') {
+            $buttons = [
+                'backout'   => '撤销'
+            ];
+        } else if ($confirm->status == '1') {
+            $buttons = [
+                'update'   => '更新'
+            ];
+        } else if ($confirm->status == '2') {
+            $buttons = [
+                'backout'  => '撤销',
+                'update'   => '更新'
+            ];
+        } else {
+            $buttons = [];
+        }
 
+        $confirmData = [
+            'confirm_no'    => $confirm->confirm_no,
+            'confirm_intro' => $confirm->confirm_intro,
+            'status'        => $this->confirmStatusList[$confirm->status]
+        ];
+        $result = [
+            'code'  => '200',
+            'msg'   => '获取数据成功',
+            'data'  => [
+                'confirm'   => $confirmData,
+                'detail'    => $source,
+                'buttons'   => $buttons
+            ]
+        ];
 
-
+        return json($result);
     }
 
     # comnpany_id,创建时的审核进程
