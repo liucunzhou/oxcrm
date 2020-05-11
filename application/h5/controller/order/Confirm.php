@@ -96,7 +96,6 @@ class Confirm extends Base
         $users = User::getUsers();
         $newsTypes = $this->config['news_type_list'];
         $companies = Brand::getBrands();
-
         $model = new OrderConfirm();
         // $model->
         $where = [];
@@ -132,6 +131,43 @@ class Confirm extends Base
                 ]
             ];
         }
+
+        return json($result);
+    }
+
+    ## 订单的审核列表
+    public function orderConfirms()
+    {
+        $param = $this->request->param();
+
+        $confirm = new OrderConfirm();
+        $where = [];
+        // $where[] = ['user_id', '=', $this->user['id']];
+        $where[] = ['user_id', '=', $param['user_id']];
+        $where[] = ['order_id', '=', $param['order_id']];
+        $confirmList = $confirm->where($where)->order('create_time desc')->select();
+
+        $list = [];
+        foreach ($confirmList as $key=>$confirm) {
+            $confirmNo = $confirm->confirm_no;
+            if(!isset($list[$confirmNo])) {
+                $list[$confirmNo]['id']             = $confirm->id;
+                $list[$confirmNo]['confirm_no']     = $confirm->confirm_no;
+                $list[$confirmNo]['confirm_intro']  = $confirm->confirm_intro;
+                $list[$confirmNo]['status']         = $this->confirmStatusList[$confirm->status];
+                $list[$confirmNo]['start_time']     = $confirm->create_time;
+            } else {
+                $list[$confirmNo]['start_time']     = $confirm->create_time;
+            }
+        }
+
+        $result = [
+            'code'  => '200',
+            'msg'   => '获取审核列表成功',
+            'data'  => [
+                'list'  => array_values($list)
+            ]
+        ];
 
         return json($result);
     }
