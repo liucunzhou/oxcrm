@@ -388,6 +388,7 @@ class Confirm extends Base
                         'd3_id'    => $v['d3_id'],
                         'd3_amount'    => $v['d3_amount'],
                         'd3_price'    => $v['d3_price'],
+                        'd3_remark'    => $v['d3_remark'],
                     ];
                 }
                 $editApi = '/h5/order.d3/doedit';
