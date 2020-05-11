@@ -120,6 +120,8 @@ class Payment extends Base
             $payment['wedding_pay_to_company'] = $data['pay_to_company'];
             $payment['wedding_pay_to_account'] = $data['pay_to_account'];
             $payment['wedding_pay_to_bank'] = $data['pay_to_bank'];
+            $payment['receipt_img'] = $data['receipt_img'];
+            $payment['note_img'] = $data['note_img'];
             $paymentModel = new OrderWeddingPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
             $intro = '创建婚庆付款审核';
@@ -138,6 +140,8 @@ class Payment extends Base
             $payment['banquet_pay_to_company'] = $data['pay_to_company'];
             $payment['banquet_pay_to_account'] = $data['pay_to_account'];
             $payment['banquet_pay_to_bank'] = $data['pay_to_bank'];
+            $payment['receipt_img'] = $data['receipt_img'];
+            $payment['note_img'] = $data['note_img'];
             $paymentModel = new OrderBanquetPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
 
