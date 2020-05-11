@@ -259,19 +259,19 @@ class Confirm extends Base
 
             } else if ($key == 'banquetIncome' ) {
                 $value = $value[0];
-                $source['banquetIncome'] = [];
-                $source['banquetIncome']["id"] = $value["id"];
-                $source['banquetIncome']["user_id"] = $value["user_id"];
-                $source['banquetIncome']["order_id"] = $value["order_id"];
-                $source['banquetIncome']["receivable_no"] = $value["banquet_receivable_no"];
-                $source['banquetIncome']["income_date"] = $value["banquet_income_date"];
-                $source['banquetIncome']["income_real_date"] = $value["banquet_income_real_date"];
-                $source['banquetIncome']["income_payment"] = $value["banquet_income_payment"];
-                $source['banquetIncome']["income_type"] = $value["banquet_income_type"];
-                $source['banquetIncome']["income_item_price"] = $value["banquet_income_item_price"];
-                $source['banquetIncome']["remark"] = $value["remark"];
-                $source['banquetIncome']["receipt_img"] = $value["receipt_img"];
-                $source['banquetIncome']["note_img"] = $value["note_img"];
+                $source['income'] = [];
+                $source['income']["id"] = $value["id"];
+                $source['income']["user_id"] = $value["user_id"];
+                $source['income']["order_id"] = $value["order_id"];
+                $source['income']["receivable_no"] = $value["banquet_receivable_no"];
+                $source['income']["income_date"] = $value["banquet_income_date"];
+                $source['income']["income_real_date"] = $value["banquet_income_real_date"];
+                $source['income']["income_payment"] = $value["banquet_income_payment"];
+                $source['income']["income_type"] = $value["banquet_income_type"];
+                $source['income']["income_item_price"] = $value["banquet_income_item_price"];
+                $source['income']["remark"] = $value["remark"];
+                $source['income']["receipt_img"] = $value["receipt_img"];
+                $source['income']["note_img"] = $value["note_img"];
 
             } else if ($key == 'weddingIncome') {
 
