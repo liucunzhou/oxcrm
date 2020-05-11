@@ -337,6 +337,93 @@ class Confirm extends Base
             'status'        => $this->confirmStatusList[$confirm->status]
         ];
 
+
+        $where = [];
+        $where[] = ['company_id', '=', $confirm->company_id];
+        $where[] = ['timing', '=', $confirm->confirm_type];
+        $audit = \app\common\model\Audit::where($where)->find();
+        if (empty($audit)) {
+            $result = [
+                'code' => '400',
+                'msg' => '尚未设置审核顺序'
+            ];
+            return json($result);
+        }
+
+        if (empty($audit->content)) {
+            $result = [
+                'code' => '400',
+                'msg' => '尚未设置审核顺序'
+            ];
+            return json($result);
+        }
+
+        ### 获取所有审核的列表
+        $where = [];
+        $where['confirm_no'] = $confirm->confirm_no;
+        $where['order_id'] = $param['id'];
+        $orderConfirm = new OrderConfirm();
+        $confirmRs = $orderConfirm->where($where)->column('id,status,content', 'confirm_item_id');
+
+        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
+        $staffs = User::getUsers(false);
+        ## 审核全局列表
+        $sequence = $this->config['check_sequence'];
+        $auth = json_decode($audit->content, true);
+        $confirmList = [];
+        foreach ($auth as $key => $row) {
+            $managerList = [];
+            $type = $sequence[$key]['type'];
+            if ($type == 'role') {
+                // 获取角色
+                foreach ($row as $v) {
+                    $user = User::getRoleManager($v, $this->user);
+                    $managerList[] = [
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            } else {
+                foreach ($row as $v) {
+                    if (!isset($staffs[$v])) continue;
+                    $user = $staffs[$v];
+                    $managerList[] = [
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            }
+
+            if ($confirmRs[$key]) {
+                switch ($confirmRs[$key]['status']) {
+                    case 0:
+                        $status = '待审核';
+                        break;
+                    case 1:
+                        $status = '审核通过';
+                        break;
+                    case 2:
+                        $status = '审核驳回';
+                        break;
+                    default:
+                        $status = '待审核';
+                }
+                $content = $confirmRs[$key]['content'];
+            } else {
+                $status = '待审核';
+                $content = '';
+            }
+
+            $confirmList[] = [
+                'id' => $key,
+                'title' => $sequence[$key]['title'],
+                'status' => $status,
+                'content' => $content,
+                'managerList' => $managerList
+            ];
+        }
         $result = [
             'code'  => '200',
             'msg'   => '获取数据成功',
@@ -345,7 +432,8 @@ class Confirm extends Base
                 'detail'            => $source,
                 'buttons'           => $buttons,
                 'incomeTypeList'    => $this->config['payment_type_list'],
-                'incomePaymentList' => $this->config['payments']
+                'incomePaymentList' => $this->config['payments'],
+                'confirmList'       => $confirmList
             ]
         ];
 
