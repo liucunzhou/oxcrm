@@ -121,6 +121,7 @@ class BanquetSuborder extends Base
         $suborder = json_decode($param['banquetSuborderList'], true);
         $action = '更新';
         $model = OrderBanquetSuborder::get($suborder['id']);
+        echo OrderBanquetSuborder::getLastSql();
         $intro = "编辑婚宴二销订单";
         $model->startTrans();
         $model->user_id = $this->user['id'];
