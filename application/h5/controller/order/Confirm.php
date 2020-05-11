@@ -276,6 +276,7 @@ class Confirm extends Base
                 $source['income']["note_img"] = $value["note_img"];
                 $source['income_category'] = "婚宴";
                 $editApi = '/h5/order.income/doedit';
+                $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'weddingIncome') {
                 $value = $value[0];
@@ -294,6 +295,7 @@ class Confirm extends Base
                 $source['income']["note_img"] = $value["note_img"];
                 $source['income_category'] = "婚庆";
                 $editApi = '/h5/order.income/doedit';
+                $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'hotelItem') {
 
@@ -323,7 +325,7 @@ class Confirm extends Base
                 [
                     'id'    => 'backend',
                     'label' => '撤销',
-                    'api'   => $editApi
+                    'api'   => $backendApi
                 ]
             ];
         } else if ($confirm->status == '1') {
@@ -339,7 +341,7 @@ class Confirm extends Base
                 [
                     'id'    => 'backout',
                     'label' => '撤销',
-                    'api'   => $editApi
+                    'api'   => $backendApi
                 ],
                 [
                     'id'    => 'update',
@@ -456,6 +458,28 @@ class Confirm extends Base
                 'confirmList'       => $confirmList,
             ]
         ];
+
+        return json($result);
+    }
+
+    public function backend()
+    {
+        $params = $this->request->param();
+
+        $where['id'] = $params['id'];
+        $rs = OrderConfirm::where($where)->update(['status'=>13]);
+
+        if($rs) {
+            $result = [
+                'code'  => '200',
+                'msg'   => '撤销成功'
+            ];
+        } else {
+            $result = [
+                'code'  => '400',
+                'msg'   => '撤销失败'
+            ];
+        }
 
         return json($result);
     }
