@@ -242,7 +242,7 @@ class Confirm extends Base
         $confirm = OrderConfirm::get($param['id']);
         $origin = json_decode($confirm->source, true);
         $source = [];
-        foreach ($origin as $key => $value) {
+        foreach ($origin as $key =>$value) {
             if ($key == 'order') {
 
             } else if ($key == 'banquet') {
@@ -258,6 +258,7 @@ class Confirm extends Base
             } else if ($key == 'weddingPayment') {
 
             } else if ($key == 'banquetIncome' ) {
+                $value = $value[0];
                 $source['banquetIncome'] = [];
                 $source['banquetIncome']["id"] = $value["id"];
                 $source['banquetIncome']["user_id"] = $value["user_id"];
