@@ -39,6 +39,7 @@ class HotelProtocol extends Base
         $orderId = $param['order_id'];
         $param = json_decode($param['hotelProtocol'], true);
         $param['order_id'] = $orderId;
+        $param['user_id'] = $this->user['id'];
         $result = $this->model->allowField(true)->save($param);
         $source['hotelProtocol'] = $this->model->toArray();
 
@@ -80,18 +81,16 @@ class HotelProtocol extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-        $orderId = $param['order_id'];
         $param = json_decode($param['hotelProtocol'], true);
 
         $where = [];
         $where[] = ['id', '=', $param['id']];
         $model = $this->model->where($where)->find();
-        $param['order_id'] = $orderId;
         $result = $model->allowField(true)->save($param);
         $source['hotelProtocol'] = $model->toArray();
 
         if($result) {
-            $order = \app\common\model\Order::get($orderId);
+            $order = \app\common\model\Order::get($param['order_id']);
             $intro = "编辑酒店协议项目审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
