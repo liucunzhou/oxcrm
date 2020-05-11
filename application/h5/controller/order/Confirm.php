@@ -844,7 +844,7 @@ class Confirm extends Base
         $confirm = OrderConfirm::get($param['order_confirm_id']);
         $rs = $confirm->update(['status' => 13]);
 
-        $source = json_decode($confirm->source);
+        $source = json_decode($confirm->source, true);
         foreach ($source as $key=>$value) {
             $where = [];
             $where[] = ['id', '=', $value['id']];
