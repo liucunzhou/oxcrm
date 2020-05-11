@@ -839,10 +839,89 @@ class Confirm extends Base
 
     public function backend()
     {
-        $params = $this->request->param();
+        $param = $this->request->param();
 
-        $where['id'] = $params['id'];
-        $rs = OrderConfirm::where($where)->update(['status' => 13]);
+        $confirm = OrderConfirm::get($param['order_confirm_id']);
+        $rs = $confirm->update(['status' => 13]);
+
+        $source = json_decode($confirm->source);
+        foreach ($source as $key=>$value) {
+            $where = [];
+            $where[] = ['id', '=', $value['id']];
+            switch ($key) {
+                case 'order':
+                    \app\common\model\Order::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'banquet':
+                    \app\common\model\OrderBanquet::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'banquetSuborder':
+                    \app\common\model\OrderBanquetSuborder::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'banquetIncome':
+                    \app\common\model\OrderBanquetReceivables::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'banquetPayment':
+                    \app\common\model\OrderBanquetPayment::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'wedding':
+                    \app\common\model\OrderWedding::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'weddingSuborder':
+                    \app\common\model\OrderWeddingSuborder::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'weddingIncome':
+                    \app\common\model\OrderWeddingReceivables::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'weddingPayment':
+                    \app\common\model\OrderWeddingPayment::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'hotelItem':
+                    \app\common\model\OrderHotelItem::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'hotelProtocol':
+                    \app\common\model\OrderHotelProtocol::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'car':
+                    \app\common\model\OrderCar::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'wine':
+                    \app\common\model\OrderWine::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'sugar':
+                    \app\common\model\OrderSugar::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'dessert':
+                    \app\common\model\OrderDessert::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'light':
+                    \app\common\model\OrderLight::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'led':
+                    \app\common\model\OrderLed::where($where)->update(['status'=>13]);
+                    break;
+
+                case 'd3':
+                    \app\common\model\OrderD3::where($where)->update(['status'=>13]);
+                    break;
+            }
+        }
 
         if ($rs) {
             $result = [
