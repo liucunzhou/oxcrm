@@ -383,7 +383,7 @@ class Confirm extends Base
             } else if ($key == 'd3') {
                 $source = [];
                 foreach ($value as $v) {
-                    $source['car'][] = [
+                    $source['d3'][] = [
                         'id'    => $v['id'],
                         'd3_id'    => $v['d3_id'],
                         'd3_amount'    => $v['d3_amount'],

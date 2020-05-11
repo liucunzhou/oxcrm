@@ -48,7 +48,7 @@ class D3 extends Base
 
         if($result) {
             $order = \app\common\model\Order::get($orderId);
-            $intro = "添加3D审核";
+            $intro = "添加3D信息审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'添加3D信息成功'];
         } else {
