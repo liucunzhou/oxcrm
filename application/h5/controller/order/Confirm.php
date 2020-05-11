@@ -331,8 +331,12 @@ class Confirm extends Base
             $source['income']['id'] = $income['id'];
             $source['income']['user_id'] = $income['user_id'];
             $source['income']['order_id'] = $income['order_id'];
+            $source['income']['receivable_no'] = $income['receivable_no'];
+            $source['income']['wedding_income_payment'] = $income['wedding_income_payment'];
             $source['income']['wedding_income_type'] = $income['wedding_income_type'];
-            $source['income']['remark'] = $income['remark'];
+            $source['income']['wedding_income_date'] = $income['wedding_income_date'];
+            $source['income']['wedding_income_item_price'] = $income['wedding_income_item_price'];
+            $source['income']['income_remark'] = $income['income_remark'];
 
         } else if ($key == 'banquetPayment') {
             $value = $origin['banquetPayment'];

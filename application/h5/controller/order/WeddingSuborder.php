@@ -56,7 +56,8 @@ class WeddingSuborder extends Base
         $income['order_id'] = $param['order_id'];
         $income['user_id'] = $this->user['id'];
         $income['wedding_income_type'] = 5;
-        $income['remark'] = $param['income_remark'];
+        $income['remark'] = $income['income_remark'];
+        $income['wedding_receivable_no'] = $income['receivable_no'];
         $receivable = new OrderWeddingReceivables();
         $result2 = $receivable->allowField(true)->save($income);
         $source['weddingIncome'][] = $receivable->toArray();
