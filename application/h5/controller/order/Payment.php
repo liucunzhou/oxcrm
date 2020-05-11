@@ -265,7 +265,7 @@ class Payment extends Base
                 'banquet_pay_to_company' => $param['pay_to_company'],
                 'banquet_pay_to_account' => $param['pay_to_account'],
                 'banquet_pay_to_bank' => $param['pay_to_bank'],
-               'receipt_img' => $param['receipt_img'],
+                'receipt_img' => $param['receipt_img'],
                 'note_img' => $param['note_img'],
             ];
         } else {

@@ -256,8 +256,41 @@ class Confirm extends Base
             } else if ($key == 'weddingSuborder') {
 
             } else if ($key == 'banquetPayment') {
-
+                $value = $value;
+                $source['payment'] = [];
+                $source['payment']['id'] = $value['order_id'];
+                $source['payment']['order_id'] = $value['order_id'];
+                $source['payment']['user_id'] = $value['id'];
+                $source['payment']['payment_no'] = $value['banquet_payment_no'];
+                $source['payment']['pay_type'] = $value['banquet_pay_type'];
+                $source['payment']['apply_pay_date'] = $value['banquet_apply_pay_date'];
+                $source['payment']['pay_item_price'] = $value['banquet_pay_item_price'];
+                $source['payment']['payment_remark'] = $value['banquet_payment_remark'];
+                $source['payment']['pay_to_company'] = $value['banquet_pay_to_company'];
+                $source['payment']['pay_to_account'] = $value['banquet_pay_to_account'];
+                $source['payment']['pay_to_bank'] = $value['banquet_pay_to_bank'];
+                $source['payment']['receipt_img'] = $value['receipt_img'];
+                $source['payment']['note_img'] = $value['note_img'];
+                $editApi = '/h5/order.payment/doedit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'weddingPayment') {
+                $value = $value;
+                $source['payment'] = [];
+                $source['payment']['id'] = $value['order_id'];
+                $source['payment']['order_id'] = $value['order_id'];
+                $source['payment']['user_id'] = $value['id'];
+                $source['payment']['payment_no'] = $value['wedding_payment_no'];
+                $source['payment']['pay_type'] = $value['wedding_pay_type'];
+                $source['payment']['apply_pay_date'] = $value['wedding_apply_pay_date'];
+                $source['payment']['pay_item_price'] = $value['wedding_pay_item_price'];
+                $source['payment']['payment_remark'] = $value['wedding_payment_remark'];
+                $source['payment']['pay_to_company'] = $value['wedding_pay_to_company'];
+                $source['payment']['pay_to_account'] = $value['wedding_pay_to_account'];
+                $source['payment']['pay_to_bank'] = $value['wedding_pay_to_bank'];
+                $source['payment']['receipt_img'] = $value['receipt_img'];
+                $source['payment']['note_img'] = $value['note_img'];
+                $editApi = '/h5/order.payment/doedit';
+                $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'banquetIncome' ) {
                 $value = $value[0];
