@@ -301,9 +301,9 @@ class Confirm extends Base
             $source['income']['banquet_income_type'] = $income['banquet_income_type'];
             $source['income']['banquet_income_date'] = $income['banquet_income_date'];
             $source['income']['banquet_income_item_price'] = $income['banquet_income_item_price'];
-            $source['income']['image'] = explode(",", $income['contact_img']);
-            $source['income']['receipt_img'] = explode(",", $income['receipt_img']);
-            $source['income']['note_img'] = explode(",", $income['note_img']);
+            $source['income']['image'] = !empty($income['contact_img']) ? explode(",", $income['contact_img']) : [];
+            $source['income']['receipt_img'] = !empty($income['receipt_img']) ? explode(",", $income['receipt_img']) : [];
+            $source['income']['note_img'] = !empty($income['note_img']) ? explode(",", $income['note_img']) : '';
             $source['income']['income_remark'] = $income['income_remark'];
 
             $editApi = '/h5/order.banquet_suborder/doEdit';
