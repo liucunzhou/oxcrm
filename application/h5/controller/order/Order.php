@@ -1679,6 +1679,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
                 $wine = OrderWine::get($data['id']);
+                echo OrderWine::getLastSql();
                 $wine->allowField(true)->save($data);
                 $source['wine'][] = $wine->toArray();
             }
