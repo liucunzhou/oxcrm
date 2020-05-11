@@ -409,28 +409,65 @@ class Confirm extends Base
             } else if ($key == 'hotelProtocol') {
 
             } else if ($key == 'car') {
+                $source = [];
 
+                $editApi = '/h5/order.car/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'wine') {
-
-            } else if ($key == 'hotelProtocol') {
-
+                $source = [];
+                foreach ($value as $v) {
+                    $source['wine'][] = [
+                        'id' => $v['id'],
+                        'order_id' => $v['order_id'],
+                        'wine_id' => $v['wine_id'],
+                        'wine_amount' => $v['wine_amount'],
+                        'wine_price' => $v['wine_price'],
+                        'wine_remark' => $v['wine_remark'],
+                    ];
+                }
+                $editApi = '/h5/order.wine/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'sugar') {
-
+                $source = [];
+                foreach ($value as $v) {
+                    $source['sugar'][] = [
+                        'id' => $v['id'],
+                        'order_id' => $v['order_id'],
+                        'sugar_id' => $v['sugar_id'],
+                        'sugar_amount' => $v['sugar_amount'],
+                        'sugar_price' => $v['sugar_price'],
+                        'sugar_remark' => $v['sugar_remark'],
+                    ];
+                }
+                $editApi = '/h5/order.sugar/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'dessert') {
-
+                $source = [];
+                foreach ($value as $v) {
+                    $source['dessert'][] = [
+                        'id' => $v['id'],
+                        'order_id' => $v['order_id'],
+                        'dessert_id' => $v['dessert_id'],
+                        'dessert_amount' => $v['dessert_amount'],
+                        'dessert_price' => $v['dessert_price'],
+                        'dessert_remark' => $v['dessert_remark'],
+                    ];
+                }
+                $editApi = '/h5/order.dessert/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'light') {
                 $source = [];
                 foreach ($value as $v) {
                     $source['light'][] = [
                         'id' => $v['id'],
                         'order_id' => $v['order_id'],
-                        'led_id' => $v['led_id'],
-                        'led_amount' => $v['led_amount'],
-                        'led_price' => $v['led_price'],
-                        'led_remark' => $v['led_remark'],
+                        'light_id' => $v['light_id'],
+                        'light_amount' => $v['light_amount'],
+                        'light_price' => $v['light_price'],
+                        'light_remark' => $v['light_remark'],
                     ];
                 }
-                $editApi = '/h5/order.led/doEdit';
+                $editApi = '/h5/order.light/doEdit';
                 $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'led') {
                 $source = [];
