@@ -1639,59 +1639,17 @@ class Order extends Base
             }
         }
 
-        ## 婚车主车
+        ## 婚车
         if (!empty($param['car'])) {
-            $data = json_decode($param['car'], true);
-            if (!empty($data['master_car_id'])) {
-                $row = [];
-                $row['company_id'] = $data['company_id'];
-                $row['is_master'] = 1;
-                $row['is_suborder'] = 0;
-                $row['car_id'] = $data['master_car_id'];
-                $row['car_price'] = $data['master_car_price'];
-                $row['car_amount'] = $data['master_car_amount'];
-                $row['service_hour'] = $data['service_hour'];
-                $row['service_distance'] = $data['service_distance'];
-                $row['car_contact'] = $data['car_contact'];
-                $row['car_mobile'] = $data['car_mobile'];
-                $row['arrive_time'] = $data['arrive_time'];
-                $row['arrive_address'] = $data['arrive_address'];
-                $row['car_remark'] = $data['master_car_remark'];
-                $row['salesman'] = $this->user['id'];;
-                $row['order_id'] = $post['id'];
-                $row['operate_id'] = $this->user['id'];
-                $row['user_id'] = $this->user['id'];
-                $car = OrderCar::get($data['master_car_id']);
-                $car->allowField(true)->save($row);
-                $source['car'][] = $car->toArray();
-            }
-        }
-
-        ## 婚车跟车
-        if (!empty($param['car'])) {
-            $data = json_decode($param['car'], true);
-            if (!empty($data['slave_car_id'])) {
-                $row = [];
-                $row['order_id'] = $data['order_id'];
-                $row['company_id'] = $data['company_id'];
-                $row['is_master'] = 0;
-                $row['is_suborder'] = 0;
-                $row['car_id'] = $data['slave_car_id'];
-                $row['car_price'] = $data['slave_car_price'];
-                $row['car_amount'] = $data['slave_car_amount'];
-                $row['service_hour'] = $data['service_hour'];
-                $row['service_distance'] = $data['service_distance'];
-                $row['car_contact'] = $data['car_contact'];
-                $row['car_mobile'] = $data['car_mobile'];
-                $row['arrive_time'] = $data['arrive_time'];
-                $row['arrive_address'] = $data['arrive_address'];
-                $row['car_remark'] = $data['slave_car_remark'];
-                $row['salesman'] = $this->user['id'];
-                $row['order_id'] = $post['id'];
-                $row['operate_id'] = $this->user['id'];
-                $row['user_id'] = $this->user['id'];
-                $car = OrderCar::get($data['slave_car_id']);
-                $car->allowField(true)->save($row);
+            $car = json_decode($param['car'], true);
+            foreach ($car as $data) {
+                if (empty($data['car_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $data['sugar_salesman'];
+                $car = Car::get($data['id']);
+                $car->allowField(true)->save($data);
                 $source['car'][] = $car->toArray();
             }
         }
