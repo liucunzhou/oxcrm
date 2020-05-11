@@ -32,65 +32,7 @@ class Income extends Base
             return json($result);
         }
 
-        $where = [];
-        $where[] = ['company_id', '=', $order->company_id];
-        $where[] = ['timing', '=', 'income'];
-        $audit = \app\common\model\Audit::where($where)->find();
-
-        if(empty($audit)) {
-            $result = [
-                'code'  => '400',
-                'msg'   => '尚未设置审核顺序'
-            ];
-            return json($result);
-        }
-
-        if(empty($audit->content)) {
-            $result = [
-                'code'  => '400',
-                'msg'   => '尚未设置审核顺序'
-            ];
-            return json($result);
-        }
-
-        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
-        $staffs = \app\common\model\User::getUsers(false);
-        ## 审核全局列表
-        $sequence = $this->config['check_sequence'];
-        $auth = json_decode($audit->content, true);
-        $confirmList = [];
-        foreach ($auth as $key=>$row) {
-            $managerList = [];
-            $type = $sequence[$key]['type'];
-            if($type == 'role') {
-                // 获取角色
-                foreach ($row as $v)
-                {
-                    $user = \app\common\model\User::getRoleManager($v, $this->user);
-                    $managerList[] = [
-                        'id'        => $user['id'],
-                        'realname'  => $user['realname'],
-                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
-                    ];
-                }
-            } else {
-                foreach ($row as $v) {
-                    if(!isset($staffs[$v])) continue;
-                    $user = $staffs[$v];
-                    $managerList[] = [
-                        'id'        => $user['id'],
-                        'realname'  => $user['realname'],
-                        'avatar'    => $user['avatar'] ? $user['avatar'] : $avatar
-                    ];
-                }
-            }
-            $confirmList[] = [
-                'id'    => $key,
-                'title' => $sequence[$key]['title'],
-                'managerList'   => $managerList
-            ];
-        }
-
+        $confirmList = $this->getConfirmProcess($order->company_id, 'income');
         $result = [
             'code' => '200',
             'msg' => '获取数据成功',
@@ -109,15 +51,18 @@ class Income extends Base
         $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
 
         if($order->news_type == 1) {
-            $data = json_decode($param['banquet_incomeList'], true);
+            $data = json_decode($param['incomeList'], true);
             $income['order_id'] = $param['order_id'];
             $income['user_id'] = $this->user['id'];
             $income['wedding_receivable_no'] = $data['receivable_no'];
-            $income['wedding_income_payment'] = $data['banquet_income_payment'];
-            $income['wedding_income_type'] = $data['banquet_income_type'];
-            $income['wedding_income_date'] = $data['banquet_income_date'];
-            $income['wedding_income_item_price'] = $data['banquet_income_item_price'];
+            $income['wedding_income_payment'] = $data['income_payment'];
+            $income['wedding_income_type'] = $data['income_type'];
+            $income['wedding_income_date'] = $data['income_date'];
+            $income['wedding_income_item_price'] = $data['income_item_price'];
+            $income['wedding_income_item_price'] = $data['income_item_price'];
             $income['remark'] = $data['income_remark'];
+            $income['receipt_img'] = implode(',', $data['receipt_img']);
+            $income['note_img'] = implode(',', $data['note_img']);
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $source['weddingIncome'][] = $receivable->toArray();
@@ -125,15 +70,17 @@ class Income extends Base
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
         } else {
             // 添加收款信息
-            $data = json_decode($param['banquet_incomeList'], true);
+            $data = json_decode($param['incomeList'], true);
             $income['order_id'] = $param['order_id'];
             $income['user_id'] = $this->user['id'];
             $income['banquet_receivable_no'] = $data['receivable_no'];
-            $income['banquet_income_payment'] = $data['banquet_income_payment'];
-            $income['banquet_income_type'] = $data['banquet_income_type'];
-            $income['banquet_income_date'] = $data['banquet_income_date'];
-            $income['banquet_income_item_price'] = $data['banquet_income_item_price'];
+            $income['banquet_income_payment'] = $data['income_payment'];
+            $income['banquet_income_type'] = $data['income_type'];
+            $income['banquet_income_date'] = $data['income_date'];
+            $income['banquet_income_item_price'] = $data['income_item_price'];
+            $income['receipt_img'] = implode(',', $data['receipt_img']);
             $income['remark'] = $data['income_remark'];
+            $income['note_img'] = implode(',', $data['note_img']);
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $source['banquetIncome'][] = $receivable->toArray();

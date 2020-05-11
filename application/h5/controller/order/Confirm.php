@@ -395,8 +395,8 @@ class Confirm extends Base
             $source['income']["income_type"] = $value["banquet_income_type"];
             $source['income']["income_item_price"] = $value["banquet_income_item_price"];
             $source['income']["income_remark"] = $value["remark"];
-            $source['income']["receipt_img"] = $value["receipt_img"];
-            $source['income']["note_img"] = $value["note_img"];
+            $source['income']["receipt_img"] = explode(',', $value["receipt_img"]);
+            $source['income']["note_img"] = explode(',', $value["note_img"]);
             $source['income_category'] = "婚宴";
             $editApi = '/h5/order.banquet/doedit';
             $backendApi = '/h5/order.confirm/backend';
@@ -415,8 +415,8 @@ class Confirm extends Base
             $source['income']["income_type"] = $value["wedding_income_type"];
             $source['income']["income_item_price"] = $value["wedding_income_item_price"];
             $source['income']["income_remark"] = $value["remark"];
-            $source['income']["receipt_img"] = $value["receipt_img"];
-            $source['income']["note_img"] = $value["note_img"];
+            $source['income']["receipt_img"] = explode(',', $value["receipt_img"]);
+            $source['income']["note_img"] = explode(',', $value["note_img"]);
             $source['income_category'] = "婚庆";
             $editApi = '/h5/order.wedding/doedit';
             $backendApi = '/h5/order.confirm/backend';
