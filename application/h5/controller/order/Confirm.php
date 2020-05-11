@@ -255,7 +255,7 @@ class Confirm extends Base
         if ($key == 'order') {
             $source = $origin;
             if (isset($source['banquetIncome'])){
-                $income = $source['banquetIncome'];
+                $income = $source['banquetIncome'][0];
                 unset($source['banquetIncome']);
                 $source['income'] = [
                     "id" =>  $income['id'],
@@ -272,7 +272,7 @@ class Confirm extends Base
             }
 
             if (isset($source['weddingIncome'])){
-                $income = $source['weddingIncome'];
+                $income = $source['weddingIncome'][0];
                 unset($source['weddingIncome']);
                 $source['income'] = [
                     "id" =>  $income['id'],
