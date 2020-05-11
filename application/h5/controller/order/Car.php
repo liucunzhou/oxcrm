@@ -132,24 +132,24 @@ class Car extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-
         $param = json_decode($param['car'], true);
+        $row = [];
+        $row['company_id'] = $param['company_id'];
+        $row['is_suborder'] = 1;
+        $row['service_hour'] = $param['service_hour'];
+        $row['service_distance'] = $param['service_distance'];
+        $row['arrive_time'] = $param['arrive_time'];
+        $row['arrive_address'] = $param['arrive_address'];
+        $row['car_remark'] = $param['car_remark'];
+        $row['user_id'] = $this->user['id'];
+        $row['salesman'] = $this->user['id'];
+        $row['order_id'] = $param['order_id'];
+
         if (!empty($param['master_order_id'])) {
-            $row = [];
             $row['id'] = $param['master_order_id'];
-            $row['company_id'] = $param['company_id'];
-            $row['is_suborder'] = 1;
-            $row['service_hour'] = $param['service_hour'];
-            $row['service_distance'] = $param['service_distance'];
-            $row['arrive_time'] = $param['arrive_time'];
-            $row['arrive_address'] = $param['arrive_address'];
-            $row['car_remark'] = $param['master_car_remark'];
-            $row['salesman'] = $param['car_salesman'];
-            $row['order_id'] = $param['order_id'];
-            $row['user_id'] = $param['user_id'];
-            $row['car_id'] = $param['car_id'];
-            $row['car_price'] = $param['car_price'];
-            $row['car_amount'] = $param['car_amount'];
+            $row['car_id'] = $param['master_car_id'];
+            $row['car_price'] = $param['master_car_price'];
+            $row['car_amount'] = $param['master_car_amount'];
             $carModel = new OrderCar();
             $master = OrderCar::get($param['master_order_id']);
             $result1 = $master->allowField(true)->save($row);
@@ -159,19 +159,9 @@ class Car extends Base
         if (!empty($param['slave_order_id'])) {
             $row = [];
             $row['id'] = $param['slave_order_id'];
-            $row['company_id'] = $param['company_id'];
-            $row['is_suborder'] = 1;
-            $row['service_hour'] = $param['service_hour'];
-            $row['service_distance'] = $param['service_distance'];
-            $row['arrive_time'] = $param['arrive_time'];
-            $row['arrive_address'] = $param['arrive_address'];
-            $row['car_remark'] = $param['master_car_remark'];
-            $row['salesman'] = $param['car_salesman'];
-            $row['order_id'] = $param['order_id'];
-            $row['user_id'] = $param['user_id'];
-            $row['car_id'] = $param['car_id'];
-            $row['car_price'] = $param['car_price'];
-            $row['car_amount'] = $param['car_amount'];
+            $row['car_id'] = $param['slave_car_id'];
+            $row['car_price'] = $param['slave_car_price'];
+            $row['car_amount'] = $param['slave_car_amount'];
             $carModel = new OrderCar();
             $slave = OrderCar::get($param['slave_order_id']);
             $result2 = $slave->allowField(true)->save($row);
