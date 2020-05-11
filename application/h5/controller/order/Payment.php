@@ -194,6 +194,8 @@ class Payment extends Base
                 'pay_to_company' => $row->banquet_pay_to_company,
                 'pay_to_account' => $row->banquet_pay_to_account,
                 'pay_to_bank' => $row->banquet_pay_to_bank,
+                'receipt_img' => $row->receipt_img,
+                'note_img' => $row->note_img,
                 'pay_category' => $param['income_category']
             ];
         } else {
@@ -209,6 +211,8 @@ class Payment extends Base
                 'pay_to_company' => $row->wedding_pay_to_company,
                 'pay_to_account' => $row->wedding_pay_to_account,
                 'pay_to_bank' => $row->wedding_pay_to_bank,
+                'receipt_img' => $row->receipt_img,
+                'note_img' => $row->note_img,
                 'pay_category' => $param['income_category']
             ];
         }
@@ -256,7 +260,9 @@ class Payment extends Base
                 'banquet_payment_remark' => $param['payment_remark'],
                 'banquet_pay_to_company' => $param['pay_to_company'],
                 'banquet_pay_to_account' => $param['pay_to_account'],
-                'banquet_pay_to_bank' => $param['pay_to_bank']
+                'banquet_pay_to_bank' => $param['pay_to_bank'],
+               'receipt_img' => $param['receipt_img'],
+                'note_img' => $param['note_img'],
             ];
         } else {
 
@@ -270,7 +276,9 @@ class Payment extends Base
                 'wedding_payment_remark' => $param['payment_remark'],
                 'wedding_pay_to_company' => $param['pay_to_company'],
                 'wedding_pay_to_account' => $param['pay_to_account'],
-                'wedding_pay_to_bank' => $param['pay_to_bank']
+                'wedding_pay_to_bank' => $param['pay_to_bank'],
+                'receipt_img' => $param['receipt_img'],
+                'note_img' => $param['note_img'],
             ];
         }
         $rs = $row->allowField(true)->save($data);
