@@ -1678,7 +1678,7 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
-                $wine = \app\common\model\Wine::get($data['id']);
+                $wine = OrderWine::get($data['id']);
                 $wine->allowField(true)->save($data);
                 $source['wine'][] = $wine->toArray();
             }
@@ -1693,7 +1693,7 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
-                $light = \app\common\model\Light::get($data['id']);
+                $light = OrderLight::get($data['id']);
                 $light->allowField(true)->save($data);
                 $source['light'][] = $light->toArray();
             }
