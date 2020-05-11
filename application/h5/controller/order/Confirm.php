@@ -644,6 +644,8 @@ class Confirm extends Base
                 'lightList' => array_values($this->lightList),
                 'ledList' => array_values($this->ledList),
                 'd3List' => array_values($this->d3List),
+                'ritualList'  => array_values($this->ritualList),
+                'packageList'  => array_values($this->packageList)
             ]
         ];
 
