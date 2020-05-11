@@ -174,11 +174,12 @@ class Income extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['incomeList'], true);
+        $order = \app\common\model\Order::get($param['order_id']);
 
-        if($param['income_category'] == '婚宴') {
-            $model = new OrderBanquetReceivables();
-        } else {
+        if($order->news_type=='1') {
             $model = new OrderWeddingReceivables();
+        } else {
+            $model = new OrderBanquetReceivables();
         }
 
         $row = $model->where('id', '=', $param['id'])->find();
@@ -190,17 +191,16 @@ class Income extends Base
             return json($result);
         }
 
-        $order = \app\common\model\Order::get($row['order_id']);
-        if($param['income_category'] == '婚宴') {
+        if($order->news_type != '1') {
             $data = [
                 'id'    => $param['id'],
-                'banquet_receivable_no' => $param['receivable_
-                no'],
+                'banquet_receivable_no' => $param['receivable_no'],
                 'banquet_income_payment'    => $param['income_payment'],
                 'banquet_income_type'   => $param['income_type'],
                 'banquet_income_date'   => $param['income_date'],
-                // 'income_real_date'  => $row->banquet_income_real_date,
-                'remark' => $param['income_remark']
+                'remark' => $param['income_remark'],
+                'receipt_img' => implode(',', $param['receipt_img']),
+                'note_img' => implode(',', $param['note_img'])
             ];
         } else {
             $data = [
@@ -209,13 +209,14 @@ class Income extends Base
                 'wedding_income_payment'    => $param['income_payment'],
                 'wedding_income_type'   => $param['income_type'],
                 'wedding_income_date'   => $param['income_date'],
-                // 'income_real_date'  => $row->wedding_income_real_date,
-                'remark' => $param['income_remark']
+                'remark' => $param['income_remark'],
+                'receipt_img' => implode(',', $param['receipt_img']),
+                'note_img' => implode(',', $param['note_img']),
             ];
         }
 
         $rs = $row->allowField(true)->save($data);
-        if($param['income_category'] == '婚宴') {
+        if($order->news_type != '1') {
             $intro = '编辑婚宴收款审核';
             $source['banquetIncome'][] = $row->toArray();
         } else {
