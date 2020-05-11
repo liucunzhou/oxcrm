@@ -438,9 +438,48 @@ class Confirm extends Base
                 $backendApi = '/h5/order.confirm/backend';
 
             } else if ($key == 'hotelItem') {
-
+                $source['hotelItem'] = [];
+                $source['hotelItem']["id"] = $value["id"];
+                $source['hotelItem']["user_id"] = $value["user_id"];
+                $source['hotelItem']["order_id"] = $value["order_id"];
+                $source['hotelItem']["wedding_room_amount"] = $value["wedding_room_amount"];
+                $source['hotelItem']["wedding_room"] = $value["wedding_room"];
+                $source['hotelItem']["part_amount"] = $value["part_amount"];
+                $source['hotelItem']["part"] = $value["part"];
+                $source['hotelItem']["champagne_amount"] = $value["champagne_amount"];
+                $source['hotelItem']["champagne"] = $value["champagne"];
+                $source['hotelItem']["tea_amount"] = $value["tea_amount"];
+                $source['hotelItem']["tea"] = $value["tea"];
+                $source['hotelItem']["cake_amount"] = $value["cake_amount"];
+                $source['hotelItem']["cake"] = $value["cake"];
+                $editApi = '/h5/order.wedding/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'hotelProtocol') {
-
+                $value = $value[0];
+                $source['hotelProtocol'] = [];
+                $source['hotelProtocol']["id"] = $value["id"];
+                $source['hotelProtocol']["user_id"] = $value["user_id"];
+                $source['hotelProtocol']["order_id"] = $value["order_id"];
+                $source['hotelProtocol']["table_price"] = $value["table_price"];
+                $source['hotelProtocol']["table_amount"] = $value["table_amount"];
+                $source['hotelProtocol']["wedding_room_amount"] = $value["wedding_room_amount"];
+                $source['hotelProtocol']["wedding_room"] = $value["wedding_room"];
+                $source['hotelProtocol']["part_amount"] = $value["part_amount"];
+                $source['hotelProtocol']["part"] = $value["part"];
+                $source['hotelProtocol']["champagne_amount"] = $value["champagne_amount"];
+                $source['hotelProtocol']["champagne"] = $value["champagne"];
+                $source['hotelProtocol']["tea_amount"] = $value["tea_amount"];
+                $source['hotelProtocol']["tea"] = $value["tea"];
+                $source['hotelProtocol']["cake_amount"] = $value["cake_amount"];
+                $source['hotelProtocol']["cake"] = $value["cake"];
+                $source['hotelProtocol']["tail_money_date"] = $value["tail_money_date"];
+                $source['hotelProtocol']["tail_money"] = $value["tail_money"];
+                $source['hotelProtocol']["middle_money_date"] = $value["middle_money_date"];
+                $source['hotelProtocol']["middle_money"] = $value["middle_money"];
+                $source['hotelProtocol']["earnest_money_date"] = $value["earnest_money_date"];
+                $source['hotelProtocol']["earnest_money"] = $value["earnest_money"];
+                $editApi = '/h5/order.hotel_protocol/doEdit';
+                $backendApi = '/h5/order.confirm/backend';
             } else if ($key == 'car') {
                 $source = [];
                 ## 婚车主车
