@@ -850,75 +850,75 @@ class Confirm extends Base
             $where[] = ['id', '=', $value['id']];
             switch ($key) {
                 case 'order':
-                    \app\common\model\Order::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\Order::where($where)->update(['status'=>13]);
                     break;
 
                 case 'banquet':
-                    \app\common\model\OrderBanquet::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderBanquet::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquetSuborder':
-                    \app\common\model\OrderBanquetSuborder::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderBanquetSuborder::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquetIncome':
-                    \app\common\model\OrderBanquetReceivables::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderBanquetReceivables::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquetPayment':
-                    \app\common\model\OrderBanquetPayment::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderBanquetPayment::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'wedding':
-                    \app\common\model\OrderWedding::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderWedding::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'weddingSuborder':
-                    \app\common\model\OrderWeddingSuborder::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderWeddingSuborder::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'weddingIncome':
-                    \app\common\model\OrderWeddingReceivables::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderWeddingReceivables::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'weddingPayment':
-                    \app\common\model\OrderWeddingPayment::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderWeddingPayment::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'hotelItem':
-                    \app\common\model\OrderHotelItem::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderHotelItem::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'hotelProtocol':
-                    \app\common\model\OrderHotelProtocol::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderHotelProtocol::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'car':
-                    \app\common\model\OrderCar::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderCar::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'wine':
-                    \app\common\model\OrderWine::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderWine::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'sugar':
-                    \app\common\model\OrderSugar::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderSugar::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'dessert':
-                    \app\common\model\OrderDessert::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderDessert::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'light':
-                    \app\common\model\OrderLight::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderLight::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'led':
-                    \app\common\model\OrderLed::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderLed::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'd3':
-                    \app\common\model\OrderD3::where($where)->update(['check_item_status'=>13]);
+                    \app\common\model\OrderD3::where($where)->update(['item_check_status'=>13]);
                     break;
             }
         }
