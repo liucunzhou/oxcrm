@@ -941,9 +941,10 @@ class Confirm extends Base
     public function getConfirmSequence()
     {
         $param = $this->request->param();
+        !isset($param['type']) && $param['type'] = 'order';
         $where = [];
         $where[] = ['company_id', '=', $param['company_id']];
-        $where[] = ['timing', '=', 'order'];
+        $where[] = ['timing', '=', $param['type']];
         $audit = \app\common\model\Audit::where($where)->find();
 
         if (empty($audit)) {
