@@ -112,7 +112,7 @@ class Payment extends Base
             $data = json_decode($param['paymentList'], true);
             $payment['order_id'] = $param['order_id'];
             $payment['user_id'] = $this->user['id'];
-            $payment['wedding_payment_no'] = $param['payment_no'];
+            $payment['wedding_payment_no'] = $data['payment_no'];
             $payment['wedding_pay_type'] = $data['pay_type'];
             $payment['wedding_apply_pay_date'] = $data['apply_pay_date'];
             $payment['wedding_pay_item_price'] = $data['pay_item_price'];
@@ -132,7 +132,7 @@ class Payment extends Base
             $data = json_decode($param['paymentList'], true);
             $payment['order_id'] = $param['order_id'];
             $payment['user_id'] = $this->user['id'];
-            $payment['banquet_payment_no'] = $param['payment_no'];
+            $payment['banquet_payment_no'] = $data['payment_no'];
             $payment['banquet_pay_type'] = $data['pay_type'];
             $payment['banquet_apply_pay_date'] = $data['apply_pay_date'];
             $payment['banquet_pay_item_price'] = $data['pay_item_price'];
