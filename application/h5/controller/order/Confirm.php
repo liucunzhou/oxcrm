@@ -435,7 +435,7 @@ class Confirm extends Base
             $source['payment']['pay_to_bank'] = $value['banquet_pay_to_bank'];
             $source['payment']['receipt_img'] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
             $source['payment']['note_img'] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
-            $editApi = '/h5/order.payment/doedit';
+            $editApi = '/h5/order.payment/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'weddingPayment') {
@@ -455,7 +455,7 @@ class Confirm extends Base
             $source['payment']['pay_to_bank'] = $value['wedding_pay_to_bank'];
             $source['payment']['receipt_img'] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
             $source['payment']['note_img'] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
-            $editApi = '/h5/order.payment/doedit';
+            $editApi = '/h5/order.payment/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'banquetIncome') {
@@ -475,7 +475,7 @@ class Confirm extends Base
             $source['income']["receipt_img"] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
             $source['income']["note_img"] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
             $source['income_category'] = "婚宴";
-            $editApi = '/h5/order.banquet/doedit';
+            $editApi = '/h5/order.income/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'weddingIncome') {
@@ -495,7 +495,7 @@ class Confirm extends Base
             $source['income']["receipt_img"] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
             $source['income']["note_img"] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
             $source['income_category'] = "婚庆";
-            $editApi = '/h5/order.wedding/doedit';
+            $editApi = '/h5/order.income/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'hotelItem') {
