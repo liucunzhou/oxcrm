@@ -321,7 +321,7 @@ class Confirm extends Base
         } else if ($key == 'banquet') {
             $value = $origin['banquet'];
             $source['banquet'] = [];
-            $source['banquet']['id'] = $value['order_id'];
+            $source['banquet']['id'] = $value['id'];
             $source['banquet']['company_id'] = $value['company_id'];
             $source['banquet']['order_id'] = $value['order_id'];
             $source['banquet']['user_id'] = $value['user_id'];
