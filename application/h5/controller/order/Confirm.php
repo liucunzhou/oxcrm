@@ -337,6 +337,9 @@ class Confirm extends Base
             $source['income']['wedding_income_date'] = $income['wedding_income_date'];
             $source['income']['wedding_income_item_price'] = $income['wedding_income_item_price'];
             $source['income']['income_remark'] = $income['income_remark'];
+            $source['income']['image'] = explode(",", $income['contact_img']);
+            $source['income']['receipt_img'] = explode(",", $income['receipt_img']);
+            $source['income']['note_img'] = explode(",", $income['note_img']);
 
         } else if ($key == 'banquetPayment') {
             $value = $origin['banquetPayment'];
