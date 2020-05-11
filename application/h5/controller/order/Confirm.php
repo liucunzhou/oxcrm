@@ -679,20 +679,10 @@ class Confirm extends Base
                     'id' => 'backend',
                     'label' => '撤销',
                     'api' => $backendApi
-                ],
-                [
-                    'id' => 'update',
-                    'label' => '更新',
-                    'api' => $editApi
                 ]
             ];
         } else if ($confirm->status == '1') {
             $buttons = [
-                [
-                    'id' => 'update',
-                    'label' => '更新',
-                    'api' => $editApi
-                ],
                 [
                     'id' => 'update',
                     'label' => '更新',
