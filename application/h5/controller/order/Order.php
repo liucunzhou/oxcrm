@@ -1787,7 +1787,7 @@ class Order extends Base
 
             // 根据公司创建审核流程
             create_order_confirm($post['id'], $post['company_id'], $this->user['id'], 'order', "编辑订单定金审核", $source);
-            return json(['code' => '200', 'msg' => '创建成功']);
+            return json(['code' => '200', 'msg' => '编辑订单成功']);
         }
     }
 }
