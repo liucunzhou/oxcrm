@@ -448,7 +448,15 @@ class Confirm extends Backend
         $configCrm = config();
         $checkSequence = $configCrm['crm']['check_sequence'];
         $brands = Brand::getBrands();
-        $list = $this->model->where($map)->order('id desc')->paginate($get['limit'], false, $config);
+        $model = $this->model->where($map);
+        if (isset($get['mobile'])) {
+            $model = $model->where('order_id', 'in', function ($query) use ($get) {
+                $query->table('tk_order')->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%")->field('id');
+            });
+        }
+
+        $list = $model->order('id desc')->paginate($get['limit'], false, $config);
+
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
             $companyId = $value->company_id;

@@ -11,6 +11,7 @@ class Planner extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
+    protected $brands = [];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
@@ -33,8 +34,8 @@ class Planner extends Backend
         $this->assign('sources', $this->sources);
 
         ## 获取所有品牌、公司
-        $brands = \app\common\model\Brand::getBrands();
-        $this->assign('brands', $brands);
+        $this->brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $this->brands);
 
         ## 获取套餐列表
         $packages = \app\common\model\Package::getList();
@@ -92,15 +93,13 @@ class Planner extends Backend
         ## 3d列表
         $d3List = \app\common\model\D3::getList();
         $this->assign('d3List', $d3List);
-
     }
 
-    # 广州红丝 37
-    public function guangzhou()
+    # 我的策划
+    public function index()
     {
         if ($this->request->isAjax()) {
             $get = $this->request->param();
-            $get['company_id'] = 37;
             $order = $this->_getOrderList($get);
             $result = [
                 'code' => 0,
@@ -112,69 +111,6 @@ class Planner extends Backend
 
         } else {
             return $this->fetch('planner/planner/index');
-        }
-    }
-
-    # 上海红丝会所 32
-    public function shclub()
-    {
-        if ($this->request->isAjax()) {
-            $get = $this->request->param();
-            $get['company_id'] = 32;
-            $order = $this->_getOrderList($get);
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => $order['count'],
-                'data' => $order['data']
-            ];
-            return json($result);
-
-        } else {
-            return $this->fetch('planner/planner/index');
-        }
-    }
-
-    # 上海红丝婚礼 26
-    public function shhs()
-    {
-        if ($this->request->isAjax()) {
-            $get = $this->request->param();
-            $get['company_id'] = 26;
-            $order = $this->_getOrderList($get);
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => $order['count'],
-                'data' => $order['data']
-            ];
-            return json($result);
-
-        } else {
-
-            return $this->fetch('planner/planner/index');
-        }
-    }
-
-    # 苏州红丝 31
-    public function suzhou()
-    {
-        if ($this->request->isAjax()) {
-            $get = $this->request->param();
-            $get['company_id'] = 31;
-            $order = $this->_getOrderList($get);
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-                'count' => $order['count'],
-                'data' => $order['data']
-            ];
-            return json($result);
-
-        } else {
-
-            return $this->fetch('planner/planner/index');
-
         }
     }
 
@@ -187,6 +123,12 @@ class Planner extends Backend
 
         if ($get['company_id'] > 0) {
             $map[] = ['company_id', '=', $get['company_id']];
+        }
+
+        if($this->user['nickname'] != 'admin') {
+            $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
+            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
+            $map[] = ['company_id', 'in', $companyIds];
         }
 
         if ($get['source'] > 0) {
@@ -217,6 +159,8 @@ class Planner extends Backend
 
         $users = \app\common\model\User::getUsers();
         foreach ($data as $key => &$value) {
+            $companyId = $value->company_id;
+            $value['company'] = $this->brands[$companyId]['title'];
             $checkStatus = $value->check_status;
             $value['check_status'] = $this->confirmStatusList[$checkStatus];
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;

@@ -27,6 +27,7 @@ use app\common\model\OrderWeddingSuborder;
 use app\common\model\OrderWine;
 use app\common\model\Search;
 use app\common\model\User;
+use app\common\model\UserAuth;
 use app\index\controller\Backend;
 use think\facade\Request;
 
@@ -37,6 +38,7 @@ class Order extends Backend
     protected $suppliers = [];
     protected $weddingDevices = [];
     protected $weddingCategories = [];
+    protected $brands = [];
     protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
@@ -61,8 +63,8 @@ class Order extends Backend
         $this->assign('sources', $this->sources);
 
         ## 获取所有品牌、公司
-        $brands = \app\common\model\Brand::getBrands();
-        $this->assign('brands', $brands);
+        $this->brands = \app\common\model\Brand::getBrands();
+        $this->assign('brands', $this->brands);
 
         ## 酒店列表
         $this->hotels = \app\common\model\Store::getStoreList();
@@ -129,7 +131,6 @@ class Order extends Backend
         ## 3d列表
         $d3List = \app\common\model\D3::getList();
         $this->assign('d3List', $d3List);
-
     }
 
     // 誉丝
@@ -760,6 +761,8 @@ class Order extends Backend
 
         $users = \app\common\model\User::getUsers();
         foreach ($data as $key => &$value) {
+            $companyId = $value->company_id;
+            $value['company'] = $this->brands[$companyId]['title'];
             $checkStatus = $value->check_status;
             $value['check_status'] = $this->confirmStatusList[$checkStatus];
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;

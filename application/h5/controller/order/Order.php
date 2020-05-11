@@ -131,18 +131,21 @@ class Order extends Base
 
 
         $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile,check_status";
-        $list = $this->model->where($map);
+        $model = new \app\common\model\Order();
+        $userId = $this->user['id'];
+        $model = $model->where($map)->whereOr('id', 'in', function ($query) use ($userId) {
+            $query->table('tk_order_staff')->where('staff_id', '=', $userId)->field('order_id');
+        });
 
         if (isset($param['keywords']) && !empty($param['keywords'])) {
             if (is_numeric($param['keywords'])) {
-                $list->where('bride_mobile|bridegroom_mobile', 'like', "%{$param['keywords']}%");
+                $model->where('bride_mobile|bridegroom_mobile', 'like', "%{$param['keywords']}%");
             } else {
-                $list->where('bride|bridegroom', 'like', "%{$param['keywords']}%");
+                $model->where('bride|bridegroom', 'like', "%{$param['keywords']}%");
             }
         }
 
-        $list = $list->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
-
+        $list = $model->field($fields)->order('id desc')->paginate($param['limit'], false, $config);
         if (!$list->isEmpty()) {
             $list = $list->getCollection()->toArray();
             $newsTypes = $this->config['news_type_list'];

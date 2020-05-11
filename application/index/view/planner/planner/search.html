@@ -9,22 +9,13 @@
             </select>
         </div>
 
-        <div class="layui-inline layui-col-sm1">
-            <select name="source" lay-verify="">
-                <option value="">平台来源</option>
-                <{foreach name="sources" item="val"}>
-                <option value="{$val['id']}">{$val['title']}</option>
-                <{/foreach}>
-            </select>
-        </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="complete" lay-verify="">
-                <option value="">完成状态</option>
-                <option value="0">待完成</option>
-                <option value="99">意向金</option>
-                <option value="100">已完成</option>
-                <option value="101">退单</option>
+            <select name="company_id" lay-verify="">
+                <option value="">签约公司</option>
+                <{foreach name="brands" item="val"}>
+                <option value="{$val['id']}">{$val['title']}</option>
+                <{/foreach}>
             </select>
         </div>
 

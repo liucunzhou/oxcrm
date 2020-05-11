@@ -27,8 +27,7 @@
                     <table class="layui-hide" id="table" lay-filter="table"></table>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="editOrder">编辑</button>
-                            {:button(["event"=>"deleteOrder", "text"=>"删除"])}
+                            <button class="layui-btn layui-btn-sm" lay-event="allocate">分配</button>
                         </div>
                     </script>
                 </div>
@@ -79,6 +78,12 @@ layui.config({
                 {
                     "field": "check_status",
                     "title": "审核状态",
+                    "align": "center",
+                    "width": 120,
+                    "event" : "showOrder"
+                },{
+                    "field": "company",
+                    "title": "所属公司",
                     "align": "center",
                     "width": 120,
                     "event" : "showOrder"
@@ -185,27 +190,14 @@ layui.config({
     table.on('tool(table)', function (obj) {
         var id = obj.data.id;
         switch (obj.event) {
-            case 'editOrder':
-                url = '/index/order.Order/editorder.html?id=' + id;
-                top.layui.index.openTabsPage(url, '编辑订单');
-                break;
-
-            case 'showOrder':
-                url = '/index/order.order/showorder.html?id=' + id;
-                top.layui.index.openTabsPage(url, '查看订单详情');
-                break;
-
-            case 'deleteOrder':
-                if (!confirm("确认删除该订单么?")) {
-                    return false;
-                }
-
-                url = '/index/order.order/deleteorder.html?id=' + id;
-                $.get(url, function (res) {
-                    layer.alert(res.msg);
-                    if(res.code=='200') {
-                        window.location.reload();
-                    }
+            case 'allocate':
+                url = '/index/planner.staff/staffs.html?order_id=' + id;
+                layer.open({
+                    type: 2,
+                    title: '跟单管理',
+                    content: url,
+                    area: [width + 'px', height + 'px'],
+                    offset: 'rb'
                 });
                 break;
         }
