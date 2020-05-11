@@ -153,7 +153,7 @@ class Car extends Base
             $carModel = new OrderCar();
             $master = OrderCar::get($param['master_order_id']);
             $result1 = $master->allowField(true)->save($row);
-            $source['car'][] = $carModel->toArray();
+            $source['car'][] = $master->toArray();
         }
 
         if (!empty($param['slave_order_id'])) {
@@ -165,7 +165,7 @@ class Car extends Base
             $carModel = new OrderCar();
             $slave = OrderCar::get($param['slave_order_id']);
             $result2 = $slave->allowField(true)->save($row);
-            $source['car'][] = $carModel->toArray();
+            $source['car'][] = $slave->toArray();
         }
         if($result1 && $result2) {
             $order = \app\common\model\Order::get($param['order_id']);
