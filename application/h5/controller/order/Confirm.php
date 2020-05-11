@@ -255,13 +255,37 @@ class Confirm extends Base
         if ($key == 'order') {
             $source = $origin;
             if (isset($source['banquetIncome'])){
-                $source['income'] = $source['banquetIncome'];
+                $income = $source['banquetIncome'];
                 unset($source['banquetIncome']);
+                $source['income'] = [
+                    "id" =>  $income['id'],
+                    "receivable_no" => $income['banquet_receivable_no'],
+                    "income_date" => $income['banquet_income_date'],
+                    "income_payment" => $income['banquet_income_payment'],
+                    "income_type" => $income['banquet_income_type'],
+                    "income_item_price" => $income['income_item_price'],
+                    "income_remark" => $income['remark'],
+                    "order_id" => $income['order_id'],
+                    "receipt_imgArray" => is_array($income['receipt_img']) ? $income['receipt_img'] : explode(',' , $income['receipt_img']),
+                    "note_imgArray" => is_array($income['note_img']) ? $income['note_img'] : explode(',', $income['note_img']),
+                ];
             }
 
             if (isset($source['weddingIncome'])){
-                $source['income'] = $source['weddingIncome'];
+                $income = $source['weddingIncome'];
                 unset($source['weddingIncome']);
+                $source['income'] = [
+                    "id" =>  $income['id'],
+                    "receivable_no" => $income['wedding_receivable_no'],
+                    "income_date" => $income['wedding_income_date'],
+                    "income_payment" => $income['wedding_income_payment'],
+                    "income_type" => $income['wedding_income_type'],
+                    "income_item_price" => $income['wedding_item_price'],
+                    "income_remark" => $income['remark'],
+                    "order_id" => $income['order_id'],
+                    "receipt_imgArray" => is_array($income['receipt_img']) ? $income['receipt_img'] : explode(',' , $income['receipt_img']),
+                    "note_imgArray" => is_array($income['note_img']) ? $income['note_img'] : explode(',', $income['note_img']),
+                ];
             }
 
             $editApi = '/h5/order.order/doEdit';
