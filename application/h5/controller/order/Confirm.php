@@ -514,7 +514,7 @@ class Confirm extends Base
             $source['hotelItem']["tea"] = $value["tea"];
             $source['hotelItem']["cake_amount"] = $value["cake_amount"];
             $source['hotelItem']["cake"] = $value["cake"];
-            $editApi = '/h5/order.wedding/doEdit';
+            $editApi = '/h5/order.hotel_item/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'hotelProtocol') {

@@ -93,9 +93,9 @@ class HotelProtocol extends Base
             $order = \app\common\model\Order::get($param['order_id']);
             $intro = "编辑酒店协议项目审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
+            $arr = ['code'=>'200', 'msg'=>'编辑酒店协议项目成功'];
         } else {
-            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'编辑酒店协议项目失败'];
         }
 
         return json($arr);

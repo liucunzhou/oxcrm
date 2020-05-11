@@ -37,6 +37,7 @@ class HotelItem extends Base
         $orderId = $param['order_id'];
         $param = json_decode($param['hotelItem'], true);
         $param['order_id'] = $orderId;
+        $param['user_id'] = $this->user['id'];
         $result = $this->model->allowField(true)->save($param);
         $source['hotelItem'] = $this->model->toArray();
 
@@ -79,24 +80,20 @@ class HotelItem extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['hotelItem'], true);
-        if(!empty($param['id'])) {
-            $where = [];
-            $where[] = ['id', '=', $param['id']];
-            $model = $this->model->where($where)->find();
-            $result = $model->allowField(true)->save($param);
-            $source['hotelItem'] = $model->toArray();
-        } else {
-            $result = $this->model->allowField(true)->save($param);
-            $source['hotelItem'] = $this->model->toArray();
-        }
+
+        $where = [];
+        $where[] = ['id', '=', $param['id']];
+        $model = $this->model->where($where)->find();
+        $result = $model->allowField(true)->save($param);
+        $source['hotelItem'] = $model->toArray();
 
         if($result) {
             $order = \app\common\model\Order::get($param['order_id']);
-            $intro = "编辑酒店消费项目审核";
+            $intro = "编辑酒店服务项目审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
+            $arr = ['code'=>'200', 'msg'=>'编辑酒店服务项目成功'];
         } else {
-            $arr = ['code'=>'400', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'400', 'msg'=>'编辑酒店服务项目失败'];
         }
 
         return json($arr);
