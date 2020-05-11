@@ -120,7 +120,6 @@ class WeddingSuborder extends Base
         $source['weddingSuborder'][] = $model->toArray();
 
         $income = json_decode($param['wedding_incomeList'], true);
-        $income['order_id'] = $param['order_id'];
         $income['user_id'] = $this->user['id'];
         $income['wedding_income_type'] = 5;
         $income['remark'] = $income['income_remark'];
@@ -129,7 +128,7 @@ class WeddingSuborder extends Base
         $income['receipt_img'] = is_array($income['receipt_img']) ? implode(',', $income['receipt_img']) : $income['receipt_img'];
         $income['note_img'] = is_array($income['note_img']) ? implode(',', $income['note_img']) : $income['note_img'];
         $receivable = OrderWeddingReceivables::get($income['id']);
-        $result2 = $suborder->allowField(true)->save($income);
+        $result2 = $receivable->allowField(true)->save($income);
         $source['weddingIncome'][] = $receivable->toArray();
 
         if($result1 || $result2) {
