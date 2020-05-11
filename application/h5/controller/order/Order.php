@@ -1145,6 +1145,7 @@ class Order extends Base
     public function doEdit()
     {
         $param = $this->request->param();
+        $arr = json_decode($param['order'], true);
         $param = json_decode($param['order'], true);
         if (!isset($param['id']) || empty($param['id'])) {
             $result = [
@@ -1570,5 +1571,264 @@ class Order extends Base
         ];
 
         return json($result);
+    }
+
+    public function doEditOrder()
+    {
+        $param = $this->request->param();
+
+        $post = json_decode($param['order'], true);
+        $post['image'] = empty($post['imageArray']) ? '' : implode(',', $post['imageArray']);
+        $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
+        $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);
+        $order = \app\common\model\Order::get($post['id']);
+        $result = $order->allowField(true)->save($post);
+        $source['order'] = $order->toArray();
+
+        ## banquet message
+        if (!empty($param['banquet'])) {
+            $data = json_decode($param['banquet'], true);
+            $c1 = !empty($data['table_amount']) || !empty($data['table_price']);
+            $c2 = !empty($data['wine_fee']) || !empty($data['service_fee']);
+            $c3 = !empty($data['banquet_update_table']) || !empty($data['banquet_total']);
+            $c4 = !empty($data['banquet_discount']) || !empty($data['banquet_totals']);
+            $c5 = !empty($data['banquet_ritual_id']) || !empty($data['banquet_ritual_hall']);
+            $c6 = !empty($data['banquet_other']) || !empty($data['banquet_remark']);
+            if ($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $banquet = OrderBanquet::get($data['id']);
+                $banquet->allowField(true)->save($data);
+                $source['banquet'] = $banquet->toArray();
+            }
+        }
+
+        ## wedding message
+        if (!empty($param['wedding'])) {
+            $data = json_decode($param['wedding'], true);
+            $c1 = !empty($data['wedding_package_id']) || !empty($data['wedding_package_price']);
+            $c2 = !empty($data['wedding_ritual_id']) || !empty($data['wedding_ritual_hall']);
+            $c3 = !empty($data['wedding_other']) || !empty($data['wedding_total']);
+            $c4 = !empty($data['wedding_remark']);
+            if ($c1 || $c2 || $c3 || $c4) {
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $wedding = OrderWedding::get($data['id']);
+                $wedding->allowField(true)->save($data);
+                $source['wedding'] = $wedding->toArray();
+            }
+        }
+
+        ## 酒店服务项目
+        if (!empty($param['hotelItem'])) {
+            $data = json_decode($param['hotelItem'], true);
+            $c1 = !empty($data['wedding_room']) || !empty($data['wedding_room_amount']);
+            $c2 = !empty($data['part']) || !empty($data['part_amount']);
+            $c3 = !empty($data['champagne']) || !empty($data['champagne_amount']);
+            $c4 = !empty($data['tea']) || !empty($data['tea_amount']);
+            $c5 = !empty($data['cake']) || !empty($data['cake_amount']);
+            if ($c1 || $c2 || $c3 || $c4 || $c5) {
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $hotelItem = OrderHotelItem::get($data['id']);
+                $hotelItem->allowField(true)->save($data);
+                $source['hotelItem'] = $hotelItem->toArray();
+            }
+        }
+
+        ## 婚车主车
+        if (!empty($param['car'])) {
+            $data = json_decode($param['car'], true);
+            if (!empty($data['master_car_id'])) {
+                $row = [];
+                $row['company_id'] = $data['company_id'];
+                $row['is_master'] = 1;
+                $row['is_suborder'] = 0;
+                $row['car_id'] = $data['master_car_id'];
+                $row['car_price'] = $data['master_car_price'];
+                $row['car_amount'] = $data['master_car_amount'];
+                $row['service_hour'] = $data['service_hour'];
+                $row['service_distance'] = $data['service_distance'];
+                $row['car_contact'] = $data['car_contact'];
+                $row['car_mobile'] = $data['car_mobile'];
+                $row['arrive_time'] = $data['arrive_time'];
+                $row['arrive_address'] = $data['arrive_address'];
+                $row['car_remark'] = $data['master_car_remark'];
+                $row['salesman'] = $this->user['id'];;
+                $row['order_id'] = $post['id'];
+                $row['operate_id'] = $this->user['id'];
+                $row['user_id'] = $this->user['id'];
+                $car = OrderCar::get($data['master_car_id']);
+                $car->allowField(true)->save($row);
+                $source['car'][] = $car->toArray();
+            }
+        }
+
+        ## 婚车跟车
+        if (!empty($param['car'])) {
+            $data = json_decode($param['car'], true);
+            if (!empty($data['slave_car_id'])) {
+                $row = [];
+                $row['order_id'] = $data['order_id'];
+                $row['company_id'] = $data['company_id'];
+                $row['is_master'] = 0;
+                $row['is_suborder'] = 0;
+                $row['car_id'] = $data['slave_car_id'];
+                $row['car_price'] = $data['slave_car_price'];
+                $row['car_amount'] = $data['slave_car_amount'];
+                $row['service_hour'] = $data['service_hour'];
+                $row['service_distance'] = $data['service_distance'];
+                $row['car_contact'] = $data['car_contact'];
+                $row['car_mobile'] = $data['car_mobile'];
+                $row['arrive_time'] = $data['arrive_time'];
+                $row['arrive_address'] = $data['arrive_address'];
+                $row['car_remark'] = $data['slave_car_remark'];
+                $row['salesman'] = $this->user['id'];
+                $row['order_id'] = $post['id'];
+                $row['operate_id'] = $this->user['id'];
+                $row['user_id'] = $this->user['id'];
+                $car = OrderCar::get($data['slave_car_id']);
+                $car->allowField(true)->save($row);
+                $source['car'][] = $car->toArray();
+            }
+        }
+
+        ## 喜糖
+        if (!empty($param['sugar'])) {
+            $sugar = json_decode($param['sugar'], true);
+            foreach ($sugar as $data) {
+                if (empty($data['sugar_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $data['sugar_salesman'];
+                $sugar = OrderSugar::get($data['id']);
+                $sugar->allowField(true)->save($data);
+                $source['sugar'][] = $sugar->toArray();
+            }
+        }
+
+        ## 酒水
+        if (!empty($param['wine'])) {
+            $wine = json_decode($param['wine'], true);
+            foreach ($wine as $data) {
+                if (empty($data['wine_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $this->user['id'];
+                $wine = \app\common\model\Wine::get($data['id']);
+                $wine->allowField(true)->save($data);
+                $source['wine'][] = $wine->toArray();
+            }
+        }
+
+        ## 灯光
+        if (!empty($param['light'])) {
+            $light = json_decode($param['light'], true);
+            foreach ($light as $data) {
+                if (empty($data['light_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $this->user['id'];
+                $light = \app\common\model\Light::get($data['id']);
+                $light->allowField(true)->save($data);
+                $source['light'][] = $light->toArray();
+        }
+
+        ## 点心
+        if (!empty($param['dessert'])) {
+            $dessert = json_decode($param['dessert'], true);
+            foreach ($dessert as $data) {
+                if (empty($data['dessert_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $this->user['id'];
+                $dessert = OrderDessert::get($data['id']);
+                $dessert->allowField(true)->save($data);
+                $source['dessert'][] = $dessert->toArray();
+            }
+        }
+
+        ## led
+        if (!empty($param['led'])) {
+            $led = json_decode($param['led'], true);
+            foreach ($led as $data) {
+                if (empty($data['led_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $this->user['id'];
+                $led = OrderLed::get($data['id']);
+                $led->allowField(true)->save($data);
+                $source['led'][] = $led->toArray();
+            }
+        }
+
+        ## 3D
+        if (!empty($param['d3'])) {
+            $d3 = json_decode($param['d3'], true);
+            foreach ($d3 as $data) {
+                if (empty($data['d3_id'])) continue;
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['salesman'] = $this->user['id'];
+                $d3 = OrderD3::get($data['id']);
+                $d3->allowField(true)->save($data);
+                $source['d3'][] = $d3->toArray();
+            }
+        }
+
+        ## 收款信息
+        if (!empty($param['income'])) {
+            $income = json_decode($param['income'], true);
+            if ($post['news_type'] == '2' || $post['news_type'] == '0') {
+                // 婚宴收款
+                $data = [];
+                $data['banquet_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_date'] = $income['income_date'];
+                $data['banquet_income_payment'] = $income['income_payment'];
+                $data['banquet_income_type'] = 1;
+                $data['banquet_income_item_price'] = $income['income_item_price'];
+                $data['remark'] = $income['income_remark'];
+                $data['order_id'] = $post['od'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+
+                $income = OrderBanquetReceivables::get($income['id']);
+                $income->allowField(true)->save($data);
+                $source['banquetIncome'][] = $income->toArray();
+            } else {
+                // 婚庆收款
+                $data = [];
+                $data['wedding_receivable_no'] = $income['receivable_no'];
+                $data['wedding_income_date'] = $income['income_date'];
+                $data['wedding_income_payment'] = $income['income_payment'];
+                $data['wedding_income_type'] = 1;
+                $data['wedding_income_item_price'] = $income['income_item_price'];
+                $data['remark'] = $income['income_remark'];
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+
+                $income = OrderWeddingReceivables::get($income['id']);
+                $income->allowField(true)->save($data);
+                $source['weddingIncome'][] = $income->toArray();
+            }
+        }
+
+        // 根据公司创建审核流程
+        create_order_confirm($post['id'], $post['company_id'], $this->user['id'], 'order', "编辑订单定金审核", $source);
+        return json(['code' => '200', 'msg' => '创建成功']);
     }
 }
