@@ -387,7 +387,7 @@ class Confirm extends Base
             $source['wedding']['wedding_total'] = $value['wedding_total'];
             $source['wedding']['wedding_remark'] = $value['wedding_remark'];
 
-            $editApi = '/h5/order.wedding/doedit';
+            $editApi = '/h5/order.wedding/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'weddingSuborder') {
@@ -415,6 +415,8 @@ class Confirm extends Base
             $source['income']['contact_img'] = is_string($income['contact_img']) ? explode(",", $income['contact_img']) : $income['contact_img'];
             $source['income']['receipt_img'] = is_string($income['receipt_img']) ? explode(",", $income['receipt_img']) : $income['receipt_img'];
             $source['income']['note_img'] = is_string($income['note_img']) ? explode(",", $income['note_img']) : $income['note_img'];
+            $editApi = '/h5/order.wedding_suborder/doEdit';
+            $backendApi = '/h5/order.confirm/backend';
 
         } else if ($key == 'banquetPayment') {
             $value = $origin['banquetPayment'];

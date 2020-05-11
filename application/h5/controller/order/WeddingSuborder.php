@@ -110,16 +110,29 @@ class WeddingSuborder extends Base
     public function doEdit()
     {
         $param = $this->request->param();
-        $param = json_decode($param['weddingSuborderList'], true);
-        $model = OrderWeddingSuborder::get($param['id']);
         $intro = "编辑婚庆二销订单";
-
+        $suborder = json_decode($param['weddingSuborderList'], true);
+        $model = OrderWeddingSuborder::get($param['id']);
         $model->startTrans();
-        $model->wedding_items = json_encode($param['items']);
-        $model->user_id = $this->user['id'];
-        $result1 = $model->save($param);
+        $suborder['user_id'] = $this->user['id'];
+        $suborder['salesman'] = $this->user['id'];
+        $result1 = $model->save($suborder);
         $source['weddingSuborder'][] = $model->toArray();
-        if($result1) {
+
+        $income = json_decode($param['wedding_incomeList'], true);
+        $income['order_id'] = $param['order_id'];
+        $income['user_id'] = $this->user['id'];
+        $income['wedding_income_type'] = 5;
+        $income['remark'] = $income['income_remark'];
+        $income['wedding_receivable_no'] = $income['receivable_no'];
+        $income['contract_img'] = is_array($income['contact_img']) ? implode(',', $income['contact_img']) : $income['contact_img'];
+        $income['receipt_img'] = is_array($income['receipt_img']) ? implode(',', $income['receipt_img']) : $income['receipt_img'];
+        $income['note_img'] = is_array($income['note_img']) ? implode(',', $income['note_img']) : $income['note_img'];
+        $receivable = OrderWeddingReceivables::get($income['id']);
+        $result2 = $suborder->allowField(true)->save($income);
+        $source['weddingIncome'][] = $receivable->toArray();
+
+        if($result1 || $result2) {
             $model->commit();
             create_order_confirm($model->order_id, $model->company_id, $this->user['id'], 'suborder', $intro, $source);
             return json(['code'=>'200', 'msg'=> '更新成功']);
