@@ -240,14 +240,11 @@ class Confirm extends Base
                     } else if ($key == 'wine') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/wine/wine';
                         break;
-                    } else if ($key == 'hotelProtocol') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/light/light';
-                        break;
                     } else if ($key == 'sugar') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/sugar/sugar';
                         break;
                     } else if ($key == 'dessert') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/path/path';
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/dessert/dessert';
                         break;
                     } else if ($key == 'light') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/light/light';
