@@ -845,7 +845,6 @@ class Order extends Base
         if (!$result || !isset($OrderModel->id)) return json(['code' => '400', 'msg' => '创建失败']);
         $source['order'] = $OrderModel->toArray();
 
-
         ## banquet message
         if (!empty($param['banquet'])) {
             $data = json_decode($param['banquet'], true);

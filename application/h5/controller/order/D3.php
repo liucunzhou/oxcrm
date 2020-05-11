@@ -25,9 +25,30 @@ class D3 extends Base
                 'list' => array_values($list)
             ]
         ];
-
-
         return json($result);
+    }
+
+    public function doCreate()
+    {
+        $param = $this->request->param();
+        $param = json_decode($param['d3List'], true);
+        foreach($param as $key=>$value) {
+            $data['operate_id'] = $this->user['id'];
+            $data['user_id'] = $this->user['id'];
+            $result = $this->model->allowField(true)->save($param);
+            $source['d3'][] = $this->model->toArray();
+        }
+
+        if($result) {
+            $order = \app\common\model\Order::get($param['order_id']);
+            $intro = "添加3D审核";
+            create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
+            $arr = ['code'=>'200', 'msg'=>'添加3D信息成功'];
+        } else {
+            $arr = ['code'=>'200', 'msg'=>'添加3D信息失败'];
+        }
+
+        return json($arr);
     }
 
     public function edit($id)
@@ -60,24 +81,22 @@ class D3 extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['d3List'], true);
-        if(!empty($param['id'])) {
+
+        foreach($param as $key=>$value) {
             $where = [];
             $where[] = ['id', '=', $param['id']];
             $model = $this->model->where($where)->find();
             $result = $model->allowField(true)->save($param);
             $source['d3'][] = $model->toArray();
-        } else {
-            $result = $this->model->allowField(true)->save($param);
-            $source['d3'][] = $this->model->toArray();
         }
 
         if($result) {
             $order = \app\common\model\Order::get($param['order_id']);
             $intro = "编辑3D审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息成功'];
+            $arr = ['code'=>'200', 'msg'=>'编辑3D信息成功'];
         } else {
-            $arr = ['code'=>'200', 'msg'=>'编辑基本信息失败'];
+            $arr = ['code'=>'200', 'msg'=>'编辑3D信息失败'];
         }
 
         return json($arr);

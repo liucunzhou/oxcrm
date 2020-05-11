@@ -273,6 +273,7 @@ class Confirm extends Base
                 $source['payment']['note_img'] = $value['note_img'];
                 $editApi = '/h5/order.payment/doedit';
                 $backendApi = '/h5/order.confirm/backend';
+
             } else if ($key == 'weddingPayment') {
                 $value = $value[0];
                 $source['payment'] = [];
@@ -349,7 +350,17 @@ class Confirm extends Base
             } else if ($key == 'led') {
 
             } else if ($key == 'd3') {
-
+                $source = [];
+                foreach ($value as $v) {
+                    $source['car'][] = [
+                        'id'    => $v['id'],
+                        'd3_id'    => $v['d3_id'],
+                        'd3_amount'    => $v['d3_amount'],
+                        'd3_price'    => $v['d3_price'],
+                    ];
+                }
+                $editApi = '/h5/order.d3/doedit';
+                $backendApi = '/h5/order.d3/backend';
             }
         }
 
