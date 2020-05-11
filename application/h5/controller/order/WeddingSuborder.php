@@ -58,6 +58,9 @@ class WeddingSuborder extends Base
         $income['wedding_income_type'] = 5;
         $income['remark'] = $income['income_remark'];
         $income['wedding_receivable_no'] = $income['receivable_no'];
+        $income['image'] = implode(',', $income['imageArray']);
+        $income['receipt_img'] = implode(',', $income['receipt_imgArray']);
+        $income['note_img'] = implode(',', $income['note_img_imgArray']);
         $receivable = new OrderWeddingReceivables();
         $result2 = $receivable->allowField(true)->save($income);
         $source['weddingIncome'][] = $receivable->toArray();
