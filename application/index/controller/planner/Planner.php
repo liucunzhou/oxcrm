@@ -155,6 +155,12 @@ class Planner extends Backend
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
         }
 
+        if($this->user['nickname'] != 'admin') {
+            $model = $model->where('id', 'in', function ($query) use ($companyIds) {
+                $query->table('tk_order_wedding')->where('company_id', 'in', $companyIds)->field('order_id');
+            });
+        }
+
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection();
 
