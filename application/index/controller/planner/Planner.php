@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller\planner;
 
+use app\common\model\OrderWedding;
 use app\common\model\UserAuth;
 use app\index\controller\Backend;
 
@@ -168,6 +169,16 @@ class Planner extends Backend
             $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
             $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
             $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+
+            $where = [];
+            $where[] = ['order_id', '=', $value->id];
+            $wedding = OrderWedding::where($where)->find();
+            if(!empty($wedding) && $wedding->company_id > 0) {
+                $weddingCompanyId = $wedding->company_id;
+                $value['wedding_company'] = $this->brands[$weddingCompanyId]['title'];
+            } else {
+                $value['wedding_company'] = '-';
+            }
         }
         $count = $list->total();
 
