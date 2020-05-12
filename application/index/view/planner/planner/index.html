@@ -193,6 +193,11 @@ layui.config({
                     offset: 'rb'
                 });
                 break;
+
+            case 'showOrder':
+                url = '/index/order.order/showorder.html?id=' + id;
+                top.layui.index.openTabsPage(url, '查看订单详情');
+                break;
         }
     });
 
