@@ -19,6 +19,17 @@ class Wedding extends Base
 
     public function create()
     {
+        $param = $this->request->param();
+        $order = \app\common\model\Order::get($param['order_id']);
+        if(empty($order)) {
+            $result = [
+                'code'  => '400',
+                'msg'   => '订单不存在'
+            ];
+            return json($result);
+        }
+
+        $confirmList = $this->getConfirmProcess($order->company_id, 'order');
 
         $packageList = Package::getList();
         $ritualList = Ritual::getList();
@@ -30,7 +41,8 @@ class Wedding extends Base
             'data' => [
                 'packageList' => array_values($packageList),
                 'ritualList' => array_values($ritualList),
-                'companyList' =>  array_values($companyList)
+                'companyList' =>  array_values($companyList),
+                'confirmList'   => $confirmList
             ]
         ];
         return json($result);
