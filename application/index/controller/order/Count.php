@@ -81,7 +81,7 @@ class Count extends Backend
             $model = $this->model->whereTime('event_date', 'month');
         }
 
-        $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
+        $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,cooperation_mode,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
 
         $list =  $model->where($map)->order('event_date asc,id desc')->field($fields)->select();
 
@@ -182,13 +182,14 @@ class Count extends Backend
                'yswk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yswk')))*/
             ]
         ];
+        $config = config();
         $list = $list + $sums;
         foreach ($list as $k=>&$v){
+            $v['cooperation_mode'] = !empty($v['cooperation_mode'])?$config['crm']['cooperation_mode'][$v['cooperation_mode']]:'-';
             $v['ysdj'] = $this->plus_minus_conversion($v['ysdj']);
             $v['yszk'] = $this->plus_minus_conversion($v['yszk']);
             $v['yswk'] = $this->plus_minus_conversion($v['yswk']);
         }
-        $config = config();
         $this->assign('firmList',$this->FirmList);
         $this->assign('newsTypesList',$config['crm']['news_type_list']);
         $this->assign('list',$list);
