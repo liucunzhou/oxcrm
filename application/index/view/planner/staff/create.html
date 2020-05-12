@@ -23,10 +23,10 @@
     <form class="form-ajax" action="/index/planner.staff/doEdit">
         <table class="table">
             <tr>
-                <td>选择客服</td>
+                <td>选择策划</td>
                 <td width="80%">
                     <select name="staff_id" class="form-control multiple-select">
-                        <option value="0">--选择跟进状态--</option>
+                        <option value="0">--选择选择策划人员--</option>
                         <{foreach name="users" item="val"}>
                             <option value="{$val.id}">{$val.realname}</option>
                         <{/foreach}>
