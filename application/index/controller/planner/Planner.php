@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller\planner;
 
+use app\common\model\UserAuth;
 use app\index\controller\Backend;
 use app\index\controller\organization\User;
 
