@@ -24,7 +24,6 @@ class BanquetSuborder extends Base
     # 编辑婚庆子合同
     public function create()
     {
-
         $result = [
             'code' => '200',
             'msg' => '获取数据成功',

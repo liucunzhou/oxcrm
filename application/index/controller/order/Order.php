@@ -39,8 +39,8 @@ class Order extends Backend
     protected $weddingDevices = [];
     protected $weddingCategories = [];
     protected $brands = [];
-    protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回'];
-    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
+    protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回',13 => '审核撤销'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回',13 => '审核撤销'];
     protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
 
     protected function initialize()

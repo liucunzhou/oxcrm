@@ -12,6 +12,7 @@ use app\common\model\MobileRelation;
 use app\common\model\OrderBanquet;
 use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetReceivables;
+use app\common\model\OrderConfirm;
 use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingReceivables;
@@ -98,6 +99,10 @@ class order extends Command
 
             case 'hsToys':
                 $this->hsToYs();
+                break;
+
+            case 'confirms':
+                $this->confirms();
                 break;
         }
     }
@@ -1192,5 +1197,20 @@ class order extends Command
                 // echo "\n";
             }
         }
+    }
+
+
+    ###　获取是订单的一上来就是
+    public function confirms()
+    {
+        $where = [];
+        $where[] = ['confirm_type', '=', 'order'];
+        $orderConfirm = new OrderConfirm();
+        $list = $orderConfirm->field('confirm_no,confirm_type,count(*) as amount')->where($where)->group('confirm_no')->having("amount=1")->select();
+        $list = $list->toArray();
+
+        $arr = array_column($list, "confirm_no");
+
+        echo implode("','", $arr);
     }
 }
