@@ -303,8 +303,6 @@ class Confirm extends Backend
         $hotelProtocol = \app\common\model\OrderHotelProtocol::where('order_id', '=', $get['id'])->select();
         $this->assign('hotelProtocol', $hotelProtocol);
 
-
-
         #### 获取婚庆订单信息
         $where = [];
         $where['order_id'] = $get['id'];
@@ -482,15 +480,15 @@ class Confirm extends Backend
         ];
         $map = [];
 
-        if (isset($get['company_id'])) {
-            $map[] = ['company_id', '=', $get['company_id']];
+        if ($get['staff'] > 0) {
+            $map[] = ['user_id', '=', $get['staff']];
         }
 
         if (isset($get['source']) && !empty($get['source'])) {
             $map[] = ['source_id', '=', $get['source']];
         }
 
-        if (isset($get['hotel_id']) && !empty($get['hotel_id'])) {
+        if (isset($get['hotel_id']) && $get['hotel_id'] > 0) {
             $map[] = ['hotel_id', '=', $get['hotel_id']];
         }
 
@@ -501,6 +499,7 @@ class Confirm extends Backend
         if($this->user['nickname'] != 'admin') {
             $map[] = ['confirm_user_id', '=', $this->user['id']];
         }
+
         $configCrm = config();
         $checkSequence = $configCrm['crm']['check_sequence'];
         $brands = Brand::getBrands();
