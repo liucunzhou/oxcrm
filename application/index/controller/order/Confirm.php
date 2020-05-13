@@ -135,6 +135,25 @@ class Confirm extends Backend
         $this->assign('d3List', $d3List);
     }
 
+    # 我的审核
+    public function all()
+    {
+        if (Request::isAjax()) {
+            $get = $this->request->param();
+            $list = $this->_getConfirmGroupList($get);
+
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+                'data' => $list->getCollection(),
+                'count' => $list->total()
+            ];
+            return json($result);
+
+        } else {
+            return $this->fetch('order/confirm/index');
+        }
+    }
 
     # 我的审核
     public function mine()

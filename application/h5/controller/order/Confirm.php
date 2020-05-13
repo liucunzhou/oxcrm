@@ -735,7 +735,7 @@ class Confirm extends Base
         ### 获取所有审核的列表
         $where = [];
         $where['confirm_no'] = $confirm->confirm_no;
-        $where['order_id'] = $param['id'];
+        $where['order_id'] = $confirm->order_id;
         $orderConfirm = new OrderConfirm();
         $confirmRs = $orderConfirm->where($where)->column('id,status,content', 'confirm_item_id');
 
@@ -798,6 +798,7 @@ class Confirm extends Base
                 'managerList' => $managerList
             ];
         }
+
 
         $result = [
             'code' => '200',

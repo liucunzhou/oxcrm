@@ -402,6 +402,9 @@ class Order extends Backend
         }
 
         #### 获取婚宴收款信息
+        $where = [];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status'];
         $receivables = OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
         $this->assign('banquetReceivables', $receivables);
 
