@@ -370,8 +370,10 @@ class Confirm extends Backend
         $this->assign('allocate', $allocate);
 
         ## 获取客户信息
-        $member = \app\common\model\Member::get($order->member_id);
-        if($member) $this->assign('member', $member);
+        if(!empty($order->member_id)) {
+            $member = \app\common\model\Member::get($order->member_id);
+            $this->assign('member', $member);
+        }
 
         ## 宴会厅列表
         $halls = \app\common\model\BanquetHall::getBanquetHalls();
