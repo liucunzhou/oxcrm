@@ -150,22 +150,23 @@ class Planner extends Backend
 
         $map[] = ['check_status', '=', 1];
 
-        if($this->user['nickname'] != 'admin') {
-            $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
-            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
-            $map[] = ['company_id', 'in', $companyIds];
-        }
-
         $model = model('order')->where($map);
 
+        if (!empty($get['mobile'])) {
+            $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
+        }
+
         if($this->user['nickname'] != 'admin') {
+            $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
+            // $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
+            $sql = "(company_id in ({$userAuth['store_ids']}) or id in (select `order_id` from `tk_order_wedding` where `company_id` in ({$userAuth['store_ids']})))";
+            /**
+            $model = $model->whereIn('company_id', $companyIds);
             $model = $model->whereOr('id', 'in', function ($query) use ($companyIds) {
                 $query->table('tk_order_wedding')->where('company_id', 'in', $companyIds)->field('order_id');
             });
-        }
-
-        if (isset($get['mobile'])) {
-            $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
+            **/
+            $model = $model->whereRaw($sql);
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);

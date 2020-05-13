@@ -482,6 +482,18 @@ class Confirm extends Backend
         ];
         $map = [];
 
+        if (isset($get['company_id'])) {
+            $map[] = ['company_id', '=', $get['company_id']];
+        }
+
+        if (isset($get['source']) && !empty($get['source'])) {
+            $map[] = ['source_id', '=', $get['source']];
+        }
+
+        if (isset($get['hotel_id']) && !empty($get['hotel_id'])) {
+            $map[] = ['hotel_id', '=', $get['hotel_id']];
+        }
+
         if (!empty($get['company_id'])) {
             $map[] = ['company_id', '=', $get['company_id']];
         }
