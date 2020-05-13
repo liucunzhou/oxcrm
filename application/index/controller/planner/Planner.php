@@ -143,11 +143,7 @@ class Planner extends Backend
             $map[] = [$get['date_range_type'], 'between', $range];
         }
 
-        $map[] = ['check_status', '<>', 3];
-        $model = model('order')->where($map);
-        if (isset($get['mobile'])) {
-            $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
-        }
+        $map[] = ['check_status', '=', 1];
 
         if($this->user['nickname'] != 'admin') {
             $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
@@ -155,10 +151,16 @@ class Planner extends Backend
             $map[] = ['company_id', 'in', $companyIds];
         }
 
+        $model = model('order')->where($map);
+
         if($this->user['nickname'] != 'admin') {
             $model = $model->whereOr('id', 'in', function ($query) use ($companyIds) {
                 $query->table('tk_order_wedding')->where('company_id', 'in', $companyIds)->field('order_id');
             });
+        }
+
+        if (isset($get['mobile'])) {
+            $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
