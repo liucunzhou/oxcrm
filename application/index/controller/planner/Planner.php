@@ -41,6 +41,7 @@ class Planner extends Backend
 
         ## 获取酒店列表
         $this->hotels = Store::getStoreList();
+        $this->assign('hotels', $this->hotels);
 
         ## 获取套餐列表
         $packages = \app\common\model\Package::getList();
