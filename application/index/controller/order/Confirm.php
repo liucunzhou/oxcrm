@@ -371,8 +371,8 @@ class Confirm extends Backend
 
         ## 获取客户信息
         if(!empty($order->member_id)) {
+            echo $order->member_id;
             $member = \app\common\model\Member::get($order->member_id);
-            echo \app\common\model\Member::getLastSql();
             $this->assign('member', $member);
         }
 
