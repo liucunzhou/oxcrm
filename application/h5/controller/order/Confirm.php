@@ -737,7 +737,7 @@ class Confirm extends Base
         $where['confirm_no'] = $confirm->confirm_no;
         $where['order_id'] = $confirm->order_id;
         $orderConfirm = new OrderConfirm();
-        $confirmRs = $orderConfirm->where($where)->column('id,status,content', 'confirm_item_id');
+        $confirmRs = $orderConfirm->where($where)->column('id,status,content,update_time,create_time', 'confirm_item_id');
 
         $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
         $staffs = User::getUsers(false);
@@ -785,11 +785,11 @@ class Confirm extends Base
                         $status = '待审核';
                 }
                 $content = $confirmRs[$key]['content'];
-                $createTime = $confirmRs[$key]['create_time'];
+                $confirmTime = date('m-d H:i',$confirmRs[$key]['update_time']);
             } else {
                 $status = '待审核';
                 $content = '';
-                $createTime = $confirmRs[$key]['create_time'];
+                $confirmTime = '';
             }
 
             $confirmList[] = [
@@ -797,7 +797,7 @@ class Confirm extends Base
                 'title' => $sequence[$key]['title'],
                 'status' => $status,
                 'content' => $content,
-                'create_time' => $createTime,
+                'confirm_time' => $confirmTime,
                 'managerList' => $managerList
             ];
         }
