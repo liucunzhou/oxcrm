@@ -208,7 +208,6 @@ class Planner extends Backend
             $start = strtotime(date('Y-m-d'));
             $end = strtotime('tomorrow');
         } else {
-
             $range = explode('~', $dateRange);
             $range[0] = str_replace("+", "", trim($range[0]));
             $range[1] = str_replace("+", "", trim($range[1]));
