@@ -213,7 +213,7 @@ class Planner extends Backend
             $range[0] = str_replace("+", "", trim($range[0]));
             $range[1] = str_replace("+", "", trim($range[1]));
             $start = strtotime($range[0]);
-            $end = strtotime($range[1]) + 86400;
+            $end = strtotime($range[1]) + 86399;
         }
 
         return [$start, $end];
