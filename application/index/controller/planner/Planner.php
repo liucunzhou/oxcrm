@@ -126,12 +126,6 @@ class Planner extends Backend
             $map[] = ['company_id', '=', $get['company_id']];
         }
 
-        if($this->user['nickname'] != 'admin') {
-            $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
-            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
-            $map[] = ['company_id', 'in', $companyIds];
-        }
-
         if ($get['source'] > 0) {
             $map[] = ['source_id', '=', $get['source']];
         }
@@ -156,7 +150,13 @@ class Planner extends Backend
         }
 
         if($this->user['nickname'] != 'admin') {
-            $model = $model->where('id', 'in', function ($query) use ($companyIds) {
+            $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
+            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
+            $map[] = ['company_id', 'in', $companyIds];
+        }
+
+        if($this->user['nickname'] != 'admin') {
+            $model = $model->whereOr('id', 'in', function ($query) use ($companyIds) {
                 $query->table('tk_order_wedding')->where('company_id', 'in', $companyIds)->field('order_id');
             });
         }

@@ -785,9 +785,11 @@ class Confirm extends Base
                         $status = '待审核';
                 }
                 $content = $confirmRs[$key]['content'];
+                $createTime = $confirmRs[$key]['create_time'];
             } else {
                 $status = '待审核';
                 $content = '';
+                $createTime = $confirmRs[$key]['create_time'];
             }
 
             $confirmList[] = [
@@ -795,6 +797,7 @@ class Confirm extends Base
                 'title' => $sequence[$key]['title'],
                 'status' => $status,
                 'content' => $content,
+                'create_time' => $createTime,
                 'managerList' => $managerList
             ];
         }
