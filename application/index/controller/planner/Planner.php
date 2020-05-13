@@ -2,6 +2,7 @@
 namespace app\index\controller\planner;
 
 use app\common\model\OrderWedding;
+use app\common\model\Store;
 use app\common\model\UserAuth;
 use app\index\controller\Backend;
 
@@ -37,6 +38,9 @@ class Planner extends Backend
         ## 获取所有品牌、公司
         $this->brands = \app\common\model\Brand::getBrands();
         $this->assign('brands', $this->brands);
+
+        ## 获取酒店列表
+        $this->hotels = Store::getStoreList();
 
         ## 获取套餐列表
         $packages = \app\common\model\Package::getList();
