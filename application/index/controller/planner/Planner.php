@@ -171,7 +171,7 @@ class Planner extends Backend
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
-        echo $model->getLastSql();
+        // echo $model->getLastSql();
         $data = $list->getCollection();
 
         $users = \app\common\model\User::getUsers();
