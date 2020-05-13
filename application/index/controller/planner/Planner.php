@@ -148,7 +148,8 @@ class Planner extends Backend
             $map[] = [$get['date_range_type'], 'between', $range];
         }
 
-        $map[] = ['check_status', '=', 1];
+        // 审核完成的
+        $map[] = ['check_status', '=', 2];
 
         $model = model('order')->where($map);
 
@@ -159,7 +160,7 @@ class Planner extends Backend
         if($this->user['nickname'] != 'admin') {
             $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
             // $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
-            $sql = "(company_id in ({$userAuth['store_ids']}) or id in (select `order_id` from `tk_order_wedding` where `company_id` in ({$userAuth['store_ids']})))";
+            $sql = "company_id in ({$userAuth['store_ids']}) or id in (select `order_id` from `tk_order_wedding` where `company_id` in ({$userAuth['store_ids']}))";
             /**
             $model = $model->whereIn('company_id', $companyIds);
             $model = $model->whereOr('id', 'in', function ($query) use ($companyIds) {
@@ -170,6 +171,7 @@ class Planner extends Backend
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
+        echo $model->getLastSql();
         $data = $list->getCollection();
 
         $users = \app\common\model\User::getUsers();
