@@ -351,8 +351,8 @@ class Search
             $map[] = ['hotel_id', '=', $get['hotel_id']];
         }
 
-        if (isset($get['staff']) && !empty($get['staff'])) {
-            $map[] = ['salesman', '=',  $get['staff']];
+        if (isset($get['staff']) && $get['staff'] > 0) {
+            $map[] = ['user_id', '=',  $get['staff']];
         }
 
         if (isset($get['date_range']) && !empty($get['date_range']) && !empty($get['date_range_type'])) {
