@@ -104,6 +104,10 @@ class order extends Command
             case 'confirms':
                 $this->confirms();
                 break;
+
+            case 'backend':
+                $this->backend();
+                break;
         }
     }
 
@@ -1212,5 +1216,130 @@ class order extends Command
         $arr = array_column($list, "confirm_no");
 
         echo implode("','", $arr);
+    }
+
+    ### 驳回状态同步
+    public function backend()
+    {
+        $map['status'] = 13;
+        $confirmList = OrderConfirm::where($map)->select();
+        foreach ($confirmList as $confirm) {
+            $source = json_decode($confirm->source, true);
+            foreach ($source as $key=>$value) {
+                switch ($key) {
+                    case 'order':
+                        $where = [];
+                        $where[] = ['id', '=', $value['id']];
+                        $rs = \app\common\model\Order::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'banquet':
+                        $where = [];
+                        $where[] = ['id', '=', $value['id']];
+                        $rs = \app\common\model\OrderBanquet::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'banquetSuborder':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderBanquetSuborder::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'banquetIncome':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderBanquetReceivables::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'banquetPayment':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderBanquetPayment::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'wedding':
+                        $where = [];
+                        $where[] = ['id', '=', $value['id']];
+                        $rs = \app\common\model\OrderWedding::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'weddingSuborder':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderWeddingSuborder::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'weddingIncome':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderWeddingReceivables::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'weddingPayment':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderWeddingPayment::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'hotelItem':
+                        $where = [];
+                        $where[] = ['id', '=', $value['id']];
+                        $rs = \app\common\model\OrderHotelItem::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'hotelProtocol':
+                        $where = [];
+                        $where[] = ['id', '=', $value['id']];
+                        $rs = \app\common\model\OrderHotelProtocol::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'car':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $where[] = ['id', '=', $value[1]['id']];
+                        $rs = \app\common\model\OrderCar::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'wine':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderWine::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'sugar':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderSugar::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'dessert':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderDessert::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'light':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderLight::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'led':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderLed::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+
+                    case 'd3':
+                        $where = [];
+                        $where[] = ['id', '=', $value[0]['id']];
+                        $rs = \app\common\model\OrderD3::withTrashed()->where($where)->update(['item_check_status' => 13]);
+                        break;
+                }
+
+                if (!$rs) echo $key.":::".$confirm->id;
+                echo "\n";
+            }
+        }
     }
 }

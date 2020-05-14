@@ -843,78 +843,113 @@ class Confirm extends Base
 
         $source = json_decode($confirm->source, true);
         foreach ($source as $key=>$value) {
-            $where = [];
-            $where[] = ['id', '=', $value['id']];
             switch ($key) {
                 case 'order':
-                    \app\common\model\Order::where($where)->update(['status'=>13]);
+                    $where = [];
+                    $where[] = ['id', '=', $value['id']];
+                    \app\common\model\Order::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquet':
+                    $where = [];
+                    $where[] = ['id', '=', $value['id']];
                     \app\common\model\OrderBanquet::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquetSuborder':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderBanquetSuborder::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquetIncome':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderBanquetReceivables::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'banquetPayment':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderBanquetPayment::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'wedding':
+                    $where = [];
+                    $where[] = ['id', '=', $value['id']];
                     \app\common\model\OrderWedding::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'weddingSuborder':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderWeddingSuborder::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'weddingIncome':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderWeddingReceivables::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'weddingPayment':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderWeddingPayment::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'hotelItem':
+                    $where = [];
+                    $where[] = ['id', '=', $value['id']];
                     \app\common\model\OrderHotelItem::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'hotelProtocol':
+                    $where = [];
+                    $where[] = ['id', '=', $value['id']];
                     \app\common\model\OrderHotelProtocol::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'car':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
+                    $where[] = ['id', '=', $value[1]['id']];
                     \app\common\model\OrderCar::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'wine':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderWine::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'sugar':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderSugar::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'dessert':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderDessert::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'light':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderLight::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'led':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderLed::where($where)->update(['item_check_status'=>13]);
                     break;
 
                 case 'd3':
+                    $where = [];
+                    $where[] = ['id', '=', $value[0]['id']];
                     \app\common\model\OrderD3::where($where)->update(['item_check_status'=>13]);
                     break;
             }
