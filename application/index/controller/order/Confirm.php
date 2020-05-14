@@ -311,7 +311,13 @@ class Confirm extends Backend
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
-            $row['images'] = $images;
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
         }
         $this->assign('banquetReceivables', $receivables);
 
@@ -331,7 +337,13 @@ class Confirm extends Backend
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
-            $row['images'] = $images;
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
         }
         $this->assign('banquetPayments', $banquetPayments);
 
@@ -373,7 +385,13 @@ class Confirm extends Backend
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
-            $row['images'] = $images;
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
         }
         $this->assign('weddingReceivables', $weddingReceivables);
 
@@ -393,7 +411,13 @@ class Confirm extends Backend
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
-            $row['images'] = $images;
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
         }
         $this->assign('weddingPayments', $weddingPayments);
 
