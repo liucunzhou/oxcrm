@@ -300,9 +300,9 @@ class Confirm extends Backend
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $receivables = \app\common\model\OrderBanquetReceivables::where($where)->select();
         foreach ($receivables as $key=>&$row) {
-            $contractImg = !empty($row['contract_img']) ? emplode(',', $row['contract_img']) : [];
-            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
-            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
             foreach ($photos as $key=>$val) {
@@ -321,8 +321,8 @@ class Confirm extends Backend
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetPayments = \app\common\model\OrderBanquetPayment::where($where)->select();
         foreach ($banquetPayments as $key=>&$row) {
-            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
-            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
             foreach ($photos as $key=>$val) {
@@ -362,9 +362,9 @@ class Confirm extends Backend
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingReceivables = \app\common\model\OrderWeddingReceivables::where($where)->select();
         foreach ($weddingReceivables as $key=>&$row) {
-            $contractImg = !empty($row['contract_img']) ? emplode(',', $row['contract_img']) : [];
-            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
-            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
             foreach ($photos as $key=>$val) {
@@ -383,8 +383,8 @@ class Confirm extends Backend
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingPayments = \app\common\model\OrderWeddingPayment::where($where)->select();
         foreach ($weddingPayments as $key=>&$row) {
-            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
-            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
             foreach ($photos as $key=>$val) {
