@@ -329,7 +329,7 @@ class Confirm extends Backend
         foreach ($banquetPayments as $key=>&$row) {
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
-            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $photos = array_merge($receiptImg, $noteImg);
             $images = [];
             foreach ($photos as $key=>$val) {
                 $images[$key]['alt'] = '';
@@ -403,7 +403,7 @@ class Confirm extends Backend
         foreach ($weddingPayments as $key=>&$row) {
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
-            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $photos = array_merge($receiptImg, $noteImg);
             $images = [];
             foreach ($photos as $key=>$val) {
                 $images[$key]['alt'] = '';

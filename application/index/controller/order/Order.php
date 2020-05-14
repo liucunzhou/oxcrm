@@ -409,6 +409,26 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $receivables = OrderBanquetReceivables::where($where)->select();
+        foreach ($receivables as $key=>&$row) {
+            $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
+            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
+        }
         $this->assign('banquetReceivables', $receivables);
 
         #### 获取婚宴付款信息
@@ -416,6 +436,25 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetPayments = OrderBanquetPayment::where($where)->select();
+        foreach ($banquetPayments as $key=>&$row) {
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
+            $photos = array_merge($receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
+        }
         $this->assign('banquetPayments', $banquetPayments);
 
         #### 获取酒店协议信息
@@ -449,6 +488,26 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingReceivables = OrderWeddingReceivables::where($where)->select();
+        foreach ($weddingReceivables as $key=>&$row) {
+            $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
+            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
+        }
         $this->assign('weddingReceivables', $weddingReceivables);
 
         #### 获取婚庆付款信息
@@ -456,6 +515,25 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingPayments = OrderWeddingPayment::where($where)->select();
+        foreach ($weddingPayments as $key=>&$row) {
+            $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
+            $photos = array_merge($receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $imagesFormat = [
+                'id'    => $order['id'],
+                'title' => '凭证',
+                'start' => 0,
+                'data'  => $images
+            ];
+            $row['images'] = $imagesFormat;
+        }
         $this->assign('weddingPayments', $weddingPayments);
 
         #### 婚车
