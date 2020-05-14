@@ -133,7 +133,10 @@
                 <th class="text-left">款项性质</th>
                 <th class="text-left">付款金额</th>
                 <th class="text-center">收款名称</th>
+                <th class="text-center">收款账号</th>
+                <th class="text-center">收款卡户行</th>
                 <th class="text-center">审核状态</th>
+                <th class="text-center">查看</th>
             </tr>
             </thead>
             <tbody>
@@ -145,11 +148,16 @@
                 <th class="text-left">{$row['banquet_pay_real_date']}</th>
                 <th class="text-left">{$paymentTypes[$row['banquet_pay_type']]}</th>
                 <th class="text-left">{$row['banquet_pay_item_price']}</th>
-                <th class="text-left">{$row['banquet_supplier']}</th>
+                <th class="text-left">{$row['banquet_pay_to_company']}</th>
+                <th class="text-left">{$row['banquet_pay_to_account']}</th>
+                <th class="text-left">{$row['banquet_pay_to_bank']}</th>
                 <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                <th>
+                    <a href="">查看</a>
+                </th>
             </tr>
             <tr>
-                <th class="text-left" colspan="8">备注：{$row.banquet_payment_remark}</th>
+                <th class="text-left" colspan="11">备注：{$row.banquet_payment_remark}</th>
             </tr>
             <{/foreach}>
             </tbody>
@@ -173,7 +181,10 @@
                 <th class="text-left">款项性质</th>
                 <th class="text-left">付款金额</th>
                 <th class="text-left">收款名称</th>
+                <th class="text-left">收款账号</th>
+                <th class="text-left">开户行</th>
                 <th class="text-left">审核状态</th>
+                <th class="text-left">查看</th>
             </tr>
             </thead>
             <tbody>
@@ -185,10 +196,15 @@
                 <th class="text-left">{$paymentTypes[$row['wedding_pay_type']]}</th>
                 <th class="text-left">{$row['wedding_pay_item_price']}</th>
                 <th class="text-left">{$row['wedding_pay_to_company']}</th>
+                <th class="text-left">{$row['wedding_pay_to_account']}</th>
+                <th class="text-left">{$row['wedding_pay_to_bank']}</th>
                 <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                <th>
+                    <a href="">查看</a>
+                </th>
             </tr>
             <tr>
-                <th class="text-left" colspan="7">
+                <th class="text-left" colspan="10">
                     备注:{$row.wedding_payment_remark}
                 </th>
             </tr>
