@@ -76,6 +76,7 @@
                     <th class="text-left">款项性质</th>
                     <th class="text-left">收款金额</th>
                     <th class="text-center">审核状态</th>
+                    <th class="text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,6 +90,9 @@
                     <td class="text-left">{$paymentTypes[$row['banquet_income_type']]}</td>
                     <td class="text-left">{$row['banquet_income_item_price']}</td>
                     <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                    <th class="text-center">
+                        查看
+                    </th>
                 </tr>
                 <tr>
                     <td class="text-left" colspan="8">备注:{$row.remark}</td>
@@ -105,6 +109,9 @@
                     <td class="text-left">{$paymentTypes[$row.wedding_income_type]}</td>
                     <td class="text-left">{$row.wedding_income_item_price}</td>
                     <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                    <th class="text-center">
+                        查看
+                    </th>
                 </tr>
                 <tr>
                     <td class="text-left" colspan="8">备注:{$row.remark}</td>
@@ -135,7 +142,7 @@
                 <th class="text-center">收款账号</th>
                 <th class="text-center">收款卡户行</th>
                 <th class="text-center">审核状态</th>
-                <th class="text-center">查看</th>
+                <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -181,7 +188,7 @@
                 <th class="text-left">收款账号</th>
                 <th class="text-left">开户行</th>
                 <th class="text-left">审核状态</th>
-                <th class="text-left">查看</th>
+                <th class="text-left">操作</th>
             </tr>
             </thead>
             <tbody>

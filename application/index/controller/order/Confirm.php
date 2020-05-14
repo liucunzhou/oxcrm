@@ -275,99 +275,123 @@ class Confirm extends Backend
 
         #### 获取婚宴订单信息
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquet = \app\common\model\OrderBanquet::where($where)->order('id desc')->find();
         $this->assign('banquet', $banquet);
 
         #### 酒店服务项目
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $hotelItem = \app\common\model\OrderHotelItem::where($where)->order('id desc')->find();
         $this->assign('hotelItem', $hotelItem);
 
         #### 获取婚宴二销订单信息
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetOrders = \app\common\model\OrderBanquetSuborder::where($where)->select();
         $this->assign('banquetOrders', $banquetOrders);
 
         #### 获取婚宴收款信息
-        $receivables = \app\common\model\OrderBanquetReceivables::where('order_id', '=', $get['id'])->select();
+        $where = [];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
+        $receivables = \app\common\model\OrderBanquetReceivables::where($where)->select();
         $this->assign('banquetReceivables', $receivables);
 
         #### 获取婚宴付款信息
-        $banquetPayments = \app\common\model\OrderBanquetPayment::where('order_id', '=', $get['id'])->select();
+        $where = [];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
+        $banquetPayments = \app\common\model\OrderBanquetPayment::where($where)->select();
         $this->assign('banquetPayments', $banquetPayments);
 
         #### 获取酒店协议信息
-        $hotelProtocol = \app\common\model\OrderHotelProtocol::where('order_id', '=', $get['id'])->select();
+        $where = [];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
+        $hotelProtocol = \app\common\model\OrderHotelProtocol::where($where)->select();
         $this->assign('hotelProtocol', $hotelProtocol);
 
         #### 获取婚庆订单信息
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $wedding = \app\common\model\OrderWedding::where($where)->order('id desc')->find();
         $this->assign('wedding', $wedding);
+
         #### 获取婚宴二销订单信息
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingOrders = \app\common\model\OrderWeddingSuborder::where($where)->select();
         $this->assign('weddingOrders', $weddingOrders);
 
         #### 获取婚宴收款信息
-        $weddingReceivables = \app\common\model\OrderWeddingReceivables::where('order_id', '=', $get['id'])->select();
+        $where = [];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
+        $weddingReceivables = \app\common\model\OrderWeddingReceivables::where($where)->select();
         $this->assign('weddingReceivables', $weddingReceivables);
+
         #### 获取婚庆付款信息
-        $weddingPayments = \app\common\model\OrderWeddingPayment::where('order_id', '=', $get['id'])->select();
+        $where = [];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
+        $weddingPayments = \app\common\model\OrderWeddingPayment::where($where)->select();
         $this->assign('weddingPayments', $weddingPayments);
 
         #### 婚车
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $car = \app\common\model\OrderCar::where($where)->select();
         $this->assign('car', $car);
 
         #### 喜糖
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $sugar = \app\common\model\OrderSugar::where($where)->select();
         $this->assign('sugar', $sugar);
 
         #### 酒水
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $wine = \app\common\model\OrderWine::where($where)->select();
         $this->assign('wine', $wine);
 
         #### 灯光
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $light = \app\common\model\OrderLight::where($where)->select();
         $this->assign('light', $light);
 
         #### 点心
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $dessert = \app\common\model\OrderDessert::where($where)->select();
         $this->assign('dessert', $dessert);
 
         #### LED
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $led = \app\common\model\OrderLed::where($where)->select();
         $this->assign('led', $led);
 
 
         #### 3D
         $where = [];
-        $where['order_id'] = $get['id'];
+        $where[] = ['order_id', '=', $get['id']];
+        $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $d3 = \app\common\model\OrderD3::where($where)->select();
         $this->assign('d3', $d3);
-
-
-        ##　获取客资分配信息
-        $allocate = \app\common\model\MemberAllocate::where('id', '=', $order['member_allocate_id'])->find();
-        $this->assign('allocate', $allocate);
 
         ## 获取客户信息
         if(!empty($order->member_id)) {
@@ -387,6 +411,7 @@ class Confirm extends Backend
         $where[] = ['timing', '=', $orderConfirm->confirm_type];
         $audit = \app\common\model\Audit::where($where)->find();
 
+        $staffs = User::getUsers();
         $config = config();
         $sequences = $config['crm']['check_sequence'];
         if(!empty($sequences)) {
@@ -394,20 +419,17 @@ class Confirm extends Backend
             foreach ($sequence as $key => &$row) {
                 $where = [];
                 $where[] = ['order_id', '=', $get['id']];
-                // $where[] = ['company_id', '=', $order->company_id];
                 $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
-                // $where[] = ['confirm_type', '=', $orderConfirm->confirm_type];
                 $where[] = ['confirm_item_id', '=', $key];
                 $confirmModel = new OrderConfirm();
                 $currentConfirm = $confirmModel->where($where)->find();
-                // echo $confirmModel->getLastSql();
                 $row['title'] = $sequences[$key]['title'];
 
                 if (!empty($currentConfirm)) {
                     $cstatus = $currentConfirm->status;
-                    // $row['managers'] = $managers;
                     $row['status'] = $this->confirmStatusList[$cstatus];
                     $row['content'] = $currentConfirm->content;
+                    $row['confirm_user_id'] = $staffs[$currentConfirm['confirm_user_id']]['realname'];
                 } else {
                     // $row['managers'] = $managers;
                     $row['status'] = '待审核';
