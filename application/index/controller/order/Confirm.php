@@ -299,6 +299,20 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $receivables = \app\common\model\OrderBanquetReceivables::where($where)->select();
+        foreach ($receivables as $key=>&$row) {
+            $contractImg = !empty($row['contract_img']) ? emplode(',', $row['contract_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $row['images'] = $images;
+        }
         $this->assign('banquetReceivables', $receivables);
 
         #### 获取婚宴付款信息
@@ -306,6 +320,19 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetPayments = \app\common\model\OrderBanquetPayment::where($where)->select();
+        foreach ($banquetPayments as $key=>&$row) {
+            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $row['images'] = $images;
+        }
         $this->assign('banquetPayments', $banquetPayments);
 
         #### 获取酒店协议信息
@@ -334,6 +361,20 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingReceivables = \app\common\model\OrderWeddingReceivables::where($where)->select();
+        foreach ($weddingReceivables as $key=>&$row) {
+            $contractImg = !empty($row['contract_img']) ? emplode(',', $row['contract_img']) : [];
+            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $row['images'] = $images;
+        }
         $this->assign('weddingReceivables', $weddingReceivables);
 
         #### 获取婚庆付款信息
@@ -341,6 +382,19 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingPayments = \app\common\model\OrderWeddingPayment::where($where)->select();
+        foreach ($weddingPayments as $key=>&$row) {
+            $receiptImg = !empty($row['receipt_img']) ? emplode(',', $row['receipt_img']) : [];
+            $noteImg = !empty($row['note_img']) ? emplode(',', $row['note_img']) : [];
+            $photos = array_merge($contractImg, $receiptImg, $noteImg);
+            $images = [];
+            foreach ($photos as $key=>$val) {
+                $images[$key]['alt'] = '';
+                $images[$key]['pid'] = $order['id'];
+                $images[$key]['src'] = $val;
+                $images[$key]['thumb'] = $val;
+            }
+            $row['images'] = $images;
+        }
         $this->assign('weddingPayments', $weddingPayments);
 
         #### 婚车
