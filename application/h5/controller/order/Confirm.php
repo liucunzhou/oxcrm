@@ -329,7 +329,12 @@ class Confirm extends Base
             }
 
 
-            $editApi = '/h5/order.order/doEditOrder';
+            if (isset($orderData['complete']) && $orderData['complete'] == '99') {
+                // 意向金订单
+                $editApi = '/h5/order.prepay/doEdit';
+            } else {
+                $editApi = '/h5/order.order/doEditOrder';
+            }
             $backendApi = '/h5/order.confirm/backend';
         } else if ($key == 'banquet') {
             $value = $origin['banquet'];
