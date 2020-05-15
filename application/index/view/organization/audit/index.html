@@ -29,11 +29,23 @@
                     <form class="layui-form" id="advance-search" action="{:htmlspecialchars_decode($_SERVER['REQUEST_URI'])}">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input type="text" name="title" lay-verify="0" placeholder="名称" autocomplete="off" class="layui-input">
+                                <select name="company_id" lay-search>
+                                    <option value="">选择名称</option>
+                                    <{foreach name="brands" item="company"}>
+                                        <option value="{$company.id}">{$company.title}</option>
+                                    <{/foreach}>
+                                </select>
                             </div>
 
                             <div class="layui-inline">
-                                <input type="text" name="route" lay-verify="0" placeholder="路由" autocomplete="off" class="layui-input">
+                                <select name="timing" lay-search>
+                                    <option value="">审核类型</option>
+                                    <option value="order">订单审核</option>
+                                    <option value="income">收款审核</option>
+                                    <option value="payment">付款审核</option>
+                                    <option value="suborder">二销审核</option>
+                                    <option value="prepay">意向金</option>
+                                </select>
                             </div>
 
                             <div class="layui-inline ">

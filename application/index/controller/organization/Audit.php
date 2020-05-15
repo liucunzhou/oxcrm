@@ -39,13 +39,22 @@ class Audit extends Backend
     public function index()
     {
         if($this->request->isAjax()) {
-            $request = $this->request->param();
+            $param = $this->request->param();
             $config = [
-                'page' => $request['page']
+                'page' => $param['page']
             ];
 
             $map = [];
-            $list = $this->model->where($map)->order("sort desc")->paginate($request['limit'], false, $config);
+            ## 签约公司
+            if ($param['company_id'] > 0) {
+                $map[] = ['company_id', '=', $param['company_id']];
+            }
+            ## 审核类型
+            if ($param['timing'] != '') {
+                $map[] = ['timing', '=', $param['timing']];
+            }
+
+            $list = $this->model->where($map)->order("sort desc")->paginate($param['limit'], false, $config);
             foreach ($list as &$row) {
                 $row['company_id'] = $this->brands[$row['company_id']]['title'];
             }
@@ -71,8 +80,8 @@ class Audit extends Backend
 
     public function doCreate()
     {
-        $request = $this->request->param();
-        if(empty($request['company_id'])) {
+        $param = $this->request->param();
+        if(empty($param['company_id'])) {
             $result = [
                 'code'  => '400',
                 'msg'   => '请选择所属公司'
@@ -81,12 +90,12 @@ class Audit extends Backend
         }
 
         $content = [];
-        foreach ($request['rule'] as $row) {
-            isset($request[$row]) && $content[$row] = $request[$row];
+        foreach ($param['rule'] as $row) {
+            isset($param[$row]) && $content[$row] = $param[$row];
         }
 
         $this->model->content = json_encode($content);
-        $row = $this->model->allowField(true)->save($request);
+        $row = $this->model->allowField(true)->save($param);
         if($row) {
             $result = [
                 'code'  => '200',
@@ -135,8 +144,8 @@ class Audit extends Backend
 
     public function doEdit()
     {
-        $request = $this->request->param();
-        if(empty($request['company_id'])) {
+        $param = $this->request->param();
+        if(empty($param['company_id'])) {
             $result = [
                 'code'  => '400',
                 'msg'   => '请选择所属公司'
@@ -145,16 +154,16 @@ class Audit extends Backend
         }
 
         $where = [];
-        $where['id'] = $request['id'];
+        $where['id'] = $param['id'];
         $audit = $this->model->where($where)->find();
 
         $content = [];
-        foreach ($request['rule'] as $row) {
-            isset($request[$row]) && $content[$row] = $request[$row];
+        foreach ($param['rule'] as $row) {
+            isset($param[$row]) && $content[$row] = $param[$row];
         }
 
         $audit->content = json_encode($content);
-        $row = $audit->allowField(true)->save($request);
+        $row = $audit->allowField(true)->save($param);
         if($row) {
             $result = [
                 'code'  => '200',
