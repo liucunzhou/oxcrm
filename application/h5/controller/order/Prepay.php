@@ -153,7 +153,7 @@ class Prepay extends Base
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
-    public function doEditOrder()
+    public function doEdit()
     {
         $param = $this->request->param();
 
