@@ -256,6 +256,8 @@ class Confirm extends Base
         $origin = json_decode($confirm->source, true);
         $source = [];
 
+        $orderObj = \app\common\model\Order::get($confirm->order_id);
+
         $key = key($origin);
         if ($key == 'order') {
             $source = $origin;
@@ -329,7 +331,7 @@ class Confirm extends Base
             }
 
 
-            if (isset($orderData['complete']) && $orderData['complete'] == '99') {
+            if ($orderObj->complete == '99') {
                 // 意向金订单
                 $editApi = '/h5/order.prepay/doEdit';
             } else {
