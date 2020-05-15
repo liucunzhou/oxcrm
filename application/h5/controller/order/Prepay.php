@@ -71,6 +71,7 @@ class Prepay extends Base
             'data'  => [
                 'companyList' => array_values($this->brands),    ##签约公司列表
                 'newsTypeList' => array_values($this->config['news_type_list']),
+                'payments' => $this->config['payments'],
             ]
         ];
 
