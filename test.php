@@ -1,3 +1,6 @@
 <?php
-$str = '0';
-var_dump('' == $str);
+$str = '';
+
+$arr = explode(',', $str);
+
+print_r($arr);
