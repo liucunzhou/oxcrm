@@ -70,20 +70,22 @@
                         <li class="layui-timeline-item">
                             <i class="layui-icon layui-timeline-axis"></i>
                             <div class="layui-timeline-content layui-text">
-                                <h3 class="layui-timeline-title">
-                                    {$value.title}
-                                    (
-                                        <{foreach name="value.managerList" item="manager" }>
-                                            <{if $key==0}>
-                                                {$manager.realname}
-                                            <{else /}>
-                                                ,{$manager.realname}
-                                            <{/if}>
-                                        <{/foreach}>
-                                    )
-                                </h3>
-                                <p>{$value.status}</p>
-                                <p>{$value.content}</p>
+                                <h3 class="layui-timeline-title">{$value.title}</h3>
+                                <p>
+                                    <{php}>
+                                        $realnames = array_column($value['managerList'], realname);
+                                    <{/php}>
+                                    审核人员:{:implode(',', $realnames)}
+                                </p>
+                                <p>
+                                    审核时间:{$value['confirm_time']}
+                                </p>
+                                <p>
+                                    审核状态:{$value.status}
+                                </p>
+                                <p>
+                                    审核内容:{$value.content|default='-'}
+                                </p>
                             </div>
                         </li>
                         <{/foreach}>

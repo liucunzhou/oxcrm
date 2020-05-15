@@ -506,6 +506,7 @@ class Confirm extends Backend
         $sequence = $config['crm']['check_sequence'];
         $auth = json_decode($audit->content, true);
 
+        $orderUser = User::getUser($order['user_id']);
         $confirmList = [];
         foreach ($auth as $key => $row) {
             $managerList = [];
@@ -513,7 +514,7 @@ class Confirm extends Backend
             if ($type == 'role') {
                 // 获取角色
                 foreach ($row as $v) {
-                    $user = User::getRoleManager($v, $this->user);
+                    $user = User::getRoleManager($v, $orderUser);
                     $managerList[] = [
                         'id' => $user['id'],
                         'realname' => $user['realname'],
