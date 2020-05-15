@@ -41,10 +41,10 @@ class Confirm extends Backend
     protected $weddingCategories = [];
     // protected $paymentTypes = [1=>'定金', 2=>'预付款', 3=>'尾款', 4=>'其他'];
     // protected $payments = [1=>'现金', 2=>'POS机', 3=>'微信', 4=>'支付宝'];
-    protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回', 13 => '审核撤销'];
+    protected $confirmProjectStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
     // 审核过程中的审核项的审核状态
-    protected $confirmStatusList = [0=>'待审核', 1=>'审核通过', 2=>'审核驳回', 3=>'审核驳回', 13 => '审核撤销'];
-    protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核通过', 2 => '审核驳回', 13 => '审核撤销'];
+    protected $cooperationModes = [1 => '返佣单', 2 => '代收代付', 3 => '代收代付+返佣单', 4 => '一单一议'];
 
     protected function initialize()
     {
@@ -57,6 +57,8 @@ class Confirm extends Backend
         $this->assign('confirmStatusList', $this->confirmStatusList);
         $this->assign('confirmProjectStatusList', $this->confirmProjectStatusList);
         $this->assign('cooperationModes', $this->cooperationModes);
+        ## 列出所有审核状态
+        $this->assign('confirmStatusList', $this->confirmStatusList);
 
         $staffes = User::getUsersInfoByDepartmentId($this->user['department_id']);
         $this->assign('staffes', $staffes);
@@ -175,12 +177,12 @@ class Confirm extends Backend
         }
     }
 
-    # 誉思订单
+    # 待审核
     public function index()
     {
         if (Request::isAjax()) {
             $get = $this->request->param();
-            $get['company_id'] = 25;
+            $get['status'] = '0';
             $list = $this->_getConfirmList($get);
 
             $result = [
@@ -196,12 +198,12 @@ class Confirm extends Backend
         }
     }
 
-    # 红丝订单
-    public function hs()
+    # 审核通过
+    public function accept()
     {
         if (Request::isAjax()) {
             $get = $this->request->param();
-            $get['company_id'] = 26;
+            $get['status'] = 1;
             $list = $this->_getConfirmList($get);
 
             $result = [
@@ -217,11 +219,12 @@ class Confirm extends Backend
         }
     }
 
-    public function lk()
+    # 审核驳回
+    public function reject()
     {
         if (Request::isAjax()) {
             $get = $this->request->param();
-            $get['company_id'] = 27;
+            $get['status'] = 2;
             $list = $this->_getConfirmList($get);
 
             $result = [
@@ -237,11 +240,12 @@ class Confirm extends Backend
         }
     }
 
-    public function mangena()
+    # 审核撤销
+    public function backend()
     {
         if (Request::isAjax()) {
             $get = $this->request->param();
-            $get['company_id'] = 24;
+            $get['status'] = 13;
             $list = $this->_getConfirmList($get);
 
             $result = [
@@ -267,7 +271,7 @@ class Confirm extends Backend
         $get['id'] = $orderConfirm->order_id;
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
-        if(empty($this->user['sale']) && $order->salesman > 0) {
+        if (empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
@@ -299,23 +303,23 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $receivables = \app\common\model\OrderBanquetReceivables::where($where)->select();
-        foreach ($receivables as $key=>&$row) {
+        foreach ($receivables as $key => &$row) {
             $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -326,22 +330,22 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetPayments = \app\common\model\OrderBanquetPayment::where($where)->select();
-        foreach ($banquetPayments as $key=>&$row) {
+        foreach ($banquetPayments as $key => &$row) {
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -373,23 +377,23 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingReceivables = \app\common\model\OrderWeddingReceivables::where($where)->select();
-        foreach ($weddingReceivables as $key=>&$row) {
+        foreach ($weddingReceivables as $key => &$row) {
             $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -400,22 +404,22 @@ class Confirm extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingPayments = \app\common\model\OrderWeddingPayment::where($where)->select();
-        foreach ($weddingPayments as $key=>&$row) {
+        foreach ($weddingPayments as $key => &$row) {
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -472,7 +476,7 @@ class Confirm extends Backend
         $this->assign('d3', $d3);
 
         ## 获取客户信息
-        if(!empty($order->member_id)) {
+        if (!empty($order->member_id)) {
             $member = \app\common\model\Member::get($order->member_id);
             $this->assign('member', $member);
         }
@@ -492,7 +496,7 @@ class Confirm extends Backend
         $staffs = User::getUsers();
         $config = config();
         $sequences = $config['crm']['check_sequence'];
-        if(!empty($sequences)) {
+        if (!empty($sequences)) {
             $sequence = (array)json_decode($audit->content, true);
             foreach ($sequence as $key => &$row) {
                 $where = [];
@@ -518,19 +522,19 @@ class Confirm extends Backend
         }
 
         ## 合同
-        if(!empty($order['image'])) {
+        if (!empty($order['image'])) {
             $order['image'] = explode(',', $order['image']);
         } else {
             $order['image'] = [];
         }
         ## 收据
-        if(!empty($order['receipt_img'])) {
+        if (!empty($order['receipt_img'])) {
             $order['receipt_img'] = explode(',', $order['receipt_img']);
         } else {
             $order['receipt_img'] = [];
         }
         ## 小票
-        if(!empty($order['note_img'])) {
+        if (!empty($order['note_img'])) {
             $order['note_img'] = explode(',', $order['note_img']);
         } else {
             $order['note_img'] = [];
@@ -538,17 +542,17 @@ class Confirm extends Backend
         $this->assign('data', $order);
         $photos = [];
         $images = array_merge($order['image'], $order['receipt_img'], $order['note_img']);
-        foreach ($images as $key=>$val) {
+        foreach ($images as $key => $val) {
             $photos[$key]['alt'] = '';
             $photos[$key]['pid'] = $order['id'];
             $photos[$key]['src'] = $val;
             $photos[$key]['thumb'] = $val;
         }
         $photosData = [
-            'id'    => $order['id'],
+            'id' => $order['id'],
             'title' => '订单凭证',
             'start' => 0,
-            'data'  => $photos
+            'data' => $photos
         ];
         $this->assign('photosData', $photosData);
         $this->assign('images', $images);
@@ -597,8 +601,11 @@ class Confirm extends Backend
         if (!empty($get['company_id'])) {
             $map[] = ['company_id', '=', $get['company_id']];
         }
+        if ($get['status'] != '') {
+            $map[] = ['status', '=', $get['status']];
+        }
 
-        if($this->user['nickname'] != 'admin') {
+        if ($this->user['nickname'] != 'admin') {
             $map[] = ['confirm_user_id', '=', $this->user['id']];
         }
 
@@ -613,7 +620,6 @@ class Confirm extends Backend
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
-
         $users = \app\common\model\User::getUsers();
         foreach ($list as $key => &$value) {
             $companyId = $value->company_id;
@@ -649,9 +655,9 @@ class Confirm extends Backend
         $confirm->status = 1;
         $confirm->operate_id = $this->user['id'];
         $result = $confirm->save();
-        if($result) {
+        if ($result) {
             $newConfirm = new OrderConfirm();
-            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['status'=>1,'is_checked'=>1]);
+            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['status' => 1, 'is_checked' => 1]);
 
             ## 获取当前配置
             $where = [];
@@ -662,17 +668,16 @@ class Confirm extends Backend
             $sequence = json_decode($audit->content, true);
             $current = $confirm->confirm_item_id;
             $next_confirm_item_id = get_next_confirm_item($current, $sequence);
-            if(!is_null($next_confirm_item_id)) {
+            if (!is_null($next_confirm_item_id)) {
                 $config = config();
                 $auditConfig = $config['crm']['check_sequence'];
                 unset($data['id']);
                 unset($data['create_time']);
                 unset($data['update_time']);
                 unset($data['delete_time']);
-                if($auditConfig[$next_confirm_item_id]['type'] == 'staff') {
+                if ($auditConfig[$next_confirm_item_id]['type'] == 'staff') {
                     // 指定人员审核
-                    foreach ($sequence[$next_confirm_item_id] as $row)
-                    {
+                    foreach ($sequence[$next_confirm_item_id] as $row) {
                         $data['is_checked'] = 0;
                         $data['status'] = 0;
                         $data['confirm_item_id'] = $next_confirm_item_id;
@@ -693,11 +698,11 @@ class Confirm extends Backend
                         $orderConfirm->allowField(true)->save($data);
                     }
                 }
-                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>1]);
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status' => 1]);
                 $this->updateItemStatus($confirm->source, 1);
             } else {
 
-                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status'=>2]);
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status' => 2]);
                 $this->updateItemStatus($confirm->source, 2);
             }
 
@@ -719,24 +724,15 @@ class Confirm extends Backend
         $confirm->content = $param['content'];
         $confirm->status = 2;
         $result = $confirm->save();
-        $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked'=>1]);
-        \app\common\model\Order::where('id', '=', $orderId)->update(['check_status'=>3]);
+        $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked' => 1]);
+        \app\common\model\Order::where('id', '=', $orderId)->update(['check_status' => 3]);
         $this->updateItemStatus($confirm->source, 3);
-        if($result) {
+        if ($result) {
             $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
         } else {
             $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
         }
-
         return json($json);
-    }
-
-    public function reject()
-    {
-        ### 获取所有非付款审批
-        $where = [];
-        $where[] = ['confirm_type', '<>', 'payment'];
-        $list = OrderConfirm::where()->whereNull('')->select();
     }
 
     protected function updateItemStatus($origin, $status)
@@ -745,7 +741,7 @@ class Confirm extends Backend
         $origin = json_decode($origin, true);
 
         $data['item_check_status'] = $status;
-        foreach ($origin as $key=>$row) {
+        foreach ($origin as $key => $row) {
             $whereId = [];
             $whereId['id'] = $row['id'];
             switch ($key) {
