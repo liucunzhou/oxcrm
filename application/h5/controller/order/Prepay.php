@@ -1,4 +1,5 @@
 <?php
+
 namespace app\h5\controller\order;
 
 
@@ -66,9 +67,9 @@ class Prepay extends Base
     public function create()
     {
         $result = [
-            'code'  => '200',
-            'msg'   => '获取数据成功',
-            'data'  => [
+            'code' => '200',
+            'msg' => '获取数据成功',
+            'data' => [
                 'companyList' => array_values($this->brands),    ##签约公司列表
                 'newsTypeList' => array_values($this->config['news_type_list']),
                 'payments' => $this->config['payments'],
@@ -148,7 +149,7 @@ class Prepay extends Base
         }
 
         // 根据公司创建审核流程
-        create_order_confirm($OrderModel->id, $orderData['company_id'], $this->user['id'], 'prepay', "创建意向金", $source);
+        create_order_confirm($OrderModel->id, $orderData['company_id'], $this->user['id'], 'prepay', "创建意向金审核", $source);
         return json(['code' => '200', 'msg' => '创建成功']);
     }
 
@@ -161,55 +162,54 @@ class Prepay extends Base
         $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
         $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);
         $order = \app\common\model\Order::get($post['id']);
-        $result = $order->allowField(true)->save($post);
+        $order->allowField(true)->save($post);
         $source['order'] = $order->toArray();
 
+        ## 收款信息
+        if (!empty($param['income'])) {
+            $income = json_decode($param['income'], true);
+            if ($post['news_type'] == '2' || $post['news_type'] == '0') {
+                // 婚宴收款
+                $data = [];
+                $data['banquet_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_date'] = $income['income_date'];
+                $data['banquet_income_payment'] = $income['income_payment'];
+                $data['banquet_income_type'] = 1;
+                $data['banquet_income_item_price'] = $income['income_item_price'];
+                $data['remark'] = $income['income_remark'];
+                $data['order_id'] = $post['od'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
-            ## 收款信息
-            if (!empty($param['income'])) {
-                $income = json_decode($param['income'], true);
-                if ($post['news_type'] == '2' || $post['news_type'] == '0') {
-                    // 婚宴收款
-                    $data = [];
-                    $data['banquet_receivable_no'] = $income['receivable_no'];
-                    $data['banquet_income_date'] = $income['income_date'];
-                    $data['banquet_income_payment'] = $income['income_payment'];
-                    $data['banquet_income_type'] = 1;
-                    $data['banquet_income_item_price'] = $income['income_item_price'];
-                    $data['remark'] = $income['income_remark'];
-                    $data['order_id'] = $post['od'];
-                    $data['operate_id'] = $this->user['id'];
-                    $data['user_id'] = $this->user['id'];
-                    $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
-                    $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+                $income = OrderBanquetReceivables::get($income['id']);
+                $income->allowField(true)->save($data);
+                $source['banquetIncome'][] = $income->toArray();
+            } else {
+                // 婚庆收款
+                $data = [];
+                $data['wedding_receivable_no'] = $income['receivable_no'];
+                $data['wedding_income_date'] = $income['income_date'];
+                $data['wedding_income_payment'] = $income['income_payment'];
+                $data['wedding_income_type'] = 1;
+                $data['wedding_income_item_price'] = $income['income_item_price'];
+                $data['remark'] = $income['income_remark'];
+                $data['order_id'] = $post['id'];
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
-                    $income = OrderBanquetReceivables::get($income['id']);
-                    $income->allowField(true)->save($data);
-                    $source['banquetIncome'][] = $income->toArray();
-                } else {
-                    // 婚庆收款
-                    $data = [];
-                    $data['wedding_receivable_no'] = $income['receivable_no'];
-                    $data['wedding_income_date'] = $income['income_date'];
-                    $data['wedding_income_payment'] = $income['income_payment'];
-                    $data['wedding_income_type'] = 1;
-                    $data['wedding_income_item_price'] = $income['income_item_price'];
-                    $data['remark'] = $income['income_remark'];
-                    $data['order_id'] = $post['id'];
-                    $data['operate_id'] = $this->user['id'];
-                    $data['user_id'] = $this->user['id'];
-                    $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
-                    $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
-
-                    $income = OrderWeddingReceivables::get($income['id']);
-                    $income->allowField(true)->save($data);
-                    $source['weddingIncome'][] = $income->toArray();
-                }
+                $income = OrderWeddingReceivables::get($income['id']);
+                $income->allowField(true)->save($data);
+                $source['weddingIncome'][] = $income->toArray();
             }
+        }
 
-            // 根据公司创建审核流程
-            create_order_confirm($post['id'], $post['company_id'], $this->user['id'], 'order', "编辑订单定金审核", $source);
-            return json(['code' => '200', 'msg' => '编辑订单成功']);
+        // 根据公司创建审核流程
+        create_order_confirm($post['id'], $post['company_id'], $this->user['id'], 'order', "编辑意向金审核", $source);
+        return json(['code' => '200', 'msg' => '编辑订单成功']);
 
     }
 }

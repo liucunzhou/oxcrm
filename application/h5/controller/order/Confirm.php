@@ -259,6 +259,15 @@ class Confirm extends Base
         $key = key($origin);
         if ($key == 'order') {
             $source = $origin;
+            if (isset($source['order'])) {
+                $orderData = $source['order'];
+                $source['order'] = [
+                    "image" => is_array($orderData['image']) ? $orderData['image'] : explode(',' , $orderData['image']),
+                    "receipt_img" => is_array($orderData['receipt_img']) ? $orderData['receipt_img'] : explode(',' , $orderData['receipt_img']),
+                    "note_img" => is_array($orderData['note_img']) ? $orderData['note_img'] : explode(',', $orderData['note_img']),
+                ];
+            }
+
             if (isset($source['banquetIncome'])){
                 $income = $source['banquetIncome'][0];
                 unset($source['banquetIncome']);
