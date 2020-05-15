@@ -488,38 +488,89 @@ class Confirm extends Backend
         ## 获取销售列表
         $salesmans = \app\common\model\User::getUsersByRole(8);
         $this->assign('salesmans', $salesmans);
+
+        ## 获取审核进度
         $where = [];
-        $where[] = ['company_id', '=', $order->company_id];
+        $where[] = ['company_id', '=', $orderConfirm->company_id];
         $where[] = ['timing', '=', $orderConfirm->confirm_type];
         $audit = \app\common\model\Audit::where($where)->find();
 
-        $staffs = User::getUsers();
+        $where = [];
+        $where['confirm_no'] = $orderConfirm->confirm_no;
+        $where['order_id'] = $orderConfirm->order_id;
+        $orderConfirm = new OrderConfirm();
+        $confirmRs = $orderConfirm->where($where)->column('id,status,content,update_time,create_time,image', 'confirm_item_id');
+        $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
+        $staffs = User::getUsers(false);
         $config = config();
-        $sequences = $config['crm']['check_sequence'];
-        if (!empty($sequences)) {
-            $sequence = (array)json_decode($audit->content, true);
-            foreach ($sequence as $key => &$row) {
-                $where = [];
-                $where[] = ['order_id', '=', $get['id']];
-                $where[] = ['confirm_no', '=', $orderConfirm->confirm_no];
-                $where[] = ['confirm_item_id', '=', $key];
-                $confirmModel = new OrderConfirm();
-                $currentConfirm = $confirmModel->where($where)->find();
-                $row['title'] = $sequences[$key]['title'];
+        $sequence = $config['crm']['check_sequence'];
+        $auth = json_decode($audit->content, true);
 
-                if (!empty($currentConfirm)) {
-                    $cstatus = $currentConfirm->status;
-                    $row['status'] = $this->confirmStatusList[$cstatus];
-                    $row['content'] = $currentConfirm->content;
-                    $row['confirm_user_id'] = $staffs[$currentConfirm['confirm_user_id']]['realname'];
-                } else {
-                    // $row['managers'] = $managers;
-                    $row['status'] = '待审核';
-                    $row['content'] = '';
+        $confirmList = [];
+        foreach ($auth as $key => $row) {
+            $managerList = [];
+            $type = $sequence[$key]['type'];
+            if ($type == 'role') {
+                // 获取角色
+                foreach ($row as $v) {
+                    $user = User::getRoleManager($v, $this->user);
+                    $managerList[] = [
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
+                }
+            } else {
+                foreach ($row as $v) {
+                    if (!isset($staffs[$v])) continue;
+                    $user = $staffs[$v];
+                    $managerList[] = [
+                        'id' => $user['id'],
+                        'realname' => $user['realname'],
+                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                    ];
                 }
             }
-            $this->assign('sequence', $sequence);
+
+            if ($confirmRs[$key]) {
+                switch ($confirmRs[$key]['status']) {
+                    case 0:
+                        $status = '待审核';
+                        break;
+                    case 1:
+                        $status = '审核通过';
+                        break;
+                    case 2:
+                        $status = '审核驳回';
+                        break;
+                    case 13:
+                        $status = '审核撤销';
+                        break;
+                    default:
+                        $status = '待审核';
+                }
+                $content = $confirmRs[$key]['content'];
+                $confirmTime = date('m-d H:i',$confirmRs[$key]['update_time']);
+                $image = empty($confirmRs[$key]['image']) ? [] : explode(',', $confirmRs[$key]['image']);
+            } else {
+                $status = '待审核';
+                $content = '';
+                $confirmTime = '';
+                $image = [];
+            }
+
+            $confirmList[] = [
+                'id' => $key,
+                'title' => $sequence[$key]['title'],
+                'status' => $status,
+                'content' => $content,
+                'image' => $image,
+                'confirm_time' => $confirmTime,
+                'managerList' => $managerList
+            ];
         }
+        // print_r($confirmList);
+        $this->assign('confirmList', $confirmList);
 
         ## 合同
         if (!empty($order['image'])) {
@@ -576,6 +627,7 @@ class Confirm extends Backend
         $count['totals'] = $order['totals'];
         $count['customer_totals'] = $count['totals'] + $count['wedding_totals'] + $count['banquet_totals'];
         $this->assign('count', $count);
+
         return $this->fetch('order/show/main');
     }
 

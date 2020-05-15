@@ -738,7 +738,6 @@ class Confirm extends Base
         $where['order_id'] = $confirm->order_id;
         $orderConfirm = new OrderConfirm();
         $confirmRs = $orderConfirm->where($where)->column('id,status,content,update_time,create_time,image', 'confirm_item_id');
-
         $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
         $staffs = User::getUsers(false);
         ## 审核全局列表
@@ -781,6 +780,9 @@ class Confirm extends Base
                     case 2:
                         $status = '审核驳回';
                         break;
+                    case 13:
+                        $status = '审核撤销';
+                        break;
                     default:
                         $status = '待审核';
                 }
@@ -804,7 +806,6 @@ class Confirm extends Base
                 'managerList' => $managerList
             ];
         }
-
 
         $result = [
             'code' => '200',

@@ -66,11 +66,22 @@
                 </div>
                 <div class="layui-card-body">
                     <ul class="layui-timeline">
-                        <{foreach name="sequence" item="value"}>
+                        <{foreach name="confirmList" item="value"}>
                         <li class="layui-timeline-item">
                             <i class="layui-icon layui-timeline-axis"></i>
                             <div class="layui-timeline-content layui-text">
-                                <h3 class="layui-timeline-title">{$value.title}</h3>
+                                <h3 class="layui-timeline-title">
+                                    {$value.title}
+                                    (
+                                        <{foreach name="value.managerList" item="manager" }>
+                                            <{if $key==0}>
+                                                {$manager.realname}
+                                            <{else /}>
+                                                ,{$manager.realname}
+                                            <{/if}>
+                                        <{/foreach}>
+                                    )
+                                </h3>
                                 <p>{$value.status}</p>
                                 <p>{$value.content}</p>
                             </div>
