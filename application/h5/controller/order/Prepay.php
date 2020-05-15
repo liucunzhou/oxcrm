@@ -86,7 +86,8 @@ class Prepay extends Base
 
         ### 格式化数据
         $orderData = json_decode($param['order'], true);
-        $orderData['news_type'] = $orderData['newsType'];
+        // $orderData['news_type'] = $orderData['newsType'];
+        $orderData['prepay_money'] = $orderData['income_item_price'];
         $orderData['member_id'] = $member->id;
         $orderData['realname'] = $member->realname;
         $orderData['mobile'] = $member->mobile;
@@ -103,7 +104,46 @@ class Prepay extends Base
             return json(['code' => '400', 'msg' => '创建失败']);
         }
         $source['order'] = $OrderModel->toArray();
+        if (!empty($param['income'])) {
+            $income = json_decode($param['income'], true);
+            if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
+                // 婚宴收款
+                $data = [];
+                $data['banquet_receivable_no'] = $income['receivable_no'];
+                $data['banquet_income_date'] = $income['income_date'];
+                $data['banquet_income_payment'] = $income['income_payment'];
+                $data['banquet_income_type'] = 4;
+                $data['banquet_income_item_price'] = $income['income_item_price'];
+                $data['remark'] = $income['income_remark'];
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
 
+                $receivableModel = new OrderBanquetReceivables();
+                $receivableModel->allowField(true)->save($data);
+                $source['banquetIncome'][] = $receivableModel->toArray();
+            } else {
+                // 婚庆收款
+                $data = [];
+                $data['wedding_receivable_no'] = $income['receivable_no'];
+                $data['wedding_income_date'] = $income['income_date'];
+                $data['wedding_income_payment'] = $income['income_payment'];
+                $data['wedding_income_type'] = 1;
+                $data['wedding_income_item_price'] = $income['income_item_price'];
+                $data['remark'] = $income['income_remark'];
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
+                $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+
+                $receivableModel = new OrderWeddingReceivables();
+                $receivableModel->allowField(true)->save($data);
+                $source['weddingIncome'][] = $receivableModel->toArray();
+            }
+        }
 
         // 根据公司创建审核流程
         create_order_confirm($OrderModel->id, $orderData['company_id'], $this->user['id'], 'prepay', "创建意向金", $source);

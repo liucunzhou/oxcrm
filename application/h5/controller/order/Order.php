@@ -831,7 +831,7 @@ class Order extends Base
         $member = \app\api\model\Member::get($allocate->member_id);
 
         $orderData = json_decode($param['order'], true);
-        $orderData['news_type'] = $orderData['newsType'];
+        // $orderData['news_type'] = $orderData['newsType'];
         $orderData['member_id'] = $member->id;
         $orderData['realname'] = $member->realname;
         $orderData['mobile'] = $member->mobile;
