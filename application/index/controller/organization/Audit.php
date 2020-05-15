@@ -1,4 +1,5 @@
 <?php
+
 namespace app\index\controller\organization;
 
 use app\common\model\AuthGroup;
@@ -11,6 +12,7 @@ class Audit extends Backend
     protected $staffs = [];
     protected $roles = [];
     protected $sequence = [];
+    protected $timing = [];
 
     protected function initialize()
     {
@@ -33,12 +35,21 @@ class Audit extends Backend
         $config = config();
         $this->sequence = $config['crm']['check_sequence'];
         $this->assign('sequence', $this->sequence);
+
+        $this->timing = [
+            'order' => '订单审核',
+            'income' => '收款审核',
+            'payment' => '付款审核',
+            'suborder' => '二销审核',
+            'prepay' => '意向金审核',
+        ];
+        $this->assign('timing', $this->timing);
     }
 
     // 规则列表
     public function index()
     {
-        if($this->request->isAjax()) {
+        if ($this->request->isAjax()) {
             $param = $this->request->param();
             $config = [
                 'page' => $param['page']
@@ -57,17 +68,19 @@ class Audit extends Backend
             $list = $this->model->where($map)->order("sort desc")->paginate($param['limit'], false, $config);
             foreach ($list as &$row) {
                 $row['company_id'] = $this->brands[$row['company_id']]['title'];
+                $row['timing'] = $this->timing[$row['timing']];
             }
 
             $result = [
-                'code'  => 0,
-                'msg'   => '获取数据成功',
+                'code' => 0,
+                'msg' => '获取数据成功',
                 'count' => $list->total(),
-                'data'  => $list->getCollection()
+                'data' => $list->getCollection()
             ];
             return json($result);
 
         } else {
+
             return $this->fetch();
         }
     }
@@ -81,10 +94,10 @@ class Audit extends Backend
     public function doCreate()
     {
         $param = $this->request->param();
-        if(empty($param['company_id'])) {
+        if (empty($param['company_id'])) {
             $result = [
-                'code'  => '400',
-                'msg'   => '请选择所属公司'
+                'code' => '400',
+                'msg' => '请选择所属公司'
             ];
             return json($result);
         }
@@ -96,15 +109,15 @@ class Audit extends Backend
 
         $this->model->content = json_encode($content);
         $row = $this->model->allowField(true)->save($param);
-        if($row) {
+        if ($row) {
             $result = [
-                'code'  => '200',
-                'msg'   => '添加审核规则成功'
+                'code' => '200',
+                'msg' => '添加审核规则成功'
             ];
         } else {
             $result = [
-                'code'  => '500',
-                'msg'   => '添加审核规则失败'
+                'code' => '500',
+                'msg' => '添加审核规则失败'
             ];
         }
 
@@ -121,20 +134,20 @@ class Audit extends Backend
 
         $selected = [];
         $csequence = json_decode($data->content, true);
-        foreach ($csequence as $key=>$row) {
+        foreach ($csequence as $key => $row) {
             $selected[$key] = [
-                'id'    => $this->sequence[$key]['id'],
+                'id' => $this->sequence[$key]['id'],
                 'title' => $this->sequence[$key]['title'],
-                'type'  => $this->sequence[$key]['type'],
-                'items'  => $row
+                'type' => $this->sequence[$key]['type'],
+                'items' => $row
             ];
         }
         // print_r($selected);
         $this->assign('selected', $selected);
 
         $unselected = [];
-        foreach ($this->sequence as $key=>$row) {
-            if(!isset($csequence[$key])) {
+        foreach ($this->sequence as $key => $row) {
+            if (!isset($csequence[$key])) {
                 $unselected[$key] = $row;
             }
         }
@@ -145,10 +158,10 @@ class Audit extends Backend
     public function doEdit()
     {
         $param = $this->request->param();
-        if(empty($param['company_id'])) {
+        if (empty($param['company_id'])) {
             $result = [
-                'code'  => '400',
-                'msg'   => '请选择所属公司'
+                'code' => '400',
+                'msg' => '请选择所属公司'
             ];
             return json($result);
         }
@@ -164,15 +177,15 @@ class Audit extends Backend
 
         $audit->content = json_encode($content);
         $row = $audit->allowField(true)->save($param);
-        if($row) {
+        if ($row) {
             $result = [
-                'code'  => '200',
-                'msg'   => '添加审核规则成功'
+                'code' => '200',
+                'msg' => '添加审核规则成功'
             ];
         } else {
             $result = [
-                'code'  => '500',
-                'msg'   => '添加审核规则失败'
+                'code' => '500',
+                'msg' => '添加审核规则失败'
             ];
         }
 
