@@ -158,9 +158,7 @@ class Prepay extends Base
         $param = $this->request->param();
 
         $post = json_decode($param['order'], true);
-        $post['image'] = empty($post['imageArray']) ? '' : implode(',', $post['imageArray']);
-        $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
-        $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);
+        $post['image'] = empty($post['image']) ? '' : implode(',', $post['image']);
         $order = \app\common\model\Order::get($post['id']);
         $order->allowField(true)->save($post);
         $source['order'] = $order->toArray();
