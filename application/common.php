@@ -121,3 +121,18 @@ if(!function_exists('create_order_confirm')) {
         return 1;
     }
 }
+
+if (!function_exists('images_to_array')) {
+    function images_to_array($images) {
+        $data = [];
+        if(is_array($images)) {
+            $data = $images;
+        } else if (empty($images)) {
+            $data = [];
+        } else {
+            $data = explode(',', $images);
+        }
+
+        return $data;
+    }
+}

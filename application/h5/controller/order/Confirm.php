@@ -263,9 +263,9 @@ class Confirm extends Base
             $source = $origin;
             if (isset($source['order'])) {
                 $orderData = $source['order'];
-                $source['order']['image'] = is_array($orderData['image']) ? $orderData['image'] : [];
-                $source['order']['receipt_img'] = is_array($orderData['receipt_img']) ? $orderData['receipt_img'] : [];
-                $source['order']['note_img'] = is_array($orderData['note_img']) ? $orderData['note_img'] : [];
+                $source['order']['image'] = images_to_array($orderData['image']);
+                $source['order']['receipt_img'] = images_to_array($orderData['receipt_img']);
+                $source['order']['note_img'] = images_to_array($orderData['note_img']);
             }
 
             if (isset($source['banquetIncome'])){
@@ -280,8 +280,8 @@ class Confirm extends Base
                     "income_item_price" => $income['banquet_income_item_price'],
                     "income_remark" => $income['remark'],
                     "order_id" => $income['order_id'],
-                    "receipt_imgArray" => is_array($income['receipt_img']) ? $income['receipt_img'] : explode(',' , $income['receipt_img']),
-                    "note_imgArray" => is_array($income['note_img']) ? $income['note_img'] : explode(',', $income['note_img']),
+                    "receipt_imgArray" => images_to_array($income['receipt_img']),
+                    "note_imgArray" => images_to_array($income['note_img']),
                 ];
             }
 
@@ -297,8 +297,8 @@ class Confirm extends Base
                     "income_item_price" => $income['wedding_income_item_price'],
                     "income_remark" => $income['remark'],
                     "order_id" => $income['order_id'],
-                    "receipt_imgArray" => is_array($income['receipt_img']) ? $income['receipt_img'] : explode(',' , $income['receipt_img']),
-                    "note_imgArray" => is_array($income['note_img']) ? $income['note_img'] : explode(',', $income['note_img']),
+                    "receipt_imgArray" => images_to_array($income['receipt_img']),
+                    "note_imgArray" => images_to_array($income['note_img']),
                 ];
             }
 
@@ -383,9 +383,9 @@ class Confirm extends Base
             $source['income']['banquet_income_type'] = $income['banquet_income_type'];
             $source['income']['banquet_income_date'] = $income['banquet_income_date'];
             $source['income']['banquet_income_item_price'] = $income['banquet_income_item_price'];
-            $source['income']['contact_img'] = is_string($income['contact_img']) ? explode(",", $income['contact_img']) : $income['contact_img'];
-            $source['income']['receipt_img'] = is_string($income['receipt_img']) ? explode(",", $income['receipt_img']) : $income['receipt_img'];
-            $source['income']['note_img'] = is_string($income['note_img']) ? explode(",", $income['note_img']) : $income['note_img'];
+            $source['income']['contact_img'] = images_to_array($income['contact_img']);
+            $source['income']['receipt_img'] = images_to_array($income['receipt_img']);
+            $source['income']['note_img'] = images_to_array($income['note_img']);
             $source['income']['income_remark'] = $income['income_remark'];
 
             $editApi = '/h5/order.banquet_suborder/doEdit';
@@ -432,9 +432,9 @@ class Confirm extends Base
             $source['income']['wedding_income_date'] = $income['wedding_income_date'];
             $source['income']['wedding_income_item_price'] = $income['wedding_income_item_price'];
             $source['income']['income_remark'] = $income['income_remark'];
-            $source['income']['contact_img'] = is_string($income['contact_img']) ? explode(",", $income['contact_img']) : $income['contact_img'];
-            $source['income']['receipt_img'] = is_string($income['receipt_img']) ? explode(",", $income['receipt_img']) : $income['receipt_img'];
-            $source['income']['note_img'] = is_string($income['note_img']) ? explode(",", $income['note_img']) : $income['note_img'];
+            $source['income']['contact_img'] = images_to_array($income['contact_img']);
+            $source['income']['receipt_img'] = images_to_array($income['receipt_img']);
+            $source['income']['note_img'] = images_to_array($income['note_img']);
             $editApi = '/h5/order.wedding_suborder/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
@@ -453,8 +453,8 @@ class Confirm extends Base
             $source['payment']['pay_to_company'] = $value['banquet_pay_to_company'];
             $source['payment']['pay_to_account'] = $value['banquet_pay_to_account'];
             $source['payment']['pay_to_bank'] = $value['banquet_pay_to_bank'];
-            $source['payment']['receipt_img'] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
-            $source['payment']['note_img'] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
+            $source['payment']['receipt_img'] = images_to_array($value['receipt_img']);
+            $source['payment']['note_img'] = images_to_array($value['note_img']);
             $editApi = '/h5/order.payment/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
@@ -473,8 +473,8 @@ class Confirm extends Base
             $source['payment']['pay_to_company'] = $value['wedding_pay_to_company'];
             $source['payment']['pay_to_account'] = $value['wedding_pay_to_account'];
             $source['payment']['pay_to_bank'] = $value['wedding_pay_to_bank'];
-            $source['payment']['receipt_img'] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
-            $source['payment']['note_img'] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
+            $source['payment']['receipt_img'] = images_to_array($value['receipt_img']);
+            $source['payment']['note_img'] = images_to_array($value['note_img']);
             $editApi = '/h5/order.payment/doEdit';
             $backendApi = '/h5/order.confirm/backend';
 
@@ -492,8 +492,8 @@ class Confirm extends Base
             $source['income']["income_type"] = $value["banquet_income_type"];
             $source['income']["income_item_price"] = $value["banquet_income_item_price"];
             $source['income']["income_remark"] = $value["remark"];
-            $source['income']["receipt_img"] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
-            $source['income']["note_img"] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
+            $source['income']["receipt_img"] = images_to_array($value['receipt_img']);
+            $source['income']["note_img"] = images_to_array($value['note_img']);
             $source['income_category'] = "婚宴";
             $editApi = '/h5/order.income/doEdit';
             $backendApi = '/h5/order.confirm/backend';
@@ -512,8 +512,8 @@ class Confirm extends Base
             $source['income']["income_type"] = $value["wedding_income_type"];
             $source['income']["income_item_price"] = $value["wedding_income_item_price"];
             $source['income']["income_remark"] = $value["remark"];
-            $source['income']["receipt_img"] = is_string($value['receipt_img']) ? explode(",", $value['receipt_img']) : $value['receipt_img'];
-            $source['income']["note_img"] = is_string($value['note_img']) ? explode(",", $value['note_img']) : $value['note_img'];
+            $source['income']["receipt_img"] = images_to_array($value['receipt_img']);
+            $source['income']["note_img"] = images_to_array($value['note_img']);
             $source['income_category'] = "婚庆";
             $editApi = '/h5/order.income/doEdit';
             $backendApi = '/h5/order.confirm/backend';
