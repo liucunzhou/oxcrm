@@ -88,6 +88,7 @@ class Prepay extends Base
         ### 格式化数据
         $orderData = json_decode($param['order'], true);
         // $orderData['news_type'] = $orderData['newsType'];
+        $orderData['complete'] = 99;
         $orderData['prepay_money'] = $orderData['income_item_price'];
         $orderData['member_id'] = $member->id;
         $orderData['realname'] = $member->realname;

@@ -143,7 +143,7 @@ class Confirm extends Base
         return json($result);
     }
 
-    # 审核我的
+    # 订单的审核列表
     public function orderConfirms()
     {
         $param = $this->request->param();
@@ -157,6 +157,7 @@ class Confirm extends Base
         }
         $where[] = ['order_id', '=', $param['order_id']];
         $confirmList = $confirm->where($where)->order('create_time desc')->select();
+        $order = \app\common\model\Order::get($param['order_id']);
 
         $list = [];
         foreach ($confirmList as $key => $confirm) {
@@ -173,7 +174,12 @@ class Confirm extends Base
                 if (empty($source)) continue;
                 foreach ($source as $key => $value) {
                     if ($key == 'order') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
+                        if ($order->complete == '99') {
+                            // 意向金
+                            $list[$confirmNo]['path'] = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                        } else {
+                            $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
+                        }
                         break;
                     } else if ($key == 'banquet') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/banquet/banquet';
