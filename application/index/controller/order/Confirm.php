@@ -506,7 +506,8 @@ class Confirm extends Backend
         $sequence = $config['crm']['check_sequence'];
         $auth = json_decode($audit->content, true);
 
-        $orderUser = User::getUser($order['user_id']);
+        $userId = empty($order['user_id']) ? $order['salesman'] : $order['user_id'];
+        $orderUser = User::getUser($userId);
         $confirmList = [];
         foreach ($auth as $key => $row) {
             $managerList = [];
