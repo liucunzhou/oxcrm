@@ -708,6 +708,14 @@ class Confirm extends Base
                     'api' => $editApi
                 ]
             ];
+        } else if ($confirm->status == '13') {
+            $buttons = [
+                [
+                    'id' => 'update',
+                    'label' => '更新',
+                    'api' => $editApi
+                ]
+            ];
         } else {
             $buttons = [];
         }
