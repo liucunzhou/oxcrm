@@ -62,7 +62,7 @@
                                         <select name="{$row.id}" multiple class="layui-select" lay-search>
                                             <option value="">指定审核人员</option>
                                             <{foreach name="staffs" item="value"}>
-                                                <{if in_array($value.id, $row['items'])}>
+                                                <{if !empty($row['items']) && in_array($value.id, $row['items'])}>
                                                     <option value="{$value.id}" selected>{$value.realname}</option>
                                                 <{else /}>
                                                     <option value="{$value.id}">{$value.realname}</option>
@@ -73,7 +73,7 @@
                                         <select name="{$row.id}" multiple class="layui-select" lay-search>
                                             <option value="">指定审核角色</option>
                                             <{foreach name="roles" item="value"}>
-                                                <{if in_array($value.id, $row['items'])}>
+                                                <{if  !empty($row['items']) && in_array($value.id, $row['items'])}>
                                                     <option value="{$value.id}" selected>{$value.title}</option>
                                                 <{else /}>
                                                     <option value="{$value.id}">{$value.title}</option>
