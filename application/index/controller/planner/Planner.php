@@ -1,10 +1,12 @@
 <?php
 namespace app\index\controller\planner;
 
+use app\common\model\OrderStaff;
 use app\common\model\OrderWedding;
 use app\common\model\Store;
 use app\common\model\UserAuth;
 use app\index\controller\Backend;
+use app\index\controller\Order;
 
 class Planner extends Backend
 {
@@ -151,23 +153,21 @@ class Planner extends Backend
         // 审核完成的
         $map[] = ['check_status', '=', 2];
 
-        $model = model('order')->where($map);
-
+        $model = new \app\common\model\Order();
+        $model = $model->where($map);
         if (!empty($get['mobile'])) {
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
         }
 
         if($this->user['nickname'] != 'admin') {
             $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
-            // $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
-            $sql = "company_id in ({$userAuth['store_ids']}) or id in (select `order_id` from `tk_order_wedding` where `company_id` in ({$userAuth['store_ids']}))";
-            /**
-            $model = $model->whereIn('company_id', $companyIds);
-            $model = $model->whereOr('id', 'in', function ($query) use ($companyIds) {
+            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
+            // $model = $model->whereIn('company_id', $companyIds);
+            // $sql = "company_id in ({$userAuth['store_ids']}) or id in (select `order_id` from `tk_order_wedding` where `company_id` in ({$userAuth['store_ids']}))";
+            // $model = $model->whereRaw($sql);
+            $model = $model->where('id', 'in', function ($query) use ($companyIds) {
                 $query->table('tk_order_wedding')->where('company_id', 'in', $companyIds)->field('order_id');
             });
-            **/
-            $model = $model->whereRaw($sql);
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
@@ -195,6 +195,15 @@ class Planner extends Backend
             } else {
                 $value['wedding_company'] = '-';
             }
+
+            $where = [];
+            $where[] = ['order_id', '=', $value['id']];
+            $staffIds = OrderStaff::where($where)->column('staff_id');
+            $names = [];
+            foreach ($staffIds as $staffId) {
+                $names[] = $users[$staffId]['realname'];
+            }
+            $value['staff'] = empty($names) ? '-' : implode(',', $names);
         }
         $count = $list->total();
 

@@ -74,36 +74,22 @@ layui.config({
                     "width": 140,
                     "type": "tool",
                     "toolbar": "#table-tool"
-                },{
-                    "field": "company",
-                    "title": "所属公司",
-                    "align": "center",
-                    "width": 120,
-                    "event" : "showOrder"
                 },
                 {
-                    "field": "wedding_company",
-                    "title": "承办公司",
+                    "field": "staff",
+                    "title": "跟单人",
                     "align": "center",
-                    "width": 120,
-                    "event" : "showOrder"
-                },
-                {
-                    "field": "salesman",
-                    "title": "签单销售",
-                    "align": "center",
-                    "width": 120,
-                    "event" : "showOrder"
-                },
-                {
-                    "field": "sign_date",
-                    "title": "签约日期",
-                    "align": "center",
-                    "width": 120
+                    "width": 180
                 },
                 {
                     "field": "event_date",
                     "title": "举办日期",
+                    "align": "center",
+                    "width": 120
+                },
+                {
+                    "field": "hotel_id",
+                    "title": "酒店名称",
                     "align": "center",
                     "width": 120
                 },
@@ -132,14 +118,34 @@ layui.config({
                     "width": 120
                 },
                 {
-                    "field": "hotel_id",
-                    "title": "酒店名称",
-                    "align": "center",
-                    "width": 120
-                },
-                {
                     "field": "banquet_hall_name",
                     "title": "宴会厅",
+                    "align": "center",
+                    "width": 120
+                },{
+                    "field": "company",
+                    "title": "所属公司",
+                    "align": "center",
+                    "width": 120,
+                    "event" : "showOrder"
+                },
+                {
+                    "field": "wedding_company",
+                    "title": "承办公司",
+                    "align": "center",
+                    "width": 120,
+                    "event" : "showOrder"
+                },
+                {
+                    "field": "salesman",
+                    "title": "签单销售",
+                    "align": "center",
+                    "width": 120,
+                    "event" : "showOrder"
+                },
+                {
+                    "field": "sign_date",
+                    "title": "签约日期",
                     "align": "center",
                     "width": 120
                 },
@@ -148,19 +154,7 @@ layui.config({
                     "title": "创建时间",
                     "align": "center",
                     "width": 120
-                },
-                {
-                    "field": "mobile",
-                    "title": "客户电话",
-                    "align": "center",
-                    "width": 120
-                },
-                {
-                    "field": "source_id",
-                    "title": "渠道来源",
-                    "align": "center",
-                    "width": 120
-                },
+                }
             ]
         ]
         ,page: true,
