@@ -194,6 +194,8 @@ class Confirm extends Backend
             return json($result);
 
         } else {
+            $confirmIntroList = $this->model->field('confirm_intro')->group('confirm_intro')->select();
+            $this->assign('confirmIntroList', $confirmIntroList);
             return $this->fetch('order/confirm/index');
         }
     }
@@ -657,6 +659,10 @@ class Confirm extends Backend
         }
         if ($get['status'] != '') {
             $map[] = ['status', '=', $get['status']];
+        }
+
+        if ($get['confirm_intro'] != '') {
+            $map[] = ['confirm_intro', '=', $get['confirm_intro']];
         }
 
         if ($this->user['nickname'] != 'admin') {

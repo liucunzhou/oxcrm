@@ -10,7 +10,7 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="status" lay-verify="">
+            <select name="status" lay-verify="" lay-search>
                 <option value="">审核状态</option>
                 <{foreach name="confirmStatusList" item="val"}>
                 <option value="{$key}">{$val}</option>
@@ -19,7 +19,7 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="company_id" lay-verify="">
+            <select name="company_id" lay-verify="" lay-search>
                 <option value="">签约公司</option>
                 <{foreach name="brands" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -28,7 +28,17 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="source" lay-verify="">
+            <select name="confirm_intro" lay-verify="" lay-search>
+                <option value="">审核项目</option>
+                <{foreach name="confirmIntroList" item="val"}>
+                    <option value="{$val['confirm_intro']}">{$val['confirm_intro']}</option>
+                <{/foreach}>
+            </select>
+        </div>
+
+
+        <div class="layui-inline layui-col-sm1">
+            <select name="source" lay-verify="" lay-search>
                 <option value="">平台来源</option>
                 <{foreach name="sources" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
