@@ -42,8 +42,9 @@ class Sugar extends Base
             $value['order_id'] = $orderId;
             $value['operate_id'] = $this->user['id'];
             $value['user_id'] = $this->user['id'];
-            $result = $this->model->allowField(true)->save($value);
-            $source['sugar'][] = $this->model->toArray();
+            $model = new OrderSugar();
+            $result = $model->allowField(true)->save($value);
+            $source['sugar'][] = $model->toArray();
         }
 
         if($result) {

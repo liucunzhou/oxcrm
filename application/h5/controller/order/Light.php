@@ -42,8 +42,9 @@ class Light extends Base
             $value['order_id'] = $orderId;
             $value['operate_id'] = $this->user['id'];
             $value['user_id'] = $this->user['id'];
-            $result = $this->model->allowField(true)->save($value);
-            $source['light'][] = $this->model->toArray();
+            $model = new OrderLight();
+            $result = $model->allowField(true)->save($value);
+            $source['light'][] = $model->toArray();
         }
 
         if($result) {

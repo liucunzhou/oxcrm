@@ -42,8 +42,9 @@ class Led extends Base
             $value['order_id'] = $orderId;
             $value['operate_id'] = $this->user['id'];
             $value['user_id'] = $this->user['id'];
-            $result = $this->model->allowField(true)->save($value);
-            $source['led'][] = $this->model->toArray();
+            $model = new OrderLed();
+            $result = $model->allowField(true)->save($value);
+            $source['led'][] = $model->toArray();
         }
 
         if($result) {

@@ -43,8 +43,9 @@ class Dessert extends Base
             $value['order_id'] = $orderId;
             $value['operate_id'] = $this->user['id'];
             $value['user_id'] = $this->user['id'];
-            $result = $this->model->allowField(true)->save($value);
-            $source['dessert'][] = $this->model->toArray();
+            $model = new OrderDessert();
+            $result = $model->allowField(true)->save($value);
+            $source['dessert'][] = $model->toArray();
         }
 
         if($result) {

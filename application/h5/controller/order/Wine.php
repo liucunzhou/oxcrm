@@ -43,7 +43,7 @@ class Wine extends Base
             $value['user_id'] = $this->user['id'];
             $model = new OrderWine();
             $result = $model->allowField(true)->save($value);
-            $source['wine'][] = $this->model->toArray();
+            $source['wine'][] = $model->toArray();
         }
 
         if($result) {
