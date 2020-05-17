@@ -80,6 +80,7 @@ class HotelItem extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['hotelItem'], true);
+        $param['item_check_status'] = 0;
 
         $where = [];
         $where[] = ['id', '=', $param['id']];

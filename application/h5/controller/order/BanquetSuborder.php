@@ -124,6 +124,7 @@ class BanquetSuborder extends Base
         $intro = "编辑婚宴二销订单";
         $model->startTrans();
         $model->user_id = $this->user['id'];
+        $suborder['item_check_status']  = 0;
         $result1 = $model->save($suborder);
         $source['banquetSuborder'][] = $model->toArray();
 
@@ -136,6 +137,7 @@ class BanquetSuborder extends Base
         $income['contract_img'] = is_array($income['contact_img']) ? implode(',', $income['contact_img']) : $income['contact_img'];
         $income['receipt_img'] = is_array($income['receipt_img']) ? implode(',', $income['receipt_img']) : $income['receipt_img'];
         $income['note_img'] = is_array($income['note_img']) ? implode(',', $income['note_img']) : $income['note_img'];
+        $income['item_check_status'] = 0;
 
         $receivable = OrderBanquetReceivables::get($income['id']);
         $result2 = $receivable->allowField(true)->save($income);

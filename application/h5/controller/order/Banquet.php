@@ -111,6 +111,7 @@ class Banquet extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['banquet'], true);
+        $param['item_check_status'] = 0;
         $model = OrderBanquet::get($param['id']);
         $result = $model->allowField(true)->save($param);
         $source['banquet'] = $model->toArray();

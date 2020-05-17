@@ -200,7 +200,8 @@ class Income extends Base
                 'banquet_income_date'   => $param['income_date'],
                 'remark' => $param['income_remark'],
                 'receipt_img' => implode(',', $param['receipt_img']),
-                'note_img' => implode(',', $param['note_img'])
+                'note_img' => implode(',', $param['note_img']),
+                'item_check_status' => 0
             ];
         } else {
             $data = [
@@ -212,6 +213,7 @@ class Income extends Base
                 'remark' => $param['income_remark'],
                 'receipt_img' => implode(',', $param['receipt_img']),
                 'note_img' => implode(',', $param['note_img']),
+                'item_check_status' => 0
             ];
         }
 

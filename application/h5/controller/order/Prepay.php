@@ -180,6 +180,7 @@ class Prepay extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+                $data['item_check_status']  = 0;
 
                 $income = OrderBanquetReceivables::get($income['id']);
                 $income->allowField(true)->save($data);
@@ -198,6 +199,7 @@ class Prepay extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+                $data['item_check_status']  = 0;
 
                 $income = OrderWeddingReceivables::get($income['id']);
                 $income->allowField(true)->save($data);

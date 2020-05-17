@@ -115,6 +115,8 @@ class Wedding extends Base
     {
         $params = $this->request->param();
         $params = json_decode($params['wedding'], true);
+        $params['item_check_status']  = 0;
+
         if(!empty($params['id'])) {
             $where = [];
             $where[] = ['id', '=', $params['id']];

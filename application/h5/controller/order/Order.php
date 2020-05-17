@@ -1584,6 +1584,7 @@ class Order extends Base
         $post['image'] = empty($post['imageArray']) ? '' : implode(',', $post['imageArray']);
         $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
         $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);
+        $post['item_check_status'] = 0;
         $order = \app\common\model\Order::get($post['id']);
         $result = $order->allowField(true)->save($post);
         $source['order'] = $order->toArray();
@@ -1601,6 +1602,7 @@ class Order extends Base
                 $data['order_id'] = $post['id'];
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+                $data['item_check_status'] = 0;
                 $banquet = OrderBanquet::get($data['id']);
                 $banquet->allowField(true)->save($data);
                 $source['banquet'] = $banquet->toArray();
@@ -1618,6 +1620,7 @@ class Order extends Base
                 $data['order_id'] = $post['id'];
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+                $data['item_check_status'] = 0;
                 $wedding = OrderWedding::get($data['id']);
                 $wedding->allowField(true)->save($data);
                 $source['wedding'] = $wedding->toArray();
@@ -1636,6 +1639,7 @@ class Order extends Base
                 $data['order_id'] = $post['id'];
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+                $data['item_check_status'] = 0;
                 $hotelItem = OrderHotelItem::get($data['id']);
                 $hotelItem->allowField(true)->save($data);
                 $source['hotelItem'] = $hotelItem->toArray();
@@ -1651,6 +1655,7 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $data['sugar_salesman'];
+                $data['item_check_status'] = 0;
                 $car = Car::get($data['id']);
                 $car->allowField(true)->save($data);
                 $source['car'][] = $car->toArray();
@@ -1666,6 +1671,7 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $data['sugar_salesman'];
+                $data['item_check_status'] = 0;
                 $sugar = OrderSugar::get($data['id']);
                 $sugar->allowField(true)->save($data);
                 $source['sugar'][] = $sugar->toArray();
@@ -1681,6 +1687,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
+                $data['item_check_status'] = 0;
+
                 $wine = OrderWine::get($data['id']);
                 $wine->allowField(true)->save($data);
                 $source['wine'][] = $wine->toArray();
@@ -1696,6 +1704,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
+                $data['item_check_status'] = 0;
+
                 $light = OrderLight::get($data['id']);
                 $light->allowField(true)->save($data);
                 $source['light'][] = $light->toArray();
@@ -1711,6 +1721,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
+                $data['item_check_status'] = 0;
+
                 $dessert = OrderDessert::get($data['id']);
                 $dessert->allowField(true)->save($data);
                 $source['dessert'][] = $dessert->toArray();
@@ -1726,6 +1738,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
+                $data['item_check_status'] = 0;
+
                 $led = OrderLed::get($data['id']);
                 $led->allowField(true)->save($data);
                 $source['led'][] = $led->toArray();
@@ -1741,6 +1755,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
+                $data['item_check_status'] = 0;
+
                 $d3 = OrderD3::get($data['id']);
                 $d3->allowField(true)->save($data);
                 $source['d3'][] = $d3->toArray();
@@ -1764,6 +1780,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+                $data['item_check_status'] = 0;
 
                 $income = OrderBanquetReceivables::get($income['id']);
                 $income->allowField(true)->save($data);
@@ -1782,6 +1799,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['receipt_img'] = empty($income['receipt_imgArray']) ? '' : implode(',', $income['receipt_imgArray']);
                 $data['note_img'] = empty($income['note_imgArray']) ? '' : implode(',', $income['note_imgArray']);
+                $data['item_check_status'] = 0;
 
                 $income = OrderWeddingReceivables::get($income['id']);
                 $income->allowField(true)->save($data);

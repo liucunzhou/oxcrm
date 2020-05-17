@@ -116,6 +116,7 @@ class WeddingSuborder extends Base
         $model->startTrans();
         $suborder['user_id'] = $this->user['id'];
         $suborder['salesman'] = $this->user['id'];
+        $suborder['item_check_status']  = 0;
         $result1 = $model->save($suborder);
         $source['weddingSuborder'][] = $model->toArray();
 
@@ -127,6 +128,7 @@ class WeddingSuborder extends Base
         $income['contract_img'] = is_array($income['contact_img']) ? implode(',', $income['contact_img']) : $income['contact_img'];
         $income['receipt_img'] = is_array($income['receipt_img']) ? implode(',', $income['receipt_img']) : $income['receipt_img'];
         $income['note_img'] = is_array($income['note_img']) ? implode(',', $income['note_img']) : $income['note_img'];
+        $income['item_check_status']  = 0;
         $receivable = OrderWeddingReceivables::get($income['id']);
         $result2 = $receivable->allowField(true)->save($income);
         $source['weddingIncome'][] = $receivable->toArray();
