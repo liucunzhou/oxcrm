@@ -5,6 +5,7 @@ use app\common\model\Member;
 use app\common\model\BanquetHall;
 use app\common\model\MemberAllocate;
 use app\common\model\MemberVisit;
+use app\common\model\Mobile;
 use app\common\model\Store;
 use app\common\model\User;
 use app\common\model\UserAuth;
@@ -67,6 +68,9 @@ class Task extends Command
                 break;
             case "member_to_cache";
                 $this->initMemberToCache($page);
+                break;
+            case "readRepeat":
+                $this->readRepeat();
                 break;
         }
     }
@@ -753,8 +757,6 @@ class Task extends Command
         return strtotime($date.' '.$time);
     }
 
-
-
     public function sendMessage() {
         // echo "start sendMessage";
         $client = new \swoole_client(SWOOLE_TCP | SWOOLE_ASYNC);
@@ -781,4 +783,32 @@ class Task extends Command
         $client->connect('121.42.184.177', 9501, 0.5);
     }
 
+    public function readRepeat()
+    {
+        $file = './shell/9004-5-17.csv';
+        if (!$fp = fopen($file, 'r')) {
+            return false;
+        }
+        $nfile = './shell/9004-5-17-repeat.csv';
+        $nfp = fopen($nfile, 'w+');
+        while (!feof($fp)) {
+            $row = fgetcsv($fp);
+            $mobile = $row[0];
+            $ids = Mobile::where('mobile', 'like', "%{$mobile}%")->column('member_id');
+            if (empty($ids)) {
+                echo "{$mobile}验证通过\n";
+                continue;
+            }
+
+            $sources = Member::where('id', 'in', $ids)->column('source_text');
+            $sources = array_unique($sources);
+            $data = [];
+            $data[0] = $mobile;
+            $data[1] = implode(',', $sources);
+            fputcsv($nfp, $data);
+            echo "{$mobile}重复{$data[1]}\n";
+        }
+        fclose($fp);
+        fclose($nfp);
+    }
 }

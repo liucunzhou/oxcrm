@@ -1175,15 +1175,13 @@ class order extends Command
         $statuses = [0=>'待完成',99=>'意向金',100=>'已完成',101=>'退单'];
         $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
 
-        $file = './shell/order-export.csv';
+        $file = './shell/order-export-hs.csv';
         $fp = fopen($file, 'w+');
         $order = new \app\common\model\Order();
         $orderList = $order->select();
         $header = [
-            '编号',
-            '签单销售','签单类型','婚庆所属公司','签单日期', '婚期','酒店','厅',
-            '新郎','手机号','新娘','手机号'
-            ,'餐标','桌数',
+            '编号','签单销售','签单类型','婚庆所属公司','签单日期', '婚期','酒店','厅'
+            ,'新郎','手机号','新娘','手机号','餐标','桌数',
             '合同总额','定金收款日期','定金收款金额','中款收款日期','中款收款金额','尾款收款日期','尾款收款金额'
             ,'收款信息中的定金','收款信息中的中款','收款信息中的尾款','付款信息中的定金','付款信息中的中款','付款信息中的尾款'
             ,'订单状态','所有备注'
@@ -1191,14 +1189,14 @@ class order extends Command
         $users = User::getUsers();
         fputcsv($fp, $header);
         foreach ($orderList as $key=>$val) {
+
             $row = $val->getData();
             $data = [];
+            ##
             $data[] = $row['id'];
             if(!empty($row['sale'])) {
                 $data[] = $row['sale'];
             } else if (!empty($row['user_id'])) {
-
-
                 $data[] = $users[$row['user_id']]['realname'];
             } else {
                 $data[] = '-';
@@ -1215,12 +1213,11 @@ class order extends Command
                 $data[] = '-';
             }
             $data[] = !empty($row['banquet_hall_name']) ? $row['banquet_hall_name'] : '-';
-            ### 新人信息
+            ### 新人信息、餐标、桌数
             $data[] = !empty($row['bridegroom']) ? $row['bridegroom'] : '-';
             $data[] = !empty($row['bridegroom_mobile']) ? $row['bridegroom_mobile'] : '-';
             $data[] = !empty($row['bride']) ? $row['bride'] : '-';
             $data[] = !empty($row['bride_mobile']) ? $row['bride_mobile'] : '-';
-            ### 餐标、桌数
             $banquet = OrderBanquet::where('order_id', '=', $row['id'])->find();
             if(!empty($banquet)) {
                 $data[] = !empty($banquet['table_price']) ? $banquet['table_price'] : '-';
@@ -1230,7 +1227,7 @@ class order extends Command
                 $data[] = '-';
             }
 
-            ### 合同信息
+            ### 合同收款信息
             $data[] = !empty($row['totals']) ? $row['totals'] : '-';
             $data[] = !empty($row['earnest_money_date']) ?  date('Y-m-d',$row['earnest_money_date']) : '-';
             $data[] = !empty($row['earnest_money']) ? $row['earnest_money'] : '-';
@@ -1239,7 +1236,7 @@ class order extends Command
             $data[] = !empty($row['tail_money_date']) ? date('Y-m-d', $row['tail_money_date']) : '-';
             $data[] = !empty($row['tail_money']) ? $row['tail_money'] : '-';
 
-            ### 收款信息
+            ### 收款信息信息
             $earnestIncome = 0;
             $middleIncome = 0;
             $tailIncome = 0;
