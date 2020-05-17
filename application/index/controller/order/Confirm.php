@@ -690,6 +690,8 @@ class Confirm extends Backend
             $value['item'] = $value->confirm_intro;
             $value['status'] = $this->confirmStatusList[$value['status']];
             $order = \app\common\model\Order::get($value['order_id']);
+            if(empty($order)) unset($list[$key]);
+
             $value['bridegroom_mobile'] = $order->bridegroom_mobile ? substr_replace($order->bridegroom_mobile, '***', 3, 3) : '-';
             $value['bride_mobile'] = $order->bride_mobile ? substr_replace($order->bride_mobile, '***', 3, 3) : '-';
             $value['user_id'] = isset($users[$value['user_id']]) ? $users[$value['user_id']]['realname'] : '-';
