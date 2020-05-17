@@ -286,11 +286,11 @@ class Payment extends Base
         $rs = $row->allowField(true)->save($data);
 
         if ($order['news_type'] != 1) {
-            $intro = '创建婚宴付款审核';
+            $intro = '编辑婚宴付款审核';
             $source['banquetPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         } else {
-            $intro = '创建婚庆付款审核';
+            $intro = '编辑婚庆付款审核';
             $source['weddingPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         }

@@ -561,6 +561,7 @@ class Confirm extends Base
             $source['hotelProtocol']["middle_money"] = $value["middle_money"];
             $source['hotelProtocol']["earnest_money_date"] = $value["earnest_money_date"];
             $source['hotelProtocol']["earnest_money"] = $value["earnest_money"];
+            $source['hotelProtocol']['image'] = images_to_array($value['image']);
 
             $editApi = '/h5/order.hotel_protocol/doEdit';
             $backendApi = '/h5/order.confirm/backend';

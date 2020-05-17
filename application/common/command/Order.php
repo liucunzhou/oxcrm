@@ -97,6 +97,10 @@ class order extends Command
                 $this->export();
                 break;
 
+            case 'exportHs':
+                $this->exportHs();
+                break;
+
             case 'hsToys':
                 $this->hsToYs();
                 break;
@@ -1052,6 +1056,149 @@ class order extends Command
             if(!empty($row['sale'])) {
                 $data[] = $row['sale'];
             } else if (!empty($row['user_id'])) {
+                $data[] = $users[$row['user_id']]['realname'];
+            } else {
+                $data[] = '-';
+            }
+            $data[] = isset($newsTypes[$row['news_type']]) ? $newsTypes[$row['news_type']] : '-';
+            $data[] = isset($brands[$row['company_id']]) ? $brands[$row['company_id']]['title'] : '-';
+            $data[] = date('Y-m-d', $row['sign_date']);
+            $data[] = date('Y-m-d', $row['event_date']);
+            if (!empty($row['hotel_text'])) {
+                $data[] = $row['hotel_text'];
+            } else if (!empty($row['hotel_id'])) {
+                $data[] = $hotels[$row['hotel_id']]['title'];
+            } else {
+                $data[] = '-';
+            }
+            $data[] = !empty($row['banquet_hall_name']) ? $row['banquet_hall_name'] : '-';
+            ### 新人信息
+            $data[] = !empty($row['bridegroom']) ? $row['bridegroom'] : '-';
+            $data[] = !empty($row['bridegroom_mobile']) ? $row['bridegroom_mobile'] : '-';
+            $data[] = !empty($row['bride']) ? $row['bride'] : '-';
+            $data[] = !empty($row['bride_mobile']) ? $row['bride_mobile'] : '-';
+            ### 餐标、桌数
+            $banquet = OrderBanquet::where('order_id', '=', $row['id'])->find();
+            if(!empty($banquet)) {
+                $data[] = !empty($banquet['table_price']) ? $banquet['table_price'] : '-';
+                $data[] = !empty($banquet['table_amount']) ? $banquet['table_amount'] : '-';
+            } else {
+                $data[] = '-';
+                $data[] = '-';
+            }
+
+            ### 合同信息
+            $data[] = !empty($row['totals']) ? $row['totals'] : '-';
+            $data[] = !empty($row['earnest_money_date']) ?  date('Y-m-d',$row['earnest_money_date']) : '-';
+            $data[] = !empty($row['earnest_money']) ? $row['earnest_money'] : '-';
+            $data[] = !empty($row['middle_money_date']) ? date('Y-m-d', $row['middle_money_date']) : '-';
+            $data[] = !empty($row['middle_money']) ? $row['middle_money'] : '-';
+            $data[] = !empty($row['tail_money_date']) ? date('Y-m-d', $row['tail_money_date']) : '-';
+            $data[] = !empty($row['tail_money']) ? $row['tail_money'] : '-';
+
+            ### 收款信息
+            $earnestIncome = 0;
+            $middleIncome = 0;
+            $tailIncome = 0;
+            $banquetIncomeList = OrderBanquetReceivables::where('order_id', '=', $row['id'])->select();
+            $remark = '';
+            foreach ($banquetIncomeList as $value) {
+                if ($value->banquet_income_type == 1) {
+                    $earnestIncome = $earnestIncome + $value->banquet_income_item_price;
+                } else if ($value->banquet_income_type == 2) {
+                    $middleIncome = $middleIncome + $value->banquet_income_item_price;
+                } else if ($value->banquet_income_type == 3) {
+                    $tailIncome = $tailIncome + $value->banquet_income_item_price;
+                }
+                $remark .= $value['remark'];
+            }
+            $weddingIncomeList = OrderWeddingReceivables::where('order_id', '=', $row['id'])->select();
+            foreach ($weddingIncomeList as $value) {
+                if ($value->wedding_income_type == 1) {
+                    $earnestIncome = $earnestIncome + $value->wedding_income_item_price;
+                } else if ($value->wedding_income_type == 2) {
+                    $middleIncome = $middleIncome + $value->wedding_income_item_price;
+                } else if ($value->wedding_income_type == 3) {
+                    $tailIncome = $tailIncome + $value->wedding_income_item_price;
+                }
+                $remark .= $value['remark'];
+            }
+            $data[] = $earnestIncome;
+            $data[] = $middleIncome;
+            $data[] = $tailIncome;
+            ### 付款信息
+            $earnestPayment = 0;
+            $middlePayment = 0;
+            $tailPayment = 0;
+            $banquetPaymentList = OrderBanquetPayment::where('order_id', '=', $row['id'])->select();
+            foreach ($banquetPaymentList as $value) {
+                if ($value->banquet_pay_type == 1) {
+                    $earnestPayment = $earnestPayment + $value->banquet_pay_item_price;
+                } else if ($value->banquet_pay_type == 2) {
+                    $middlePayment = $middlePayment + $value->banquet_pay_item_price;
+                } else if ($value->banquet_pay_type == 3) {
+                    $tailPayment = $tailPayment + $value->banquet_pay_item_price;
+                }
+                $remark .= $value['banquet_payment_remark'];
+            }
+            $weddingPaymentList = OrderWeddingPayment::where('order_id', '=', $row['id'])->select();
+            foreach ($weddingPaymentList as $value) {
+                if ($value->wedding_pay_type == 1) {
+                    $earnestIncome = $earnestIncome + $value->wedding_pay_item_price;
+                } else if ($value->wedding_pay_type == 2) {
+                    $middlePayment = $middlePayment + $value->wedding_pay_item_price;
+                } else if ($value->wedding_pay_type == 3) {
+                    $tailPayment = $tailPayment + $value->wedding_pay_item_price;
+                }
+                $remark .= $value['wedding_payment_remark'];
+            }
+            $data[] = $earnestPayment;
+            $data[] = $middlePayment;
+            $data[] = $tailPayment;
+
+            ### 订单状态以及备注
+            $data[] = isset($statuses[$row['complete']]) ? $statuses[$row['complete']] : '-';
+            $data[] = $row['remark'].$remark;
+            fputcsv($fp, $data);
+        }
+        fclose($fp);
+    }
+
+    ### 导出红丝
+    public function exportHs()
+    {
+        $config = config();
+        $config = $config['crm'];
+        $newsTypes = $config['news_type_list'];
+        $brands = Brand::getBrands();
+        $hotels = Store::getStoreList();
+        $statuses = [0=>'待完成',99=>'意向金',100=>'已完成',101=>'退单'];
+        $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
+
+        $file = './shell/order-export.csv';
+        $fp = fopen($file, 'w+');
+        $order = new \app\common\model\Order();
+        $orderList = $order->select();
+        $header = [
+            '编号',
+            '签单销售','签单类型','婚庆所属公司','签单日期', '婚期','酒店','厅',
+            '新郎','手机号','新娘','手机号'
+            ,'餐标','桌数',
+            '合同总额','定金收款日期','定金收款金额','中款收款日期','中款收款金额','尾款收款日期','尾款收款金额'
+            ,'收款信息中的定金','收款信息中的中款','收款信息中的尾款','付款信息中的定金','付款信息中的中款','付款信息中的尾款'
+            ,'订单状态','所有备注'
+        ];
+        $users = User::getUsers();
+        fputcsv($fp, $header);
+        foreach ($orderList as $key=>$val) {
+            $row = $val->getData();
+            $data = [];
+            $data[] = $row['id'];
+            if(!empty($row['sale'])) {
+                $data[] = $row['sale'];
+            } else if (!empty($row['user_id'])) {
+
+
                 $data[] = $users[$row['user_id']]['realname'];
             } else {
                 $data[] = '-';

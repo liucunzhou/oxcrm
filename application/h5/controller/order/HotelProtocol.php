@@ -40,6 +40,7 @@ class HotelProtocol extends Base
         $param = json_decode($param['hotelProtocol'], true);
         $param['order_id'] = $orderId;
         $param['user_id'] = $this->user['id'];
+        $param['image'] = implode(',', $param['image']);
         $result = $this->model->allowField(true)->save($param);
         $source['hotelProtocol'] = $this->model->toArray();
 
@@ -82,6 +83,7 @@ class HotelProtocol extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['hotelProtocol'], true);
+        $param['image'] = implode(',', $param['image']);
 
         $where = [];
         $where[] = ['id', '=', $param['id']];
