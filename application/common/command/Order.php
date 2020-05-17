@@ -112,6 +112,10 @@ class order extends Command
             case 'backend':
                 $this->backend();
                 break;
+
+            case 'checkConfirm':
+                $this->checkConfirm();
+                break;
         }
     }
 
@@ -1347,7 +1351,6 @@ class order extends Command
         }
     }
 
-
     ###　获取是订单的一上来就是
     public function confirms()
     {
@@ -1484,6 +1487,18 @@ class order extends Command
                 if (!$rs) echo $key.":::".$confirm->id;
                 echo "\n";
             }
+        }
+    }
+
+    public function checkConfirm()
+    {
+        $confirmNos = OrderConfirm::where('confirm_intro','like', '%编辑%')->group('order_id,confirm_type')->column('confirm_no');
+        foreach ($confirmNos as $confirmNo) {
+            $where= [];
+            $where['confirm_no'] = $confirmNo;
+            $confirm = OrderConfirm::where($where)->order('id desc')->find();
+            echo $confirmNo."\t".$confirm->status;
+            echo "\n";
         }
     }
 }

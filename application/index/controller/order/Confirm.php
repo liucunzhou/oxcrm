@@ -173,6 +173,8 @@ class Confirm extends Backend
             return json($result);
 
         } else {
+            $confirmIntroList = $this->model->field('confirm_intro')->group('confirm_intro')->select();
+            $this->assign('confirmIntroList', $confirmIntroList);
             return $this->fetch('order/confirm/index');
         }
     }
