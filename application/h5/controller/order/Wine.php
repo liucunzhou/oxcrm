@@ -41,17 +41,19 @@ class Wine extends Base
             $value['order_id'] = $orderId;
             $value['operate_id'] = $this->user['id'];
             $value['user_id'] = $this->user['id'];
-            $result = $this->model->allowField(true)->save($value);
+            $model = new OrderWine();
+            $result = $model->allowField(true)->save($value);
             $source['wine'][] = $this->model->toArray();
         }
 
         if($result) {
             $order = \app\common\model\Order::get($orderId);
+            // echo \app\common\model\Order::getLastSql();
             $intro = "添加酒水信息审核";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'order', $intro, $source);
             $arr = ['code'=>'200', 'msg'=>'添加酒水信息成功'];
         } else {
-            $arr = ['code'=>'200', 'msg'=>'添加酒水信息失败'];
+            $arr = ['code'=>'500', 'msg'=>'添加酒水信息失败'];
         }
 
         return json($arr);
