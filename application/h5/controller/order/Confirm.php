@@ -30,6 +30,47 @@ class Confirm extends Base
     protected $ritualList = [];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核通过', 2 => '审核驳回', 13 => '审核撤销'];
 
+    # 订单ID 参数id
+    protected function initialize()
+    {
+        parent::initialize();
+
+        ## 获取所有品牌、公司
+        $this->brands = \app\common\model\Brand::getBrands();
+
+        ## 套餐列表
+        $this->packageList = \app\common\model\Package::getList();
+
+        ## 套餐列表
+        $this->ritualList = \app\common\model\Ritual::getList();
+
+        ## 汽车列表
+        $this->carList = \app\common\model\Car::getList();
+
+        ## 酒水列表
+        $this->wineList = \app\common\model\Wine::getList();
+
+        ## 喜糖列表
+        $this->sugarList = \app\common\model\Sugar::getList();
+
+        ## 灯光列表
+        $this->lightList = \app\common\model\Light::getList();
+
+        ## 点心列表
+        $this->dessertList = \app\common\model\Dessert::getList();
+
+        ## led列表
+        $this->ledList = \app\common\model\Led::getList();
+
+        ## 3d列表
+        $this->d3List = \app\common\model\D3::getList();
+    }
+
+    /**
+     * 我审核的
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
     public function myConfirmed()
     {
         $param = $this->request->param();
@@ -65,15 +106,61 @@ class Confirm extends Base
             ];
         } else {
             $data = [];
-            foreach ($list as $key => $value) {
-                $order = \app\common\model\Order::get($value->order_id);
+            foreach ($list as $key => $confirm) {
+                // 判断跳转路径
+                $source = json_decode($confirm->source, true);
+                if (empty($source)) continue;
+                $order = \app\common\model\Order::get($confirm->order_id);
+                $key = key($source);
+                if ($key == 'order') {
+                    if ($order->complete == '99') {
+                        // 意向金
+                        $path = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                    } else {
+                        $path = '/pages/addOrderItems/order/order';
+                    }
+                } else if ($key == 'banquet') {
+                    $path = '/pages/addOrderItems/banquet/banquet';
+                } else if ($key == 'banquetSuborder') {
+                    $path = '/pages/addOrderItems/banquetSuborder/banquetSuborder';
+                } else if ($key == 'wedding') {
+                    $path = '/pages/addOrderItems/wedding/wedding';
+                } else if ($key == 'weddingSuborder') {
+                    $path = '/pages/addOrderItems/weddingSuborder/weddingSuborder';
+                } else if ($key == 'banquetPayment' || $key == 'weddingPayment') {
+                    $path = '/pages/addOrderItems/payment/payment';
+                } else if ($key == 'banquetIncome' || $key == 'weddingIncome') {
+                    $path = '/pages/addOrderItems/income/income';
+                } else if ($key == 'hotelItem') {
+                    $path = '/pages/addOrderItems/hotelItem/hotelItem';
+                } else if ($key == 'hotelProtocol') {
+                    $path = '/pages/addOrderItems/hotelProtocol/hotelProtocol';
+                } else if ($key == 'car') {
+                    $path = '/pages/addOrderItems/car/car';
+                } else if ($key == 'wine') {
+                    $path = '/pages/addOrderItems/wine/wine';
+                } else if ($key == 'sugar') {
+                    $path = '/pages/addOrderItems/sugar/sugar';
+                } else if ($key == 'dessert') {
+                    $path = '/pages/addOrderItems/dessert/dessert';
+                } else if ($key == 'light') {
+                    $path = '/pages/addOrderItems/light/light';
+                } else if ($key == 'led') {
+                    $path = '/pages/addOrderItems/led/led';
+                } else if ($key == 'd3') {
+                    $path = '/pages/addOrderItems/3d/3d';
+                } else {
+                    $path = '';
+                }
+
                 $data[] = [
-                    'title' => $value['confirm_intro'],
-                    'create_time' => $value['create_time'],
-                    'status' => $this->confirmStatusList[$value['status']],
-                    'company' => $companies[$value['company_id']]['title'],
-                    'news_type' => $newsTypes[$order['news_type']],
-                    'user' => $users[$value['user_id']]['realname']
+                    'title' => $confirm->confirm_intro,
+                    'create_time' => $confirm->create_time,
+                    'status' => $this->confirmStatusList[$confirm->status],
+                    'company' => $companies[$confirm->company_id]['title'],
+                    'news_type' => $newsTypes[$order->news_type],
+                    'path'  => $path,
+                    'user' => $users[$confirm->user_id]['realname'],
                 ];
             }
 
@@ -91,7 +178,6 @@ class Confirm extends Base
     }
 
     # 我审核的
-
     public function confirmMine()
     {
         $param = $this->request->param();
@@ -246,8 +332,7 @@ class Confirm extends Base
         return json($result);
     }
 
-    ## 订单的审核列表
-
+    ## 订单的审核列表,type=confirm_user
     public function detail()
     {
         $param = $this->request->param();
@@ -338,6 +423,8 @@ class Confirm extends Base
                 $editApi = '/h5/order.order/doEditOrder';
             }
             $backendApi = '/h5/order.confirm/backend';
+
+
         } else if ($key == 'banquet') {
             $value = $origin['banquet'];
             $source['banquet'] = [];
@@ -694,43 +781,103 @@ class Confirm extends Base
         }
 
 
+        $commentApi = 'h5/order.confirm/comment';
+        $acceptApi = 'h5/order.confirm/doAccept';
+        $rejectApi = 'h5/order.confirm/doReject';
         if ($confirm->status == '0') {
-            $buttons = [
-                [
-                    'id' => 'backend',
-                    'label' => '撤销',
-                    'api' => $backendApi
-                ]
-            ];
+            // 待审核
+            if ($param['type']=='confirm_user') {
+                // 审核者
+                $buttons = [
+                    [
+                        'id' => 'comment',
+                        'label' => '评论',
+                        'api' =>$commentApi
+                    ],
+                    [
+                        'id' => 'accept',
+                        'label' => '同意',
+                        'api' =>$acceptApi
+                    ],
+                    [
+                        'id' => 'reject',
+                        'label' => '拒绝',
+                        'api' =>$rejectApi
+                    ],
+                ];
+
+            } else {
+                $buttons = [
+                    [
+                        'id' => 'backend',
+                        'label' => '撤销',
+                        'api' => $backendApi
+                    ]
+                ];
+            }
         } else if ($confirm->status == '1') {
-            $buttons = [
-                [
-                    'id' => 'update',
-                    'label' => '更新',
-                    'api' => $editApi
-                ]
-            ];
+            // 审核通过
+            if ($param['type']=='confirm_user') {
+                // 审核者
+                $buttons = [
+                    [
+                        'id' => 'comment',
+                        'label' => '评论',
+                        'api' =>$commentApi
+                    ]
+                ];
+            } else {
+                $buttons = [
+                    [
+                        'id' => 'update',
+                        'label' => '更新',
+                        'api' => $editApi
+                    ]
+                ];
+            }
         } else if ($confirm->status == '2') {
-            $buttons = [
-                [
-                    'id' => 'backout',
-                    'label' => '撤销',
-                    'api' => $backendApi
-                ],
-                [
-                    'id' => 'update',
-                    'label' => '更新',
-                    'api' => $editApi
-                ]
-            ];
+            if ($param['type']=='confirm_user') {
+                // 审核者
+                $buttons = [
+                    [
+                        'id' => 'comment',
+                        'label' => '评论',
+                        'api' =>$commentApi
+                    ]
+                ];
+            } else {
+                $buttons = [
+                    [
+                        'id' => 'backout',
+                        'label' => '撤销',
+                        'api' => $backendApi
+                    ],
+                    [
+                        'id' => 'update',
+                        'label' => '更新',
+                        'api' => $editApi
+                    ]
+                ];
+            }
         } else if ($confirm->status == '13') {
-            $buttons = [
-                [
-                    'id' => 'update',
-                    'label' => '更新',
-                    'api' => $editApi
-                ]
-            ];
+            if ($param['type']=='confirm_user') {
+                // 审核者
+                $buttons = [
+                    [
+                        'id' => 'comment',
+                        'label' => '评论',
+                        'api' =>$commentApi
+                    ]
+                ];
+            } else {
+                $buttons = [
+                    [
+                        'id' => 'update',
+                        'label' => '更新',
+                        'api' => $editApi
+                    ]
+                ];
+            }
         } else {
             $buttons = [];
         }
@@ -1195,40 +1342,232 @@ class Confirm extends Base
         return json($result);
     }
 
-    # 订单ID 参数id
-
-    protected function initialize()
+    # 来源-积分-合同审核确认，执行逻辑
+    public function doAccepte()
     {
-        parent::initialize();
+        $param = $this->request->param();
 
-        ## 获取所有品牌、公司
-        $this->brands = \app\common\model\Brand::getBrands();
+        ## 获取订单信息
+        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $data = $confirm->getData();
+        $confirm->content = $param['content'];
+        $confirm->status = 1;
+        $confirm->operate_id = $this->user['id'];
+        $result = $confirm->save();
+        if ($result) {
+            $newConfirm = new OrderConfirm();
+            $newConfirm->where('confirm_no', '=', $confirm->confirm_no)->update(['status' => 1, 'is_checked' => 1]);
 
-        ## 套餐列表
-        $this->packageList = \app\common\model\Package::getList();
+            ## 获取当前配置
+            $where = [];
+            $where[] = ['company_id', '=', $confirm->company_id];
+            $where[] = ['timing', '=', $confirm->confirm_type];
+            $auditModel = new \app\common\model\Audit();
+            $audit = $auditModel->where($where)->find();
+            $sequence = json_decode($audit->content, true);
+            $current = $confirm->confirm_item_id;
+            $next_confirm_item_id = get_next_confirm_item($current, $sequence);
+            if (!is_null($next_confirm_item_id)) {
+                $config = config();
+                $auditConfig = $config['crm']['check_sequence'];
+                unset($data['id']);
+                unset($data['create_time']);
+                unset($data['update_time']);
+                unset($data['delete_time']);
+                if ($auditConfig[$next_confirm_item_id]['type'] == 'staff') {
+                    // 指定人员审核
+                    foreach ($sequence[$next_confirm_item_id] as $row) {
+                        $data['is_checked'] = 0;
+                        $data['status'] = 0;
+                        $data['confirm_item_id'] = $next_confirm_item_id;
+                        $data['confirm_user_id'] = $row;
+                        $orderConfirm = new \app\common\model\OrderConfirm();
+                        $orderConfirm->allowField(true)->save($data);
+                    }
+                } else {
+                    $user = \app\common\model\User::getUser($confirm->user_id);
+                    // 指定角色审核
+                    foreach ($sequence[$next_confirm_item_id] as $row) {
+                        $staff = \app\common\model\User::getRoleManager($row, $user);
+                        $data['is_checked'] = 0;
+                        $data['status'] = 0;
+                        $data['confirm_item_id'] = $next_confirm_item_id;
+                        $data['confirm_user_id'] = $staff['id'];
+                        $orderConfirm = new \app\common\model\OrderConfirm();
+                        $orderConfirm->allowField(true)->save($data);
+                    }
+                }
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status' => 1]);
+                $this->updateItemStatus($confirm->source, 1);
+            } else {
 
-        ## 套餐列表
-        $this->ritualList = \app\common\model\Ritual::getList();
+                \app\common\model\Order::where('id', '=', $confirm->order_id)->update(['check_status' => 2]);
+                $this->updateItemStatus($confirm->source, 2);
+            }
 
-        ## 汽车列表
-        $this->carList = \app\common\model\Car::getList();
+            $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
+        } else {
+            $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
+        }
 
-        ## 酒水列表
-        $this->wineList = \app\common\model\Wine::getList();
+        return json($json);
+    }
 
-        ## 喜糖列表
-        $this->sugarList = \app\common\model\Sugar::getList();
+    public function doReject()
+    {
+        $param = $this->request->param();
 
-        ## 灯光列表
-        $this->lightList = \app\common\model\Light::getList();
+        ## 获取订单信息
+        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $orderId = $confirm->order_id;
+        $confirm->content = $param['content'];
+        $confirm->status = 2;
+        $result = $confirm->save();
+        $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked' => 1]);
+        \app\common\model\Order::where('id', '=', $orderId)->update(['check_status' => 3]);
+        $this->updateItemStatus($confirm->source, 3);
+        if ($result) {
+            $json = ['code' => '200', 'msg' => '完成审核是否继续?'];
+        } else {
+            $json = ['code' => '500', 'msg' => '完成失败是否继续?'];
+        }
+        return json($json);
+    }
 
-        ## 点心列表
-        $this->dessertList = \app\common\model\Dessert::getList();
+    protected function updateItemStatus($origin, $status)
+    {
+        if (empty($origin)) return false;
+        $origin = json_decode($origin, true);
 
-        ## led列表
-        $this->ledList = \app\common\model\Led::getList();
+        $data['item_check_status'] = $status;
+        foreach ($origin as $key => $row) {
+            $whereId = [];
+            $whereId['id'] = $row['id'];
+            switch ($key) {
+                case 'order':
+                    \app\common\model\Order::where($whereId)->update($data);
+                    break;
 
-        ## 3d列表
-        $this->d3List = \app\common\model\D3::getList();
+                case 'banquet':
+                    \app\common\model\OrderBanquet::where($whereId)->update($data);
+                    break;
+
+                case 'banquetIncome':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderBanquetReceivables::where($where)->update($data);
+                    }
+                    break;
+
+                case 'banquetPayment':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderBanquetPayment::where($where)->update($data);
+                    }
+                    break;
+
+                case 'banquetSuborder':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderBanquetSuborder::where($where)->update($data);
+                    }
+                    break;
+
+                case 'wedding':
+                    \app\common\model\OrderWedding::where($whereId)->update($data);
+                    break;
+
+                case 'weddingIncome':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderWeddingReceivables::where($where)->update($data);
+                    }
+                    break;
+
+                case 'weddingPayment':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderWeddingPayment::where($where)->update($data);
+                    }
+                    break;
+
+                case 'weddingSuborder':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderWeddingSuborder::where($where)->update($data);
+                    }
+                    break;
+
+                case 'hotelItem':
+                    \app\common\model\OrderHotelItem::where($whereId)->update($data);
+                    break;
+
+                case 'hotelProtocol':
+                    \app\common\model\OrderHotelProtocol::where($whereId)->update($data);
+                    break;
+
+                case 'car':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderCar::where($where)->update($data);
+                    }
+                    break;
+
+                case 'wine':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderWine::where($where)->update($data);
+                    }
+                    break;
+
+                case 'sugar':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderSugar::where($where)->update($data);
+                    }
+                    break;
+
+                case 'dessert':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderDessert::where($where)->update($data);
+                    }
+                    break;
+
+                case 'light':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderLight::where($where)->update($data);
+                    }
+                    break;
+
+                case 'led':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderLed::where($where)->update($data);
+                    }
+                    break;
+
+                case 'd3':
+                    foreach ($row as $line) {
+                        $where = [];
+                        $where['id'] = $line['id'];
+                        \app\common\model\OrderD3::where($where)->update($data);
+                    }
+                    break;
+            }
+        }
     }
 }

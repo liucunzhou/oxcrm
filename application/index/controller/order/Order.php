@@ -39,9 +39,9 @@ class Order extends Backend
     protected $weddingDevices = [];
     protected $weddingCategories = [];
     protected $brands = [];
-    protected $confirmProjectStatusList = [0=>'待审核', 1=>'审核中', 2=>'审核通过', 3=>'审核驳回',13 => '审核撤销'];
-    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回',13 => '审核撤销'];
-    protected $cooperationModes = [1=>'返佣单',2=>'代收代付',3=>'代收代付+返佣单',4=>'一单一议'];
+    protected $confirmProjectStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
+    protected $cooperationModes = [1 => '返佣单', 2 => '代收代付', 3 => '代收代付+返佣单', 4 => '一单一议'];
 
     protected function initialize()
     {
@@ -131,6 +131,31 @@ class Order extends Backend
         ## 3d列表
         $d3List = \app\common\model\D3::getList();
         $this->assign('d3List', $d3List);
+    }
+
+    ## 我的订单
+    public function mine()
+    {
+        if (Request::isAjax()) {
+            $get = Request::param();
+            // $get['company_id'] = 25;
+            $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
+            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
+
+            $order = $this->_getOrderList($get, 'index');
+            $result = [
+                'code' => 0,
+                'msg' => '获取数据成功',
+
+                'count' => $order['count'],
+                'data' => $order['data']
+            ];
+            return json($result);
+        } else {
+            $this->getColsFile('index');
+            $this->view->engine->layout(false);
+            return $this->fetch('order/list/index');
+        }
     }
 
     // 誉丝
@@ -319,7 +344,7 @@ class Order extends Backend
             $sugarModel = new OrderSugar();
             // get wedding devices
 
-            $request['salesman']= $request['sugar_salesman'];
+            $request['salesman'] = $request['sugar_salesman'];
             $sugarModel->allowField(true)->save($request);
         }
 
@@ -335,7 +360,7 @@ class Order extends Backend
         if (!empty($request['light_id'])) {
             $lightModel = new OrderLight();
             // get wedding devices
-            $request['salesman']= $request['light_salesman'];
+            $request['salesman'] = $request['light_salesman'];
             $lightModel->allowField(true)->save($request);
         }
 
@@ -364,7 +389,7 @@ class Order extends Backend
             echo $d3Model->getLastSql();
         }
 
-        return json(['code' => '200', 'msg' => '创建成功', 'redirect'=> 'tab']);
+        return json(['code' => '200', 'msg' => '创建成功', 'redirect' => 'tab']);
     }
 
     # 编辑订单视图
@@ -373,7 +398,7 @@ class Order extends Backend
         $get = Request::param();
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
-        if(empty($this->user['sale']) && $order->salesman > 0) {
+        if (empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
@@ -398,7 +423,7 @@ class Order extends Backend
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetOrders = OrderBanquetSuborder::where($where)->select();
         $this->assign('banquetOrders', $banquetOrders);
-        if($banquetOrders->isEmpty()) {
+        if ($banquetOrders->isEmpty()) {
             $banquetOrderArr = [];
         } else {
             $banquetOrderArr = $banquetOrders->toArray();
@@ -409,23 +434,23 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $receivables = OrderBanquetReceivables::where($where)->select();
-        foreach ($receivables as $key=>&$row) {
+        foreach ($receivables as $key => &$row) {
             $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -436,22 +461,22 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $banquetPayments = OrderBanquetPayment::where($where)->select();
-        foreach ($banquetPayments as $key=>&$row) {
+        foreach ($banquetPayments as $key => &$row) {
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -488,23 +513,23 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingReceivables = OrderWeddingReceivables::where($where)->select();
-        foreach ($weddingReceivables as $key=>&$row) {
+        foreach ($weddingReceivables as $key => &$row) {
             $contractImg = !empty($row['contract_img']) ? explode(',', $row['contract_img']) : [];
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($contractImg, $receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -515,22 +540,22 @@ class Order extends Backend
         $where[] = ['order_id', '=', $get['id']];
         $where[] = ['item_check_status', 'in', [0, 1, 2]];
         $weddingPayments = OrderWeddingPayment::where($where)->select();
-        foreach ($weddingPayments as $key=>&$row) {
+        foreach ($weddingPayments as $key => &$row) {
             $receiptImg = !empty($row['receipt_img']) ? explode(',', $row['receipt_img']) : [];
             $noteImg = !empty($row['note_img']) ? explode(',', $row['note_img']) : [];
             $photos = array_merge($receiptImg, $noteImg);
             $images = [];
-            foreach ($photos as $key=>$val) {
+            foreach ($photos as $key => $val) {
                 $images[$key]['alt'] = '';
                 $images[$key]['pid'] = $order['id'];
                 $images[$key]['src'] = $val;
                 $images[$key]['thumb'] = $val;
             }
             $imagesFormat = [
-                'id'    => $order['id'],
+                'id' => $order['id'],
                 'title' => '凭证',
                 'start' => 0,
-                'data'  => $images
+                'data' => $images
             ];
             $row['images'] = $imagesFormat;
         }
@@ -599,19 +624,19 @@ class Order extends Backend
         $this->assign('salesmans', $salesmans);
 
         ## 合同
-        if(!empty($order['image'])) {
+        if (!empty($order['image'])) {
             $order['image'] = explode(',', $order['image']);
         } else {
             $order['image'] = [];
         }
         ## 收据
-        if(!empty($order['receipt_img'])) {
+        if (!empty($order['receipt_img'])) {
             $order['receipt_img'] = explode(',', $order['receipt_img']);
         } else {
             $order['receipt_img'] = [];
         }
         ## 小票
-        if(!empty($order['note_img'])) {
+        if (!empty($order['note_img'])) {
             $order['note_img'] = explode(',', $order['note_img']);
         } else {
             $order['note_img'] = [];
@@ -619,17 +644,17 @@ class Order extends Backend
         $this->assign('data', $order);
         $photos = [];
         $images = array_merge($order['image'], $order['receipt_img'], $order['note_img']);
-        foreach ($images as $key=>$val) {
+        foreach ($images as $key => $val) {
             $photos[$key]['alt'] = '';
             $photos[$key]['pid'] = $order['id'];
             $photos[$key]['src'] = $val;
             $photos[$key]['thumb'] = $val;
         }
         $photosData = [
-            'id'    => $order['id'],
+            'id' => $order['id'],
             'title' => '订单凭证',
             'start' => 0,
-            'data'  => $photos
+            'data' => $photos
         ];
         $this->assign('photosData', $photosData);
         $this->assign('images', $images);
@@ -715,7 +740,7 @@ class Order extends Backend
         $order = \app\common\model\Order::get($request['order_id']);
         $banquetTotals = OrderBanquetSuborder::where('order_id', '=', $request['order_id'])->sum('banquet_totals');
         $weddingTotals = OrderWeddingSuborder::where('order_id', '=', $request['order_id'])->sum('wedding_totals');
-        $order->tail_money = $request['contract_totals']*0.2 + $banquetTotals + $weddingTotals;
+        $order->tail_money = $request['contract_totals'] * 0.2 + $banquetTotals + $weddingTotals;
         $order->totals = $request['contract_totals'] + $banquetTotals + $weddingTotals;
         unset($request['tail_money']);
         unset($request['totals']);
@@ -730,7 +755,7 @@ class Order extends Backend
         $this->editOrder();
 
         $order = $this->model->where('id', '=', $request['id'])->find();
-        if(empty($this->user['sale']) && $order->salesman > 0) {
+        if (empty($this->user['sale']) && $order->salesman > 0) {
             $sale = User::getUser($order->salesman);
             $order->sale = $sale['realname'];
         }
@@ -738,7 +763,7 @@ class Order extends Backend
 
         $config = config();
         $sequences = $config['crm']['check_sequence'];
-        if(!empty($sequences)) {
+        if (!empty($sequences)) {
             $sequence = (array)json_decode($audit->content, true);
             foreach ($sequence as $key => &$row) {
                 $row['title'] = $sequences[$key]['title'];
@@ -747,19 +772,19 @@ class Order extends Backend
         }
 
         ## 合同
-        if(!empty($order['image'])) {
+        if (!empty($order['image'])) {
             $order['image'] = explode(',', $order['image']);
         } else {
             $order['image'] = [];
         }
         ## 收据
-        if(!empty($order['receipt_img'])) {
+        if (!empty($order['receipt_img'])) {
             $order['receipt_img'] = explode(',', $order['receipt_img']);
         } else {
             $order['receipt_img'] = [];
         }
         ## 小票
-        if(!empty($order['note_img'])) {
+        if (!empty($order['note_img'])) {
             $order['note_img'] = explode(',', $order['note_img']);
         } else {
             $order['note_img'] = [];
@@ -767,17 +792,17 @@ class Order extends Backend
         $this->assign('data', $order);
         $photos = [];
         $images = array_merge($order['image'], $order['receipt_img'], $order['note_img']);
-        foreach ($images as $key=>$val) {
+        foreach ($images as $key => $val) {
             $photos[$key]['alt'] = '';
             $photos[$key]['pid'] = $order['id'];
             $photos[$key]['src'] = $val;
             $photos[$key]['thumb'] = $val;
         }
         $photosData = [
-            'id'    => $order['id'],
+            'id' => $order['id'],
             'title' => '订单凭证',
             'start' => 0,
-            'data'  => $photos
+            'data' => $photos
         ];
         $this->assign('photosData', $photosData);
         $this->assign('images', $images);
@@ -789,101 +814,123 @@ class Order extends Backend
     {
         $order = \app\common\model\Order::get($id);
         $result = $order->delete();
-        if($result) {
+        if ($result) {
             $where = [];
             $where[] = ['order_id', '=', $id];
             ### 婚宴信息删除
-            OrderBanquet::destroy(function ($query) use ($id){
+            OrderBanquet::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
-            OrderBanquetReceivables::destroy(function ($query) use ($id){
+            OrderBanquetReceivables::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
-            OrderBanquetPayment::destroy(function ($query) use ($id){
+            OrderBanquetPayment::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
-            OrderBanquetSuborder::destroy(function ($query) use ($id){
+            OrderBanquetSuborder::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
 
             ### 婚庆信息删除
-            OrderWedding::destroy(function ($query) use ($id){
+            OrderWedding::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
-            OrderWeddingReceivables::destroy(function ($query) use ($id){
+            OrderWeddingReceivables::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
-            OrderBanquetPayment::destroy(function ($query) use ($id){
+            OrderBanquetPayment::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
-            OrderBanquetSuborder::destroy(function ($query) use ($id){
+            OrderBanquetSuborder::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
 
             ### 酒店服务项目
-            OrderHotelItem::destroy(function ($query) use ($id){
+            OrderHotelItem::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 酒店协议
-            OrderHotelProtocol::destroy(function ($query) use ($id){
+            OrderHotelProtocol::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除婚车信息
-            OrderCar::destroy(function ($query) use ($id){
+            OrderCar::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除喜糖
-            OrderSugar::destroy(function ($query) use ($id){
+            OrderSugar::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除酒水
-            OrderWine::destroy(function ($query) use ($id){
+            OrderWine::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除点心
-            OrderDessert::destroy(function ($query) use ($id){
+            OrderDessert::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除灯光
-            OrderLight::destroy(function ($query) use ($id){
+            OrderLight::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除Led
-            OrderLed::destroy(function ($query) use ($id){
+            OrderLed::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             ### 删除3D
-            OrderD3::destroy(function ($query) use ($id){
+            OrderD3::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
 
             ### 删除审核
-            OrderConfirm::destroy(function ($query) use ($id){
+            OrderConfirm::destroy(function ($query) use ($id) {
                 $query->where('order_id', '=', $id);
             });
             $arr = [
-                'code'  => '200',
-                'msg'   => '删除成功'
+                'code' => '200',
+                'msg' => '删除成功'
             ];
         } else {
             $arr = [
-                'code'  => '400',
-                'msg'   => '删除失败'
+                'code' => '400',
+                'msg' => '删除失败'
             ];
         }
         return json($arr);
     }
 
 
-
     # 获取订单列表
-    private function _getOrderList($get, $statusField='check_status_source')
+    private function _getOrderList($get, $statusField = 'check_status_source')
     {
         $config = [
             'page' => $get['page']
         ];
-        $map = Search::order($this->user, $get);
-        // $map[] = ['check_status', '<>', 3];
+
+        if (is_array($get['company_id'])) {
+            $map[] = ['company_id', 'in', $get['company_id']];
+        } else if ($get['company_id'] > 0) {
+            $map[] = ['company_id', '=', $get['company_id']];
+        }
+
+        if (isset($get['source']) && !empty($get['source'])) {
+            $map[] = ['source_id', '=', $get['source']];
+        }
+
+        if (isset($get['hotel_id']) && !empty($get['hotel_id'])) {
+            $map[] = ['hotel_id', '=', $get['hotel_id']];
+        }
+
+        if (isset($get['staff']) && $get['staff'] > 0) {
+            $map[] = ['user_id', '=', $get['staff']];
+        }
+
+        if (isset($get['date_range']) && !empty($get['date_range']) && !empty($get['date_range_type'])) {
+            $range = $this->getDateRange($get['date_range']);
+            $map[] = [$get['date_range_type'], 'between', $range];
+        }
+
+
         $model = model('order')->where($map);
         if (isset($get['mobile'])) {
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
@@ -909,7 +956,8 @@ class Order extends Backend
         return ['data' => $data, 'count' => $count];
     }
 
-    private function getColsFile($aciton='index') {
+    private function getColsFile($aciton = 'index')
+    {
         switch ($this->user['role_id']) {
             case 10: // 来源审核角色ID
             case 51: // 积分审核角色ID
@@ -927,7 +975,8 @@ class Order extends Backend
         $this->assign('colsfile', $colsfile);
     }
 
-    private function formatOrderDate($order) {
+    private function formatOrderDate($order)
+    {
         isset($order['sign_date']) && $order['sign_date'] = date('Y-m-d', $order['sign_date']);
         isset($order['event_date']) && $order['event_date'] = date('Y-m-d', $order['event_date']);
         isset($order['earnest_money_date']) && $order['earnest_money_date'] = date('Y-m-d', $order['earnest_money_date']);
@@ -957,20 +1006,38 @@ class Order extends Backend
             $where = [];
             $where['id'] = $params['id'];
             $order = $this->model->where($where)->find();
-            $order->save(['image'=>$info->getPathname()]);
+            $order->save(['image' => $info->getPathname()]);
 
             $arr = [
-                'code'  => '200',
-                'msg'   => '上传成功',
-                'image' => '/'.$info->getPathname()
+                'code' => '200',
+                'msg' => '上传成功',
+                'image' => '/' . $info->getPathname()
             ];
         } else {
             $arr = [
-                'code'  => '500',
-                'msg'   => '上传失败'
+                'code' => '500',
+                'msg' => '上传失败'
             ];
         }
 
         return json($arr);
+    }
+
+    public function getDateRange($dateRange)
+    {
+        if ($dateRange == 'today') {
+
+            $start = strtotime(date('Y-m-d'));
+            $end = strtotime('tomorrow');
+        } else {
+
+            $range = explode('~', $dateRange);
+            $range[0] = str_replace("+", "", trim($range[0]));
+            $range[1] = str_replace("+", "", trim($range[1]));
+            $start = strtotime($range[0]);
+            $end = strtotime($range[1]) + 86400;
+        }
+
+        return [$start, $end];
     }
 }
