@@ -53,7 +53,7 @@ class Car extends Base
             $row['car_mobile'] = $param['car_mobile'];
             $row['arrive_time'] = $param['arrive_time'];
             $row['arrive_address'] = $param['arrive_address'];
-            $row['car_remark'] = $param['master_car_remark'];
+            $row['car_remark'] = $param['car_remark'];
             $row['salesman'] = $param['car_salesman'];
             $row['order_id'] = $orderId;
             $row['operate_id'] = $this->user['id'];
@@ -78,7 +78,7 @@ class Car extends Base
             $row['car_mobile'] = $param['car_mobile'];
             $row['arrive_time'] = $param['arrive_time'];
             $row['arrive_address'] = $param['arrive_address'];
-            $row['car_remark'] = $param['slave_car_remark'];
+            $row['car_remark'] = $param['car_remark'];
             $row['create_time'] = time();
             $row['salesman'] = $param['car_salesman'];
             $row['order_id'] = $orderId;
@@ -157,7 +157,6 @@ class Car extends Base
         }
 
         if (!empty($param['slave_order_id'])) {
-            $row = [];
             $row['id'] = $param['slave_order_id'];
             $row['car_id'] = $param['slave_car_id'];
             $row['car_price'] = $param['slave_car_price'];
