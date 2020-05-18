@@ -342,12 +342,7 @@ class Confirm extends Base
         $origin = json_decode($confirm->source, true);
         $source = [];
         $orderObj = \app\common\model\Order::get($confirm->order_id);
-        $user = User::getUser($confirm->confirm_user_id);
-        $confirmUser = [
-            'id' => $user['id'],
-            'realname' => $user['realname'],
-            'avatar' => $user['avatar']
-        ];
+
         $key = key($origin);
         if ($key == 'order') {
             $source = $origin;
@@ -887,7 +882,11 @@ class Confirm extends Base
             $buttons = [];
         }
 
+        $user = User::getUser($confirm->confirm_user_id);
         $confirmData = [
+            'confirm_user_id' => $user['id'],
+            'realname' => $user['realname'],
+            'avatar' => $user['avatar'],
             'confirm_no' => $confirm->confirm_no,
             'confirm_intro' => $confirm->confirm_intro,
             'status' => $this->confirmStatusList[$confirm->status]
@@ -1010,7 +1009,6 @@ class Confirm extends Base
                 'd3List' => array_values($this->d3List),
                 'ritualList'  => array_values($this->ritualList),
                 'packageList'  => array_values($this->packageList),
-                'confirmUser' => $confirmUser
             ]
         ];
 
