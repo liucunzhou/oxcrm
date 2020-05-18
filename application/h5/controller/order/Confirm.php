@@ -1351,8 +1351,9 @@ class Confirm extends Base
     {
         $param = $this->request->param();
 
+        $model = new OrderConfirm();
         ## 获取订单信息
-        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $confirm = $model->where('id', '=', $param['id'])->find();
         $data = $confirm->getData();
         $confirm->content = $param['content'];
         $confirm->status = 1;
@@ -1421,13 +1422,14 @@ class Confirm extends Base
     {
         $param = $this->request->param();
 
+        $model = new OrderConfirm();
         ## 获取订单信息
-        $confirm = $this->model->where('id', '=', $param['id'])->find();
+        $confirm = $model->where('id', '=', $param['id'])->find();
         $orderId = $confirm->order_id;
         $confirm->content = $param['content'];
         $confirm->status = 2;
         $result = $confirm->save();
-        $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked' => 1]);
+        $model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked' => 1]);
         \app\common\model\Order::where('id', '=', $orderId)->update(['check_status' => 3]);
         $this->updateItemStatus($confirm->source, 3);
         if ($result) {
