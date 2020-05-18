@@ -154,6 +154,7 @@ class Confirm extends Base
                 }
 
                 $data[] = [
+                    'id' => $confirm->id,
                     'title' => $confirm->confirm_intro,
                     'create_time' => $confirm->create_time,
                     'status' => $this->confirmStatusList[$confirm->status],
