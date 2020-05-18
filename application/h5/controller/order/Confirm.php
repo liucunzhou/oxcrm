@@ -84,7 +84,6 @@ class Confirm extends Base
         $companies = Brand::getBrands();
 
         $model = new OrderConfirm();
-        // $model->
         $where = [];
         if ($param['type'] == '0') {
             $where[] = ['status', '=', 0];
@@ -95,7 +94,15 @@ class Confirm extends Base
                 $where[] = ['status', '<>', 0];
             }
         }
-        // $where[] = ['confirm_user_id', '=', $this->user['id']];
+
+        if($param['keyword']!='') {
+            $keyword = $param['keyword'];
+            $model = $model->where('order_id', 'in', function ($query) use ($keyword) {
+                $query->table('tk_order')->where('bridegroom|bride|bridegroom_mobile|bride_mobile', 'like', "%{$keyword}%")->field('id');
+            });
+        }
+
+        $where[] = ['confirm_user_id', '=', $this->user['id']];
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
 
