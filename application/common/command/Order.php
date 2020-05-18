@@ -1182,12 +1182,16 @@ class order extends Command
         $file = './shell/order-export-hs.csv';
         $fp = fopen($file, 'w+');
         $order = new \app\common\model\Order();
-        $orderList = $order->select();
+        $where = [];
+        $where[] = ['company_id', '=', '26'];
+        $where[] = ['item_check_status', '=', '2'];
+        $orderList = $order->where($where)->select();
         $header = [
             '编号','签单销售','签单类型','婚庆所属公司','签单日期', '婚期','酒店','厅'
             ,'新郎','手机号','新娘','手机号','餐标','桌数',
             '合同总额','定金收款日期','定金收款金额','中款收款日期','中款收款金额','尾款收款日期','尾款收款金额'
-            ,'收款信息中的定金','收款信息中的中款','收款信息中的尾款','付款信息中的定金','付款信息中的中款','付款信息中的尾款'
+            ,'收款信息中的定金','收款信息中的中款','收款信息中的尾款',
+            '付款信息中的定金','付款信息中的中款','付款信息中的尾款'
             ,'订单状态','所有备注'
         ];
         $users = User::getUsers();
@@ -1244,7 +1248,10 @@ class order extends Command
             $earnestIncome = 0;
             $middleIncome = 0;
             $tailIncome = 0;
-            $banquetIncomeList = OrderBanquetReceivables::where('order_id', '=', $row['id'])->select();
+            $where = [];
+            $where[] = ['order_id', '=', $row['id']];
+            $where[] = ['item_check_status', '=', '2'];
+            $banquetIncomeList = OrderBanquetReceivables::where($where)->select();
             $remark = '';
             foreach ($banquetIncomeList as $value) {
                 if ($value->banquet_income_type == 1) {
@@ -1256,7 +1263,10 @@ class order extends Command
                 }
                 $remark .= $value['remark'];
             }
-            $weddingIncomeList = OrderWeddingReceivables::where('order_id', '=', $row['id'])->select();
+            $where = [];
+            $where[] = ['order_id', '=', $row['id']];
+            $where[] = ['item_check_status', '=', '2'];
+            $weddingIncomeList = OrderWeddingReceivables::where($where)->select();
             foreach ($weddingIncomeList as $value) {
                 if ($value->wedding_income_type == 1) {
                     $earnestIncome = $earnestIncome + $value->wedding_income_item_price;
@@ -1274,7 +1284,10 @@ class order extends Command
             $earnestPayment = 0;
             $middlePayment = 0;
             $tailPayment = 0;
-            $banquetPaymentList = OrderBanquetPayment::where('order_id', '=', $row['id'])->select();
+            $where = [];
+            $where[] = ['order_id', '=', $row['id']];
+            $where[] = ['item_check_status', '=', '2'];
+            $banquetPaymentList = OrderBanquetPayment::where($where)->select();
             foreach ($banquetPaymentList as $value) {
                 if ($value->banquet_pay_type == 1) {
                     $earnestPayment = $earnestPayment + $value->banquet_pay_item_price;
@@ -1285,7 +1298,11 @@ class order extends Command
                 }
                 $remark .= $value['banquet_payment_remark'];
             }
-            $weddingPaymentList = OrderWeddingPayment::where('order_id', '=', $row['id'])->select();
+
+            $where = [];
+            $where[] = ['order_id', '=', $row['id']];
+            $where[] = ['item_check_status', '=', '2'];
+            $weddingPaymentList = OrderWeddingPayment::where($where)->select();
             foreach ($weddingPaymentList as $value) {
                 if ($value->wedding_pay_type == 1) {
                     $earnestIncome = $earnestIncome + $value->wedding_pay_item_price;
