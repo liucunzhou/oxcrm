@@ -56,6 +56,16 @@ class Search
         }
 
         switch ($user['role_id']) {
+            case 26: // 婚宴项目总经理
+                if (!empty($get['staff']) && $get['staff'] == 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['user_id', '=', $get['staff']];
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
+                break;
+
             case 27: // 婚庆部主管
                 if (!isset($get['sea']) && !empty($get['staff']) && $get['staff'] == 'all') {
                     $map[] = self::getUserStaffs($user);
@@ -312,6 +322,16 @@ class Search
 
             case 9: // 商务会员
                 $map[] = ['user_id', '=', $user['id']];
+                break;
+
+            case 26: // 婚宴项目总经理
+                if (!empty($get['staff']) && $get['staff'] == 'all') {
+                    $map[] = self::getUserStaffs($user);
+                } else if (!empty($get['staff'])) {
+                    $map[] = ['user_id', '=', $get['staff']];
+                } else {
+                    $map[] = ['user_id', '=', $user['id']];
+                }
                 break;
 
             default:
