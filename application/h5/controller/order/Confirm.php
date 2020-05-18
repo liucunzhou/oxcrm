@@ -197,7 +197,6 @@ class Confirm extends Base
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
 
-
         if ($list->isEmpty()) {
             $result = [
                 'code' => '200',
@@ -339,11 +338,16 @@ class Confirm extends Base
         $param = $this->request->param();
 
         $confirm = OrderConfirm::get($param['id']);
+
         $origin = json_decode($confirm->source, true);
         $source = [];
-
         $orderObj = \app\common\model\Order::get($confirm->order_id);
-
+        $user = User::getUser($confirm->confirm_user_id);
+        $confirmUser = [
+            'id' => $user['id'],
+            'realname' => $user['realname'],
+            'avatar' => $user['avatar']
+        ];
         $key = key($origin);
         if ($key == 'order') {
             $source = $origin;
@@ -1005,7 +1009,8 @@ class Confirm extends Base
                 'ledList' => array_values($this->ledList),
                 'd3List' => array_values($this->d3List),
                 'ritualList'  => array_values($this->ritualList),
-                'packageList'  => array_values($this->packageList)
+                'packageList'  => array_values($this->packageList),
+                'confirmUser' => $confirmUser
             ]
         ];
 
