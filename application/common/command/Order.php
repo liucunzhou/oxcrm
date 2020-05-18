@@ -1497,7 +1497,7 @@ class order extends Command
             $where= [];
             $where['confirm_no'] = $confirmNo;
             $confirm = OrderConfirm::where($where)->order('id desc')->find();
-            echo $confirmNo."\t".$confirm->status;
+            echo $confirmNo.','.$confirm->order_id.','.$confirm->status;
             echo "\n";
         }
     }
