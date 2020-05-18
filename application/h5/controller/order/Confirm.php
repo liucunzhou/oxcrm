@@ -664,7 +664,7 @@ class Confirm extends Base
                 $source['car']['service_distance'] = $v['service_distance'];
                 $source['car']['arrive_time'] = $v['arrive_time'];
                 $source['car']['arrive_address'] = $v['arrive_address'];
-                $source['car']['car_remark'] = $v['master_car_remark'];
+                $source['car']['car_remark'] = $v['car_remark'];
                 $source['car']['salesman'] = $v['car_salesman'];
                 $source['car']['order_id'] = $v['order_id'];
                 $source['car']['user_id'] = $v['user_id'];
