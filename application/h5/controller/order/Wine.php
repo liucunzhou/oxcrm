@@ -96,8 +96,6 @@ class Wine extends Base
             $row['salesman'] = $this->user['id'];
             $row['item_check_status']  = 0;
             $model = OrderWine::get($row['id']);
-            echo OrderWine::getLastSql();
-            echo "\n";
             $result = $model->allowField(true)->save($row);
             $source['wine'][] = $model->toArray();
         }
