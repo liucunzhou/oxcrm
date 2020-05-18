@@ -1347,7 +1347,7 @@ class Confirm extends Base
     }
 
     # 来源-积分-合同审核确认，执行逻辑
-    public function doAccepte()
+    public function doAccept()
     {
         $param = $this->request->param();
 
