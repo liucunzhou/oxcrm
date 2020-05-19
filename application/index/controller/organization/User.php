@@ -163,6 +163,7 @@ class User extends Backend
         $data = UserAuth::getUserLogicAuth($get['id']);
         !empty($data['role_ids']) && $data['role_ids'] = explode(',', $data['role_ids']);
         !empty($data['store_ids']) && $data['store_ids'] = explode(',', $data['store_ids']);
+        !empty($data['company_ids']) && $data['company_ids'] = explode(',', $data['company_ids']);
         !empty($data['source_ids']) && $data['source_ids'] = explode(',', $data['source_ids']);
         $this->assign('data', $data);
 
