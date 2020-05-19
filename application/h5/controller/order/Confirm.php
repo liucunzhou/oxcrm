@@ -1232,7 +1232,6 @@ class Confirm extends Base
     }
 
     # comnpany_id,创建时的审核进程
-
     public function getConfirmStep()
     {
         $param = $this->request->param();
