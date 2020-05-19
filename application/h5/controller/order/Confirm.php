@@ -228,6 +228,11 @@ class Confirm extends Base
     public function confirmMine()
     {
         $param = $this->request->param();
+        $param['limit'] = isset($param['limit']) ? $param['limit'] : 5;
+        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
+        $config = [
+            'page' => $param['page']
+        ];
 
         $confirm = new OrderConfirm();
         $where = [];
@@ -237,7 +242,7 @@ class Confirm extends Base
             $where[] = ['user_id', '=', $this->user['id']];
         }
         // $where[] = ['order_id', '=', $param['order_id']];
-        $confirmList = $confirm->where($where)->order('create_time desc')->select();
+        $confirmList = $confirm->where($where)->order('create_time desc')->paginate($param['limit']);
         $order = \app\common\model\Order::get($param['order_id']);
 
         $list = [];
