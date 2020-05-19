@@ -913,7 +913,7 @@ class Order extends Backend
             $map[] = ['company_id', '=', $get['company_id']];
         }
 
-        if (!empty($get['company_ids'])) {
+        if($this->user['nickname'] != 'admin') {
             $map[] = ['company_id', 'in', $get['company_ids']];
         }
 
@@ -934,9 +934,8 @@ class Order extends Backend
             $map[] = [$get['date_range_type'], 'between', $range];
         }
 
-
         $model = model('order')->where($map);
-        if (isset($get['mobile'])) {
+        if ($get['mobile'] != '') {
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
         }
 

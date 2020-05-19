@@ -675,7 +675,7 @@ class Confirm extends Backend
         $checkSequence = $configCrm['crm']['check_sequence'];
         $brands = Brand::getBrands();
         $model = $this->model->where($map);
-        if (isset($get['mobile'])) {
+        if ($get['mobile'] != '') {
             $model = $model->where('order_id', 'in', function ($query) use ($get) {
                 $query->table('tk_order')->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%")->field('id');
             });
