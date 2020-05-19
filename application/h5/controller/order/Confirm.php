@@ -234,6 +234,10 @@ class Confirm extends Base
             'page' => $param['page']
         ];
 
+        $users = User::getUsers();
+        $newsTypes = $this->config['news_type_list'];
+        $companies = Brand::getBrands();
+
         $confirm = new OrderConfirm();
         $where = [];
         if (isset($param['user_id'])) {
@@ -249,11 +253,15 @@ class Confirm extends Base
         foreach ($confirmList as $key => $confirm) {
             $confirmNo = $confirm->confirm_no;
             if (!isset($list[$confirmNo])) {
+                $order = \app\common\model\Order::get($confirm->order_id);
                 $list[$confirmNo]['id'] = $confirm->id;
                 $list[$confirmNo]['confirm_no'] = $confirm->confirm_no;
                 $list[$confirmNo]['confirm_intro'] = $confirm->confirm_intro;
                 $list[$confirmNo]['status'] = $this->confirmStatusList[$confirm->status];
                 $list[$confirmNo]['start_time'] = $confirm->create_time;
+                $list[$confirmNo]['company'] = $companies[$confirm->company_id]['title'];
+                $list[$confirmNo]['news_type'] = $newsTypes[$order->news_type];
+                $list[$confirmNo]['user'] = $users[$confirm->user_id]['realname'];
 
                 // 判断跳转路径
                 $source = json_decode($confirm->source, true);
