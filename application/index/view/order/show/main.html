@@ -93,6 +93,9 @@
 
                     <{if $confirm.status == 0}>
                     <div class="layui-input-flex">
+                        <div class="layui-btn layui-btn-confirm" data-id="{$confirm.id}" data-action="/index/order.confirm/doReject">上传</div>
+                    </div>
+                    <div class="layui-input-flex">
                         <div class="layui-btn-group">
                             <div class="layui-btn layui-btn-confirm" data-id="{$confirm.id}" data-action="/index/order.confirm/doAccepte">通过</div>
                             <div class="layui-btn layui-btn-confirm layui-btn-danger" data-id="{$confirm.id}" data-action="/index/order.confirm/doReject">驳回</div>

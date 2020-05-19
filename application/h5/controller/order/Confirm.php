@@ -148,7 +148,10 @@ class Confirm extends Base
         if ($list->isEmpty()) {
             $result = [
                 'code' => '200',
-                'msg' => '暂无审核数据'
+                'msg' => '暂无审核数据',
+                'data' => [
+                    'confirmList' => []
+                ]
             ];
         } else {
             $data = [];
