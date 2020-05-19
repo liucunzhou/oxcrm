@@ -11,6 +11,7 @@ namespace app\h5\controller\order;
 
 use app\common\model\Brand;
 use app\common\model\OrderConfirm;
+use app\common\model\OrderConfirmComment;
 use app\common\model\User;
 use app\h5\controller\Base;
 
@@ -343,9 +344,7 @@ class Confirm extends Base
     public function detail()
     {
         $param = $this->request->param();
-
         $confirm = OrderConfirm::get($param['id']);
-
         $origin = json_decode($confirm->source, true);
         $source = [];
         $orderObj = \app\common\model\Order::get($confirm->order_id);
@@ -961,13 +960,35 @@ class Confirm extends Base
                 }
                 $content = $confirmRs[$key]['content'];
                 $confirmTime = date('m-d H:i',$confirmRs[$key]['update_time']);
-                $image = empty($confirmRs[$key]['image']) ? [] : explode(',', $confirmRs[$key]['image']);
+                $image = images_to_array($confirmRs[$key]['image']);
+                $comments = [];
+                $commentModel = new OrderConfirmComment();
+                $where = [];
+                $where[] = ['confirm_id', '=', $confirmRs['']];
+                $confirmComments = $commentModel->where($where)->order('id desc')->select();
+                foreach ($confirmComments as $comment) {
+                    $cuser = $staffs[$comment['user_id']];
+                    if($cuser['user_id'] == $this->user['id']) {
+                        $realname = $cuser['realname'];
+                    } else {
+                        $realname = '我自己';
+                    }
+                    $comments[] = [
+                        'id'        => $comment['id'],
+                        'realname'  => $realname,
+                        'avatar'    => $cuser['avatar'],
+                        'content'   => $comment['comment'],
+                        'image'     => images_to_array($comment['image'])
+                    ];
+                }
             } else {
                 $status = '待审核';
                 $content = '';
                 $confirmTime = '';
                 $image = [];
+                $comments = [];
             }
+
 
             $confirmList[] = [
                 'id' => $key,
@@ -976,7 +997,8 @@ class Confirm extends Base
                 'content' => $content,
                 'image' => $image,
                 'confirm_time' => $confirmTime,
-                'managerList' => $managerList
+                'managerList' => $managerList,
+                'comments'  => $comments
             ];
         }
 
