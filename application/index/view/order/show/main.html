@@ -16,6 +16,14 @@
             word-break:break-all!important;
             white-space:normal!important;
         }
+        #confirm-image-box {
+            margin-bottom: 18px;
+        }
+
+        #confirm-image-box img{
+            width: 100px;
+            height: 100px;
+        }
     </style>
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/layui/layui.all.js"></script>
@@ -92,8 +100,12 @@
                     </ul>
 
                     <{if $confirm.status == 0}>
-                    <div class="layui-input-flex">
-                        <div class="layui-btn layui-btn-confirm" data-id="{$confirm.id}" data-action="/index/order.confirm/doReject">上传</div>
+                    <div class="div">
+                        <div>
+                            <div class="layui-btn" id="confirm-upload" data-action="/index/order.confirm/upload">上传图片</div>
+                            <input type="hidden" id="confirm-image" name="image" value="">
+                        </div>
+                        <div class="img-box" id="confirm-image-box"></div>
                     </div>
                     <div class="layui-input-flex">
                         <div class="layui-btn-group">
@@ -112,19 +124,45 @@
 </div>
 <script>
     $(function () {
+        $("#confirm-upload").each(function (i, n) {
+            var id = $(n).attr("id");
+            var url = $(n).attr("data-action");
+            layui.use('upload', function(){
+                var upload = layui.upload;
+                var uploadInst = upload.render({
+                    elem: '#' + id
+                    ,url: url
+                    ,done: function(res){
+                        if(res.code='200') {
+                            var img = `<img src="${res.image}" />`;
+                            $("#confirm-image-box").html(img);
+                            $("#confirm-image").val(res.image);
+                        } else {
+                            layer.alert("上传失败");
+                        }
+                    }
+                    ,error: function(){
+                        layer.alert("上传失败");
+                    }
+                });
+            });
+        });
+
         $(".layui-btn-confirm").click(function(){
             if(!confirm("确认提交审核结果么?")) {
                 return false;
             }
             var id = $(this).attr("data-id");
             var content = $("#content").val();
+            var image=$("#confirm-image").val();
             var url = $(this).attr("data-action");
+
             if($(this).hasClass("layui-btn-danger") && content=='') {
                 layer.msg('请输入驳回原因');
                 return false;
             }
 
-            $.post(url, {id:id,content:content}, function(res) {
+            $.post(url, {id:id,content:content,image:image}, function(res) {
                 if(res.code == '200'){
                     window.location.reload();
                 }
@@ -135,6 +173,7 @@
         $(".show-image").click(function () {
             var photosStr = $(this).attr("data-image");
             var photos = JSON.parse(photosStr);
+
             if (photos.data.length < 1) {
                 layer.msg('暂无上传');
                 return false;
