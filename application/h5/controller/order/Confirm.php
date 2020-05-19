@@ -788,7 +788,7 @@ class Confirm extends Base
         }
 
 
-        $commentApi = 'h5/order.confirm/comment';
+        $commentApi = 'h5/order.comment/create';
         $acceptApi = 'h5/order.confirm/doAccept';
         $rejectApi = 'h5/order.confirm/doReject';
         if ($confirm->status == '0') {

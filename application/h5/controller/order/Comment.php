@@ -20,7 +20,31 @@ class Comment extends Base
      */
     public function create()
     {
+        $param = $this->request->param();
+        $confirm = OrderConfirm::get($param['id']);
+        $data = [];
+        $data['confirm_id'] = $param['id'];
+        $data['order_id'] = $confirm->order_id;
+        $data['confirm_no'] = $confirm->confirm_no;
+        $data['operate_id'] = $this->user['id'];
+        $data['user_id'] = $this->user['id'];
+        $data['content'] = $param['content'];
+        $data['image'] = $param['image'];
+
         $model = new OrderConfirmComment();
-        
+        $result = $model->allowField(true)->insert($data);
+        if($result) {
+            $arr = [
+                'code'  => '200',
+                'msg' => '评论成功',
+            ];
+        } else {
+            $arr = [
+                'code'  => '400',
+                'msg' => '评论失败',
+            ];
+        }
+
+        return json($arr);
     }
 }
