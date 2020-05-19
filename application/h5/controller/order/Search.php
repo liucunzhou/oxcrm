@@ -174,8 +174,8 @@ class Search extends Base
         $confirmIntroList = $model->field('confirm_intro')->group('confirm_intro')->select();
         foreach ($confirmIntroList as $row) {
             $checkItems[] = [
-                'id'    => $row,
-                'title' => $row
+                'id'    => $row['confirm_intro'],
+                'title' => $row['confirm_intro']
             ];
         }
 
