@@ -141,7 +141,7 @@ class Order extends Backend
             // $get['company_id'] = 25;
             $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
             $companyIds = empty($userAuth['company_ids']) ? [] : explode(',', $userAuth['store_ids']);
-            
+            $get['company_ids'] = $companyIds;
             $order = $this->_getOrderList($get, 'index');
             $result = [
                 'code' => 0,
@@ -911,6 +911,10 @@ class Order extends Backend
             $map[] = ['company_id', 'in', $get['company_id']];
         } else if ($get['company_id'] > 0) {
             $map[] = ['company_id', '=', $get['company_id']];
+        }
+
+        if (!empty($get['company_ids'])) {
+            $map[] = ['company_id', 'in', $get['company_ids']];
         }
 
         if (isset($get['source']) && !empty($get['source'])) {
