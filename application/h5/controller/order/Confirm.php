@@ -127,19 +127,19 @@ class Confirm extends Base
                 }
 
             } else {
-                $map[] = ['confirm_user_id', '=', $this->user['id']];
+                $where[] = ['confirm_user_id', '=', $this->user['id']];
             }
 
         } else {
-            $map[] = ['confirm_user_id', '=', $this->user['id']];
+            $where[] = ['confirm_user_id', '=', $this->user['id']];
         }
         **/
-        $map[] = ['confirm_user_id', '=', $this->user['id']];
+        $where[] = ['confirm_user_id', '=', $this->user['id']];
 
         ### range
         if (isset($param['range']) && !empty($param['range'])) {
             $range = format_date_range($param['range']);
-            $map[] = ['create_time', 'between', $range];
+            $where[] = ['create_time', 'between', $range];
         }
 
         $model = $model->where($where)->order('id desc');
