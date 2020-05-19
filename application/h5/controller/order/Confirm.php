@@ -114,6 +114,7 @@ class Confirm extends Base
         }
 
         ### 员工列表
+        /**
         if ($this->role['auth_type'] > 0) {
             if (isset($param['user_id']) && !empty($param['user_id'])) {
                 // $user_id = explode(',',$param['user_id']);
@@ -132,6 +133,8 @@ class Confirm extends Base
         } else {
             $map[] = ['confirm_user_id', '=', $this->user['id']];
         }
+        **/
+        $map[] = ['confirm_user_id', '=', $this->user['id']];
 
         ### range
         if (isset($param['range']) && !empty($param['range'])) {
