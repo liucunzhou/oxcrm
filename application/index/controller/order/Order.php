@@ -908,9 +908,7 @@ class Order extends Backend
             'page' => $get['page']
         ];
 
-        if (is_array($get['company_id'])) {
-            $map[] = ['company_id', 'in', $get['company_id']];
-        } else if ($get['company_id'] > 0) {
+        if ($get['company_id'] > 0) {
             $map[] = ['company_id', '=', $get['company_id']];
         }
 
@@ -942,7 +940,6 @@ class Order extends Backend
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection();
-        echo $model->getLastSql();
 
         $users = \app\common\model\User::getUsers();
         foreach ($data as $key => &$value) {
