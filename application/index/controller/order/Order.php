@@ -940,7 +940,6 @@ class Order extends Backend
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection();
-        echo $model->getLastSql();
 
         $users = \app\common\model\User::getUsers();
         foreach ($data as $key => &$value) {
