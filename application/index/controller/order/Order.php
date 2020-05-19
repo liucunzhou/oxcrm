@@ -140,8 +140,8 @@ class Order extends Backend
             $get = Request::param();
             // $get['company_id'] = 25;
             $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
-            $companyIds = empty($userAuth['store_ids']) ? [] : explode(',', $userAuth['store_ids']);
-
+            $companyIds = empty($userAuth['company_ids']) ? [] : explode(',', $userAuth['store_ids']);
+            
             $order = $this->_getOrderList($get, 'index');
             $result = [
                 'code' => 0,

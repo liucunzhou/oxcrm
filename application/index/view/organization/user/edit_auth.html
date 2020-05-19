@@ -71,7 +71,16 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">接收门店</label>
+                    <label class="layui-form-label">订单门店</label>
+                    <div class="layui-input-block">
+                        <{volist name="brands" id="brand"}>
+                        <input type="checkbox" name="company[]" value="{$brand.id}" title="{$brand.title}" <{if !empty($data['company_ids']) && in_array($brand['id'],$data['company_ids'])}>checked<{/if}>/>
+                        <{/volist}>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">策划门店</label>
                     <div class="layui-input-block">
                         <{volist name="brands" id="brand"}>
                             <input type="checkbox" name="store[]" value="{$brand.id}" title="{$brand.title}" <{if !empty($data['store_ids']) && in_array($brand['id'],$data['store_ids'])}>checked<{/if}>/>

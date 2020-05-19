@@ -198,6 +198,7 @@ class User extends Backend
         $Model->department_id = $post['department_id'];
         !empty($post['role']) && $Model->role_ids = $post['role'];
         !empty($post['store']) && $Model->store_ids = implode(',', $post['store']);
+        !empty($post['company']) && $Model->company_ids = implode(',', $post['company']);
         !empty($post['source']) && $Model->source_ids = implode(',', $post['source']);
         $Model->show_visit_log = $post['show_visit_log'];
         $Model->is_show_entire_mobile = $post['is_show_entire_mobile'];

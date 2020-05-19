@@ -260,13 +260,13 @@ class Search extends Base
                 'text'  => '签约公司',
                 'items' => $brandList
             ],
+            'confirm_intro'     => [
+                'text'  => '审核项',
+                'items' => $checkItems
+            ],
             'user_id'   => [
                 'text'  => '人员列表',
                 'items' => $userList
-            ],
-            'range_type'     => [
-                'text'  => '时间类型',
-                'items' => $rangeTypeList
             ],
             'range'     => [
                 'text'  => '时间区间',

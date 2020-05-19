@@ -103,7 +103,37 @@ class Confirm extends Base
             });
         }
 
-        $where[] = ['confirm_user_id', '=', $this->user['id']];
+        // 所属||签约公司
+        if (is_numeric($param['company_id'])) {
+            $where[] = ['company_id', '=', $param['company_id']];
+        }
+
+        // 审核状态
+        if (is_numeric($param['check_status'])) {
+            $where[] = ['status', '=', $param['check_status']];
+        }
+
+        ### 员工列表
+        if ($this->role['auth_type'] > 0) {
+            if (isset($param['user_id']) && !empty($param['user_id'])) {
+                // $user_id = explode(',',$param['user_id']);
+                if ($param['user_id'] == 'all') {
+                    $map[] = ['confirm_user_id', 'in', $this->staffs];
+                } else if (is_numeric($param['user_id'])) {
+                    $map[] = ['confirm_user_id', '=', $this->user['id']];
+                } else {
+                    $map[] = ['confirm_user_id', 'in', $param['user_id']];
+                }
+
+            } else {
+                $map[] = ['confirm_user_id', '=', $this->user['id']];
+            }
+
+        } else {
+            $map[] = ['confirm_user_id', '=', $this->user['id']];
+        }
+
+
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
 
@@ -186,7 +216,7 @@ class Confirm extends Base
         return json($result);
     }
 
-    # 我审核的
+    # 审核我的
     public function confirmMine()
     {
         $param = $this->request->param();
@@ -201,7 +231,7 @@ class Confirm extends Base
         $model = new OrderConfirm();
         // $model->
         $where = [];
-        // $where[] = ['confirm_user_id', '=', $this->user['id']];
+        $where[] = ['user_id', '=', $this->user['id']];
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
 
