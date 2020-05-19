@@ -977,7 +977,7 @@ class Confirm extends Base
                         'id'        => $comment['id'],
                         'realname'  => $realname,
                         'avatar'    => $cuser['avatar'],
-                        'content'   => $comment['comment'],
+                        'content'   => $comment['content'],
                         'image'     => images_to_array($comment['image'])
                     ];
                 }
