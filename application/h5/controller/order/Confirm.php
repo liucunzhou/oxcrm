@@ -133,6 +133,11 @@ class Confirm extends Base
             $map[] = ['confirm_user_id', '=', $this->user['id']];
         }
 
+        ### range
+        if (isset($param['range']) && !empty($param['range'])) {
+            $range = format_date_range($param['range']);
+            $map[] = ['create_time', 'between', $range];
+        }
 
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
