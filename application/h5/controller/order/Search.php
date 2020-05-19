@@ -274,7 +274,6 @@ class Search extends Base
             ]
         ];
         // if(empty($userList)) unset($data['user_id']);
-
         $result = [
             'code'  => '200',
             'data'  =>  $data

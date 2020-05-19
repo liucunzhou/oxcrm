@@ -797,11 +797,6 @@ class Confirm extends Base
                 // 审核者
                 $buttons = [
                     [
-                        'id' => 'comment',
-                        'label' => '评论',
-                        'api' =>$commentApi
-                    ],
-                    [
                         'id' => 'accept',
                         'label' => '同意',
                         'api' =>$acceptApi
@@ -826,13 +821,7 @@ class Confirm extends Base
             // 审核通过
             if ($param['type']=='confirm_user') {
                 // 审核者
-                $buttons = [
-                    [
-                        'id' => 'comment',
-                        'label' => '评论',
-                        'api' =>$commentApi
-                    ]
-                ];
+                $buttons = [];
             } else {
                 $buttons = [
                     [
@@ -845,13 +834,7 @@ class Confirm extends Base
         } else if ($confirm->status == '2') {
             if ($param['type']=='confirm_user') {
                 // 审核者
-                $buttons = [
-                    [
-                        'id' => 'comment',
-                        'label' => '评论',
-                        'api' =>$commentApi
-                    ]
-                ];
+                $buttons = [];
             } else {
                 $buttons = [
                     [
@@ -869,13 +852,7 @@ class Confirm extends Base
         } else if ($confirm->status == '13') {
             if ($param['type']=='confirm_user') {
                 // 审核者
-                $buttons = [
-                    [
-                        'id' => 'comment',
-                        'label' => '评论',
-                        'api' =>$commentApi
-                    ]
-                ];
+                $buttons = [];
             } else {
                 $buttons = [
                     [
@@ -888,6 +865,15 @@ class Confirm extends Base
         } else {
             $buttons = [];
         }
+
+        $commentbtn = [
+            [
+                'id' => 'comment',
+                'label' => '评论',
+                'api' =>$commentApi
+            ]
+        ];
+        $buttons = array_merge($commentbtn, $buttons);
 
         $user = User::getUser($confirm->confirm_user_id);
         $confirmData = [
