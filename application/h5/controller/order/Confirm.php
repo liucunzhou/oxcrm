@@ -228,50 +228,102 @@ class Confirm extends Base
     public function confirmMine()
     {
         $param = $this->request->param();
-        $param['limit'] = isset($param['limit']) ? $param['limit'] : 100;
-        $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
-        $config = [
-            'page' => $param['page']
-        ];
-        $users = User::getUsers();
-        $newsTypes = $this->config['news_type_list'];
-        $companies = Brand::getBrands();
-        $model = new OrderConfirm();
-        // $model->
+
+        $confirm = new OrderConfirm();
         $where = [];
-        $where[] = ['user_id', '=', $this->user['id']];
-        $model = $model->where($where)->order('id desc');
-        $list = $model->paginate($param['limit'], false, $config);
-
-        if ($list->isEmpty()) {
-            $result = [
-                'code' => '200',
-                'msg' => '暂无审核数据'
-            ];
+        if (isset($param['user_id'])) {
+            $where[] = ['user_id', '=', $param['user_id']];
         } else {
-            $data = [];
-            foreach ($list as $key => $value) {
-                $order = \app\common\model\Order::get($value->order_id);
-                $data[] = [
-                    'title' => $value['confirm_intro'],
-                    'create_time' => $value['create_time'],
-                    'status' => $this->confirmStatusList[$value['status']],
-                    'company' => $companies[$value['company_id']]['title'],
-                    'news_type' => $newsTypes[$order['news_type']],
-                    'user' => $users[$value['user_id']]['realname']
-                ];
-            }
+            $where[] = ['user_id', '=', $this->user['id']];
+        }
+        // $where[] = ['order_id', '=', $param['order_id']];
+        $confirmList = $confirm->where($where)->order('create_time desc')->select();
+        $order = \app\common\model\Order::get($param['order_id']);
 
-            $result = [
-                'code' => '200',
-                'msg' => '获取数据成功',
-                'totals' => $list->total(),
-                'data' => [
-                    'confirmList' => $data
-                ]
-            ];
+        $list = [];
+        foreach ($confirmList as $key => $confirm) {
+            $confirmNo = $confirm->confirm_no;
+            if (!isset($list[$confirmNo])) {
+                $list[$confirmNo]['id'] = $confirm->id;
+                $list[$confirmNo]['confirm_no'] = $confirm->confirm_no;
+                $list[$confirmNo]['confirm_intro'] = $confirm->confirm_intro;
+                $list[$confirmNo]['status'] = $this->confirmStatusList[$confirm->status];
+                $list[$confirmNo]['start_time'] = $confirm->create_time;
+
+                // 判断跳转路径
+                $source = json_decode($confirm->source, true);
+                if (empty($source)) continue;
+                foreach ($source as $key => $value) {
+                    if ($key == 'order') {
+                        if ($order->complete == '99') {
+                            // 意向金
+                            $list[$confirmNo]['path'] = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                        } else {
+                            $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
+                        }
+                        break;
+                    } else if ($key == 'banquet') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/banquet/banquet';
+                        break;
+                    } else if ($key == 'banquetSuborder') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/banquetSuborder/banquetSuborder';
+                        break;
+                    } else if ($key == 'wedding') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/wedding/wedding';
+                        break;
+                    } else if ($key == 'weddingSuborder') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/weddingSuborder/weddingSuborder';
+                        break;
+                    } else if ($key == 'banquetPayment' || $key == 'weddingPayment') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/payment/payment';
+                        break;
+                    } else if ($key == 'banquetIncome' || $key == 'weddingIncome') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/income/income';
+                        break;
+                    } else if ($key == 'hotelItem') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/hotelItem/hotelItem';
+                        break;
+                    } else if ($key == 'hotelProtocol') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/hotelProtocol/hotelProtocol';
+                        break;
+                    } else if ($key == 'car') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/car/car';
+                        break;
+                    } else if ($key == 'wine') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/wine/wine';
+                        break;
+                    } else if ($key == 'sugar') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/sugar/sugar';
+                        break;
+                    } else if ($key == 'dessert') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/dessert/dessert';
+                        break;
+                    } else if ($key == 'light') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/light/light';
+                        break;
+                    } else if ($key == 'led') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/led/led';
+                        break;
+                    } else if ($key == 'd3') {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/3d/3d';
+                        break;
+                    }
+                }
+            } else {
+                if ($list[$confirmNo]['status'] == '待审核') {
+                    $list[$confirmNo]['status'] = '审核中';
+                }
+                $list[$confirmNo]['start_time'] = $confirm->create_time;
+            }
         }
 
+        $result = [
+            'code' => '200',
+            'msg' => '获取审核列表成功',
+            'data' => [
+                'list' => array_values($list)
+            ]
+        ];
         return json($result);
     }
 
