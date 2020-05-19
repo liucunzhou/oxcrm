@@ -141,6 +141,7 @@ class Order extends Backend
             // $get['company_id'] = 25;
             $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
             $companyIds = empty($userAuth['company_ids']) ? [] : explode(',', $userAuth['company_ids']);
+            // print_r($companyIds);
             $get['company_ids'] = $companyIds;
             $order = $this->_getOrderList($get, 'index');
             $result = [
@@ -941,6 +942,7 @@ class Order extends Backend
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
         $data = $list->getCollection();
+        // echo $model->getLastSql();
 
         $users = \app\common\model\User::getUsers();
         foreach ($data as $key => &$value) {
