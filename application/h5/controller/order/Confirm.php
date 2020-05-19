@@ -964,7 +964,7 @@ class Confirm extends Base
                 $comments = [];
                 $commentModel = new OrderConfirmComment();
                 $where = [];
-                $where[] = ['confirm_id', '=', $confirmRs['']];
+                $where[] = ['confirm_id', '=', $confirmRs[$key]['id']];
                 $confirmComments = $commentModel->where($where)->order('id desc')->select();
                 foreach ($confirmComments as $comment) {
                     $cuser = $staffs[$comment['user_id']];
