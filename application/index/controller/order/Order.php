@@ -40,7 +40,7 @@ class Order extends Backend
     protected $weddingCategories = [];
     protected $brands = [];
     protected $confirmProjectStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
-    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核通过', 2 => '审核驳回', 13 => '审核撤销'];
     protected $cooperationModes = [1 => '返佣单', 2 => '代收代付', 3 => '代收代付+返佣单', 4 => '一单一议'];
 
     protected function initialize()
@@ -940,6 +940,7 @@ class Order extends Backend
             $map[] = [$get['date_range_type'], 'between', $range];
         }
 
+        $map[] = ['item_check_status', 'in', [0,1]];
         $model = model('order')->where($map);
         if ($get['mobile'] != '') {
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
