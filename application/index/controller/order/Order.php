@@ -153,6 +153,13 @@ class Order extends Backend
             ];
             return json($result);
         } else {
+            if($this->user['nickname'] != 'admin') {
+                $userAuth = UserAuth::getUserLogicAuth($this->user['id']);
+                $companyIds = empty($userAuth['company_ids']) ? [] : explode(',', $userAuth['company_ids']);
+                $brands = \app\common\model\Brand::where('id', 'in', $companyIds)->select();
+                $this->assign('brands', $brands);
+            }
+
             $this->getColsFile('index');
             $this->view->engine->layout(false);
             return $this->fetch('order/list/index');
