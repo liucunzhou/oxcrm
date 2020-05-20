@@ -348,6 +348,7 @@ class Confirm extends Base
 
                 $key = key($source);
                 if ($key == 'order') {
+                    /**
                     if($order->cooperation_mode == '1' ) {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/clubOrder/clubOrder';
                     } else {
@@ -357,6 +358,14 @@ class Confirm extends Base
                         } else {
                             $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
                         }
+                    }
+                    **/
+
+                    if ($order->complete == '99') {
+                        // 意向金
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                    } else {
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
                     }
                 } else if ($key == 'banquet') {
                     $list[$confirmNo]['path'] = '/pages/addOrderItems/banquet/banquet';
