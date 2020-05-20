@@ -366,62 +366,51 @@ class Confirm extends Base
                 // 判断跳转路径
                 $source = json_decode($confirm->source, true);
                 if (empty($source)) continue;
-                foreach ($source as $key => $value) {
-                    if ($key == 'order') {
+
+                $key = key($source);
+                if ($key == 'order') {
+                    if($order->cooperation_mode == '1') {
+                        $list[$confirmNo]['path'] = '/pages/clubOrder/clubOrder/clubOrder';
+                    } else {
                         if ($order->complete == '99') {
                             // 意向金
                             $list[$confirmNo]['path'] = '/pages/addOrderItems/earnestMoney/earnestMoney';
                         } else {
                             $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
                         }
-                        break;
-                    } else if ($key == 'banquet') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/banquet/banquet';
-                        break;
-                    } else if ($key == 'banquetSuborder') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/banquetSuborder/banquetSuborder';
-                        break;
-                    } else if ($key == 'wedding') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/wedding/wedding';
-                        break;
-                    } else if ($key == 'weddingSuborder') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/weddingSuborder/weddingSuborder';
-                        break;
-                    } else if ($key == 'banquetPayment' || $key == 'weddingPayment') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/payment/payment';
-                        break;
-                    } else if ($key == 'banquetIncome' || $key == 'weddingIncome') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/income/income';
-                        break;
-                    } else if ($key == 'hotelItem') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/hotelItem/hotelItem';
-                        break;
-                    } else if ($key == 'hotelProtocol') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/hotelProtocol/hotelProtocol';
-                        break;
-                    } else if ($key == 'car') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/car/car';
-                        break;
-                    } else if ($key == 'wine') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/wine/wine';
-                        break;
-                    } else if ($key == 'sugar') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/sugar/sugar';
-                        break;
-                    } else if ($key == 'dessert') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/dessert/dessert';
-                        break;
-                    } else if ($key == 'light') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/light/light';
-                        break;
-                    } else if ($key == 'led') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/led/led';
-                        break;
-                    } else if ($key == 'd3') {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/3d/3d';
-                        break;
                     }
+                } else if ($key == 'banquet') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/banquet/banquet';
+                } else if ($key == 'banquetSuborder') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/banquetSuborder/banquetSuborder';
+                } else if ($key == 'wedding') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/wedding/wedding';
+                } else if ($key == 'weddingSuborder') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/weddingSuborder/weddingSuborder';
+                } else if ($key == 'banquetPayment' || $key == 'weddingPayment') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/payment/payment';
+                } else if ($key == 'banquetIncome' || $key == 'weddingIncome') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/income/income';
+                } else if ($key == 'hotelItem') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/hotelItem/hotelItem';
+                } else if ($key == 'hotelProtocol') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/hotelProtocol/hotelProtocol';
+                } else if ($key == 'car') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/car/car';
+                } else if ($key == 'wine') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/wine/wine';
+                } else if ($key == 'sugar') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/sugar/sugar';
+                } else if ($key == 'dessert') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/dessert/dessert';
+                } else if ($key == 'light') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/light/light';
+                } else if ($key == 'led') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/led/led';
+                } else if ($key == 'd3') {
+                    $list[$confirmNo]['path'] = '/pages/addOrderItems/3d/3d';
                 }
+
             } else {
                 if ($list[$confirmNo]['status'] == '待审核') {
                     $list[$confirmNo]['status'] = '审核中';
