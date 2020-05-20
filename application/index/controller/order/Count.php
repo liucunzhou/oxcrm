@@ -33,14 +33,6 @@ class Count extends Backend
     public function index()
     {
         $param = $this->request->param();
-        // $param['limit'] = isset($param['limit']) ? $param['limit'] : 1000;
-        // $param['page'] = isset($param['page']) ? $param['page'] + 1 : 1;
-        /**
-         * $config = [
-         * 'page' => $param['page']
-         * ];
-         * **/
-
         $map = [];
         $map[] = ['item_check_status', '=', '2'];
         $map[] = ['complete', '<>', '101'];
@@ -99,10 +91,15 @@ class Count extends Backend
                 $v['hotel_text'] = !empty($v['hotel_id']) ? $this->hotelList[$v['hotel_id']]['title'] : '-';
             }
 
+            // 总计定金
             $zdj = 0;
+            // 总计中款
             $zzk = 0;
+            // 总计尾款
             $zwk = 0;
+            // 总计二销
             $zex = 0;
+
             if ($v['news_type'] == 1) {
                 $where = [];
                 $where[] = ['item_check_status', '=', '2'];
@@ -112,61 +109,65 @@ class Count extends Backend
                     ->where($where)
                     ->field('wedding_income_type,wedding_income_item_price')
                     ->select();
+
                 if (!empty($res)) {
-                    foreach ($res as $key => &$vule) {
-                        if ($vule['wedding_income_type'] == 1) {
-                            $zdj += $vule['wedding_income_item_price'];
+                    foreach ($res as $key => &$value) {
+                        if ($value['wedding_income_type'] == 1) {
+                            $zdj += $value['wedding_income_item_price'];
                         }
 
-                        if ($vule['wedding_income_type'] == 2) {
-                            $zzk += $vule['wedding_income_item_price'];
+                        if ($value['wedding_income_type'] == 2) {
+                            $zzk += $value['wedding_income_item_price'];
                         }
 
-                        if ($vule['wedding_income_type'] == 3) {
+                        if ($value['wedding_income_type'] == 3) {
                             $zwk += $res['wedding_income_item_price'];
                         }
 
-                        if ($vule['wedding_income_type'] == 4) {
+                        if ($value['wedding_income_type'] == 4) {
                             $zex += $res['wedding_income_item_price'];
                         }
                     }
                 }
+
             } else {
                 $where = [];
                 $where[] = ['item_check_status', '=', '2'];
                 $where[] = ['order_id', '=', $v['id']];
-
                 $res = $this->OrderBanquetReceivables
                     ->where($where)
                     ->field('banquet_income_type,banquet_income_item_price')
                     ->select();
+
                 if (!empty($res)) {
-                    foreach ($res as $key => &$vule) {
-                        if ($vule['banquet_income_type'] == 1) {
-                            $zdj += $vule['banquet_income_item_price'];
+                    foreach ($res as $key => &$value) {
+                        if ($value['banquet_income_type'] == 1) {
+                            $zdj += $value['banquet_income_item_price'];
                         }
 
-                        if ($vule['banquet_income_type'] == 2) {
-                            $zzk += $vule['banquet_income_item_price'];
+                        if ($value['banquet_income_type'] == 2) {
+                            $zzk += $value['banquet_income_item_price'];
                         }
 
-                        if ($vule['banquet_income_type'] == 3) {
+                        if ($value['banquet_income_type'] == 3) {
                             $zwk += $res['banquet_income_item_price'];
                         }
 
-                        if ($vule['banquet_income_type'] == 4) {
+                        if ($value['banquet_income_type'] == 4) {
                             $zex += $res['banquet_income_item_price'];
                         }
                     }
                 }
             }
-            /*$v['ysdj'] = $this->plus_minus_conversion($zdj - $v['earnest_money']);
-            $v['yszk'] = $this->plus_minus_conversion($zzk - $v['middle_money']);
-            $v['yswk'] = $this->plus_minus_conversion($zwk + $zex - $v['tail_money']);*/
+
+            // 应收定金
             $v['ysdj'] = $zdj - $v['earnest_money'];
+            // 应收中款
             $v['yszk'] = $zzk - $v['middle_money'];
-            $v['yswk'] = $zwk + $zex - $v['tail_money'];
+            // 应收尾款, zwk 已收尾款, zex 已收二销
+            $v['yswk'] = $v['tail_money'] - $zdj - $zzk - $zwk - $zex;
         }
+
         unset($list['news_type']);
         $sums = [
             '' => [
@@ -185,17 +186,17 @@ class Count extends Backend
                 'ysdj' => array_sum(array_column($list, 'ysdj')),
                 'yszk' => array_sum(array_column($list, 'yszk')),
                 'yswk' => array_sum(array_column($list, 'yswk'))
-                /*'ysdj'            => $this->plus_minus_conversion(array_sum(array_column($list,'ysdj'))),
-                'yszk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yszk'))),
-                'yswk'            => $this->plus_minus_conversion(array_sum(array_column($list,'yswk')))*/
             ]
         ];
         $config = config();
         $list = $list + $sums;
         foreach ($list as $k => &$v) {
             $v['cooperation_mode'] = !empty($v['cooperation_mode']) ? $config['crm']['cooperation_mode'][$v['cooperation_mode']] : '-';
+            // 应收中款
             $v['ysdj'] = $this->plus_minus_conversion($v['ysdj']);
+            // 应收中款
             $v['yszk'] = $this->plus_minus_conversion($v['yszk']);
+            // 应收尾款
             $v['yswk'] = $this->plus_minus_conversion($v['yswk']);
         }
         $this->assign('firmList', $this->FirmList);
