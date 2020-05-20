@@ -83,7 +83,7 @@ class Count extends Backend
             $where[] = ['item_check_status', '=', '2'];
             $where[] = ['order_id', '=', $v['id']];
             $WeddingSuborder = $this->OrderWeddingSuborder->where($where)->sum('wedding_totals');
-            $BanquetSuborder = $this->OrderBanquetSuborder->where($where)->column('banquet_totals');
+            $BanquetSuborder = $this->OrderBanquetSuborder->where($where)->sum('banquet_totals');
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder + $BanquetSuborder;
             $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
