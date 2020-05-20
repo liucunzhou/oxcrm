@@ -371,7 +371,6 @@ class Customer extends Base
             $range = format_date_range($param['range']);
             $map[] = ['create_time', 'between', $range];
         }
-
         $model = $this->model->where($map);
 
         ### 手机号筛选

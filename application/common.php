@@ -138,7 +138,7 @@ if (!function_exists('images_to_array')) {
 }
 
 if(!function_exists('format_date_range')) {
-    function format_date_range($dateRange)
+    function format_confirm_range($dateRange)
     {
         if ($dateRange == 'today') {
 

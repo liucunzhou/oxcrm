@@ -679,7 +679,7 @@ class Confirm extends Backend
 
         if ($get['date_range']!= '' && $get['date_range_type'] != '') {
             $model = $model->where('order_id', 'in', function ($query) use ($get) {
-                $range = format_date_range($get['date_range']);
+                $range = format_confirm_range($get['date_range']);
                 $query->table('tk_order')->where($get['date_range_type'], 'between', $range)->field('id');
             });
         }
