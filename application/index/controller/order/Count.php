@@ -86,7 +86,7 @@ class Count extends Backend
             $BanquetSuborder = $this->OrderBanquetSuborder->where($where)->sum('banquet_totals');
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder + $BanquetSuborder;
-            $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
+            // $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
             if (empty($v['hotel_text'])) {
                 $v['hotel_text'] = !empty($v['hotel_id']) ? $this->hotelList[$v['hotel_id']]['title'] : '-';
             }
