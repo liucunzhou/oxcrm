@@ -47,7 +47,6 @@ class Customer extends Base
         }
     }
 
-
     /**
      * 客资公海
      * 显示资源列表

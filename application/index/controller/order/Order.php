@@ -3,6 +3,7 @@
 namespace app\index\controller\order;
 
 use app\common\model\Audit;
+use app\common\model\AuthGroup;
 use app\common\model\BanquetHall;
 use app\common\model\Member;
 use app\common\model\MemberAllocate;
@@ -42,6 +43,7 @@ class Order extends Backend
     protected $confirmProjectStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
     protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
     protected $cooperationModes = [1 => '返佣单', 2 => '代收代付', 3 => '代收代付+返佣单', 4 => '一单一议'];
+    protected $role = [];
 
     protected function initialize()
     {
@@ -131,6 +133,10 @@ class Order extends Backend
         ## 3d列表
         $d3List = \app\common\model\D3::getList();
         $this->assign('d3List', $d3List);
+
+        if($this->user['role_id'] > 0) {
+            $this->role = AuthGroup::getAuthGroup($this->user['role_id']);
+        }
     }
 
     ## 我的订单
@@ -166,79 +172,12 @@ class Order extends Backend
         }
     }
 
-    // 誉丝
+    // 我的订单
     public function index()
     {
         if (Request::isAjax()) {
             $get = Request::param();
-            $get['company_id'] = 25;
-            $order = $this->_getOrderList($get, 'index');
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-
-                'count' => $order['count'],
-                'data' => $order['data']
-            ];
-            return json($result);
-        } else {
-            $this->getColsFile('index');
-            $this->view->engine->layout(false);
-            return $this->fetch('order/list/index');
-        }
-    }
-
-    // 红丝
-    public function hs()
-    {
-        if (Request::isAjax()) {
-            $get = Request::param();
-            $get['company_id'] = 26;
-            $order = $this->_getOrderList($get, 'index');
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-
-                'count' => $order['count'],
-                'data' => $order['data']
-            ];
-            return json($result);
-        } else {
-            $this->getColsFile('index');
-            $this->view->engine->layout(false);
-            return $this->fetch('order/list/index');
-        }
-    }
-
-    // lk
-    public function lk()
-    {
-        if (Request::isAjax()) {
-            $get = Request::param();
-            $get['company_id'] = 27;
-            $order = $this->_getOrderList($get, 'index');
-            $result = [
-                'code' => 0,
-                'msg' => '获取数据成功',
-
-                'count' => $order['count'],
-                'data' => $order['data']
-            ];
-            return json($result);
-        } else {
-            $this->getColsFile('index');
-            $this->view->engine->layout(false);
-            return $this->fetch('order/list/index');
-        }
-    }
-
-    // 曼格纳
-    public function mangena()
-    {
-        if (Request::isAjax()) {
-            $get = Request::param();
-            $get['company_id'] = 24;
-            $order = $this->_getOrderList($get, 'index');
+            $order = $this->_getMineList($get);
             $result = [
                 'code' => 0,
                 'msg' => '获取数据成功',
@@ -907,7 +846,6 @@ class Order extends Backend
         return json($arr);
     }
 
-
     # 获取订单列表
     private function _getOrderList($get)
     {
@@ -947,6 +885,69 @@ class Order extends Backend
         }
 
         $list = $model->order('id desc')->paginate($get['limit'], false, $config);
+        $data = $list->getCollection();
+
+        $users = \app\common\model\User::getUsers();
+        foreach ($data as $key => &$value) {
+            $companyId = $value->company_id;
+            $value['company'] = $this->brands[$companyId]['title'];
+            $checkStatus = $value->item_check_status;
+            $value['check_status'] = $this->confirmStatusList[$checkStatus];
+            !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
+            !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
+            $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
+            $value['hotel_id'] = isset($this->hotels[$value['hotel_id']]) ? $this->hotels[$value['hotel_id']]['title'] : '-';
+            $value['salesman'] = isset($users[$value['salesman']]) ? $users[$value['salesman']]['realname'] : '-';
+        }
+        $count = $list->total();
+
+        return ['data' => $data, 'count' => $count];
+    }
+
+    private function _getMineList($get)
+    {
+        $config = [
+            'page' => $get['page']
+        ];
+
+        if ($get['company_id'] > 0) {
+            $map[] = ['company_id', '=', $get['company_id']];
+        }
+
+        if (isset($get['source']) && !empty($get['source'])) {
+            $map[] = ['source_id', '=', $get['source']];
+        }
+
+        if (isset($get['hotel_id']) && !empty($get['hotel_id'])) {
+            $map[] = ['hotel_id', '=', $get['hotel_id']];
+        }
+
+        if (isset($get['staff']) && $get['staff'] > 0) {
+            $map[] = ['user_id', '=', $get['staff']];
+        } else {
+            if($this->user['nickname'] != 'admin' && $this->role['auth_type'] > 0) {
+                $staffs = User::getUsersByDepartmentId($this->user['department_id'], false);
+                $map[] = ['user_id', 'in', $staffs];
+            } else {
+                $map[] = ['user_id', '=', $this->user['id']];
+            }
+        }
+
+        if (isset($get['date_range']) && !empty($get['date_range']) && !empty($get['date_range_type'])) {
+            $range = $this->getDateRange($get['date_range']);
+            $map[] = [$get['date_range_type'], 'between', $range];
+        }
+
+
+
+        $map[] = ['item_check_status', 'in', [0,1,2]];
+        $model = model('order')->where($map);
+        if ($get['mobile'] != '') {
+            $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
+        }
+
+        $list = $model->order('id desc')->paginate($get['limit'], false, $config);
+        // echo $model->getLastSql();
         $data = $list->getCollection();
 
         $users = \app\common\model\User::getUsers();
