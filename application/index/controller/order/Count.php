@@ -113,20 +113,20 @@ class Count extends Backend
 
             if (!empty($res)) {
                 foreach ($res as $key => &$value) {
-                    if ($value['wedding_income_type'] == 1) {
+                    if ($value['wedding_income_type'] == '1') {
                         $zdj += $value['wedding_income_item_price'];
                     }
 
-                    if ($value['wedding_income_type'] == 2) {
+                    if ($value['wedding_income_type'] == '2') {
                         $zzk += $value['wedding_income_item_price'];
                     }
 
-                    if ($value['wedding_income_type'] == 3) {
-                        $zwk += $res['wedding_income_item_price'];
+                    if ($value['wedding_income_type'] == '3') {
+                        $zwk += $value['wedding_income_item_price'];
                     }
 
-                    if ($value['wedding_income_type'] == 5) {
-                        $zex += $res['wedding_income_item_price'];
+                    if ($value['wedding_income_type'] == '5') {
+                        $zex += $value['wedding_income_item_price'];
                     }
                 }
             }
@@ -142,20 +142,20 @@ class Count extends Backend
             if (!empty($res)) {
                 foreach ($res as $key => &$value) {
 
-                    if ($value['banquet_income_type'] == 1) {
+                    if ($value['banquet_income_type'] == '1') {
                         $zdj += $value['banquet_income_item_price'];
                     }
 
-                    if ($value['banquet_income_type'] == 2) {
+                    if ($value['banquet_income_type'] == '2') {
                         $zzk += $value['banquet_income_item_price'];
                     }
 
-                    if ($value['banquet_income_type'] == 3) {
-                        $zwk += $res['banquet_income_item_price'];
+                    if ($value['banquet_income_type'] == '3') {
+                        $zwk += $value['banquet_income_item_price'];
                     }
 
-                    if ($value['banquet_income_type'] == 5) {
-                        $zex += $res['banquet_income_item_price'];
+                    if ($value['banquet_income_type'] == '5') {
+                        $zex += $value['banquet_income_item_price'];
                     }
                 }
             }
@@ -165,7 +165,8 @@ class Count extends Backend
             // 应收中款
             $v['yszk'] = $zzk - $v['middle_money'];
             // 应收尾款, zwk 已收尾款, zex 已收二销
-            $v['yswk'] = $v['totals_snum'] - $zdj - $zzk - $zwk - $zex;
+            $v['yswk'] = $zdj + $zzk + $zwk + $zex - $v['totals_snum'];
+
         }
 
         unset($list['news_type']);
