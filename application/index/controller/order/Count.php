@@ -86,6 +86,7 @@ class Count extends Backend
             $BanquetSuborder = $this->OrderBanquetSuborder->where($where)->sum('banquet_totals');
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder + $BanquetSuborder;
+            $tail = $v['tail_money'] + $WeddingSuborder + $BanquetSuborder;
             // $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
             if (empty($v['hotel_text'])) {
                 $v['hotel_text'] = !empty($v['hotel_id']) ? $this->hotelList[$v['hotel_id']]['title'] : '-';
@@ -165,7 +166,7 @@ class Count extends Backend
             // 应收中款
             $v['yszk'] = $zzk - $v['middle_money'];
             // 应收尾款, zwk 已收尾款, zex 已收二销
-            $v['yswk'] = $zdj + $zzk + $zwk + $zex - $v['totals_snum'];
+            $v['yswk'] = $zwk + $zex - $tail;
 
         }
 
