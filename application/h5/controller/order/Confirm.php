@@ -243,14 +243,8 @@ class Confirm extends Base
 
         $confirm = new OrderConfirm();
         $where = [];
-        if (isset($param['user_id'])) {
-            $where[] = ['user_id', '=', $param['user_id']];
-        } else {
-            $where[] = ['user_id', '=', $this->user['id']];
-        }
-        // $where[] = ['order_id', '=', $param['order_id']];
+        $where[] = ['user_id', '=', $this->user['id']];
         $confirmList = $confirm->where($where)->order('create_time desc')->paginate($param['limit']);
-        $order = \app\common\model\Order::get($param['order_id']);
 
         $list = [];
         foreach ($confirmList as $key => $confirm) {
