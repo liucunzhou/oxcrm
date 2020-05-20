@@ -71,7 +71,7 @@ class Count extends Backend
             }
         }
 
-        $model = $this->model;
+        $model = new \app\common\model\Order();
         if( !empty($param['date_range']) )
         {
             $arr = explode('~',$param['date_range']);
@@ -83,7 +83,6 @@ class Count extends Backend
         }
 
         $fields = "id,news_type,company_id,event_date,hotel_id,hotel_text,cooperation_mode,banquet_hall_name,bridegroom,bride,earnest_money,middle_money,tail_money,totals,salesman";
-
         $list =  $model->where($map)->order('event_date asc,id desc')->field($fields)->select();
 
         $list = $list->toArray();
@@ -91,10 +90,11 @@ class Count extends Backend
             $v['company_id'] = !empty($v['company_id']) ? $this->FirmList[$v['company_id']]['title'] : '-';
             $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
             $v['salesman'] = !empty($v['salesman']) ? $this->UserModel->getUser($v['salesman'])['realname'] : '-';
-            $maps[] = ['item_check_status','=','2'];
-            $maps[] = ['order_id','=',$k['id']];
-            $WeddingSuborder = $this->OrderWeddingSuborder->where($maps)->column('wedding_total');
-            $BanquetSuborder = $this->OrderBanquetSuborder->where($maps)->column('banquet_totals');
+            $where = [];
+            $where[] = ['item_check_status','=','2'];
+            $where[] = ['order_id','=',$k['id']];
+            $WeddingSuborder = $this->OrderWeddingSuborder->where($where)->column('wedding_totals');
+            $BanquetSuborder = $this->OrderBanquetSuborder->where($where)->column('banquet_totals');
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
             $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
@@ -107,8 +107,12 @@ class Count extends Backend
             $zwk = 0;
             $zex = 0;
             if($v['news_type'] == 1) {
+                $where = [];
+                $where[] = ['item_check_status','=','2'];
+                $where[] = ['order_id', '=', $v['id']];
+
                 $res = $this->OrderWeddingReceivables
-                    ->where('order_id', $v['id'])
+                    ->where($where)
                     ->field('wedding_income_type,wedding_income_item_price')
                     ->select();
                 if (!empty($res)) {
@@ -131,8 +135,12 @@ class Count extends Backend
                     }
                 }
             } else {
+                $where = [];
+                $where[] = ['item_check_status','=','2'];
+                $where[] = ['order_id', '=', $v['id']];
+
                 $res = $this->OrderBanquetReceivables
-                    ->where('order_id', $v['id'])
+                    ->where($where)
                     ->field('banquet_income_type,banquet_income_item_price')
                     ->select();
                 if( !empty($res) ){

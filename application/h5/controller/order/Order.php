@@ -873,7 +873,7 @@ class Order extends Base
             $data = json_decode($param['wedding'], true);
             $c1 = !empty($data['wedding_package_id']) || !empty($data['wedding_package_price']);
             $c2 = !empty($data['wedding_ritual_id']) || !empty($data['wedding_ritual_hall']);
-            $c3 = !empty($data['wedding_other']) || !empty($data['wedding_total']);
+            $c3 = !empty($data['wedding_other']) || !empty($data['wedding_totals']);
             $c4 = !empty($data['wedding_remark']);
             if ($c1 || $c2 || $c3 || $c4) {
                 $data['order_id'] = $OrderModel->id;
@@ -1614,7 +1614,7 @@ class Order extends Base
             $data = json_decode($param['wedding'], true);
             $c1 = !empty($data['wedding_package_id']) || !empty($data['wedding_package_price']);
             $c2 = !empty($data['wedding_ritual_id']) || !empty($data['wedding_ritual_hall']);
-            $c3 = !empty($data['wedding_other']) || !empty($data['wedding_total']);
+            $c3 = !empty($data['wedding_other']) || !empty($data['wedding_totals']);
             $c4 = !empty($data['wedding_remark']);
             if ($c1 || $c2 || $c3 || $c4) {
                 $data['order_id'] = $post['id'];

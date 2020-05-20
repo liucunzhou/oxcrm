@@ -603,7 +603,7 @@ class Confirm extends Base
             $source['wedding']['is_new_product'] = $value['is_new_product'];
             $source['wedding']['new_product_no'] = $value['new_product_no'];
             $source['wedding']['wedding_other'] = $value['wedding_other'];
-            $source['wedding']['wedding_total'] = $value['wedding_total'];
+            $source['wedding']['wedding_totals'] = $value['wedding_totals'];
             $source['wedding']['wedding_remark'] = $value['wedding_remark'];
 
             $editApi = '/h5/order.wedding/doEdit';

@@ -222,7 +222,7 @@ class Order extends Backend
         $request['operate_id'] = $this->user['id'];
         $request['user_id'] = $this->user['id'];
         ## banquet message
-        if (!empty($request['wedding_total'])) {
+        if (!empty($request['wedding_totals'])) {
             $BanquetModel = new OrderBanquet();
             $BanquetModel->allowField(true)->save($request);
         }

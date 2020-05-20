@@ -300,7 +300,7 @@ class order extends Command
 
             $wedding = [];
             $wedding['order_id'] = $orderId;
-            !empty($row[21]) && $wedding['wedding_total'] = $row[21];
+            !empty($row[21]) && $wedding['wedding_totals'] = $row[21];
             !empty($row[50]) && $wedding['sale'] = $row[50];
             !empty($row[23]) && $wedding['light'] = $row[23];
             !empty($row[6]) && $wedding['create_time'] = strtotime($row[6]);
@@ -466,7 +466,7 @@ class order extends Command
 
             $wedding = [];
             $wedding['order_id'] = $orderId;
-            !empty($row[20]) && $wedding['wedding_total'] = $row[20];
+            !empty($row[20]) && $wedding['wedding_totals'] = $row[20];
             !empty($row[50]) && $wedding['sale'] = $row[50];
             !empty($row[46]) && $wedding['car'] = $row[46];
             !empty($row[1]) && $wedding['create_time'] = strtotime($row[1]);
@@ -647,7 +647,7 @@ class order extends Command
 
                 $wedding = [];
                 $wedding['order_id'] = $orderId;
-                !empty($row[36]) && $wedding['wedding_total'] = $row[36];
+                !empty($row[36]) && $wedding['wedding_totals'] = $row[36];
                 !empty($row[1]) && $wedding['create_time'] = strtotime($row[1]);
                 $weddingOrder = new OrderWedding();
                 $result = $weddingOrder->save($wedding);
