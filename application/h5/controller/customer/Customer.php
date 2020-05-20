@@ -590,8 +590,8 @@ class Customer extends Base
             if ($res) $success = $success + 1;
         }
 
-        $fail = $count - $success;
-        if ($fail > 0) {
+        // $fail = $count - $success;
+        if ($success > 0) {
             $result = [
                 'code' => '200',
                 'msg' => "申请成功"
