@@ -114,26 +114,6 @@ class Confirm extends Base
         }
 
         ### 员工列表
-        /**
-        if ($this->role['auth_type'] > 0) {
-            if (isset($param['user_id']) && !empty($param['user_id'])) {
-                // $user_id = explode(',',$param['user_id']);
-                if ($param['user_id'] == 'all') {
-                    $map[] = ['confirm_user_id', 'in', $this->staffs];
-                } else if (is_numeric($param['user_id'])) {
-                    $map[] = ['confirm_user_id', '=', $this->user['id']];
-                } else {
-                    $map[] = ['confirm_user_id', 'in', $param['user_id']];
-                }
-
-            } else {
-                $where[] = ['confirm_user_id', '=', $this->user['id']];
-            }
-
-        } else {
-            $where[] = ['confirm_user_id', '=', $this->user['id']];
-        }
-        **/
         $where[] = ['confirm_user_id', '=', $this->user['id']];
 
         ### range
@@ -141,7 +121,6 @@ class Confirm extends Base
             $range = format_date_range($param['range']);
             $where[] = ['create_time', 'between', $range];
         }
-
         $model = $model->where($where)->order('id desc');
         $list = $model->paginate($param['limit'], false, $config);
 
@@ -369,16 +348,15 @@ class Confirm extends Base
 
                 $key = key($source);
                 if ($key == 'order') {
-                    /**
                     if($order->cooperation_mode == '1' ) {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/clubOrder/clubOrder';
-                    }
-                    **/
-                    if ($order->complete == '99') {
-                        // 意向金
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/earnestMoney/earnestMoney';
                     } else {
-                        $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
+                        if ($order->complete == '99') {
+                            // 意向金
+                            $list[$confirmNo]['path'] = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                        } else {
+                            $list[$confirmNo]['path'] = '/pages/addOrderItems/order/order';
+                        }
                     }
                 } else if ($key == 'banquet') {
                     $list[$confirmNo]['path'] = '/pages/addOrderItems/banquet/banquet';
