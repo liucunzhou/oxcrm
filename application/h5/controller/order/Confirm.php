@@ -244,8 +244,8 @@ class Confirm extends Base
         $confirm = new OrderConfirm();
         $where = [];
         $where[] = ['user_id', '=', $this->user['id']];
-        $confirmList = $confirm->where($where)->order('create_time desc')->paginate($param['limit']);
-
+        $confirm = $confirm->where($where)->order('create_time desc');
+        $confirmList = $confirm->select();
         $list = [];
         foreach ($confirmList as $key => $confirm) {
             $confirmNo = $confirm->confirm_no;
