@@ -82,10 +82,10 @@ class Count extends Backend
             $where = [];
             $where[] = ['item_check_status', '=', '2'];
             $where[] = ['order_id', '=', $v['id']];
-            $WeddingSuborder = $this->OrderWeddingSuborder->where($where)->column('wedding_totals');
+            $WeddingSuborder = $this->OrderWeddingSuborder->where($where)->sum('wedding_totals');
             $BanquetSuborder = $this->OrderBanquetSuborder->where($where)->column('banquet_totals');
 
-            $v['totals_snum'] = $v['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
+            $v['totals_snum'] = $v['totals'] + $WeddingSuborder + $BanquetSuborder;
             $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
             if (empty($v['hotel_text'])) {
                 $v['hotel_text'] = !empty($v['hotel_id']) ? $this->hotelList[$v['hotel_id']]['title'] : '-';
