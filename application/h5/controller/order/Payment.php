@@ -120,8 +120,8 @@ class Payment extends Base
             $payment['wedding_pay_to_company'] = $data['pay_to_company'];
             $payment['wedding_pay_to_account'] = $data['pay_to_account'];
             $payment['wedding_pay_to_bank'] = $data['pay_to_bank'];
-            $payment['receipt_img'] = $data['receipt_img'];
-            $payment['note_img'] = $data['note_img'];
+            $payment['receipt_img'] = implode(',',$data['receipt_img']);
+            $payment['note_img'] = implode(',', $data['note_img']);
             $paymentModel = new OrderWeddingPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
             $intro = '创建婚庆付款审核';
@@ -140,8 +140,8 @@ class Payment extends Base
             $payment['banquet_pay_to_company'] = $data['pay_to_company'];
             $payment['banquet_pay_to_account'] = $data['pay_to_account'];
             $payment['banquet_pay_to_bank'] = $data['pay_to_bank'];
-            $payment['receipt_img'] = $data['receipt_img'];
-            $payment['note_img'] = $data['note_img'];
+            $payment['receipt_img'] = implode(',',$data['receipt_img']);
+            $payment['note_img'] = implode(',', $data['note_img']);
             $paymentModel = new OrderBanquetPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
 
@@ -231,7 +231,6 @@ class Payment extends Base
                 'payTypeList' => $this->config['payment_type_list'],
             ]
         ];
-
         return json($result);
     }
 
@@ -240,7 +239,6 @@ class Payment extends Base
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
-
         if ($order['news_type'] != 1) {
             $model = new OrderBanquetPayment();
         } else {
@@ -266,8 +264,8 @@ class Payment extends Base
                 'banquet_pay_to_company' => $param['pay_to_company'],
                 'banquet_pay_to_account' => $param['pay_to_account'],
                 'banquet_pay_to_bank' => $param['pay_to_bank'],
-                'receipt_img' => $param['receipt_img'],
-                'note_img' => $param['note_img'],
+                'receipt_img' => implode(',', $param['receipt_img']),
+                'note_img' => implode(',', $param['note_img']),
                 'item_check_status' => 0
             ];
         } else {
@@ -282,8 +280,8 @@ class Payment extends Base
                 'wedding_pay_to_company' => $param['pay_to_company'],
                 'wedding_pay_to_account' => $param['pay_to_account'],
                 'wedding_pay_to_bank' => $param['pay_to_bank'],
-                'receipt_img' => $param['receipt_img'],
-                'note_img' => $param['note_img'],
+                'receipt_img' => implode(',', $param['receipt_img']),
+                'note_img' => implode(',', $param['note_img']),
                 'item_check_status' => 0
             ];
         }
