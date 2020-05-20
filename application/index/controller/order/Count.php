@@ -101,63 +101,61 @@ class Count extends Backend
             $zex = 0;
 
             // 1定金、2中款、3尾款、4意向金、5 二销
-            if ($v['news_type'] == 1) {
-                $where = [];
-                $where[] = ['item_check_status', '=', '2'];
-                $where[] = ['order_id', '=', $v['id']];
 
-                $res = $this->OrderWeddingReceivables
-                    ->where($where)
-                    ->field('wedding_income_type,wedding_income_item_price')
-                    ->select();
+            $where = [];
+            $where[] = ['item_check_status', '=', '2'];
+            $where[] = ['order_id', '=', $v['id']];
 
-                if (!empty($res)) {
-                    foreach ($res as $key => &$value) {
-                        if ($value['wedding_income_type'] == 1) {
-                            $zdj += $value['wedding_income_item_price'];
-                        }
+            $res = $this->OrderWeddingReceivables
+                ->where($where)
+                ->field('wedding_income_type,wedding_income_item_price')
+                ->select();
 
-                        if ($value['wedding_income_type'] == 2) {
-                            $zzk += $value['wedding_income_item_price'];
-                        }
+            if (!empty($res)) {
+                foreach ($res as $key => &$value) {
+                    if ($value['wedding_income_type'] == 1) {
+                        $zdj += $value['wedding_income_item_price'];
+                    }
 
-                        if ($value['wedding_income_type'] == 3) {
-                            $zwk += $res['wedding_income_item_price'];
-                        }
+                    if ($value['wedding_income_type'] == 2) {
+                        $zzk += $value['wedding_income_item_price'];
+                    }
 
-                        if ($value['wedding_income_type'] == 5) {
-                            $zex += $res['wedding_income_item_price'];
-                        }
+                    if ($value['wedding_income_type'] == 3) {
+                        $zwk += $res['wedding_income_item_price'];
+                    }
+
+                    if ($value['wedding_income_type'] == 5) {
+                        $zex += $res['wedding_income_item_price'];
                     }
                 }
+            }
 
-            } else {
-                $where = [];
-                $where[] = ['item_check_status', '=', '2'];
-                $where[] = ['order_id', '=', $v['id']];
-                $res = $this->OrderBanquetReceivables
-                    ->where($where)
-                    ->field('banquet_income_type,banquet_income_item_price')
-                    ->select();
+            $where = [];
+            $where[] = ['item_check_status', '=', '2'];
+            $where[] = ['order_id', '=', $v['id']];
+            $res = $this->OrderBanquetReceivables
+                ->where($where)
+                ->field('banquet_income_type,banquet_income_item_price')
+                ->select();
 
-                if (!empty($res)) {
-                    foreach ($res as $key => &$value) {
+            if (!empty($res)) {
+                foreach ($res as $key => &$value) {
 
-                        if ($value['banquet_income_type'] == 1) {
-                            $zdj += $value['banquet_income_item_price'];
-                        }
+                    if ($value['banquet_income_type'] == 1) {
+                        $zdj += $value['banquet_income_item_price'];
+                    }
 
-                        if ($value['banquet_income_type'] == 2) {
-                            $zzk += $value['banquet_income_item_price'];
-                        }
+                    if ($value['banquet_income_type'] == 2) {
+                        $zzk += $value['banquet_income_item_price'];
+                    }
 
-                        if ($value['banquet_income_type'] == 3) {
-                            $zwk += $res['banquet_income_item_price'];
-                        }
+                    if ($value['banquet_income_type'] == 3) {
+                        $zwk += $res['banquet_income_item_price'];
+                    }
 
-                        if ($value['banquet_income_type'] == 5) {
-                            $zex += $res['banquet_income_item_price'];
-                        }
+                    if ($value['banquet_income_type'] == 5) {
+                        $zex += $res['banquet_income_item_price'];
                     }
                 }
             }
