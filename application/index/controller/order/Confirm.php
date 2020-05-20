@@ -718,6 +718,7 @@ class Confirm extends Backend
         $confirm->content = $param['content'];
         $confirm->status = 1;
         $confirm->operate_id = $this->user['id'];
+        $confirm->image = $param['image'];
         $result = $confirm->save();
         if ($result) {
             $newConfirm = new OrderConfirm();
@@ -787,6 +788,7 @@ class Confirm extends Backend
         $orderId = $confirm->order_id;
         $confirm->content = $param['content'];
         $confirm->status = 2;
+        $confirm->image = $param['image'];
         $result = $confirm->save();
         $this->model->where('confirm_no', '=', $confirm->confirm_no)->update(['is_checked' => 1]);
         \app\common\model\Order::where('id', '=', $orderId)->update(['check_status' => 3]);
@@ -934,5 +936,30 @@ class Confirm extends Backend
                     break;
             }
         }
+    }
+
+    public function upload()
+    {
+        $file = request()->file("file");
+        $info = $file->move("uploads/order");
+        if ($info) {
+            $origin = $info->getInfo();
+            $data = [];
+            $data['origin_file_name'] = $origin['name'];
+            $data['new_file_name'] = $info->getFileName();
+            $data['new_file_path'] = $info->getPathname();
+            $arr = [
+                'code' => '200',
+                'msg' => '上传成功',
+                'image' => '/' . $info->getPathname()
+            ];
+        } else {
+            $arr = [
+                'code' => '500',
+                'msg' => '上传失败'
+            ];
+        }
+
+        return json($arr);
     }
 }

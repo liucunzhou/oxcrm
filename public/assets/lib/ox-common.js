@@ -350,7 +350,6 @@ $(function(){
     });
 
     $(".btn-append-card .layui-btn").click(function(){
-
         if($(this).hasClass("layui-disabled")) {
             return false;
         }
