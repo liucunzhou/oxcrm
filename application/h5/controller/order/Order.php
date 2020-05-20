@@ -1401,6 +1401,9 @@ class Order extends Base
                 'pay_real_date' => $value['banquet_pay_real_date'],
                 'pay_item_price' => $value['banquet_pay_item_price'],
                 'payment_remark' => $value['banquet_payment_remark'],
+                'pay_to_company' => $value['banquet_pay_to_company'],
+                'pay_to_account' => $value['banquet_pay_to_account'],
+                'pay_to_bank' => $value['banquet_pay_to_bank'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
             ];
@@ -1415,6 +1418,9 @@ class Order extends Base
                 'pay_real_date' => $value['wedding_pay_real_date'],
                 'pay_item_price' => $value['wedding_pay_item_price'],
                 'payment_remark' => $value['wedding_payment_remark'],
+                'pay_to_company' => $value['wedding_pay_to_company'],
+                'pay_to_account' => $value['wedding_pay_to_account'],
+                'pay_to_bank' => $value['wedding_pay_to_bank'],
                 'receipt_img' => empty($value['receipt_img']) ? [] : explode(',', $value['receipt_img']),
                 'note_img' => empty($value['note_img']) ? [] : explode(',', $value['note_img']),
             ];
