@@ -928,7 +928,7 @@ class Order extends Backend
             if($this->user['nickname'] != 'admin' && $this->role['auth_type'] > 0) {
                 $staffs = User::getUsersByDepartmentId($this->user['department_id'], false);
                 $map[] = ['user_id', 'in', $staffs];
-            } else {
+            } else if ($this->user['nickname'] != 'admin') {
                 $map[] = ['user_id', '=', $this->user['id']];
             }
         }
