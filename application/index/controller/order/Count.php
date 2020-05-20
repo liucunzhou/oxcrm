@@ -100,6 +100,7 @@ class Count extends Backend
             // 总计二销
             $zex = 0;
 
+            // 1定金、2中款、3尾款、4意向金、5 二销
             if ($v['news_type'] == 1) {
                 $where = [];
                 $where[] = ['item_check_status', '=', '2'];
@@ -124,7 +125,7 @@ class Count extends Backend
                             $zwk += $res['wedding_income_item_price'];
                         }
 
-                        if ($value['wedding_income_type'] == 4) {
+                        if ($value['wedding_income_type'] == 5) {
                             $zex += $res['wedding_income_item_price'];
                         }
                     }
@@ -141,6 +142,7 @@ class Count extends Backend
 
                 if (!empty($res)) {
                     foreach ($res as $key => &$value) {
+
                         if ($value['banquet_income_type'] == 1) {
                             $zdj += $value['banquet_income_item_price'];
                         }
@@ -153,7 +155,7 @@ class Count extends Backend
                             $zwk += $res['banquet_income_item_price'];
                         }
 
-                        if ($value['banquet_income_type'] == 4) {
+                        if ($value['banquet_income_type'] == 5) {
                             $zex += $res['banquet_income_item_price'];
                         }
                     }
