@@ -116,6 +116,10 @@ class order extends Command
             case 'checkConfirm':
                 $this->checkConfirm();
                 break;
+
+            case 'syncPaymentImage':
+                $this->syncPaymentImage();
+                break;
         }
     }
 
@@ -1517,5 +1521,35 @@ class order extends Command
             echo $confirmNo.','.$confirm->order_id.','.$confirm->status;
             echo "\n";
         }
+    }
+
+    public function syncPaymentImage()
+    {
+        $confirm = new OrderConfirm();
+        $count = 0;
+        $raw = "confirm_type='payment' and LOCATE('receipt_img\":[\"http:', `source`) > 0";
+        $list = $confirm->whereRaw($raw)->select();
+        // echo $confirm->getLastSql();
+        foreach ($list as $row) {
+            $source = json_decode($row->source, true);
+            if(!isset($source['banquetPayment'][0]['id'])) {
+                continue;
+            }
+
+            $id = $source['banquetPayment'][0]['id'];
+            $payment = new OrderBanquetPayment();
+            $where = [];
+            $where[] = ['id', '=', $id];
+            $data = [];
+            $data['receipt_img'] = implode(',', $source['banquetPayment'][0]['receipt_img']);
+            $data['note_img'] = implode(',', $source['banquetPayment'][0]['note_img']);
+            $update = $payment->where($where)->update($data);
+            if(!$update) {
+                echo "confirm id: ".$row->id." 审核失败\n";
+                $count = $count + 1;
+            }
+        }
+
+        echo $count;
     }
 }
