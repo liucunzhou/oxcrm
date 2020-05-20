@@ -367,18 +367,19 @@ class Customer extends Base
         }
 
         ### 时间区间
-        if (isset($param['range']) && !empty($param['range'])) {
+        if (isset($param['range']) && $param['range']!='all') {
             $range = format_date_range($param['range']);
             $map[] = ['create_time', 'between', $range];
         }
 
         $model = $this->model->where($map);
+
         ### 手机号筛选
-        if (isset($param['mobile']) && strlen($param['mobile']) == 11) {
+        if ($param['mobile']!='' && strlen($param['mobile']) == 11) {
             $model->where('member_id', 'in', function ($query) use ($param) {
                 $query->table('tk_mobile')->where('mobile', '=', $param['mobile'])->field('member_id');
             });
-        } else if (isset($param['mobile']) && strlen($param['mobile']) < 11) {
+        } else if ($param['mobile']!='' && strlen($param['mobile']) < 11) {
             $model->where('member_id', 'in', function ($query) use ($param) {
                 $query->table('tk_mobile')->where('mobile', 'like', "%{$param['mobile']}%")->field('member_id');
             });
@@ -387,6 +388,7 @@ class Customer extends Base
         $order = 'create_time desc,member_create_time desc';
         $field = "id,user_id,member_id,realname,mobile,mobile1,active_status,budget,banquet_size,banquet_size_end,zone,source_text,wedding_date,color";
         $list = $model->field($field)->order($order)->paginate($param['limit'], false, $config);
+        // echo $model->getLastSql();
         if (!empty($list)) {
             foreach ($list as &$value) {
                 $value['color'] = $value['active_status'] ? $this->status[$value['active_status']]['color'] : '#FF0000';
