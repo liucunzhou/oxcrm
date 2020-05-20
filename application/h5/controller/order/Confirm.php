@@ -370,7 +370,7 @@ class Confirm extends Base
                 $key = key($source);
                 if ($key == 'order') {
                     if($order->cooperation_mode == '1') {
-                        $list[$confirmNo]['path'] = '/pages/clubOrder/clubOrder/clubOrder';
+                        $list[$confirmNo]['path'] = '/pages/addOrderItems/clubOrder/clubOrder';
                     } else {
                         if ($order->complete == '99') {
                             // 意向金
