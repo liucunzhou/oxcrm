@@ -165,7 +165,7 @@ class Count extends Backend
             // 应收中款
             $v['yszk'] = $zzk - $v['middle_money'];
             // 应收尾款, zwk 已收尾款, zex 已收二销
-            $v['yswk'] = $v['tail_money'] - $zdj - $zzk - $zwk - $zex;
+            $v['yswk'] = $v['totals_snum'] - $zdj - $zzk - $zwk - $zex;
         }
 
         unset($list['news_type']);
