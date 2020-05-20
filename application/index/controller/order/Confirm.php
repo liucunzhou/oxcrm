@@ -652,10 +652,6 @@ class Confirm extends Backend
             $map[] = ['source_id', '=', $get['source']];
         }
 
-        if (isset($get['hotel_id']) && $get['hotel_id'] > 0) {
-            $map[] = ['hotel_id', '=', $get['hotel_id']];
-        }
-
         if (!empty($get['company_id'])) {
             $map[] = ['company_id', '=', $get['company_id']];
         }
@@ -678,6 +674,20 @@ class Confirm extends Backend
         if ($get['mobile'] != '') {
             $model = $model->where('order_id', 'in', function ($query) use ($get) {
                 $query->table('tk_order')->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%")->field('id');
+            });
+        }
+
+        if ($get['date_range']!= '' && $get['date_range_type'] != '') {
+            $model = $model->where('order_id', 'in', function ($query) use ($get) {
+                $range = format_date_range($get['date_range']);
+                $query->table('tk_order')->where($get['date_range_type'], 'between', $range)->field('id');
+            });
+        }
+
+        if ($get['hotel_id'] > 0) {
+            $map[] = ['hotel_id', '=', $get['hotel_id']];
+            $model = $model->where('order_id', 'in', function ($query) use ($get) {
+                $query->table('tk_order')->where('hotel_id', '=', $get['hotel_id'])->field('id');
             });
         }
 

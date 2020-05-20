@@ -136,3 +136,23 @@ if (!function_exists('images_to_array')) {
         return $data;
     }
 }
+
+if(!function_exists('format_date_range')) {
+    function format_date_range($dateRange)
+    {
+        if ($dateRange == 'today') {
+
+            $start = strtotime(date('Y-m-d'));
+            $end = strtotime('tomorrow');
+        } else {
+
+            $range = explode('~', $dateRange);
+            $range[0] = str_replace("+", "", trim($range[0]));
+            $range[1] = str_replace("+", "", trim($range[1]));
+            $start = strtotime($range[0]);
+            $end = strtotime($range[1]) + 86400;
+        }
+
+        return [$start, $end];
+    }
+}
