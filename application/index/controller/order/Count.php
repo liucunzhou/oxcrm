@@ -41,6 +41,7 @@ class Count extends Backend
          * **/
 
         $map = [];
+        $map[] = ['item_check_status','=','2'];
         $map[] = ['complete','<>','101'];
         // 搜索条件：company_id  newsTypesList  date_range
         if( !empty($param['company_id']) )
@@ -90,8 +91,10 @@ class Count extends Backend
             $v['company_id'] = !empty($v['company_id']) ? $this->FirmList[$v['company_id']]['title'] : '-';
             $v['event_date'] = $v['event_date'] != 0 ? substr($v['event_date'], 0, 10) : '-';
             $v['salesman'] = !empty($v['salesman']) ? $this->UserModel->getUser($v['salesman'])['realname'] : '-';
-            $WeddingSuborder = $this->OrderWeddingSuborder->where('order_id',$k['id'])->column('wedding_total');
-            $BanquetSuborder = $this->OrderBanquetSuborder->where('order_id',$k['id'])->column('banquet_totals');
+            $maps[] = ['item_check_status','=','2'];
+            $maps[] = ['order_id','=',$k['id']];
+            $WeddingSuborder = $this->OrderWeddingSuborder->where($maps)->column('wedding_total');
+            $BanquetSuborder = $this->OrderBanquetSuborder->where($maps)->column('banquet_totals');
 
             $v['totals_snum'] = $v['totals'] + $WeddingSuborder['0'] + $BanquetSuborder['0'];
             $v['tail_money'] = $v['totals_snum'] - $v['earnest_money'] - $v['middle_money'];
