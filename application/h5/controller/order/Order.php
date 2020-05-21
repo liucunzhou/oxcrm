@@ -20,6 +20,7 @@ use app\common\model\OrderWedding;
 use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWine;
 use app\common\model\Package;
+use app\common\validate\OrderCommission;
 use app\h5\controller\Base;
 use app\common\model\BanquetHall;
 use app\common\model\OrderEntire;
@@ -830,9 +831,12 @@ class Order extends Base
         $param = $this->request->param();
         $allocate = MemberAllocate::get($param['id']);
         $member = \app\api\model\Member::get($allocate->member_id);
-
         $orderData = json_decode($param['order'], true);
-        $orderValidate = new \app\common\validate\Order();
+        if($orderData['cooperation_mode'] != '1') {
+            $orderValidate = new \app\common\validate\Order();
+        } else {
+            $orderValidate = new OrderCommission();
+        }
         if(!$orderValidate->check($orderData)) {
             return json([
                 'code' => '400',
@@ -1652,7 +1656,11 @@ class Order extends Base
         $param = $this->request->param();
 
         $post = json_decode($param['order'], true);
-        $orderValidate = new \app\common\validate\Order();
+        if($post['cooperation_mode'] != '1') {
+            $orderValidate = new \app\common\validate\Order();
+        } else {
+            $orderValidate = new OrderCommission();
+        }
         if(!$orderValidate->check($post)) {
             return json([
                 'code' => '400',
