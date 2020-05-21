@@ -157,7 +157,7 @@ class Order extends Base
                 $value['company_id'] = $this->brands[$value['company_id']]['title'];
                 $value['news_type'] = $newsTypes[$value['news_type']];
                 $value['cooperation_mode'] = isset($cooperationMode[$value['cooperation_mode']]) ? $cooperationMode[$value['cooperation_mode']] : '-';
-                $value['status'] = $this->confirmStatusList[$value['check_status']];
+                $value['status'] = $this->confirmStatusList[$value['item_check_status']];
                 $value['sign_date'] = substr($value['sign_date'], 0, 10);
                 $value['event_date'] = substr($value['event_date'], 0, 10);
                 $value['bridegroom_mobile'] = isset($value['bridegroom_mobile']) ? substr_replace($value['bridegroom_mobile'], '***', 3, 3) : '-';
