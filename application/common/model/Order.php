@@ -18,7 +18,8 @@ class Order extends Model
         'middle_money_date' => 'timestamp',
         'tail_money_date' => 'timestamp',
         'sign_date' => 'timestamp',
-        'event_date' => 'timestamp'
+        'event_date' => 'timestamp',
+        'settle_time' => 'timestamp'
     ];
 
 
