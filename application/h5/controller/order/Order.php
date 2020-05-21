@@ -1262,6 +1262,12 @@ class Order extends Base
         $hotelItem = \app\common\model\OrderHotelItem::where($where)->order('id desc')->find();
         if (empty($hotelItem)) $hotelItem = [];
 
+        #### 酒店协议
+        $where = [];
+        $where['order_id'] = $param['id'];
+        $hotelProtocol = \app\common\model\OrderHotelProtocol::where($where)->order('id desc')->find();
+        if (empty($hotelProtocol)) $hotelProtocol = [];
+
         #### 获取婚宴二销订单信息
         $where = [];
         $where['order_id'] = $param['id'];
