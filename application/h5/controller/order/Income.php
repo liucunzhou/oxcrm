@@ -54,7 +54,7 @@ class Income extends Base
         $data = json_decode($param['incomeList'], true);
 
         $incomeValidate = new \app\common\validate\OrderIncome();
-        if(!$incomeValidate->check($param['incomeList'])) {
+        if(!$incomeValidate->check($data)) {
             return json([
                 'code' => '400',
                 'msg' => $incomeValidate->getError()
@@ -190,7 +190,7 @@ class Income extends Base
         $order = \app\common\model\Order::get($param['order_id']);
 
         $incomeValidate = new \app\common\validate\OrderIncome();
-        if(!$incomeValidate->check($param['incomeList'])) {
+        if(!$incomeValidate->check($param)) {
             return json([
                 'code' => '400',
                 'msg' => $incomeValidate->getError()

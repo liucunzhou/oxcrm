@@ -49,7 +49,7 @@ class Banquet extends Base
         $orderId = $params['order_id'];
         $params = json_decode($params['banquet'], true);
         $banquetValidate = new \app\common\validate\OrderBanquet();
-        if(!$banquetValidate->check($params['banquet'])) {
+        if(!$banquetValidate->check($params)) {
             return json([
                 'code' => '400',
                 'msg' => $banquetValidate->getError()
@@ -120,7 +120,7 @@ class Banquet extends Base
         $param = $this->request->param();
         $param = json_decode($param['banquet'], true);
         $banquetValidate = new \app\common\validate\OrderBanquet();
-        if(!$banquetValidate->check($param['banquet'])) {
+        if(!$banquetValidate->check($param)) {
             return json([
                 'code' => '400',
                 'msg' => $banquetValidate->getError()

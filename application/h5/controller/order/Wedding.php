@@ -54,7 +54,7 @@ class Wedding extends Base
         $orderId = $params['order_id'];
         $params = json_decode($params['wedding'], true);
         $weddingValidate = new \app\common\validate\OrderWedding();
-        if(!$weddingValidate->check($params['wedding'])) {
+        if(!$weddingValidate->check($params)) {
             return json([
                 'code' => '400',
                 'msg' => $weddingValidate->getError()
@@ -125,7 +125,7 @@ class Wedding extends Base
         $params = json_decode($params['wedding'], true);
         $params['item_check_status']  = 0;
         $weddingValidate = new \app\common\validate\OrderWedding();
-        if(!$weddingValidate->check($params['wedding'])) {
+        if(!$weddingValidate->check($params)) {
             return json([
                 'code' => '400',
                 'msg' => $weddingValidate->getError()

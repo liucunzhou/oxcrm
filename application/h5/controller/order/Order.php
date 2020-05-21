@@ -833,7 +833,7 @@ class Order extends Base
 
         $orderData = json_decode($param['order'], true);
         $orderValidate = new \app\common\validate\Order();
-        if(!$orderValidate->check($param['order'])) {
+        if(!$orderValidate->check($orderData)) {
             return json([
                 'code' => '400',
                 'msg' => $orderValidate->getError()
@@ -869,7 +869,7 @@ class Order extends Base
             $c6 = !empty($data['banquet_other']) || !empty($data['banquet_remark']);
             if ($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
                 $banquetValidate = new \app\common\validate\OrderBanquet();
-                if(!$banquetValidate->check($param['banquet'])) {
+                if(!$banquetValidate->check($data)) {
                     return json([
                         'code' => '400',
                         'msg' => $banquetValidate->getError()
@@ -893,7 +893,7 @@ class Order extends Base
             $c4 = !empty($data['wedding_remark']);
             if ($c1 || $c2 || $c3 || $c4) {
                 $weddingValidate = new \app\common\validate\OrderWedding();
-                if(!$weddingValidate->check($param['wedding'])) {
+                if(!$weddingValidate->check($data)) {
                     return json([
                         'code' => '400',
                         'msg' => $weddingValidate->getError()
@@ -1108,7 +1108,7 @@ class Order extends Base
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
             $incomeValidate = new \app\common\validate\OrderIncome();
-            if(!$incomeValidate->check($param['income'])) {
+            if(!$incomeValidate->check($income)) {
                 return json([
                     'code' => '400',
                     'msg' => $incomeValidate->getError()
@@ -1649,6 +1649,13 @@ class Order extends Base
         $param = $this->request->param();
 
         $post = json_decode($param['order'], true);
+        $orderValidate = new \app\common\validate\Order();
+        if(!$orderValidate->check($post)) {
+            return json([
+                'code' => '400',
+                'msg' => $orderValidate->getError()
+            ]);
+        }
         $post['image'] = empty($post['imageArray']) ? '' : implode(',', $post['imageArray']);
         $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
         $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);
@@ -1667,6 +1674,13 @@ class Order extends Base
             $c5 = !empty($data['banquet_ritual_id']) || !empty($data['banquet_ritual_hall']);
             $c6 = !empty($data['banquet_other']) || !empty($data['banquet_remark']);
             if ($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
+                $banquetValidate = new \app\common\validate\OrderBanquet();
+                if(!$banquetValidate->check($data)) {
+                    return json([
+                        'code' => '400',
+                        'msg' => $banquetValidate->getError()
+                    ]);
+                }
                 $data['order_id'] = $post['id'];
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -1685,6 +1699,13 @@ class Order extends Base
             $c3 = !empty($data['wedding_other']) || !empty($data['wedding_totals']);
             $c4 = !empty($data['wedding_remark']);
             if ($c1 || $c2 || $c3 || $c4) {
+                $weddingValidate = new \app\common\validate\OrderWedding();
+                if(!$weddingValidate->check($data)) {
+                    return json([
+                        'code' => '400',
+                        'msg' => $weddingValidate->getError()
+                    ]);
+                }
                 $data['order_id'] = $post['id'];
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -1857,6 +1878,13 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
+            $incomeValidate = new \app\common\validate\OrderIncome();
+            if(!$incomeValidate->check($income)) {
+                return json([
+                    'code' => '400',
+                    'msg' => $incomeValidate->getError()
+                ]);
+            }
             if ($post['news_type'] == '2' || $post['news_type'] == '0') {
                 // 婚宴收款
                 $data = [];

@@ -110,7 +110,7 @@ class Payment extends Base
         $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
         $data = json_decode($param['paymentList'], true);
         $paymentValidate = new \app\common\validate\OrderPayment();
-        if(!$paymentValidate->check($param['paymentList'])) {
+        if(!$paymentValidate->check($data)) {
             return json([
                 'code' => '400',
                 'msg' => $paymentValidate->getError()
@@ -249,7 +249,7 @@ class Payment extends Base
         $param = json_decode($param['paymentList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
         $paymentValidate = new \app\common\validate\OrderPayment();
-        if(!$paymentValidate->check($param['paymentList'])) {
+        if(!$paymentValidate->check($param)) {
             return json([
                 'code' => '400',
                 'msg' => $paymentValidate->getError()
