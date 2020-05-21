@@ -132,7 +132,7 @@ class Order extends Base
         }
 
 
-        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile,check_status";
+        $fields = "id,contract_no,company_id,news_type,sign_date,status,event_date,hotel_text,cooperation_mode,bridegroom,bridegroom_mobile,bride,bride_mobile,item_check_status";
         $model = new \app\common\model\Order();
         $userId = $this->user['id'];
         $model = $model->where($map)->whereOr('id', 'in', function ($query) use ($userId) {
