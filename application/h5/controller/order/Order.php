@@ -1590,6 +1590,7 @@ class Order extends Base
                 'banquet' => $banquet,
                 'banquetSuborderList' => $banquetSuborderList,
                 'hotelItem' => $hotelItem,
+                'hotelProtocol' => $hotelProtocol,
                 'wedding' => $wedding,
                 'weddingSuborderList' => $weddingSuborderList,
                 'carList' => $carList,
