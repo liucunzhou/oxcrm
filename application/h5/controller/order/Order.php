@@ -905,15 +905,19 @@ class Order extends Base
         }
 
         ## 酒店服务项目
-        /**
         if (!empty($param['hotelProtocol'])) {
             $data = json_decode($param['hotelProtocol'], true);
-            $c1 = !empty($data['wedding_room']) || !empty($data['wedding_room_amount']);
-            $c2 = !empty($data['part']) || !empty($data['part_amount']);
-            $c3 = !empty($data['champagne']) || !empty($data['champagne_amount']);
-            $c4 = !empty($data['tea']) || !empty($data['tea_amount']);
+            $c1 = !empty($data['table_price']) || !empty($data['table_amount']);
+            $c2 = !empty($data['earnest_money']) || !empty($data['earnest_money_date']);
+            $c3 = !empty($data['middle_money']) || !empty($data['earnest_money_date']);
+            $c4 = !empty($data['tail_money']) || !empty($data['tail_money_date']);
             $c5 = !empty($data['cake']) || !empty($data['cake_amount']);
-            if ($c1 || $c2 || $c3 || $c4 || $c5) {
+            $c6 = !empty($data['tea']) || !empty($data['tea_amount']);
+            $c7 = !empty($data['champagne']) || !empty($data['champagne_amount']);
+            $c8 = !empty($data['part']) || !empty($data['part_amount']);
+            $c9 = !empty($data['wedding_room']) || !empty($data['wedding_room_amount']);
+            $c10 = !empty($data['pay_hotel_totals']) || !empty($data['pay_hotel_totals']);
+            if ($c1 || $c2 || $c3 || $c4 || $c5 || $c6 || $c7 || $c8 || $c9 || $c10) {
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -922,7 +926,6 @@ class Order extends Base
                 $source['hotelProtocol'] = $orderHotelProtocol->toArray();
             }
         }
-        **/
 
         ## 婚车主车
         if (!empty($param['car'])) {
