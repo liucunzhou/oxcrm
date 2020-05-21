@@ -1108,6 +1108,7 @@ class Order extends Base
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
             $incomeValidate = new \app\common\validate\OrderIncome();
+            $income['income_type'] = 1;
             if(!$incomeValidate->check($income)) {
                 return json([
                     'code' => '400',
@@ -1879,6 +1880,7 @@ class Order extends Base
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
             $incomeValidate = new \app\common\validate\OrderIncome();
+            $income['income_type'] = 1;
             if(!$incomeValidate->check($income)) {
                 return json([
                     'code' => '400',
