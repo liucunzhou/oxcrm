@@ -42,7 +42,7 @@ class Order extends Base
     protected $d3List = [];
     protected $packageList = [];
     protected $ritualList = [];
-    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回'];
+    protected $confirmStatusList = [0 => '待审核', 1 => '审核中', 2 => '审核通过', 3 => '审核驳回', 13 => '审核撤销'];
 
     protected function initialize()
     {
