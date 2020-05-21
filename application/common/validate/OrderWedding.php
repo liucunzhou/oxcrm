@@ -8,7 +8,7 @@ use think\Validate;
 class OrderWedding extends Validate
 {
     protected $rule = [
-        'wedding_totals' => 'require|number',
+        // 'wedding_totals' => 'require|number',
     ];
 
     protected $message = [
