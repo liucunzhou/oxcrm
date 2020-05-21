@@ -48,6 +48,14 @@ class Banquet extends Base
         $params = $this->request->param();
         $orderId = $params['order_id'];
         $params = json_decode($params['banquet'], true);
+        $banquetValidate = new \app\common\validate\OrderBanquet();
+        if(!$banquetValidate->check($params['banquet'])) {
+            return json([
+                'code' => '400',
+                'msg' => $banquetValidate->getError()
+            ]);
+        }
+
         $params['order_id'] = $orderId;
         $params['user_id'] = $this->user['id'];
         $result = $this->model->allowField(true)->save($params);
@@ -111,6 +119,14 @@ class Banquet extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['banquet'], true);
+        $banquetValidate = new \app\common\validate\OrderBanquet();
+        if(!$banquetValidate->check($param['banquet'])) {
+            return json([
+                'code' => '400',
+                'msg' => $banquetValidate->getError()
+            ]);
+        }
+
         $param['item_check_status'] = 0;
         $model = OrderBanquet::get($param['id']);
         $result = $model->allowField(true)->save($param);

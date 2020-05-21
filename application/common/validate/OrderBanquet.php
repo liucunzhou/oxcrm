@@ -5,23 +5,20 @@ namespace app\common\validate;
 
 use think\Validate;
 
-class Order extends Validate
+class OrderBanquet extends Validate
 {
     protected $rule = [
-        'company_id' => 'require|gt:0',
-        'mobile' => '/^1[1-9]{1}[0-9]{9}$/',
-        'news_type' => 'require|number',
-        'cooperation_mode' => 'number',
-        'sign_date' => 'date',
-        'bridegroom' => 'date',
-        'bridegroom_mobile' => 'date',
-
+        'banquet_totals' => 'require|number',
+        'table_amount' => 'require|number',
+        'table_price' => 'require|number',
     ];
 
     protected $message = [
-        'company_id.require' => '请选择公司',
-        'company_id.gt' => '请选择公司',
-        'news_type.require' => '请选择订单类型',
-        'news_type.number' => '请选择订单类型',
+        'banquet_totals.require' => '婚宴总金额不能为空',
+        'banquet_totals.number' => '婚宴总金额必须是数字',
+        'table_amount.require' => '桌数不能为空',
+        'table_amount.number' => '桌数必须是数字',
+        'table_price.require' => '餐标不能为空',
+        'table_price.number' => '餐标必须是数字',
     ];
 }

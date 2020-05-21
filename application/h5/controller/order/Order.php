@@ -832,6 +832,14 @@ class Order extends Base
         $member = \app\api\model\Member::get($allocate->member_id);
 
         $orderData = json_decode($param['order'], true);
+        $orderValidate = new \app\common\validate\Order();
+        if(!$orderValidate->check($param['order'])) {
+            return json([
+                'code' => '400',
+                'msg' => $orderValidate->getError()
+            ]);
+        }
+
         // $orderData['news_type'] = $orderData['newsType'];
         $orderData['member_id'] = $member->id;
         $orderData['realname'] = $member->realname;
@@ -860,6 +868,13 @@ class Order extends Base
             $c5 = !empty($data['banquet_ritual_id']) || !empty($data['banquet_ritual_hall']);
             $c6 = !empty($data['banquet_other']) || !empty($data['banquet_remark']);
             if ($c1 || $c2 || $c3 || $c4 || $c5 || $c6) {
+                $banquetValidate = new \app\common\validate\OrderBanquet();
+                if(!$banquetValidate->check($param['banquet'])) {
+                    return json([
+                        'code' => '400',
+                        'msg' => $banquetValidate->getError()
+                    ]);
+                }
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -877,6 +892,14 @@ class Order extends Base
             $c3 = !empty($data['wedding_other']) || !empty($data['wedding_totals']);
             $c4 = !empty($data['wedding_remark']);
             if ($c1 || $c2 || $c3 || $c4) {
+                $weddingValidate = new \app\common\validate\OrderWedding();
+                if(!$weddingValidate->check($param['wedding'])) {
+                    return json([
+                        'code' => '400',
+                        'msg' => $weddingValidate->getError()
+                    ]);
+                }
+
                 $data['order_id'] = $OrderModel->id;
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
@@ -1084,6 +1107,14 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
+            $incomeValidate = new \app\common\validate\OrderIncome();
+            if(!$incomeValidate->check($param['income'])) {
+                return json([
+                    'code' => '400',
+                    'msg' => $incomeValidate->getError()
+                ]);
+            }
+
             if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
                 // 婚宴收款
                 $data = [];

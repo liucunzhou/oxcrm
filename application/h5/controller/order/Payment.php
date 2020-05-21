@@ -108,9 +108,16 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
+        $data = json_decode($param['paymentList'], true);
+        $paymentValidate = new \app\common\validate\OrderPayment();
+        if(!$paymentValidate->check($param['paymentList'])) {
+            return json([
+                'code' => '400',
+                'msg' => $paymentValidate->getError()
+            ]);
+        }
 
         if ($order->news_type == 1) {
-            $data = json_decode($param['paymentList'], true);
             $payment['order_id'] = $param['order_id'];
             $payment['user_id'] = $this->user['id'];
             $payment['wedding_payment_no'] = $data['payment_no'];
@@ -131,7 +138,7 @@ class Payment extends Base
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         } else {
             // 添加收款信息
-            $data = json_decode($param['paymentList'], true);
+            // $data = json_decode($param['paymentList'], true);
             $payment['order_id'] = $param['order_id'];
             $payment['user_id'] = $this->user['id'];
             $payment['banquet_payment_no'] = $data['payment_no'];
@@ -241,6 +248,14 @@ class Payment extends Base
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
+        $paymentValidate = new \app\common\validate\OrderPayment();
+        if(!$paymentValidate->check($param['paymentList'])) {
+            return json([
+                'code' => '400',
+                'msg' => $paymentValidate->getError()
+            ]);
+        }
+
         if ($order['news_type'] != 1) {
             $model = new OrderBanquetPayment();
         } else {

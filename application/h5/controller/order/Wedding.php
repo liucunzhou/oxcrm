@@ -53,6 +53,14 @@ class Wedding extends Base
         $params = $this->request->param();
         $orderId = $params['order_id'];
         $params = json_decode($params['wedding'], true);
+        $weddingValidate = new \app\common\validate\OrderWedding();
+        if(!$weddingValidate->check($params['wedding'])) {
+            return json([
+                'code' => '400',
+                'msg' => $weddingValidate->getError()
+            ]);
+        }
+
         $params['order_id'] = $orderId;
         $params['user_id'] = $this->user['id'];
         $result = $this->model->allowField(true)->save($params);
@@ -116,6 +124,14 @@ class Wedding extends Base
         $params = $this->request->param();
         $params = json_decode($params['wedding'], true);
         $params['item_check_status']  = 0;
+        $weddingValidate = new \app\common\validate\OrderWedding();
+        if(!$weddingValidate->check($params['wedding'])) {
+            return json([
+                'code' => '400',
+                'msg' => $weddingValidate->getError()
+            ]);
+        }
+
 
         if(!empty($params['id'])) {
             $where = [];

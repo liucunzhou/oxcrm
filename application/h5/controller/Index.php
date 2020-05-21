@@ -1,7 +1,7 @@
 <?php
 namespace app\h5\controller;
 
-use app\h5\validate\Order;
+use app\common\validate\Order;
 use think\facade\Request;
 
 class Index

@@ -51,9 +51,17 @@ class Income extends Base
     {
         $param = $this->request->param();
         $order = \app\common\model\Order::where('id', '=', $param['order_id'])->find();
+        $data = json_decode($param['incomeList'], true);
+
+        $incomeValidate = new \app\common\validate\OrderIncome();
+        if(!$incomeValidate->check($param['incomeList'])) {
+            return json([
+                'code' => '400',
+                'msg' => $incomeValidate->getError()
+            ]);
+        }
 
         if($order->news_type == 1) {
-            $data = json_decode($param['incomeList'], true);
             $income['order_id'] = $param['order_id'];
             $income['user_id'] = $this->user['id'];
             $income['wedding_receivable_no'] = $data['receivable_no'];
@@ -74,7 +82,7 @@ class Income extends Base
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
         } else {
             // 添加收款信息
-            $data = json_decode($param['incomeList'], true);
+            // $data = json_decode($param['incomeList'], true);
             $income['order_id'] = $param['order_id'];
             $income['user_id'] = $this->user['id'];
             $income['banquet_receivable_no'] = $data['receivable_no'];
@@ -180,6 +188,14 @@ class Income extends Base
         $param = $this->request->param();
         $param = json_decode($param['incomeList'], true);
         $order = \app\common\model\Order::get($param['order_id']);
+
+        $incomeValidate = new \app\common\validate\OrderIncome();
+        if(!$incomeValidate->check($param['incomeList'])) {
+            return json([
+                'code' => '400',
+                'msg' => $incomeValidate->getError()
+            ]);
+        }
 
         if($order->news_type=='1') {
             $model = new OrderWeddingReceivables();
