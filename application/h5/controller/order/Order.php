@@ -1671,6 +1671,8 @@ class Order extends Base
         $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
         $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);
         $post['item_check_status'] = 0;
+        unset($post['create_time']);
+        unset($post['update_time']);
         $order = \app\common\model\Order::get($post['id']);
         $result = $order->allowField(true)->save($post);
         $source['order'] = $order->toArray();
