@@ -8,6 +8,7 @@ use app\h5\controller\Base;
 
 class Payment extends Base
 {
+    protected $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
     protected function initialize()
     {
         parent::initialize();
@@ -124,7 +125,8 @@ class Payment extends Base
             $payment['note_img'] = implode(',', $data['note_img']);
             $paymentModel = new OrderWeddingPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
-            $intro = '创建婚庆付款审核';
+            $type = $this->paymentTypes[$data['pay_type']];
+            $intro = "创建婚庆{$type}付款";
             $source['weddingPayment'][] = $paymentModel->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         } else {
@@ -144,8 +146,8 @@ class Payment extends Base
             $payment['note_img'] = implode(',', $data['note_img']);
             $paymentModel = new OrderBanquetPayment();
             $result2 = $paymentModel->allowField(true)->save($payment);
-
-            $intro = '创建婚宴付款审核';
+            $type = $this->paymentTypes[$data['pay_type']];
+            $intro = "创建婚宴{$type}付款";
             $source['banquetPayment'][] = $paymentModel->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         }
@@ -269,7 +271,6 @@ class Payment extends Base
                 'item_check_status' => 0
             ];
         } else {
-
             $data = [
                 'id' => $param['id'],
                 'wedding_payment_no' => $param['payment_no'],
@@ -286,17 +287,16 @@ class Payment extends Base
             ];
         }
         $rs = $row->allowField(true)->save($data);
-
+        $type = $this->paymentTypes[$param['pay_type']];
         if ($order['news_type'] != 1) {
-            $intro = '编辑婚宴付款审核';
+            $intro = "编辑婚宴{$type}付款";
             $source['banquetPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         } else {
-            $intro = '编辑婚庆付款审核';
+            $intro = "编辑婚庆{$type}付款";
             $source['weddingPayment'][] = $row->toArray();
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'payment', $intro, $source);
         }
-
         if ($rs) {
             $result = [
                 'code' => '200',

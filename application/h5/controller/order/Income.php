@@ -7,6 +7,8 @@ use app\h5\controller\Base;
 
 class Income extends Base
 {
+    protected $paymentTypes = [1=>'定金', 2=>'中款', 3=>'尾款', 4=>'意向金', 5=>'二销'];
+
     protected function initialize()
     {
         parent::initialize();
@@ -66,7 +68,9 @@ class Income extends Base
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $source['weddingIncome'][] = $receivable->toArray();
-            $intro = '创建婚庆收款审核';
+
+            $type = $this->paymentTypes[$data['income_type']];
+            $intro = "创建婚庆{$type}收款";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
         } else {
             // 添加收款信息
@@ -84,7 +88,8 @@ class Income extends Base
             $receivable = new OrderBanquetReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $source['banquetIncome'][] = $receivable->toArray();
-            $intro = '创建婚宴收款审核';
+            $type = $this->paymentTypes[$data['income_type']];
+            $intro = "创建婚宴{$type}收款";
             create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
         }
 
@@ -192,38 +197,36 @@ class Income extends Base
         }
 
         if($order->news_type != '1') {
-            $data = [
-                'id'    => $param['id'],
-                'banquet_receivable_no' => $param['receivable_no'],
-                'banquet_income_payment'    => $param['income_payment'],
-                'banquet_income_type'   => $param['income_type'],
-                'banquet_income_date'   => $param['income_date'],
-                'remark' => $param['income_remark'],
-                'receipt_img' => implode(',', $param['receipt_img']),
-                'note_img' => implode(',', $param['note_img']),
-                'item_check_status' => 0
-            ];
+            $data['id'] = $param['id'];
+            $data['banquet_receivable_no'] = $param['receivable_no'];
+            $data['banquet_income_payment'] = $param['income_payment'];
+            $data['banquet_income_type'] = $param['income_type'];
+            $data['banquet_income_date'] = $param['income_date'];
+            $data['remark'] = $param['income_remark'];
+            $data['receipt_img'] = implode(',', $param['receipt_img']);
+            $data['note_img'] = implode(',', $param['note_img']);
+            $data['item_check_status'] = 0;
         } else {
-            $data = [
-                'id'    => $param['id'],
-                'wedding_receivable_no' => $param['receivable_no'],
-                'wedding_income_payment'    => $param['income_payment'],
-                'wedding_income_type'   => $param['income_type'],
-                'wedding_income_date'   => $param['income_date'],
-                'remark' => $param['income_remark'],
-                'receipt_img' => implode(',', $param['receipt_img']),
-                'note_img' => implode(',', $param['note_img']),
-                'item_check_status' => 0
-            ];
+            $data['id']    = $param['id'];
+            $data['wedding_receivable_no'] = $param['receivable_no'];
+            $data['wedding_income_payment'] = $param['income_payment'];
+            $data['wedding_income_type'] = $param['income_type'];
+            $data['wedding_income_date'] = $param['income_date'];
+            $data['remark'] = $param['income_remark'];
+            $data['receipt_img'] = implode(',', $param['receipt_img']);
+            $data['note_img'] = implode(',', $param['note_img']);
+            $data['item_check_status'] = 0;
         }
 
         $rs = $row->allowField(true)->save($data);
         if($order->news_type != '1') {
-            $intro = '编辑婚宴收款审核';
             $source['banquetIncome'][] = $row->toArray();
+            $type = $this->paymentTypes[$data['income_type']];
+            $intro = "编辑婚宴{$type}收款";
         } else {
-            $intro = '编辑婚庆收款审核';
             $source['weddingIncome'][] = $row->toArray();
+            $type = $this->paymentTypes[$data['income_type']];
+            $intro = "编辑婚庆{$type}收款";
         }
         create_order_confirm($order->id, $order->company_id, $this->user['id'], 'income', $intro, $source);
 
