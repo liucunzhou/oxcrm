@@ -1,3 +1,60 @@
+<{if $data.cooperation_mode == '1'}>
+<!--返佣单-->
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-card-header-left">合同金额</div>
+    </div>
+    <div class="layui-card-body input-no-border">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">桌数</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['table_amount']}" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">餐标</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['table_price']}" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">订单金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['settle_totals']}" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">税额度</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['tax']}" class="layui-input" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label ">结算比例</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['settle_percent']}" class="layui-input layui-date" readonly>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">计算时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['settle_time']}" class="layui-input" readonly>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label ">实际应收计算金额</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="{$data['settle_real_total']}" class="layui-input layui-date" readonly>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<{else /}>
 <div class="layui-card">
     <div class="layui-card-header">
         <div class="layui-card-header-left">合同金额</div>
@@ -58,6 +115,7 @@
         </div>
     </div>
 </div>
+</if>
 
 <{if !$banquetReceivables->isEmpty() || !$weddingReceivables->isEmpty()}>
 <div class="layui-card">
@@ -114,7 +172,9 @@
                     </th>
                 </tr>
                 <tr>
-                    <td class="text-left" colspan="8">备注:{$row.remark}</td>
+                    <td class="text-left" colspan="8">
+                        <div class="td-remark">备注:{$row.remark}</div>
+                    </td>
                 </tr>
             <{/foreach}>
             </tbody>
@@ -162,7 +222,9 @@
                 </th>
             </tr>
             <tr>
-                <th class="text-left" colspan="11">备注：{$row.banquet_payment_remark}</th>
+                <th class="text-left" colspan="10">
+                    <div class="td-remark">备注：{$row.banquet_payment_remark}</div>
+                </th>
             </tr>
             <{/foreach}>
             </tbody>
@@ -208,7 +270,7 @@
             </tr>
             <tr>
                 <th class="text-left" colspan="10">
-                    备注:{$row.wedding_payment_remark}
+                    <div class="td-remark">备注:{$row.wedding_payment_remark}</div>
                 </th>
             </tr>
             <{/foreach}>
