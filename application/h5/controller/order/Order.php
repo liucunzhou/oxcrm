@@ -12,6 +12,7 @@ use app\common\model\OrderConfirm;
 use app\common\model\OrderD3;
 use app\common\model\OrderDessert;
 use app\common\model\OrderHotelItem;
+use app\common\model\OrderHotelProtocol;
 use app\common\model\OrderLed;
 use app\common\model\OrderLight;
 use app\common\model\OrderSugar;
@@ -902,6 +903,26 @@ class Order extends Base
                 $source['hotelItem'] = $orderHotelItem->toArray();
             }
         }
+
+        ## 酒店服务项目
+        /**
+        if (!empty($param['hotelProtocol'])) {
+            $data = json_decode($param['hotelProtocol'], true);
+            $c1 = !empty($data['wedding_room']) || !empty($data['wedding_room_amount']);
+            $c2 = !empty($data['part']) || !empty($data['part_amount']);
+            $c3 = !empty($data['champagne']) || !empty($data['champagne_amount']);
+            $c4 = !empty($data['tea']) || !empty($data['tea_amount']);
+            $c5 = !empty($data['cake']) || !empty($data['cake_amount']);
+            if ($c1 || $c2 || $c3 || $c4 || $c5) {
+                $data['order_id'] = $OrderModel->id;
+                $data['operate_id'] = $this->user['id'];
+                $data['user_id'] = $this->user['id'];
+                $orderHotelProtocol = new OrderHotelProtocol();
+                $orderHotelProtocol->allowField(true)->save($data);
+                $source['hotelProtocol'] = $orderHotelProtocol->toArray();
+            }
+        }
+        **/
 
         ## 婚车主车
         if (!empty($param['car'])) {

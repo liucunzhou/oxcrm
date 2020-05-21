@@ -30,7 +30,9 @@
                     <th class="text-center">{$confirmProjectStatusList[$wedding['item_check_status']]}</th>
                 </tr>
                 <tr>
-                    <td colspan="8" class="td-remark">备注: {$wedding.wedding_remark|default='-'}</td>
+                    <td colspan="8" class="td-remark">
+                        <div class="remark">备注: {$wedding.wedding_remark|default='-'}</div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -64,7 +66,9 @@
                         <td class="text-center">{$row['wedding_totals']}</td>
                     </tr>
                     <tr>
-                        <td class="text-left" colspan="2">备注:{$row.sub_wedding_remark}</td>
+                        <td class="text-left" colspan="2">
+                            <div class="remark">备注:{$row.sub_wedding_remark}</div>
+                        </td>
                     </tr>
                 <{/foreach}>
             </tbody>

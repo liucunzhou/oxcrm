@@ -50,7 +50,6 @@
                     <input type="text" value="{$data['settle_real_total']}" class="layui-input layui-date" readonly>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -153,7 +152,9 @@
                     </th>
                 </tr>
                 <tr>
-                    <td class="text-left" colspan="8">备注:{$row.remark}</td>
+                    <td class="text-left" colspan="8">
+                        <div class="remark">备注:{$row.remark}</div>
+                    </td>
                 </tr>
             <{/foreach}>
 
@@ -173,7 +174,7 @@
                 </tr>
                 <tr>
                     <td class="text-left" colspan="8">
-                        <div class="td-remark">备注:{$row.remark}</div>
+                        <div class="remark">备注:{$row.remark}</div>
                     </td>
                 </tr>
             <{/foreach}>
@@ -223,7 +224,7 @@
             </tr>
             <tr>
                 <th class="text-left" colspan="10">
-                    <div class="td-remark">备注：{$row.banquet_payment_remark}</div>
+                    <div class="remark">备注：{$row.banquet_payment_remark}</div>
                 </th>
             </tr>
             <{/foreach}>
@@ -270,7 +271,7 @@
             </tr>
             <tr>
                 <th class="text-left" colspan="10">
-                    <div class="td-remark">备注:{$row.wedding_payment_remark}</div>
+                    <div class="remark">备注:{$row.wedding_payment_remark}</div>
                 </th>
             </tr>
             <{/foreach}>
