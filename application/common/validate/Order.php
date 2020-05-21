@@ -1,6 +1,6 @@
 <?php
 
-namespace app\h5\validate;
+namespace app\common\validate;
 
 
 use think\Validate;
