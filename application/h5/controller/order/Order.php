@@ -1107,13 +1107,15 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
-            $incomeValidate = new \app\common\validate\OrderIncome();
             $income['income_type'] = 1;
-            if(!$incomeValidate->check($income)) {
-                return json([
-                    'code' => '400',
-                    'msg' => $incomeValidate->getError()
-                ]);
+            if ($orderData['cooperation_mode']!='1') {
+                $incomeValidate = new \app\common\validate\OrderIncome();
+                if (!$incomeValidate->check($income)) {
+                    return json([
+                        'code' => '400',
+                        'msg' => $incomeValidate->getError()
+                    ]);
+                }
             }
 
             if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
@@ -1879,13 +1881,15 @@ class Order extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
-            $incomeValidate = new \app\common\validate\OrderIncome();
             $income['income_type'] = 1;
-            if(!$incomeValidate->check($income)) {
-                return json([
-                    'code' => '400',
-                    'msg' => $incomeValidate->getError()
-                ]);
+            if($post['cooperation_mode'] != 1) {
+                $incomeValidate = new \app\common\validate\OrderIncome();
+                if (!$incomeValidate->check($income)) {
+                    return json([
+                        'code' => '400',
+                        'msg' => $incomeValidate->getError()
+                    ]);
+                }
             }
             if ($post['news_type'] == '2' || $post['news_type'] == '0') {
                 // 婚宴收款
