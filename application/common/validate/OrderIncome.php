@@ -11,7 +11,7 @@ class OrderIncome extends Validate
         'income_date' => 'require|date',
         'income_payment' => 'require|number',
         'income_type' => 'require|number',
-        'income_item_price' => 'require|number',
+        'income_item_price' => 'require|float',
     ];
 
     protected $message = [
@@ -22,6 +22,6 @@ class OrderIncome extends Validate
         'income_payment.require' => '请选择收款方式',
         'income_payment.number' => '请选择收款方式',
         'income_item_price.require' => '收款金额不能为空',
-        'income_item_price.number' => '收款金额必须是数字',
+        'income_item_price.float' => '收款金额必须是数字',
     ];
 }

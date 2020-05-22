@@ -21,4 +21,15 @@ class Index
         $result = $validate->check($params);
         print_r($validate->getError());
     }
+
+    public function customer()
+    {
+        $params = Request::param();
+        $validate = new \app\common\validate\Customer();
+
+        echo "测试：";
+        // var_dump($params);
+        $result = $validate->check($params);
+        print_r($validate->getError());
+    }
 }
