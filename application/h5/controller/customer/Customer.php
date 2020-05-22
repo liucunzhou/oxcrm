@@ -11,6 +11,7 @@ use app\common\model\Mobile;
 use app\common\model\Source;
 use app\common\model\Store;
 use app\common\model\User;
+use app\common\model\UserAuth;
 use app\h5\controller\Base;
 use think\facade\Request;
 use app\common\model\Region;
@@ -45,6 +46,8 @@ class Customer extends Base
         if (isset($this->role['auth_type']) && $this->role['auth_type'] > 0) {
             $this->staffs = User::getUsersByDepartmentId($this->user['department_id']);
         }
+
+        $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
     }
 
     /**
