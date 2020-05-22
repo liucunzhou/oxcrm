@@ -1399,16 +1399,19 @@ class Confirm extends Base
                 }
             }
 
-            if ($confirmRs[$key]) {
+            if (isset($confirmRs[$key])) {
                 switch ($confirmRs[$key]['status']) {
-                    case 0:
+                    case '0':
                         $status = '待审核';
                         break;
-                    case 1:
+                    case '1':
                         $status = '审核通过';
                         break;
-                    case 2:
+                    case '2':
                         $status = '审核驳回';
+                        break;
+                    case '13':
+                        $status = '审核撤销';
                         break;
                     default:
                         $status = '待审核';

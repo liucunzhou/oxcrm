@@ -32,23 +32,23 @@ class User extends Model
     public static function getUser($id,$update=false)
     {
         $map[] = ['id', '=', $id];
-        $data = self::where($map)->field('id,role_id,department_id,nickname,realname,dingding,mobile,email')->find()->toArray();
+        $data = self::where($map)->field('id,role_id,department_id,nickname,realname,dingding,mobile,email,avatar')->find()->toArray();
 
         return $data;
     }
 
     public static function getUserByNo($userNo, $update=false)
     {
-        $data = self::where(['user_no'=>$userNo])->column('user_no,id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'user_no');
+        $data = self::where(['user_no'=>$userNo])->column('user_no,id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id,avatar', 'user_no');
         return $data;
     }
 
     public static function getUsers($withTrashed=true,$update=false)
     {
         if($withTrashed) {
-            $data = self::withTrashed()->order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'id');
+            $data = self::withTrashed()->order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id,avatar', 'id');
         } else {
-            $data = self::order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id', 'id');
+            $data = self::order('is_valid desc,sort desc,id asc')->column('id,role_id,department_id,nickname,realname,dingding,mobile,email,province_id,city_id,avatar', 'id');
         }
 
         return $data;

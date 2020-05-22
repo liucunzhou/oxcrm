@@ -19,7 +19,7 @@ class Intention extends Model
 
     public static function getIntentions($update=false)
     {
-        $data = self::order('is_valid desc,sort desc,id asc')->column('id,title,is_valid', 'id');
+        $data = self::order('sort desc,id asc')->column('id,title,color,is_valid', 'id');
         $item =  [
             0 => [
                 'id'    => 0,
