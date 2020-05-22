@@ -47,7 +47,7 @@ class Customer extends Base
             $this->staffs = User::getUsersByDepartmentId($this->user['department_id']);
         }
 
-        $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
+        // $this->auth = UserAuth::getUserLogicAuth($this->user['id']);
     }
 
     /**
@@ -188,10 +188,8 @@ class Customer extends Base
         $customer['next_visit_time'] = $allocate->next_visit_time ? date('Y-m-s h:i:s', $allocate->next_visit_time) : '';
         $customer['color'] = $customer['active_status'] ? $this->status[$customer['active_status']]['color'] : '#FF0000';
         $customer['active_status'] = $customer['active_status'] ? $this->status[$customer['active_status']]['title'] : "未跟进";
-        if (!($this->auth['is_show_entire_mobile'] || !empty($allocate))) {
-            $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
-            $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
-        }
+        $customer['mobile'] = substr_replace($customer['mobile'], '****', 3, 4);
+        $customer['mobile1'] = substr_replace($customer['mobile1'], '****', 3, 4);
 
         $result = [
             'code' => 200,
