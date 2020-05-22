@@ -57,7 +57,7 @@ class Review extends Command
             $source = json_decode($confirm->source, true);
             // print_r($source['order']['item_check_status']);
             foreach ($source as $key=>$item) {
-                if( 'order') {
+                if( $key == 'order') {
                     $where = [];
                     $where[] = ['id', '=', $source['order']['id']];
                     $order = \app\common\model\Order::where($where)->find();
@@ -65,6 +65,17 @@ class Review extends Command
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "订单审核状态" . $order->item_check_status;
+                        echo "\n";
+                    }
+                } else if ($key == 'banquet') {
+                    if (empty($source['banquet']['id'])) continue;
+                    $where = [];
+                    $where[] = ['id', '=', $source['banquet']['id']];
+                    $model = \app\common\model\OrderBanquet::where($where)->find();
+                    if ($confirm->status == 0) {
+                        echo "当前审核状态:" . $confirm->status;
+                        echo "\n";
+                        echo "婚宴审核状态" . $model->item_check_status;
                         echo "\n";
                     }
                 } else if($key == 'banquetIncome') {
@@ -80,33 +91,73 @@ class Review extends Command
                         echo "\n";
                     }
 
-                } else if ($key == 'banquet') {
-                    if (empty($source['banquet']['id'])) continue;
+                } else if($key == 'banquetPayment') {
 
+                    if (empty($source['banquetPayment']['id'])) continue;
                     $where = [];
-                    $where[] = ['id', '=', $source['banquet']['id']];
-                    $model = \app\common\model\OrderBanquet::where($where)->find();
+                    $where[] = ['id', '=', $source['banquetPayment']['id']];
+                    $model = \app\common\model\OrderBanquetPayment::where($where)->find();
                     if ($confirm->status == 0) {
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
-                        echo "婚宴审核状态" . $model->item_check_status;
+                        echo "婚宴付款审核状态" . $model->item_check_status;
                         echo "\n";
                     }
 
-                }  else if ($key == 'wedding') {
+                } else if ($key == 'wedding') {
                     if (empty($source['wedding']['id'])) continue;
                     $where = [];
                     $where[] = ['id', '=', $source['wedding']['id']];
-                    $income = \app\common\model\OrderWedding::where($where)->find();
+                    $model = \app\common\model\OrderWedding::where($where)->find();
                     if ($confirm->status == 0) {
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
-                        echo "婚庆审核状态" . $income->item_check_status;
+                        echo "婚庆审核状态" . $model->item_check_status;
                         echo "\n";
-                        echo "\n\n";
                     }
+                } else if ($key == 'weddingIncome') {
+                    if (empty($source['weddingIncome']['id'])) continue;
+                    $where = [];
+                    $where[] = ['id', '=', $source['weddingIncome']['id']];
+                    $model = \app\common\model\OrderWeddingReceivables::where($where)->find();
+                    if ($confirm->status == 0) {
+                        echo "当前审核状态:" . $confirm->status;
+                        echo "\n";
+                        echo "婚庆收款审核状态" . $model->item_check_status;
+                        echo "\n";
+                    }
+
+                } else if ($key == 'hotelItem') {
+                    if (empty($source['hotelItem']['id'])) continue;
+                    $where = [];
+                    $where[] = ['id', '=', $source['hotelItem']['id']];
+                    $model = \app\common\model\OrderHotelItem::where($where)->find();
+                    if ($confirm->status == 0) {
+                        echo "当前审核状态:" . $confirm->status;
+                        echo "\n";
+                        echo "酒店项目款审核状态" . $model->item_check_status;
+                        echo "\n";
+                    }
+
+                } else if ($key == 'hotelProtocol') {
+                    if (empty($source['hotelProtocol']['id'])) continue;
+                    $where = [];
+                    $where[] = ['id', '=', $source['hotelProtocol']['id']];
+                    $model = \app\common\model\OrderHotelItem::where($where)->find();
+                    if ($confirm->status == 0) {
+                        echo "当前审核状态:" . $confirm->status;
+                        echo "\n";
+                        echo "酒店协议款审核状态" . $model->item_check_status;
+                        echo "\n";
+                    }
+
+                } else {
+                    echo $key;
+                    echo "\n";
                 }
             }
+
+            echo "\n";
         }
     }
 }
