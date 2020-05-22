@@ -1194,8 +1194,8 @@ class order extends Command
             '编号','签单销售','签单类型','婚庆所属公司','签单日期', '婚期','酒店','厅'
             ,'新郎','手机号','新娘','手机号','餐标','桌数',
             '合同总额','定金收款日期','定金收款金额','中款收款日期','中款收款金额','尾款收款日期','尾款收款金额'
-            ,'收款信息中的定金','收款信息中的中款','收款信息中的尾款',
-            '付款信息中的定金','付款信息中的中款','付款信息中的尾款'
+            ,'收款信息中的定金','收款信息中的中款','收款信息中的尾款','二销收款'
+            ,'付款信息中的定金','付款信息中的中款','付款信息中的尾款'
             ,'订单状态','所有备注'
         ];
         $users = User::getUsers();
@@ -1252,6 +1252,7 @@ class order extends Command
             $earnestIncome = 0;
             $middleIncome = 0;
             $tailIncome = 0;
+            $suborderIncome = 0;
             $where = [];
             $where[] = ['order_id', '=', $row['id']];
             $where[] = ['item_check_status', '=', '2'];
@@ -1264,6 +1265,8 @@ class order extends Command
                     $middleIncome = $middleIncome + $value->banquet_income_item_price;
                 } else if ($value->banquet_income_type == 3) {
                     $tailIncome = $tailIncome + $value->banquet_income_item_price;
+                } else if ($value->banquet_income_type == 5) {
+                    $suborderIncome = $suborderIncome + $value->banquet_income_item_price;
                 }
                 $remark .= $value['remark'];
             }
@@ -1278,12 +1281,15 @@ class order extends Command
                     $middleIncome = $middleIncome + $value->wedding_income_item_price;
                 } else if ($value->wedding_income_type == 3) {
                     $tailIncome = $tailIncome + $value->wedding_income_item_price;
+                } else if ($value->wedding_income_type == 5) {
+                    $suborderIncome = $suborderIncome + $value->wedding_income_item_price;
                 }
                 $remark .= $value['remark'];
             }
             $data[] = $earnestIncome;
             $data[] = $middleIncome;
             $data[] = $tailIncome;
+            $data[] = $suborderIncome;
             ### 付款信息
             $earnestPayment = 0;
             $middlePayment = 0;

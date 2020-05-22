@@ -14,4 +14,5 @@ return [
     'app\common\command\Notice',
     'app\common\command\Ring',
     'app\common\command\Order',
+    'app\common\command\Review',
 ];
