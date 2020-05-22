@@ -187,6 +187,9 @@ class Income extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['incomeList'], true);
+        unset($param['create_time']);
+        unset($param['update_time']);
+
         $order = \app\common\model\Order::get($param['order_id']);
 
         $incomeValidate = new \app\common\validate\OrderIncome();

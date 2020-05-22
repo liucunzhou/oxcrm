@@ -112,6 +112,9 @@ class WeddingSuborder extends Base
         $param = $this->request->param();
         $intro = "编辑婚庆二销订单";
         $suborder = json_decode($param['weddingSuborderList'], true);
+        unset($suborder['create_time']);
+        unset($suborder['update_time']);
+
         $model = OrderWeddingSuborder::get($suborder['id']);
         $model->startTrans();
         $suborder['user_id'] = $this->user['id'];
@@ -121,6 +124,9 @@ class WeddingSuborder extends Base
         $source['weddingSuborder'][] = $model->toArray();
 
         $income = json_decode($param['wedding_incomeList'], true);
+        unset($income['create_time']);
+        unset($income['update_time']);
+
         $income['user_id'] = $this->user['id'];
         $income['wedding_income_type'] = 5;
         $income['remark'] = $income['income_remark'];

@@ -1698,6 +1698,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $banquet = OrderBanquet::get($data['id']);
                 $banquet->allowField(true)->save($data);
                 $source['banquet'] = $banquet->toArray();
@@ -1723,6 +1725,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $wedding = OrderWedding::get($data['id']);
                 $wedding->allowField(true)->save($data);
                 $source['wedding'] = $wedding->toArray();
@@ -1742,6 +1746,8 @@ class Order extends Base
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $hotelItem = OrderHotelItem::get($data['id']);
                 $hotelItem->allowField(true)->save($data);
                 $source['hotelItem'] = $hotelItem->toArray();
@@ -1765,6 +1771,8 @@ class Order extends Base
                 $data['order_id'] = $post['id'];
                 $data['operate_id'] = $this->user['id'];
                 $data['user_id'] = $this->user['id'];
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $orderHotelProtocol = new OrderHotelProtocol();
                 $orderHotelProtocol->allowField(true)->save($data);
                 $source['hotelProtocol'] = $orderHotelProtocol->toArray();
@@ -1781,6 +1789,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $data['sugar_salesman'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $car = Car::get($data['id']);
                 $car->allowField(true)->save($data);
                 $source['car'][] = $car->toArray();
@@ -1797,6 +1807,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $data['sugar_salesman'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $sugar = OrderSugar::get($data['id']);
                 $sugar->allowField(true)->save($data);
                 $source['sugar'][] = $sugar->toArray();
@@ -1813,7 +1825,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
                 $data['item_check_status'] = 0;
-
+                unset($data['create_time']);
+                unset($data['update_time']);
                 $wine = OrderWine::get($data['id']);
                 $wine->allowField(true)->save($data);
                 $source['wine'][] = $wine->toArray();
@@ -1830,6 +1843,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
 
                 $light = OrderLight::get($data['id']);
                 $light->allowField(true)->save($data);
@@ -1847,6 +1862,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
 
                 $dessert = OrderDessert::get($data['id']);
                 $dessert->allowField(true)->save($data);
@@ -1864,6 +1881,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
 
                 $led = OrderLed::get($data['id']);
                 $led->allowField(true)->save($data);
@@ -1881,6 +1900,8 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 $data['salesman'] = $this->user['id'];
                 $data['item_check_status'] = 0;
+                unset($data['create_time']);
+                unset($data['update_time']);
 
                 $d3 = OrderD3::get($data['id']);
                 $d3->allowField(true)->save($data);

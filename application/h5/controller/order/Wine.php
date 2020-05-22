@@ -91,6 +91,9 @@ class Wine extends Base
         $param = json_decode($param['wineList'], true);
 
         foreach ($param as $row) {
+            unset($row['create_time']);
+            unset($row['update_time']);
+
             $orderId = $row['order_id'];
             $row['user_id'] = $this->user['id'];
             $row['salesman'] = $this->user['id'];

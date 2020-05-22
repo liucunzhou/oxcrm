@@ -158,6 +158,9 @@ class Prepay extends Base
         $param = $this->request->param();
 
         $post = json_decode($param['order'], true);
+        unset($post['create_time']);
+        unset($post['update_time']);
+
         $post['image'] = empty($post['image']) ? '' : implode(',', $post['image']);
         $order = \app\common\model\Order::get($post['id']);
         $order->allowField(true)->save($post);
@@ -166,6 +169,7 @@ class Prepay extends Base
         ## 收款信息
         if (!empty($param['income'])) {
             $income = json_decode($param['income'], true);
+
             if ($post['news_type'] == '2' || $post['news_type'] == '0') {
                 // 婚宴收款
                 $data = [];

@@ -120,6 +120,9 @@ class BanquetSuborder extends Base
         $action = '更新';
 
         $suborder = json_decode($param['banquetSuborderList'], true);
+        unset($suborder['create_time']);
+        unset($suborder['update_time']);
+
         $model = OrderBanquetSuborder::get($suborder['id']);
         $intro = "编辑婚宴二销订单";
         $model->startTrans();
@@ -130,6 +133,9 @@ class BanquetSuborder extends Base
 
         // 添加收款信息
         $income = json_decode($param['banquet_incomeList'], true);
+        unset($income['create_time']);
+        unset($income['update_time']);
+
         $income['user_id'] = $this->user['id'];
         $income['banquet_income_type'] = 5;
         $income['remark'] = $income['income_remark'];

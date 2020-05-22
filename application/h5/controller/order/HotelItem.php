@@ -81,6 +81,8 @@ class HotelItem extends Base
         $param = $this->request->param();
         $param = json_decode($param['hotelItem'], true);
         $param['item_check_status'] = 0;
+        unset($param['create_time']);
+        unset($param['update_time']);
 
         $where = [];
         $where[] = ['id', '=', $param['id']];

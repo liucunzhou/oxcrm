@@ -124,6 +124,9 @@ class Wedding extends Base
         $params = $this->request->param();
         $params = json_decode($params['wedding'], true);
         $params['item_check_status']  = 0;
+        unset($params['create_time']);
+        unset($params['update_time']);
+
         $weddingValidate = new \app\common\validate\OrderWedding();
         if(!$weddingValidate->check($params)) {
             return json([

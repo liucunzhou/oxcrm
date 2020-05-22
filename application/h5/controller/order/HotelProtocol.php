@@ -85,6 +85,8 @@ class HotelProtocol extends Base
         $param = json_decode($param['hotelProtocol'], true);
         $param['image'] = implode(',', $param['image']);
         $param['item_check_status'] = 0;
+        unset($param['create_time']);
+        unset($param['update_time']);
 
         $where = [];
         $where[] = ['id', '=', $param['id']];
