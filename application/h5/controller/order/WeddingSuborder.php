@@ -114,6 +114,7 @@ class WeddingSuborder extends Base
         $suborder = json_decode($param['weddingSuborderList'], true);
         unset($suborder['create_time']);
         unset($suborder['update_time']);
+        unset($suborder['delete_time']);
 
         $model = OrderWeddingSuborder::get($suborder['id']);
         $model->startTrans();
@@ -126,6 +127,7 @@ class WeddingSuborder extends Base
         $income = json_decode($param['wedding_incomeList'], true);
         unset($income['create_time']);
         unset($income['update_time']);
+        unset($income['delete_time']);
 
         $income['user_id'] = $this->user['id'];
         $income['wedding_income_type'] = 5;

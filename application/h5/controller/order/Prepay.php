@@ -160,6 +160,7 @@ class Prepay extends Base
         $post = json_decode($param['order'], true);
         unset($post['create_time']);
         unset($post['update_time']);
+        unset($post['delete_time']);
 
         $post['image'] = empty($post['image']) ? '' : implode(',', $post['image']);
         $order = \app\common\model\Order::get($post['id']);

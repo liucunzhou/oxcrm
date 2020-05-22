@@ -189,6 +189,7 @@ class Income extends Base
         $param = json_decode($param['incomeList'], true);
         unset($param['create_time']);
         unset($param['update_time']);
+        unset($param['delete_time']);
 
         $order = \app\common\model\Order::get($param['order_id']);
 

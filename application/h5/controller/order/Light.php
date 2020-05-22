@@ -92,6 +92,7 @@ class Light extends Base
         foreach ($param as $row) {
             unset($row['create_time']);
             unset($row['update_time']);
+            unset($row['delete_time']);
 
             $orderId = $row['order_id'];
             $row['user_id'] = $this->user['id'];

@@ -121,6 +121,7 @@ class Banquet extends Base
         $param = json_decode($param['banquet'], true);
         unset($param['create_time']);
         unset($param['update_time']);
+        unset($param['delete_time']);
 
         $banquetValidate = new \app\common\validate\OrderBanquet();
         if(!$banquetValidate->check($param)) {

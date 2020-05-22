@@ -1673,6 +1673,7 @@ class Order extends Base
         $post['item_check_status'] = 0;
         unset($post['create_time']);
         unset($post['update_time']);
+        unset($post['delete_time']);
         $order = \app\common\model\Order::get($post['id']);
         $result = $order->allowField(true)->save($post);
         $source['order'] = $order->toArray();
@@ -1700,6 +1701,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $banquet = OrderBanquet::get($data['id']);
                 $banquet->allowField(true)->save($data);
                 $source['banquet'] = $banquet->toArray();
@@ -1727,6 +1729,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $wedding = OrderWedding::get($data['id']);
                 $wedding->allowField(true)->save($data);
                 $source['wedding'] = $wedding->toArray();
@@ -1748,6 +1751,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $hotelItem = OrderHotelItem::get($data['id']);
                 $hotelItem->allowField(true)->save($data);
                 $source['hotelItem'] = $hotelItem->toArray();
@@ -1773,6 +1777,7 @@ class Order extends Base
                 $data['user_id'] = $this->user['id'];
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $orderHotelProtocol = new OrderHotelProtocol();
                 $orderHotelProtocol->allowField(true)->save($data);
                 $source['hotelProtocol'] = $orderHotelProtocol->toArray();
@@ -1791,6 +1796,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $car = Car::get($data['id']);
                 $car->allowField(true)->save($data);
                 $source['car'][] = $car->toArray();
@@ -1809,6 +1815,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $sugar = OrderSugar::get($data['id']);
                 $sugar->allowField(true)->save($data);
                 $source['sugar'][] = $sugar->toArray();
@@ -1827,6 +1834,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
                 $wine = OrderWine::get($data['id']);
                 $wine->allowField(true)->save($data);
                 $source['wine'][] = $wine->toArray();
@@ -1845,6 +1853,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
 
                 $light = OrderLight::get($data['id']);
                 $light->allowField(true)->save($data);
@@ -1864,6 +1873,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
 
                 $dessert = OrderDessert::get($data['id']);
                 $dessert->allowField(true)->save($data);
@@ -1883,6 +1893,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
 
                 $led = OrderLed::get($data['id']);
                 $led->allowField(true)->save($data);
@@ -1902,6 +1913,7 @@ class Order extends Base
                 $data['item_check_status'] = 0;
                 unset($data['create_time']);
                 unset($data['update_time']);
+                unset($data['delete_time']);
 
                 $d3 = OrderD3::get($data['id']);
                 $d3->allowField(true)->save($data);

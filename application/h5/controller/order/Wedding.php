@@ -126,6 +126,7 @@ class Wedding extends Base
         $params['item_check_status']  = 0;
         unset($params['create_time']);
         unset($params['update_time']);
+        unset($params['delete_time']);
 
         $weddingValidate = new \app\common\validate\OrderWedding();
         if(!$weddingValidate->check($params)) {

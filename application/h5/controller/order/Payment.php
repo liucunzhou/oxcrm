@@ -247,6 +247,7 @@ class Payment extends Base
     {
         $param = $this->request->param();
         $param = json_decode($param['paymentList'], true);
+
         $order = \app\common\model\Order::get($param['order_id']);
         $paymentValidate = new \app\common\validate\OrderPayment();
         if(!$paymentValidate->check($param)) {

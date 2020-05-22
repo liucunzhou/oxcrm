@@ -83,6 +83,7 @@ class HotelItem extends Base
         $param['item_check_status'] = 0;
         unset($param['create_time']);
         unset($param['update_time']);
+        unset($param['delete_time']);
 
         $where = [];
         $where[] = ['id', '=', $param['id']];
