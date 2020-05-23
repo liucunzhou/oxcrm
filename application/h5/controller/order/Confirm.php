@@ -349,7 +349,7 @@ class Confirm extends Base
                 $key = key($source);
                 if ($key == 'order') {
 
-                    if($order->cooperation_mode == '1' ) {
+                    if($order->cooperation_mode == '1' && $order->news_type != '1') {
                         $list[$confirmNo]['path'] = '/pages/addOrderItems/clubOrder/clubOrder';
                     } else {
                         if ($order->complete == '99') {
