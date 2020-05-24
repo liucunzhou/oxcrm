@@ -1055,7 +1055,8 @@ class Confirm extends Base
                     $comments[] = [
                         'id'        => $comment['id'],
                         'realname'  => $realname,
-                        'avatar'    => $cuser['avatar'],
+                        // 'avatar'    => $cuser['avatar'],
+                        'avatar'    => 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png',
                         'content'   => $comment['content'],
                         'image'     => images_to_array($comment['image'])
                     ];
