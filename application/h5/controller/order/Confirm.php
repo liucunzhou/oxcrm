@@ -1005,7 +1005,8 @@ class Confirm extends Base
                     $managerList[] = [
                         'id' => $user['id'],
                         'realname' => $user['realname'],
-                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                        // 'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                        'avatar' => $avatar
                     ];
                 }
             } else {
@@ -1015,7 +1016,8 @@ class Confirm extends Base
                     $managerList[] = [
                         'id' => $user['id'],
                         'realname' => $user['realname'],
-                        'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                        // 'avatar' => $user['avatar'] ? $user['avatar'] : $avatar
+                        'avatar' => $avatar
                     ];
                 }
             }
