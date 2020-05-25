@@ -221,7 +221,7 @@
                 <th class="text-center">
                     <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
                     &nbsp;&nbsp;
-                    <a href="javascript:void(0);" class="btn-print" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'banquet'])}">打印</a>
+                    <a href="javascript:void(0);" class="btn-print {:auth('/index/order.printing/payment')}" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'banquet'])}">打印</a>
                 </th>
             </tr>
             <tr>
