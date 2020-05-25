@@ -19,8 +19,7 @@ body{
     }
 }
 
-
-.btn-print {
+.btn-print-group {
     position: absolute;
     left: 20px;
     bottom: 20px;

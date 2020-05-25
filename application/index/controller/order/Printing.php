@@ -6,6 +6,7 @@ use app\common\model\Brand;
 use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderHotelProtocol;
+use app\common\model\OrderPrint;
 use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\User;
@@ -81,6 +82,7 @@ class Printing extends Backend
             $data['pay_type'] = $this->paymentTypes[$payment->banquet_pay_type];
             $field = 'banquet_pay_type as pay_type,banquet_pay_item_price as pay_item_price';
         }
+        $this->assign('payment', $payment);
         $this->assign('data', $data);
 
         $where = [];
@@ -132,11 +134,53 @@ class Printing extends Backend
         }
         $this->assign('hceos', implode(',', $hceos));
 
+        $where = [];
+        $where[] = ['order_id', '=', $payment->order_id];
+        $where[] = ['item', '=', 'payment'];
+        $where[] = ['item_id', '=', $payment->id];
+        $print = OrderPrint::where($where)->find();
+        $this->assign('print', $print);
+
         return $this->fetch();
     }
 
     public function doPrint()
     {
+        $param = $this->request->param();
+        $data = [];
+        $data['user_id'] = $this->user['id'];
+        $data['order_id'] = $param['order_id'];
+        $data['item'] = $param['item'];
+        $data['item_id'] = $param['item_id'];
+        $orderPrint = new OrderPrint();
+        $result = $orderPrint->save($data);
+        echo $orderPrint->getLastSql();
+        if($result && isset($orderPrint->id)) {
+            $arr = [
+                'code'  => '200',
+                'msg'   => '打印成功'
+            ];
+        } else {
+            $arr = [
+                'code'  => '400',
+                'msg'   => '打印失败'
+            ];
+        }
 
+        return json($arr);
+    }
+
+    public function history()
+    {
+        $param = $this->request->param();
+        $where[] = ['order_id', '=', $param['order_id']];
+        $where[] = ['item', '=', 'payment'];
+        $where[] = ['item_id', '=', $param['item_id']];
+        $list = OrderPrint::where($where)->order('id desc')->select();
+        $this->assign('list', $list);
+
+        $users = User::getUsers(false);
+        $this->assign('users', $users);
+        return $this->fetch();
     }
 }

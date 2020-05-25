@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
     <script src="/assets/lib/jquery-2.1.4.min.js"></script>
     <script src="/assets/layui/layui.all.js"></script>
+    <script src="/assets/lib/ox-common.js"></script>
 </head>
 <body>
 <div class="print-box">
@@ -87,7 +88,14 @@
     </div>
     <!--endprint0-->
 </div>
-<div class="layui-btn btn-print">打印</div>
+
+<div class="layui-btn-group btn-print-group">
+<{if empty($print)}>
+    <div class="layui-btn btn-print" data-action="{:url('/index/order.printing/doPrint')}" data-order-id="{$payment.order_id}" data-id="{$payment.id}">打印</div>
+<{/if}>
+
+<div class="layui-btn layui-history layui-right-side" data-action="{:url('/index/order.printing/history', ['order_id'=>$payment.order_id,'item'=>'payment', 'item_id'=>$payment.id])}">查看打印历史</div>
+</div>
 
 <script>
     $(function () {
@@ -101,29 +109,17 @@
             window.document.body.innerHTML=prnhtml;
             window.print();
             window.document.body.innerHTML=bdhtml;
+
+            var url = $(this).attr("data-action");
+            var params = {};
+            params.order_id = $(this).attr('data-order-id');
+            params.item = 'payment';
+            params.item_id = $(this).attr('data-id');
+
+            $.post(url, params, function (res) {
+                console.log(res);
+            })
         })
-        
-        function beforePrint() {
-            console.log('打印');
-        }
-
-        function afterPrint() {
-            console.log('ddd');
-        }
-
-        if (window.matchMedia) {
-            var mediaQueryList = window.matchMedia('print');
-            mediaQueryList.addListener(function(mql) {
-                if (mql.matches) {
-                    beforePrint();
-                } else {
-                    afterPrint();
-
-                }
-
-            });
-
-        }
     })
 </script>
 </body>

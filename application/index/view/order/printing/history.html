@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>打印历史</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
+</head>
+<body>
+<div class="print-box">
+    <!--startprint0-->
+    <div class="layui-card">
+        <div class="layui-card-header">打印历史</div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>打印人</th>
+                        <th>打印时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <{foreach name="list" item="row"}>
+                        <tr>
+                            <td>{$key+1}</td>
+                            <td>{$users[$row.user_id]['realname']}</td>
+                            <td>{$row.create_time}</td>
+                        </tr>
+                    <{/foreach}>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--endprint0-->
+</div>
+
+</body>
+</html>
