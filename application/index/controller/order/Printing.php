@@ -5,6 +5,7 @@ use app\common\model\Audit;
 use app\common\model\Brand;
 use app\common\model\OrderBanquetPayment;
 use app\common\model\OrderBanquetSuborder;
+use app\common\model\OrderHotelProtocol;
 use app\common\model\OrderWeddingPayment;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\User;
@@ -85,7 +86,8 @@ class Printing extends Backend
         $where = [];
         $where[] = ['order_id', '=', $payment->order_id];
         $where[] = ['item_check_status', '=', '2'];
-        $weddingSuborderTotals = OrderWeddingSuborder::where($where)->sum("wedding_totals");
+        $weddingSuborderTotals = 0;
+        // $weddingSuborderTotals = OrderWeddingSuborder::where($where)->sum("wedding_totals");
         $banquetSuborderTotals = OrderBanquetSuborder::where($where)->sum('banquet_totals');
         $suborderTotals = $weddingSuborderTotals + $banquetSuborderTotals;
         $this->assign('suborderTotals', $suborderTotals);
@@ -95,9 +97,15 @@ class Printing extends Backend
         $order['company'] = $companies[$order->company_id]['title'];
         $this->assign('order', $order);
 
-        $paymentList[1] = $order->earnest_money;
-        $paymentList[2] = $order->middle_money;
-        $paymentList[3] = $order->tail_money;
+        $where = [];
+        $where[] = ['order_id', '=', $payment->order_id];
+        $where[] = ['item_check_status', '=', '2'];
+        $protocol = OrderHotelProtocol::where($where)->order('id desc')->find();
+        $this->assign('protocol', $protocol);
+
+        $paymentList[1] = $protocol->earnest_money;
+        $paymentList[2] = $protocol->middle_money;
+        $paymentList[3] = $protocol->tail_money;
         $paymentList[5] = $suborderTotals;
 
         $where = [];
