@@ -1,7 +1,7 @@
 <?php
 namespace app\index\controller\order;
 
-use app\wash\controller\Backend;
+use app\index\controller\Backend;
 
 class Ajax extends Backend
 {

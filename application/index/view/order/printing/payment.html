@@ -28,27 +28,39 @@
                     <td class="field-title">举办酒店</td>
                     <td width="20%">{$order.hotel_text}</td>
                     <td class="field-title">举办日期</td>
-                    <td colspan="2">{$order.event_date}</td>
+                    <td colspan="2">{:substr($order.event_date, 0, 10)}</td>
                     <td class="field-title">新人姓名</td>
                     <td colspan="2">{$order.bridegroom},{$order.bride}</td>
                 </tr>
                 <tr>
                     <td class="field-title">合同定金</td>
-                    <td>{$order.totals}</td>
+                    <td>{$order.earnest_money}</td>
                     <td class="field-title">合同中款</td>
                     <td>{$order.middle_money}</td>
                     <td class="field-title">合同尾款</td>
                     <td>{$order.tail_money}</td>
                     <td class="field-title">婚宴二销</td>
-                    <td>{$order.tail_money}</td>
+                    <td>{$suborderTotals}</td>
                 </tr>
                 <tr>
                     <td class="field-title">已付金额</td>
-                    <td>{$order.hotel_text}</td>
+                    <td class="td-pay-list">
+                        <ul class="pay-list">
+                            <{foreach name="paid" item="row"}>
+                            <li>{$paymentTypes[$row.pay_type]}:{$row.pay_item_price}</li>
+                            <{/foreach}>
+                        </ul>
+                    </td>
                     <td class="field-title">本次支付金额</td>
-                    <td colspan="2">{$order.event_date}</td>
+                    <td colspan="2">{$data.pay_type}:{$data.pay_item_price}</td>
                     <td class="field-title">剩余未付金额</td>
-                    <td colspan="2">{$order.bridegroom}</td>
+                    <td colspan="2" class="td-pay-list">
+                        <ul class="pay-list">
+                            <{foreach name="unpaid" item="row"}>
+                                <li>{$paymentTypes[$key]}: {$row}</li>
+                            <{/foreach}>
+                        </ul>
+                    </td>
                 </tr>
 
                 <tr>
@@ -61,11 +73,11 @@
                 </tr>
                 <tr>
                     <td class="field-title">支付日期</td>
-                    <td></td>
+                    <td>{:substr($data.apply_pay_date, 0, 10)}</td>
                     <td class="field-title">制单人</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{$user['realname']}</td>
                     <td class="field-title">复核人</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{$hceos}</td>
                 </tr>
             </table>
         </div>
@@ -90,6 +102,28 @@
             window.print();
             window.document.body.innerHTML=bdhtml;
         })
+        
+        function beforePrint() {
+            console.log('打印');
+        }
+
+        function afterPrint() {
+            console.log('ddd');
+        }
+
+        if (window.matchMedia) {
+            var mediaQueryList = window.matchMedia('print');
+            mediaQueryList.addListener(function(mql) {
+                if (mql.matches) {
+                    beforePrint();
+                } else {
+                    afterPrint();
+
+                }
+
+            });
+
+        }
     })
 </script>
 </body>
