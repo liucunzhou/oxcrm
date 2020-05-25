@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>打印</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/assets/style/admin.css" media="all">
+    <link rel="stylesheet" href="/assets/style/print.css?{:rand(10000,100000)}" media="all">
+    <link rel="stylesheet" href="/assets/style/layui-extend.css?{:rand(10000,100000)}" media="all">
+    <script src="/assets/lib/jquery-2.1.4.min.js"></script>
+    <script src="/assets/layui/layui.all.js"></script>
+</head>
+<body>
+<div class="print-box">
+    <!--startprint0-->
+    <div class="layui-card print-card">
+        <div class="layui-card-header">付款凭证</div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr class="no-border">
+                    <td colspan="4">公司名称: {$order.company}</td>
+                    <td colspan="4">合同编号: {$order.contract_no}</td>
+                </tr>
+                <tr>
+                    <td class="field-title">举办酒店</td>
+                    <td width="20%">{$order.hotel_text}</td>
+                    <td class="field-title">举办日期</td>
+                    <td colspan="2">{$order.event_date}</td>
+                    <td class="field-title">新人姓名</td>
+                    <td colspan="2">{$order.bridegroom},{$order.bride}</td>
+                </tr>
+                <tr>
+                    <td class="field-title">合同定金</td>
+                    <td>{$order.totals}</td>
+                    <td class="field-title">合同中款</td>
+                    <td>{$order.middle_money}</td>
+                    <td class="field-title">合同尾款</td>
+                    <td>{$order.tail_money}</td>
+                    <td class="field-title">婚宴二销</td>
+                    <td>{$order.tail_money}</td>
+                </tr>
+                <tr>
+                    <td class="field-title">已付金额</td>
+                    <td>{$order.hotel_text}</td>
+                    <td class="field-title">本次支付金额</td>
+                    <td colspan="2">{$order.event_date}</td>
+                    <td class="field-title">剩余未付金额</td>
+                    <td colspan="2">{$order.bridegroom}</td>
+                </tr>
+
+                <tr>
+                    <td class="field-title">收款人名称</td>
+                    <td>{$data.pay_to_company}</td>
+                    <td class="field-title">收款行名称</td>
+                    <td colspan="2">{$data.pay_to_bank}</td>
+                    <td class="field-title">收款账号</td>
+                    <td colspan="2">{$data.pay_to_account}</td>
+                </tr>
+                <tr>
+                    <td class="field-title">支付日期</td>
+                    <td></td>
+                    <td class="field-title">制单人</td>
+                    <td colspan="2"></td>
+                    <td class="field-title">复核人</td>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="layui-card-footer">
+            <div class="print-date">打印日期：{:date("Y年m月d日")}</div>
+        </div>
+    </div>
+    <!--endprint0-->
+</div>
+<div class="layui-btn btn-print">打印</div>
+
+<script>
+    $(function () {
+        $(document).on("click", ".btn-print", function () {
+            var fang = 0;
+            var bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+            var sprnstr = "<!--startprint"+fang+"-->";
+            var eprnstr = "<!--endprint"+fang+"-->";
+            var prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+            var prnhtml = prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+            window.document.body.innerHTML=prnhtml;
+            window.print();
+            window.document.body.innerHTML=bdhtml;
+        })
+    })
+</script>
+</body>
+</html>

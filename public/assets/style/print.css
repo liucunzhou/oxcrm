@@ -1,0 +1,75 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    /*padding: 20px;*/
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #fff;
+}
+
+body{
+    padding: 20px;
+}
+
+@media print {
+    @page  {
+        size: auto;
+        margin: 0mm;
+    }
+}
+
+
+.btn-print {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    z-index: 99;
+}
+
+.print-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.print-card {
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+}
+
+.print-card.layui-card {
+    box-shadow: none;
+}
+
+.print-card .layui-card-header{
+    text-align: center;
+    font-size: 22px;
+    font-weight: bolder;
+    border: none;
+    justify-content:center;
+}
+
+.print-card .layui-card-footer{
+    border: none;
+}
+
+.field-title {
+    width: 6rem;
+}
+
+.print-date{
+    text-align: right;
+    margin-right: 100px;
+}
+
+tr.no-border {
+    border: none;
+}
+tr.no-border td{
+    border: none;
+}

@@ -189,14 +189,8 @@
         });
         
         $(".btn-print").click(function () {
-            bdhtml=window.document.body.innerHTML;//获取当前页的html代码
-            sprnstr = "<!--startprint"+fang+"-->";
-            eprnstr = "<!--endprint"+fang+"-->";
-            prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
-            prnhtml = prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
-            window.document.body.innerHTML=prnhtml;
-            window.print();
-            window.document.body.innerHTML=bdhtml;
+            var url = $(this).attr("data-action");
+            top.layui.index.openTabsPage(url, '打印')
         });
     })
 </script>
