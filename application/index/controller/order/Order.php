@@ -891,6 +891,14 @@ class Order extends Backend
         foreach ($data as $key => &$value) {
             $companyId = $value->company_id;
             $value['company'] = $this->brands[$companyId]['title'];
+            $where = [];
+            $where[] = ['order_id', '=', $value->id];
+            $wedding = OrderWedding::where($where)->whereNotNull('company_id')->order('id desc')->find();
+            if (!empty($wedding)) {
+                $value['company_wedding'] = $this->brands[$wedding->company_id]['title'];
+            } else {
+                $value['company_wedding'] = '-';
+            }
             $checkStatus = $value->item_check_status;
             $value['check_status'] = $this->confirmStatusList[$checkStatus];
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
