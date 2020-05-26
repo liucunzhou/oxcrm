@@ -17,6 +17,7 @@
         <table class="layui-table no-padding no-margin">
             <thead>
             <tr>
+                <th class="text-left">承办公司</th>
                 <th class="text-left">是否二销</th>
                 <th class="text-left">Led类型</th>
                 <th class="text-left">Led数量</th>
@@ -27,6 +28,7 @@
             <tbody>
             <{foreach name="led" item="row"}>
             <tr>
+                <th class="text-left">{$brands[$row.company_id]['title']}</th>
                 <th class="text-left">{$suborderTypes[$row.is_suborder]}</th>
                 <th class="text-left">{$ledList[$row['led_id']]['title']}</th>
                 <th class="text-left">{$row['led_amount']}</th>

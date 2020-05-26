@@ -28,6 +28,7 @@
             </colgroup>
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">喜糖类型</th>
                 <th class="text-center">喜糖数量</th>
@@ -42,6 +43,7 @@
             <tbody>
             <{foreach name="sugar" item="row"}>
             <tr>
+                <th class="text-center">{$brands[$row.company_id]['title']}</th>
                 <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
                 <th class="text-center">{$sugarList[$row['sugar_id']]['title']}</th>
                 <th class="text-center">{$row['sugar_amount']}</th>

@@ -31,6 +31,7 @@
             </colgroup>
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">是否主车</th>
                 <th class="text-center">型号</th>
@@ -48,6 +49,7 @@
             <tbody>
             <{foreach name="car" item="row"}>
             <tr>
+                <th class="text-center">{$brands[$row.company_id]['title']}</th>
                 <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
                 <th class="text-center">{$row.is_master?'主车':'跟车'}</th>
                 <th class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</th>

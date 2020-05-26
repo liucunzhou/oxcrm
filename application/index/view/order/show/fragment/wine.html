@@ -20,6 +20,7 @@
             </colgroup>
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">酒水类型</th>
                 <th class="text-center">酒水数量</th>
@@ -31,12 +32,13 @@
             <tbody>
             <{foreach name="wine" item="row"}>
             <tr>
-                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
-                <th class="text-center">{$wineList[$row['wine_id']]['title']}</th>
-                <th class="text-center">{$row['wine_amount']}</th>
-                <th class="text-center">{$row['wine_price']}</th>
-                <th class="text-left">{$row['wine_remark']}</th>
-                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                <td class="text-center">{$brands[$row.company_id]['title']}</td>
+                <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
+                <td class="text-center">{$wineList[$row['wine_id']]['title']}</td>
+                <td class="text-center">{$row['wine_amount']}</td>
+                <td class="text-center">{$row['wine_price']}</td>
+                <td class="text-left">{$row['wine_remark']}</td>
+                <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
             </tr>
             <{/foreach}>
             </tbody>

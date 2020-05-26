@@ -20,6 +20,7 @@
             </colgroup>
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">喜糖类型</th>
                 <th class="text-center">喜糖数量</th>
@@ -31,12 +32,13 @@
             <tbody>
             <{foreach name="sugar" item="row"}>
             <tr>
-                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
-                <th class="text-center">{$sugarList[$row['sugar_id']]['title']}</th>
-                <th class="text-center">{$row['sugar_amount']}</th>
-                <th class="text-center">{$row['sugar_price']}</th>
-                <th class="text-left">{$row['sugar_remark']}</th>
-                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                <td class="text-center">{$brands[$row.company_id]['title']}</td>
+                <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
+                <td class="text-center">{$sugarList[$row['sugar_id']]['title']}</td>
+                <td class="text-center">{$row['sugar_amount']}</td>
+                <td class="text-center">{$row['sugar_price']}</td>
+                <td class="text-left">{$row['sugar_remark']}</td>
+                <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
             </tr>
             <{/foreach}>
             </tbody>
