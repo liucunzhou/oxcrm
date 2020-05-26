@@ -62,6 +62,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['order']['id']];
                     $order = \app\common\model\Order::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "订单审核状态" . $order->item_check_status;
@@ -73,6 +75,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['banquet']['id']];
                     $model = \app\common\model\OrderBanquet::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "婚宴审核状态" . $model->item_check_status;
@@ -85,6 +89,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['banquetIncome']['id']];
                     $model = \app\common\model\OrderBanquetReceivables::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "婚宴收款审核状态" . $model->item_check_status;
@@ -98,6 +104,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['banquetPayment']['id']];
                     $model = \app\common\model\OrderBanquetPayment::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "婚宴付款审核状态" . $model->item_check_status;
@@ -110,6 +118,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['wedding']['id']];
                     $model = \app\common\model\OrderWedding::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "婚庆审核状态" . $model->item_check_status;
@@ -121,6 +131,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['weddingIncome']['id']];
                     $model = \app\common\model\OrderWeddingReceivables::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "婚庆收款审核状态" . $model->item_check_status;
@@ -133,6 +145,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['hotelItem']['id']];
                     $model = \app\common\model\OrderHotelItem::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "酒店项目款审核状态" . $model->item_check_status;
@@ -145,6 +159,8 @@ class Review extends Command
                     $where[] = ['id', '=', $source['hotelProtocol']['id']];
                     $model = \app\common\model\OrderHotelItem::where($where)->find();
                     if ($confirm->status == 0) {
+                        echo "审核ID:".$confirm->id;
+                        echo "\n";
                         echo "当前审核状态:" . $confirm->status;
                         echo "\n";
                         echo "酒店协议款审核状态" . $model->item_check_status;
