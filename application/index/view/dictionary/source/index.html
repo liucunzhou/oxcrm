@@ -44,8 +44,8 @@
                     </script>
                     <script type="text/html" id="table-tool">
                         <div class="layui-btn-container">
-                            {:button(["event"=>"editSource", "text"=>"编辑", "atype"=>"edit"])}
-                            {:button(["event"=>"deleteSource", "text"=>"删除", "atype"=>"delete"])}
+                            <a class="layui-btn layui-btn-xs {:auth('/index/dictionary.source/editsource')}" lay-event="editSource">编辑</a>
+                            <a class="layui-btn layui-btn-xs {:auth('/index/dictionary.source/deletesource')}" lay-event="deleteSource">删除</a>
                         </div>
                     </script>
                 </div>

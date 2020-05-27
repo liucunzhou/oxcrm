@@ -39,7 +39,7 @@ class Passport extends Controller
 
         $washGroupIds = [2, 7, 15];
         if(!in_array($user['role_id'], $washGroupIds)) {
-            $this->result([], 503, '非清洗组用户');
+            // $this->result([], 503, '非清洗组用户');
         }
 
         Session::set('user', $user);
