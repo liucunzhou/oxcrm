@@ -123,7 +123,7 @@ class Printing extends Backend
 
         foreach ($weddingIncomeList as $row) {
             $incomeList[] = [
-                'income_type'  => $this->paymentTypes[$row['wedding_income_type']],
+                'income_type'  => '婚庆'.$this->paymentTypes[$row['wedding_income_type']],
                 'income_price'  => $row['wedding_income_item_price'],
             ];
         }
@@ -131,7 +131,7 @@ class Printing extends Backend
         $banquetIncomeList = OrderBanquetReceivables::where($where)->select();
         foreach ($banquetIncomeList as $row) {
             $incomeList[] = [
-                'income_type'  => $this->paymentTypes[$row['banquet_income_type']],
+                'income_type'  => '婚宴'.$this->paymentTypes[$row['banquet_income_type']],
                 'income_price'  => $row['banquet_income_item_price'],
             ];
         }
