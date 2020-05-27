@@ -9,8 +9,19 @@
             </select>
         </div>
 
+        <!--
         <div class="layui-inline layui-col-sm1">
-            <select name="company_id" lay-verify="">
+            <select name="item_id" lay-verify="">
+                <option value=""></option>
+                <option value="order">签约公司</option>
+                <option value="banquet">婚宴承办公司</option>
+                <option value="wedding">婚庆承办公司</option>
+            </select>
+        </div>
+        -->
+
+        <div class="layui-inline layui-col-sm1">
+            <select name="company_id" lay-search>
                 <option value="">签约公司</option>
                 <{foreach name="brands" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -19,7 +30,7 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="source" lay-verify="">
+            <select name="source" lay-search>
                 <option value="">平台来源</option>
                 <{foreach name="sources" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -40,7 +51,7 @@
 
 
         <div class="layui-inline layui-col-sm1">
-            <select name="hotel_id" lay-verify="" lay-search>
+            <select name="hotel_id" lay-search>
                 <option value="">酒店名称</option>
                 <{foreach name="hotels" item="val"}>
                 <option value="{$val['id']}">{$val['title']}</option>
@@ -53,7 +64,7 @@
         </div>
 
         <div class="layui-inline layui-col-sm1">
-            <select name="date_range_type" lay-verify="">
+            <select name="date_range_type">
                 <option value="">时间区间类型</option>
                 <option value="create_time">创建时间</option>
                 <option value="sign_date">签单时间</option>
@@ -66,7 +77,7 @@
         </div>
 
         <div class="layui-inline ">
-            <button class="layui-btn" lay-submit="" lay-filter="form-submit">搜索</button>
+            <button class="layui-btn" lay-filter="form-submit">搜索</button>
         </div>
     </div>
 </form>

@@ -24,6 +24,7 @@
             </colgroup>
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">3D类型</th>
                 <th class="text-center">3D数量</th>
@@ -34,6 +35,7 @@
             <tbody>
             <{foreach name="d3" item="row"}>
             <tr>
+                <td class="text-center">{$brands[$row.company_id]['title']}</td>
                 <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
                 <th class="text-center">{$d3List[$row['d3_id']]['title']}</th>
                 <th class="text-center">{$row['d3_amount']}</th>

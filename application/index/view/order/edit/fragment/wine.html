@@ -30,6 +30,7 @@
             -->
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">酒水类型</th>
                 <th class="text-center">酒水数量</th>
@@ -43,6 +44,7 @@
             <tbody>
             <{foreach name="wine" item="row"}>
             <tr>
+                <th class="text-left">{$brands[$row.company_id]['title']}</th>
                 <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
                 <th class="text-center">{$wineList[$row['wine_id']]['title']}</th>
                 <th class="text-center">{$row['wine_amount']}</th>

@@ -20,6 +20,7 @@
             </colgroup>
             <thead>
             <tr>
+                <th class="text-center">承办公司</th>
                 <th class="text-center">是否二销</th>
                 <th class="text-center">是否主车</th>
                 <th class="text-center">型号</th>
@@ -34,15 +35,16 @@
             <tbody>
             <{foreach name="car" item="row"}>
             <tr>
-                <th class="text-center">{$suborderTypes[$row.is_suborder]}</th>
-                <th class="text-center">{$row.is_master?'主车':'跟车'}</th>
-                <th class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</th>
-                <th class="text-center">{$row['car_amount']}</th>
-                <th class="text-center">{$row['car_price']}</th>
-                <th class="text-center">{$row['service_hour']}</th>
-                <th class="text-center">{$row['service_distance']}</th>
-                <th class="text-center">{$row['car_remark']}</th>
-                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                <td class="text-center">{$brands[$row.company_id]['title']}</td>
+                <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
+                <td class="text-center">{$row.is_master?'主车':'跟车'}</td>
+                <td class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</td>
+                <td class="text-center">{$row['car_amount']}</td>
+                <td class="text-center">{$row['car_price']}</td>
+                <td class="text-center">{$row['service_hour']}</td>
+                <td class="text-center">{$row['service_distance']}</td>
+                <td class="text-center">{$row['car_remark']}</td>
+                <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
             </tr>
             <{/foreach}>
             </tbody>

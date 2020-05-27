@@ -141,11 +141,15 @@ class Confirm extends Base
                 $order = \app\common\model\Order::get($confirm->order_id);
                 $key = key($source);
                 if ($key == 'order') {
-                    if ($order->complete == '99') {
-                        // 意向金
-                        $path = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                    if($order->cooperation_mode == '1' && $order->news_type != '1') {
+                        $path = '/pages/addOrderItems/clubOrder/clubOrder';
                     } else {
-                        $path = '/pages/addOrderItems/order/order';
+                        if ($order->complete == '99') {
+                            // 意向金
+                            $path = '/pages/addOrderItems/earnestMoney/earnestMoney';
+                        } else {
+                            $path = '/pages/addOrderItems/order/order';
+                        }
                     }
                 } else if ($key == 'banquet') {
                     $path = '/pages/addOrderItems/banquet/banquet';
@@ -435,6 +439,7 @@ class Confirm extends Base
                 $source['order']['image'] = images_to_array($orderData['image']);
                 $source['order']['receipt_img'] = images_to_array($orderData['receipt_img']);
                 $source['order']['note_img'] = images_to_array($orderData['note_img']);
+                $source['order']['cooperation_mode'] = $source['order']['cooperation_mode'] - 1;
             }
 
             if (isset($source['banquetIncome'])){

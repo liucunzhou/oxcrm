@@ -3,7 +3,6 @@
 if (!function_exists('format_date_range')) {
     function format_date_range($range)
     {
-        echo $range;
         switch ($range) {
             case strpos($range, '~'):
                 $arr = explode('~', $range);

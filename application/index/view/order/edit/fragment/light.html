@@ -30,6 +30,7 @@
             -->
             <thead>
             <tr>
+                <th class="text-left">承办公司</th>
                 <th class="text-left">是否二销</th>
                 <th class="text-left">灯光类型</th>
                 <th class="text-left">灯光数量</th>
@@ -40,6 +41,7 @@
             <tbody>
             <{foreach name="light" item="row"}>
             <tr>
+                <th class="text-left">{$brands[$row.company_id]['title']}</th>
                 <th class="text-left">{$suborderTypes[$row.is_suborder]}</th>
                 <th class="text-left">{$lightList[$row['light_id']]['title']}</th>
                 <th class="text-left">{$row['light_amount']}</th>

@@ -9,6 +9,7 @@
         <table class="layui-table no-padding no-margin">
             <thead>
                 <tr>
+                    <th class="text-center">承办公司</th>
                     <th class="text-center">婚宴总金额</th>
                     <th class="text-center">桌数</th>
                     <th class="text-center">餐标</th>
@@ -24,6 +25,7 @@
             </thead>
             <tbody>
                 <tr>
+                    <td class="text-center">{$brands[$banquet.company_id]['title']}</td>
                     <td class="text-center">{$banquet.banquet_totals}</td>
                     <td class="text-center">{$banquet.table_amount}</td>
                     <td class="text-center">{$banquet.table_price}</td>
