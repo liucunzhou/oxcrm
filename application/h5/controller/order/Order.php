@@ -1000,7 +1000,7 @@ class Order extends Base
                 $row['car_mobile'] = $carData['car_mobile'];
                 $row['arrive_time'] = $carData['arrive_time'];
                 $row['arrive_address'] = $carData['arrive_address'];
-                $row['car_remark'] = $carData['car_remark'];
+                $row['car_remark'] = $carData['slave_car_remark'];
                 $row['create_time'] = time();
                 $row['salesman'] = $this->user['id'];
                 $row['order_id'] = $OrderModel->id;
@@ -1123,7 +1123,7 @@ class Order extends Base
             }
 
             if ($orderData['news_type'] == '2' || $orderData['news_type'] == '0') {
-                // 婚宴收款
+                // 婚宴收款或一站式
                 $data = [];
                 $data['banquet_receivable_no'] = $income['receivable_no'];
                 $data['banquet_income_date'] = $income['income_date'];
@@ -1656,6 +1656,7 @@ class Order extends Base
         $param = $this->request->param();
 
         $post = json_decode($param['order'], true);
+        $post['cooperation_mode'] = $post['cooperation_mode'] + 1;
         if($post['cooperation_mode'] != '1') {
             $orderValidate = new \app\common\validate\Order();
         } else {
@@ -1667,6 +1668,7 @@ class Order extends Base
                 'msg' => $orderValidate->getError()
             ]);
         }
+
         $post['image'] = empty($post['imageArray']) ? '' : implode(',', $post['imageArray']);
         $post['receipt_img'] = empty($post['receipt_imgArray']) ? '' : implode(',', $post['receipt_imgArray']);
         $post['note_img'] = empty($post['note_imgArray']) ? '' : implode(',', $post['note_imgArray']);

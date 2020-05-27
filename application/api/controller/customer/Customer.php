@@ -1,8 +1,16 @@
 <?php
 namespace app\api\controller\customer;
 
-class Customer
+use think\Controller;
+
+class Customer extends Controller
 {
+    private $listFields = [];
+    protected function initialize()
+    {
+        parent::initialize();
+    }
+
     /**
      * 今日跟进
      */
@@ -16,6 +24,7 @@ class Customer
      */
     public function mine()
     {
+        // 字段
         return json();
     }
 }
