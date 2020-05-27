@@ -149,6 +149,8 @@
                     <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
                     <th class="text-center">
                         <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
+                        &nbsp;
+                        <a href="javascript:void(0);" class="layui-right-side {:auth('/index/order.banquet_receivable/income')}" data-action="{:url('/index/order.banquet_receivable/income', ['id'=>$row['id'], 'type'=>'banquet'])}">实收</a>
                     </th>
                 </tr>
                 <tr>
@@ -170,6 +172,7 @@
                     <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
                     <th class="text-center">
                         <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
+                        <a href="javascript:void(0);" class="layui-right-side {:auth('/index/order.wedding_receivable/income')}" data-action="{:url('/index/order.wedding_receivable/income', ['id'=>$row['id'], 'type'=>'wedding'])}">实收</a>
                     </th>
                 </tr>
                 <tr>
@@ -270,7 +273,7 @@
                 <th>
                     <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
                     &nbsp;&nbsp;
-                    <a href="javascript:void(0);" class="btn-print" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'wedding'])}">打印</a>
+                    <a href="javascript:void(0);" class="btn-print {:auth('/index/order.printing/payment')}" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'wedding'])}">打印</a>
                 </th>
             </tr>
             <tr>

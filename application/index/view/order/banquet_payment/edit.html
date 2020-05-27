@@ -59,20 +59,19 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">收款酒店</label>
                     <div class="layui-input-block">
-                        <input type="text" name="banquet_supplier" value="{$hotel['title']}" lay-verify="" placeholder="收款名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="banquet_supplier" value="{$data['banquet_supplier']}" lay-verify="" placeholder="收款名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">收款账号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="banquet_pay_to_company" value="{$hotel['bank_company']}" lay-verify="" autocomplete="off" class="layui-input">
-                        <input type="hidden" name="banquet_pay_to_account" value="{$hotel['bank_account']}" lay-verify="" placeholder="收款账号" autocomplete="off" class="layui-input">
+                        <input type="hidden" name="banquet_pay_to_account" value="{$data['banquet_pay_to_account']}" lay-verify="" placeholder="收款账号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">开户行</label>
                     <div class="layui-input-block">
-                        <input type="text" name="banquet_pay_to_bank" value="{$hotel['bank_name']}" lay-verify="" placeholder="开户行" autocomplete="off" class="layui-input">
+                        <input type="text" name="banquet_pay_to_bank" value="{$data['banquet_pay_to_bank']}" lay-verify="" placeholder="开户行" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">

@@ -99,6 +99,20 @@ class WeddingReceivable extends Backend
         return $this->fetch();
     }
 
+    # 婚庆实际收款信息
+    public function income($id)
+    {
+
+        $banquetReceivable = OrderWeddingReceivables::get($id);
+        $this->assign('data', $banquetReceivable);
+        $order = \app\common\model\Order::get($banquetReceivable->order_id)->getData();
+
+        ## 获取付款信息
+        $data = OrderWeddingReceivables::get($id);
+        $this->assign('data', $data);
+        return $this->fetch();
+    }
+
     public function doEdit()
     {
         $request = Request::param();
