@@ -878,7 +878,7 @@ class Order extends Backend
             $map[] = [$get['date_range_type'], 'between', $range];
         }
 
-        $map[] = ['item_check_status', 'in', [0,1,2]];
+        $map[] = ['item_check_status', 'in', [0, 1, 2]];
         $model = model('order')->where($map);
         if ($get['mobile'] != '') {
             $model = $model->where('bridegroom_mobile|bride_mobile', 'like', "%{$get['mobile']}%");
@@ -918,7 +918,7 @@ class Order extends Backend
             'page' => $get['page']
         ];
 
-        if ($get['company_id'] > 0) {
+        if (isset($get['company_id']) && $get['company_id'] > 0) {
             $map[] = ['company_id', '=', $get['company_id']];
         }
 
@@ -964,6 +964,15 @@ class Order extends Backend
             $value['company'] = $this->brands[$companyId]['title'];
             $checkStatus = $value->item_check_status;
             $value['check_status'] = $this->confirmStatusList[$checkStatus];
+            $where = [];
+            $where[] = ['order_id', '=', $value->id];
+            $wedding = OrderWedding::where($where)->whereNotNull('company_id')->order('id desc')->find();
+            if (!empty($wedding)) {
+                $value['company_wedding'] = $this->brands[$wedding->company_id]['title'];
+            } else {
+                $value['company_wedding'] = '-';
+            }
+
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
             !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
             $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';

@@ -151,7 +151,7 @@ class Planner extends Backend
         }
 
         // 审核完成的
-        $map[] = ['check_status', '=', 2];
+        $map[] = ['item_check_status', '=', 2];
         $model = new \app\common\model\Order();
         $model = $model->where($map);
         if (!empty($get['mobile'])) {
@@ -177,8 +177,8 @@ class Planner extends Backend
         foreach ($data as $key => &$value) {
             $companyId = $value->company_id;
             $value['company'] = $this->brands[$companyId]['title'];
-            $checkStatus = $value->check_status;
-            $value['check_status'] = $this->confirmStatusList[$checkStatus];
+            $checkStatus = $value->item_check_status;
+            $value['item_check_status'] = $this->confirmStatusList[$checkStatus];
             !empty($value['bridegroom_mobile']) && $value['bridegroom_mobile'] = substr_replace($value['bridegroom_mobile'], '***', 3, 3);;
             !empty($value['bride_mobile']) && $value['bride_mobile'] = substr_replace($value['bride_mobile'], '***', 3, 3);;
             $value['source_id'] = isset($this->sources[$value['source_id']]) ? $this->sources[$value['source_id']]['title'] : '-';
