@@ -129,19 +129,19 @@ class Planner extends Backend
             'page' => $get['page']
         ];
 
-        if ($get['company_id'] > 0) {
+        if (isset($get['company_id']) && $get['company_id'] > 0) {
             $map[] = ['company_id', '=', $get['company_id']];
         }
 
-        if ($get['source'] > 0) {
+        if (isset($get['source']) && $get['source'] > 0) {
             $map[] = ['source_id', '=', $get['source']];
         }
 
-        if ($get['hotel_id'] > 0) {
+        if (isset($get['hotel_id']) && $get['hotel_id'] > 0) {
             $map[] = ['hotel_id', '=', $get['hotel_id']];
         }
 
-        if ($get['staff'] > 0) {
+        if (isset($get['staff']) && $get['staff'] > 0) {
             $map[] = ['salesman', '=',  $get['staff']];
         }
 
@@ -152,7 +152,6 @@ class Planner extends Backend
 
         // 审核完成的
         $map[] = ['check_status', '=', 2];
-
         $model = new \app\common\model\Order();
         $model = $model->where($map);
         if (!empty($get['mobile'])) {
