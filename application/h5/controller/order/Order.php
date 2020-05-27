@@ -971,7 +971,7 @@ class Order extends Base
                 $row['car_mobile'] = $carData['car_mobile'];
                 $row['arrive_time'] = $carData['arrive_time'];
                 $row['arrive_address'] = $carData['arrive_address'];
-                $row['car_remark'] = $carData['master_car_remark'];
+                $row['car_remark'] = $carData['car_remark'];
                 $row['salesman'] = $this->user['id'];;
                 $row['order_id'] = $OrderModel->id;
                 $row['operate_id'] = $this->user['id'];
@@ -1000,7 +1000,7 @@ class Order extends Base
                 $row['car_mobile'] = $carData['car_mobile'];
                 $row['arrive_time'] = $carData['arrive_time'];
                 $row['arrive_address'] = $carData['arrive_address'];
-                $row['car_remark'] = $carData['slave_car_remark'];
+                $row['car_remark'] = $carData['car_remark'];
                 $row['create_time'] = time();
                 $row['salesman'] = $this->user['id'];
                 $row['order_id'] = $OrderModel->id;
