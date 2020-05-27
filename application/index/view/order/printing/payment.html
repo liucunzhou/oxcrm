@@ -44,6 +44,16 @@
                     <td>{$suborderTotals}</td>
                 </tr>
                 <tr>
+                    <td>已付金额:</td>
+                    <td colspan="7">
+                        <{foreach name="incomeList" item="row"}>
+                            <span style="padding-right: 16px">
+                                {$row['income_type']}:{$row['income_price']}
+                            </span>
+                        <{/foreach}>
+                    </td>
+                </tr>
+                <tr>
                     <td class="field-title">已付金额</td>
                     <td class="td-pay-list">
                         <ul class="pay-list">
@@ -78,7 +88,7 @@
                     <td class="field-title">制单人</td>
                     <td colspan="2">{$user['realname']}</td>
                     <td class="field-title">复核人</td>
-                    <td colspan="2">{$hceos}</td>
+                    <td colspan="2"></td>
                 </tr>
             </table>
         </div>

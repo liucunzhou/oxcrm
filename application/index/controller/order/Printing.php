@@ -4,10 +4,12 @@ namespace app\index\controller\order;
 use app\common\model\Audit;
 use app\common\model\Brand;
 use app\common\model\OrderBanquetPayment;
+use app\common\model\OrderBanquetReceivables;
 use app\common\model\OrderBanquetSuborder;
 use app\common\model\OrderHotelProtocol;
 use app\common\model\OrderPrint;
 use app\common\model\OrderWeddingPayment;
+use app\common\model\OrderWeddingReceivables;
 use app\common\model\OrderWeddingSuborder;
 use app\common\model\User;
 use app\index\controller\Backend;
@@ -94,22 +96,48 @@ class Printing extends Backend
         $suborderTotals = $weddingSuborderTotals + $banquetSuborderTotals;
         $this->assign('suborderTotals', $suborderTotals);
 
+        ### 获取公司信息
         $companies = Brand::getBrands();
         $order = \app\common\model\Order::get($payment->order_id);
         $order['company'] = $companies[$order->company_id]['title'];
         $this->assign('order', $order);
 
+        ### 获取酒店协议实收金额
         $where = [];
         $where[] = ['order_id', '=', $payment->order_id];
         $where[] = ['item_check_status', '=', '2'];
         $protocol = OrderHotelProtocol::where($where)->order('id desc')->find();
         $this->assign('protocol', $protocol);
-
         $paymentList[1] = $protocol->earnest_money;
         $paymentList[2] = $protocol->middle_money;
         $paymentList[3] = $protocol->tail_money;
         $paymentList[5] = $suborderTotals;
 
+        ### 获取实收列表
+        $where = [];
+        $where[] = ['order_id', '=', $payment->order_id];
+        $where[] = ['item_check_status', '=', '2'];
+        $incomeList = [];
+        // 婚庆实收列表
+        $weddingIncomeList = OrderWeddingReceivables::where($where)->select();
+
+        foreach ($weddingIncomeList as $row) {
+            $incomeList[] = [
+                'income_type'  => $this->paymentTypes[$row['wedding_income_type']],
+                'income_price'  => $row['wedding_income_item_price'],
+            ];
+        }
+        // 婚宴实收列表
+        $banquetIncomeList = OrderBanquetReceivables::where($where)->select();
+        foreach ($banquetIncomeList as $row) {
+            $incomeList[] = [
+                'income_type'  => $this->paymentTypes[$row['banquet_income_type']],
+                'income_price'  => $row['banquet_income_item_price'],
+            ];
+        }
+        $this->assign('incomeList', $incomeList);
+
+        ### 获取实付列表
         $where = [];
         $where[] = ['order_id', '=', $payment->order_id];
         $where[] = ['item_check_status', '=', '2'];
@@ -120,7 +148,8 @@ class Printing extends Backend
         }
         $this->assign('unpaid', $paymentList);
 
-        ### 获取复核人
+        ### 获取复核人,手签不显示
+        /**
         $where = [];
         $where[] = ['company_id', '=', $order->company_id];
         $where[] = ['timing', '=', 'payment'];
@@ -133,6 +162,7 @@ class Printing extends Backend
             $hceos[] = $cuser['realname'];
         }
         $this->assign('hceos', implode(',', $hceos));
+        **/
 
         $where = [];
         $where[] = ['order_id', '=', $payment->order_id];
