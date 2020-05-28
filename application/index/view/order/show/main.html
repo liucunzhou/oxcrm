@@ -90,7 +90,7 @@
                                 <h3 class="layui-timeline-title">{$value.title}</h3>
                                 <p>
                                     <{php}>
-                                        $realnames = array_column($value['managerList'], realname);
+                                        $realnames = array_column($value['managerList'], 'realname');
                                     <{/php}>
                                     审核人员:{:implode(',', $realnames)}
                                 </p>

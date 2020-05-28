@@ -73,7 +73,7 @@ class Income extends Base
             $income['remark'] = $data['income_remark'];
             $income['receipt_img'] = implode(',', $data['receipt_img']);
             $income['note_img'] = implode(',', $data['note_img']);
-            $receivable = new OrderBanquetReceivables();
+            $receivable = new OrderWeddingReceivables();
             $result2 = $receivable->allowField(true)->save($income);
             $source['weddingIncome'][] = $receivable->toArray();
 
