@@ -156,8 +156,6 @@ class User extends Model
         $where[] = ['role_id', '=', $roleId];
         $where[] = ['department_id', 'in', $departments];
         $user = self::where($where)->order('')->find();
-        echo self::getLastSql();
-        echo "<br>";
 
         return $user;
     }

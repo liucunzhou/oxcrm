@@ -1014,6 +1014,7 @@ class Confirm extends Base
                         'avatar' => $avatar
                     ];
                 }
+
             } else {
                 foreach ($row as $v) {
                     if (!isset($staffs[$v])) continue;

@@ -277,12 +277,12 @@ class Confirm extends Backend
     public function showOrder()
     {
         $get = $this->request->param();
-        $orderConfirm = $this->model->where('id', '=', $get['confirm_id'])->find();
-        $this->assign('confirm', $orderConfirm);
+        $confirm = $this->model->where('id', '=', $get['confirm_id'])->find();
+        $this->assign('confirm', $confirm);
 
         $checkItems = [];
-        if(!empty($orderConfirm->source)) {
-            $source = json_decode($orderConfirm->source, true);
+        if(!empty($confirm->source)) {
+            $source = json_decode($confirm->source, true);
             foreach ($source as $key=>$item) {
                 if($key == 'order') {
                     $checkItems['order'] = $item['id'];
@@ -342,7 +342,7 @@ class Confirm extends Backend
         }
         $this->assign('checkItems', $checkItems);
 
-        $get['id'] = $orderConfirm->order_id;
+        $get['id'] = $confirm->order_id;
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);
         if (empty($this->user['sale']) && $order->salesman > 0) {
@@ -565,13 +565,13 @@ class Confirm extends Backend
 
         ## 获取审核进度
         $where = [];
-        $where[] = ['company_id', '=', $orderConfirm->company_id];
-        $where[] = ['timing', '=', $orderConfirm->confirm_type];
+        $where[] = ['company_id', '=', $confirm->company_id];
+        $where[] = ['timing', '=', $confirm->confirm_type];
         $audit = \app\common\model\Audit::where($where)->find();
 
         $where = [];
-        $where['confirm_no'] = $orderConfirm->confirm_no;
-        $where['order_id'] = $orderConfirm->order_id;
+        $where['confirm_no'] = $confirm->confirm_no;
+        $where['order_id'] = $confirm->order_id;
         $orderConfirm = new OrderConfirm();
         $confirmRs = $orderConfirm->where($where)->column('id,status,content,update_time,create_time,image', 'confirm_item_id');
         $avatar = 'https://www.yusivip.com/upload/commonAppimg/hs_app_logo.png';
@@ -580,7 +580,7 @@ class Confirm extends Backend
         $sequence = $config['crm']['check_sequence'];
         $auth = json_decode($audit->content, true);
 
-        $userId = empty($order['user_id']) ? $order['salesman'] : $order['user_id'];
+        $userId = $confirm->user_id;
         $orderUser = User::getUser($userId);
         $confirmList = [];
         foreach ($auth as $key => $row) {
