@@ -136,52 +136,54 @@
                     <th class="text-center">操作</th>
                 </tr>
             </thead>
-            <tbody>
             <{foreach name="banquetReceivables" item="row"}>
-                <tr>
-                    <td class="text-left">婚宴</td>
-                    <td class="text-left">{$row['banquet_receivable_no']}</td>
-                    <td class="text-left">{$row['banquet_income_date']}</td>
-                    <td class="text-left">{$row['banquet_income_real_date']}</td>
-                    <td class="text-left">{$payments[$row['banquet_income_payment']]}</td>
-                    <td class="text-left">{$paymentTypes[$row['banquet_income_type']]}</td>
-                    <td class="text-left">{$row['banquet_income_item_price']}</td>
-                    <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
-                    <th class="text-center">
-                        <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
-                        &nbsp;
-                        <a href="javascript:void(0);" class="layui-right-side {:auth('/index/order.banquet_receivable/income')}" data-action="{:url('/index/order.banquet_receivable/income', ['id'=>$row['id'], 'type'=>'banquet'])}">实收</a>
-                    </th>
-                </tr>
-                <tr>
-                    <td class="text-left" colspan="9">
-                        <div class="remark">备注:{$row.remark}</div>
-                    </td>
-                </tr>
+                <tbody class="<{if isset($checkItems['banquetIncome']) && in_array($row['id'], $checkItems['banquetIncome'])}>layui-bg-blue<{/if}>">
+                    <tr>
+                        <td class="text-left">婚宴</td>
+                        <td class="text-left">{$row['banquet_receivable_no']}</td>
+                        <td class="text-left">{$row['banquet_income_date']}</td>
+                        <td class="text-left">{$row['banquet_income_real_date']}</td>
+                        <td class="text-left">{$payments[$row['banquet_income_payment']]}</td>
+                        <td class="text-left">{$paymentTypes[$row['banquet_income_type']]}</td>
+                        <td class="text-left">{$row['banquet_income_item_price']}</td>
+                        <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                        <th class="text-center">
+                            <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
+                            &nbsp;
+                            <a href="javascript:void(0);" class="layui-right-side {:auth('/index/order.banquet_receivable/income')}" data-action="{:url('/index/order.banquet_receivable/income', ['id'=>$row['id'], 'type'=>'banquet'])}">实收</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="text-left" colspan="9">
+                            <div class="remark">备注:{$row.remark}</div>
+                        </td>
+                    </tr>
+                </tbody>
             <{/foreach}>
 
             <{foreach name="weddingReceivables" item="row"}>
-                <tr>
-                    <td class="text-left">婚庆</td>
-                    <td class="text-left">{$row.wedding_receivable_no}</td>
-                    <td class="text-left">{$row.wedding_income_date}</td>
-                    <td class="text-left">{$row.wedding_income_real_date}</td>
-                    <td class="text-left">{$payments[$row['wedding_income_payment']]}</td>
-                    <td class="text-left">{$paymentTypes[$row.wedding_income_type]}</td>
-                    <td class="text-left">{$row.wedding_income_item_price}</td>
-                    <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
-                    <th class="text-center">
-                        <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
-                        <a href="javascript:void(0);" class="layui-right-side {:auth('/index/order.wedding_receivable/income')}" data-action="{:url('/index/order.wedding_receivable/income', ['id'=>$row['id'], 'type'=>'wedding'])}">实收</a>
-                    </th>
-                </tr>
-                <tr>
-                    <td class="text-left" colspan="9">
-                        <div class="remark">备注:{$row.remark}</div>
-                    </td>
-                </tr>
+                <tbody class="<{if isset($checkItems['weddingIncome']) && in_array($row['id'], $checkItems['weddingIncome'])}>layui-bg-blue<{/if}>">
+                    <tr>
+                        <td class="text-left">婚庆</td>
+                        <td class="text-left">{$row.wedding_receivable_no}</td>
+                        <td class="text-left">{$row.wedding_income_date}</td>
+                        <td class="text-left">{$row.wedding_income_real_date}</td>
+                        <td class="text-left">{$payments[$row['wedding_income_payment']]}</td>
+                        <td class="text-left">{$paymentTypes[$row.wedding_income_type]}</td>
+                        <td class="text-left">{$row.wedding_income_item_price}</td>
+                        <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                        <th class="text-center">
+                            <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
+                            <a href="javascript:void(0);" class="layui-right-side {:auth('/index/order.wedding_receivable/income')}" data-action="{:url('/index/order.wedding_receivable/income', ['id'=>$row['id'], 'type'=>'wedding'])}">实收</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="text-left" colspan="9">
+                            <div class="remark">备注:{$row.remark}</div>
+                        </td>
+                    </tr>
+                </tbody>
             <{/foreach}>
-            </tbody>
         </table>
     </div>
 </div>
@@ -209,31 +211,31 @@
                 <th class="text-center">操作</th>
             </tr>
             </thead>
-            <tbody>
             <{foreach name="banquetPayments" item="row"}>
-            <tr>
-                <th class="text-left">婚宴</th>
-                <th class="text-left">{$row['banquet_payment_no']}</th>
-                <th class="text-left">{$row['banquet_apply_pay_date']}</th>
-                <th class="text-left">{$paymentTypes[$row['banquet_pay_type']]}</th>
-                <th class="text-left">{$row['banquet_pay_item_price']}</th>
-                <th class="text-left">{$row['banquet_pay_to_company']}</th>
-                <th class="text-left">{$row['banquet_pay_to_account']}</th>
-                <th class="text-left">{$row['banquet_pay_to_bank']}</th>
-                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
-                <th class="text-center">
-                    <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
-                    &nbsp;&nbsp;
-                    <a href="javascript:void(0);" class="btn-print {:auth('/index/order.printing/payment')}" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'banquet'])}">打印</a>
-                </th>
-            </tr>
-            <tr>
-                <th class="text-left" colspan="10">
-                    <div class="remark">备注：{$row.banquet_payment_remark}</div>
-                </th>
-            </tr>
+                <tbody class="<{if isset($checkItems['banquetPayment']) && in_array($row['id'], $checkItems['banquetPayment'])}>layui-bg-blue<{/if}>">
+                    <tr>
+                        <th class="text-left">婚宴</th>
+                        <th class="text-left">{$row['banquet_payment_no']}</th>
+                        <th class="text-left">{$row['banquet_apply_pay_date']}</th>
+                        <th class="text-left">{$paymentTypes[$row['banquet_pay_type']]}</th>
+                        <th class="text-left">{$row['banquet_pay_item_price']}</th>
+                        <th class="text-left">{$row['banquet_pay_to_company']}</th>
+                        <th class="text-left">{$row['banquet_pay_to_account']}</th>
+                        <th class="text-left">{$row['banquet_pay_to_bank']}</th>
+                        <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                        <th class="text-center">
+                            <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
+                            &nbsp;&nbsp;
+                            <a href="javascript:void(0);" class="btn-print {:auth('/index/order.printing/payment')}" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'banquet'])}">打印</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-left" colspan="10">
+                            <div class="remark">备注：{$row.banquet_payment_remark}</div>
+                        </th>
+                    </tr>
+                </tbody>
             <{/foreach}>
-            </tbody>
         </table>
     </div>
 </div>
@@ -259,30 +261,30 @@
                 <th class="text-left">操作</th>
             </tr>
             </thead>
-            <tbody>
             <{foreach name="weddingPayments" item="row"}>
-            <tr>
-                <th class="text-left">{$row['wedding_payment_no']}</th>
-                <th class="text-left">{$row['wedding_apply_pay_date']}</th>
-                <th class="text-left">{$paymentTypes[$row['wedding_pay_type']]}</th>
-                <th class="text-left">{$row['wedding_pay_item_price']}</th>
-                <th class="text-left">{$row['wedding_pay_to_company']}</th>
-                <th class="text-left">{$row['wedding_pay_to_account']}</th>
-                <th class="text-left">{$row['wedding_pay_to_bank']}</th>
-                <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
-                <th>
-                    <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
-                    &nbsp;&nbsp;
-                    <a href="javascript:void(0);" class="btn-print {:auth('/index/order.printing/payment')}" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'wedding'])}">打印</a>
-                </th>
-            </tr>
-            <tr>
-                <th class="text-left" colspan="10">
-                    <div class="remark">备注:{$row.wedding_payment_remark}</div>
-                </th>
-            </tr>
+                <tbody class="<{if isset($checkItems['weddingPayment']) && in_array($row['id'], $checkItems['weddingPayment'])}>layui-bg-blue<{/if}>">
+                    <tr>
+                        <th class="text-left">{$row['wedding_payment_no']}</th>
+                        <th class="text-left">{$row['wedding_apply_pay_date']}</th>
+                        <th class="text-left">{$paymentTypes[$row['wedding_pay_type']]}</th>
+                        <th class="text-left">{$row['wedding_pay_item_price']}</th>
+                        <th class="text-left">{$row['wedding_pay_to_company']}</th>
+                        <th class="text-left">{$row['wedding_pay_to_account']}</th>
+                        <th class="text-left">{$row['wedding_pay_to_bank']}</th>
+                        <th class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</th>
+                        <th>
+                            <a href="javascript:void(0);" class="show-image" data-image='{:json_encode($row["images"])}'>查看</a>
+                            &nbsp;&nbsp;
+                            <a href="javascript:void(0);" class="btn-print {:auth('/index/order.printing/payment')}" data-action="{:url('/index/order.printing/payment', ['id'=>$row['id'], 'type'=>'wedding'])}">打印</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-left" colspan="10">
+                            <div class="remark">备注:{$row.wedding_payment_remark}</div>
+                        </th>
+                    </tr>
+                </tbody>
             <{/foreach}>
-            </tbody>
         </table>
     </div>
 </div>

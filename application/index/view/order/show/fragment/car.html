@@ -32,22 +32,22 @@
                 <th class="text-center">审核状态</th>
             </tr>
             </thead>
-            <tbody>
             <{foreach name="car" item="row"}>
-            <tr>
-                <td class="text-center">{$brands[$row.company_id]['title']}</td>
-                <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
-                <td class="text-center">{$row.is_master?'主车':'跟车'}</td>
-                <td class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</td>
-                <td class="text-center">{$row['car_amount']}</td>
-                <td class="text-center">{$row['car_price']}</td>
-                <td class="text-center">{$row['service_hour']}</td>
-                <td class="text-center">{$row['service_distance']}</td>
-                <td class="text-center">{$row['car_remark']}</td>
-                <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
-            </tr>
-            <{/foreach}>
+            <tbody class="<{if isset($checkItems['car']) && in_array($row['id'], $checkItems['car'])}>layui-bg-blue<{/if}>">
+                <tr>
+                    <td class="text-center">{$brands[$row.company_id]['title']}</td>
+                    <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
+                    <td class="text-center">{$row.is_master?'主车':'跟车'}</td>
+                    <td class="text-center">{$carList[$row['car_id']]['title']}-{$carList[$row['car_id']]['color']}</td>
+                    <td class="text-center">{$row['car_amount']}</td>
+                    <td class="text-center">{$row['car_price']}</td>
+                    <td class="text-center">{$row['service_hour']}</td>
+                    <td class="text-center">{$row['service_distance']}</td>
+                    <td class="text-center">{$row['car_remark']}</td>
+                    <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
+                </tr>
             </tbody>
+            <{/foreach}>
         </table>
     </div>
 </div>

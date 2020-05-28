@@ -19,7 +19,7 @@
                     <th class="text-center">审核状态</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="<{if isset($checkItems['wedding']) && $wedding['id'] == $checkItems['wedding']}>layui-bg-blue<{/if}>">
                 <tr>
                     <td class="text-center">{$brands[$wedding.company_id]['title']}</td>
                     <td class="text-center">{$wedding.wedding_total}</td>
@@ -61,19 +61,19 @@
                     <th class="text-center">订单金额</th>
                 </tr>
             </thead>
-            <tbody>
-                <{foreach name="weddingOrders" item="row"}>
-                    <tr>
-                        <td class="text-center">{$row['wedding_order_no']}</td>
-                        <td class="text-center">{$row['wedding_totals']}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" colspan="2">
-                            <div class="remark">备注:{$row.sub_wedding_remark}</div>
-                        </td>
-                    </tr>
-                <{/foreach}>
+            <{foreach name="weddingOrders" item="row"}>
+            <tbody class="<{if isset($checkItems['weddingSuborder']) && in_array($row['id'], $checkItems['weddingSuborder'])}>layui-bg-blue<{/if}>">
+                <tr>
+                    <td class="text-center">{$row['wedding_order_no']}</td>
+                    <td class="text-center">{$row['wedding_totals']}</td>
+                </tr>
+                <tr>
+                    <td class="text-left" colspan="2">
+                        <div class="remark">备注:{$row.sub_wedding_remark}</div>
+                    </td>
+                </tr>
             </tbody>
+            <{/foreach}>
         </table>
     </div>
 </div>

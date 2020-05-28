@@ -5,7 +5,7 @@
 
         </div>
     </div>
-    <div class="layui-card-body no-margin">
+    <div class="layui-card-body no-margin <{if isset($checkItems['order']) && $data['id'] == $checkItems['order']}>layui-bg-blue<{/if}>">
         <table class="table-form">
             <tr>
                 <td class="tb-field">签约公司</td>

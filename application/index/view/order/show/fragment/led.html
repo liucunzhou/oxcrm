@@ -29,19 +29,19 @@
                 <th class="text-center">审核状态</th>
             </tr>
             </thead>
-            <tbody>
             <{foreach name="led" item="row"}>
-            <tr>
-                <td class="text-center">{$brands[$row.company_id]['title']}</td>
-                <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
-                <td class="text-center">{$ledList[$row['led_id']]['title']}</td>
-                <td class="text-center">{$row['led_amount']}</td>
-                <td class="text-center">{$row['led_price']}</td>
-                <td class="text-left">{$row['led_remark']}</td>
-                <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
-            </tr>
-            <{/foreach}>
+            <tbody class="<{if isset($checkItems['led']) && in_array($row['id'], $checkItems['led'])}>layui-bg-blue<{/if}>">
+                <tr>
+                    <td class="text-center">{$brands[$row.company_id]['title']}</td>
+                    <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
+                    <td class="text-center">{$ledList[$row['led_id']]['title']}</td>
+                    <td class="text-center">{$row['led_amount']}</td>
+                    <td class="text-center">{$row['led_price']}</td>
+                    <td class="text-left">{$row['led_remark']}</td>
+                    <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
+                </tr>
             </tbody>
+            <{/foreach}>
         </table>
     </div>
 </div>

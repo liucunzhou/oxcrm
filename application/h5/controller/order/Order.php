@@ -1256,6 +1256,8 @@ class Order extends Base
             ];
             return json($result);
         }
+        $checkItems = [];
+        $this->assign('checkItems', $checkItems);
 
         $orderId = $order->id;
         $order = $order->getData();

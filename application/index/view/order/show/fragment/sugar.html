@@ -29,19 +29,19 @@
                 <th class="text-center">审核状态</th>
             </tr>
             </thead>
-            <tbody>
             <{foreach name="sugar" item="row"}>
-            <tr>
-                <td class="text-center">{$brands[$row.company_id]['title']}</td>
-                <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
-                <td class="text-center">{$sugarList[$row['sugar_id']]['title']}</td>
-                <td class="text-center">{$row['sugar_amount']}</td>
-                <td class="text-center">{$row['sugar_price']}</td>
-                <td class="text-left">{$row['sugar_remark']}</td>
-                <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
-            </tr>
-            <{/foreach}>
+            <tbody class="<{if isset($checkItems['sugar']) && in_array($row['id'], $checkItems['sugar'])}>layui-bg-blue<{/if}>">
+                <tr>
+                    <td class="text-center">{$brands[$row.company_id]['title']}</td>
+                    <td class="text-center">{$suborderTypes[$row.is_suborder]}</td>
+                    <td class="text-center">{$sugarList[$row['sugar_id']]['title']}</td>
+                    <td class="text-center">{$row['sugar_amount']}</td>
+                    <td class="text-center">{$row['sugar_price']}</td>
+                    <td class="text-left">{$row['sugar_remark']}</td>
+                    <td class="text-center">{$confirmProjectStatusList[$row['item_check_status']]}</td>
+                </tr>
             </tbody>
+            <{/foreach}>
         </table>
     </div>
 </div>

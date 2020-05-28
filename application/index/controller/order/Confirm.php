@@ -280,6 +280,68 @@ class Confirm extends Backend
         $orderConfirm = $this->model->where('id', '=', $get['confirm_id'])->find();
         $this->assign('confirm', $orderConfirm);
 
+        $checkItems = [];
+        if(!empty($orderConfirm->source)) {
+            $source = json_decode($orderConfirm->source, true);
+            foreach ($source as $key=>$item) {
+                if($key == 'order') {
+                    $checkItems['order'] = $item['id'];
+
+                } else if ($key == 'banquet') {
+                    $checkItems['banquet'] = $item['id'];
+
+                } else if ($key == 'banquetSuborder') {
+                    $checkItems['banquetSuborder'] = array_column($item, 'id');
+
+                } else if ($key == 'banquetIncome') {
+                    $checkItems['banquetIncome'] = array_column($item, 'id');
+
+                } else if ($key == 'banquetPayment') {
+                    $checkItems['banquetPayment'] = array_column($item, 'id');
+
+                } else if ($key == 'wedding') {
+                    $checkItems['wedding'] = $item['id'];
+
+                } else if ($key == 'weddingSuborder') {
+                    $checkItems['weddingSuborder'] = array_column($item, 'id');
+
+                } else if ($key == 'weddingIncome') {
+                    $checkItems['weddingIncome'] = array_column($item, 'id');
+
+                } else if ($key == 'weddingPayment') {
+                    $checkItems['weddingPayment'] = array_column($item, 'id');
+
+                } else if ($key == 'hotelItem') {
+                    $checkItems['hotelItem'] = $item['id'];
+
+                } else if ($key == 'hotelProtocol') {
+                    $checkItems['hotelProtocol'] = $item['id'];
+
+                } else if ($key == 'car') {
+                    $checkItems['car'] = array_column($item, 'id');
+
+                } else if ($key == 'wine') {
+                    $checkItems['wine'] = array_column($item, 'id');
+
+                } else if ($key == 'sugar') {
+                    $checkItems['sugar'] = array_column($item, 'id');
+
+                } else if ($key == 'dessert') {
+                    $checkItems['dessert'] = array_column($item, 'id');
+
+                } else if ($key == 'light') {
+                    $checkItems['light'] = array_column($item, 'id');
+
+                } else if ($key == 'led') {
+                    $checkItems['led'] = array_column($item, 'id');
+
+                } else if ($key == 'd3') {
+                    $checkItems['d3'] = array_column($item, 'id');
+                }
+            }
+        }
+        $this->assign('checkItems', $checkItems);
+
         $get['id'] = $orderConfirm->order_id;
         if (empty($get['id'])) return false;
         $order = \app\common\model\Order::get($get['id']);

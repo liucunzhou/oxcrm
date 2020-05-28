@@ -23,7 +23,7 @@
                     <th class="text-center">审核状态</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="<{if isset($checkItems['banquet']) && $banquet['id'] == $checkItems['banquet']}>layui-bg-blue<{/if}>">
                 <tr>
                     <td class="text-center">{$brands[$banquet.company_id]['title']}</td>
                     <td class="text-center">{$banquet.banquet_totals}</td>
@@ -39,7 +39,7 @@
                     <td class="text-center">{$confirmProjectStatusList[$banquet['item_check_status']]}</td>
                 </tr>
                 <tr>
-                    <td colspan="11">
+                    <td colspan="12">
                         <div class="remark">备注:{$banquet.banquet_remark}</div>
                     </td>
                 </tr>
@@ -61,7 +61,7 @@
                 </td>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="<{if isset($checkItems['hotelItem']) && $hotelItem['id'] == $checkItems['hotelItem']}>layui-bg-blue<{/if}>">
             <tr>
                 <td class="tb-field">婚房</td>
                 <td class="tb-value">{$hotelItem.wedding_room}</td>
@@ -117,8 +117,8 @@
                         <th class="text-left">订单金额</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <{foreach name="banquetOrders" item="row"}>
+                <{foreach name="banquetOrders" item="row"}>
+                <tbody class="<{if isset($checkItems['banquetSuborder']) && in_array($row['id'], $checkItems['banquetSuborder'])}>layui-bg-blue<{/if}>">
                     <tr>
                         <td class="text-left">{$row.banquet_order_no}</td>
                         <td class="text-left">{$row.table_amount}</td>
@@ -130,8 +130,8 @@
                             <div class="remark">备注:{$row.sub_banquet_remark}</div>
                         </td>
                     </tr>
-                    <{/foreach}>
                 </tbody>
+                <{/foreach}>
             </table>
         </div>
     </div>
@@ -166,8 +166,9 @@
                 <th class="text-center">尾款付款日期</th>
             </tr>
             </thead>
-            <tbody>
+
             <{foreach name="hotelProtocol" item="row"}>
+            <tbody class="<{if isset($checkItems['hotelProtocol']) && $row['id'] == $checkItems['hotelProtocol']}>layui-bg-blue<{/if}>">
             <tr>
                 <td class="text-center">{$row.table_price}</td>
                 <td class="text-center">{$row.table_amount}</td>
@@ -178,8 +179,8 @@
                 <td class="text-center">{$row.tail_money}</td>
                 <td class="text-center">{$row.tail_money_date}</td>
             </tr>
-            <{/foreach}>
             </tbody>
+            <{/foreach}>
         </table>
     </div>
 </div>
